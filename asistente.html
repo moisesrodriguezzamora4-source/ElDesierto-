@@ -1,19 +1,7 @@
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport"
+<!DOCTYPE html><head><meta charset="UTF-8"><meta name="viewport"
 content="width=device-width, initial-scale=1.0">
 
-<title>ElDesierto - Asistente IA</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase.js"></script>
-
-<style>
+<title>ElDesierto - Asistente IA</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase.js"></script><style>
 
 *{
     box-sizing:border-box;
@@ -189,6 +177,51 @@ body{
     white-space:pre-line;
 }
 
+/* =====================================================
+   BOTÓN ESCUCHAR
+===================================================== */
+
+.botonEscuchar{
+
+    width:100%;
+    margin-top:15px;
+
+    padding:14px;
+
+    border:1px solid #5a1a1a;
+
+    border-radius:12px;
+
+    background:linear-gradient(
+        145deg,
+        #292929,
+        #151515
+    );
+
+    color:white;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+.botonEscuchar:active{
+
+    transform:scale(.98);
+
+    background:#333;
+
+}
+
+.botonEscuchar.reproduciendo{
+
+    background:#641414;
+
+}
+
 .ejemplos{
     margin-top:20px;
 }
@@ -238,70 +271,36 @@ body{
     display:none;
 }
 
-</style>
+</style></head><body><div class="contenedor"><header class="cabecera"><div class="logo">🎙️</div>
 
-</head>
+<div class="titulo">
+    Asistente IA
+</div>
 
-<body>
+<div class="subtitulo">
+    Consulta los datos de ElDesierto por voz
+</div>
 
-<div class="contenedor">
-
-<header class="cabecera">
-
-    <div class="logo">🎙️</div>
-
-    <div class="titulo">
-        Asistente IA
-    </div>
-
-    <div class="subtitulo">
-        Consulta los datos de ElDesierto por voz
-    </div>
-
-</header>
-
-
-<button
+</header><button
 class="volver"
 onclick="window.location.href='menu.html'">
 
 ⬅️ Volver al menú
 
-</button>
-
-
-<div class="panel">
-
-<div id="estado" class="estado">
+</button><div class="panel"><div id="estado" class="estado">
     Preparado para ayudarte
-</div>
-
-
-<button
+</div><button
 id="botonMic"
 class="mic"
 onclick="iniciarEscucha()">
 
 🎙️
 
-</button>
+</button><div class="ayuda">Pulsa el micrófono y habla después del aviso del teléfono.
 
-
-<div class="ayuda">
-
-Pulsa el micrófono y habla después del aviso del teléfono.
-
-</div>
-
-
-<div id="textoEscuchado">
+</div><div id="textoEscuchado">
     🎧 Escuchando: <span id="textoVoz"></span>
-</div>
-
-
-<div class="entrada">
-
-<input
+</div><div class="entrada"><input
 id="pregunta"
 type="text"
 placeholder="Ej: ¿Cuánto maíz queda?"
@@ -309,29 +308,18 @@ autocomplete="off">
 
 <button onclick="procesarDesdeTexto()">
 ➤
-</button>
-
-</div>
-
-
-<div class="respuesta">
-
-<div class="etiqueta">
+</button></div><div class="respuesta"><div class="etiqueta">
 🤖 ElDesierto
-</div>
-
-<div id="respuestaTexto">
+</div><div id="respuestaTexto">
 Esperando tu pregunta...
-</div>
+</div><button
+id="botonEscuchar"
+class="botonEscuchar"
+onclick="escucharRespuesta()">
 
-</div>
+🔊 Escuchar respuesta
 
-
-<div class="ejemplos">
-
-<h3>Preguntas que puedes hacer</h3>
-
-<button class="ejemplo"
+</button></div><div class="ejemplos"><h3>Preguntas que puedes hacer</h3><button class="ejemplo"
 onclick="usarEjemplo('¿Cuánto maíz queda?')">
 🌽 ¿Cuánto maíz queda?
 </button>
@@ -381,14 +369,7 @@ onclick="usarEjemplo('¿Cuáles fueron las últimas salidas?')">
 📋 ¿Cuáles fueron las últimas salidas?
 </button>
 
-</div>
-
-</div>
-
-</div>
-
-
-<script>
+</div></div></div><script>
 
 /* =====================================================
    VARIABLES
@@ -397,6 +378,8 @@ onclick="usarEjemplo('¿Cuáles fueron las últimas salidas?')">
 let reconocimiento = null;
 
 let escuchando = false;
+
+let ultimaRespuesta = "";
 
 
 /* =====================================================
@@ -421,6 +404,9 @@ document.getElementById("textoVoz");
 const respuestaTexto =
 document.getElementById("respuestaTexto");
 
+const botonEscuchar =
+document.getElementById("botonEscuchar");
+
 
 /* =====================================================
    NORMALIZAR
@@ -438,67 +424,32 @@ function normalizar(texto){
 
 
 /* =====================================================
-   HABLAR
+   ESCUCHAR RESPUESTA
 ===================================================== */
 
-let vocesDisponibles = [];
+function escucharRespuesta(){
 
-
-/* =====================================================
-   CARGAR VOCES
-===================================================== */
-
-function cargarVoces(){
-
-    if(!("speechSynthesis" in window))
-        return;
-
-    vocesDisponibles =
-    window.speechSynthesis.getVoices();
-
-}
-
-
-/* =====================================================
-   CUANDO ANDROID CARGA LAS VOCES
-===================================================== */
-
-if("speechSynthesis" in window){
-
-    cargarVoces();
-
-    window.speechSynthesis.onvoiceschanged =
-    function(){
-
-        cargarVoces();
-
-        console.log(
-            "🔊 Voces cargadas:",
-            vocesDisponibles.length
-        );
-
-    };
-
-}
-
-
-/* =====================================================
-   HABLAR
-===================================================== */
-
-function hablar(texto){
-
-    if(!("speechSynthesis" in window)){
+    if(!ultimaRespuesta){
 
         estado.innerText =
-        "⚠️ Este navegador no admite audio.";
+        "⚠️ No hay ninguna respuesta para reproducir.";
 
         return;
 
     }
 
 
-    /* DETENER CUALQUIER AUDIO ANTERIOR */
+    if(!("speechSynthesis" in window)){
+
+        estado.innerText =
+        "⚠️ Este navegador no admite síntesis de voz.";
+
+        return;
+
+    }
+
+
+    /* DETENER AUDIO ANTERIOR */
 
     window.speechSynthesis.cancel();
 
@@ -506,57 +457,92 @@ function hablar(texto){
     /* CREAR MENSAJE */
 
     const mensaje =
-    new SpeechSynthesisUtterance(texto);
+    new SpeechSynthesisUtterance(
+        ultimaRespuesta
+    );
 
 
     /* CONFIGURACIÓN */
 
-    mensaje.lang = "es-ES";
+    mensaje.lang="es-ES";
 
-    mensaje.rate = 0.9;
+    mensaje.rate=0.9;
 
-    mensaje.pitch = 1;
+    mensaje.pitch=1;
 
-    mensaje.volume = 1;
-
-
-    /* CUANDO EMPIEZA */
-
-    mensaje.onstart = function(){
-
-        console.log(
-            "🔊 Reproduciendo audio"
-        );
-
-    };
+    mensaje.volume=1;
 
 
-    /* SI OCURRE UN ERROR */
+    /* AL COMENZAR */
 
-    mensaje.onerror = function(event){
+    mensaje.onstart=function(){
 
-        console.error(
-            "Error de audio:",
-            event
+        botonEscuchar.innerText =
+        "🔊 Reproduciendo...";
+
+        botonEscuchar.classList.add(
+            "reproduciendo"
         );
 
         estado.innerText =
-        "⚠️ No se pudo reproducir automáticamente. Pulsa nuevamente el micrófono.";
+        "🔊 Reproduciendo respuesta...";
 
     };
 
 
-    /* REPRODUCIR */
+    /* AL TERMINAR */
 
-    setTimeout(function(){
+    mensaje.onend=function(){
 
-        window.speechSynthesis.resume();
+        botonEscuchar.innerText =
+        "🔊 Escuchar respuesta";
 
-        window.speechSynthesis.speak(
-            mensaje
+        botonEscuchar.classList.remove(
+            "reproduciendo"
         );
 
-    },300);
+        estado.innerText =
+        "✅ Consulta completada";
+
+    };
+
+
+    /* ERROR */
+
+    mensaje.onerror=function(event){
+
+        console.error(
+            "Error de síntesis:",
+            event
+        );
+
+
+        botonEscuchar.innerText =
+        "🔊 Escuchar respuesta";
+
+        botonEscuchar.classList.remove(
+            "reproduciendo"
+        );
+
+
+        estado.innerText =
+        "⚠️ Chrome no pudo reproducir la respuesta. Pulsa nuevamente.";
+
+    };
+
+
+    /*
+       IMPORTANTE:
+
+       Esta función SOLO se ejecuta
+       después de tocar el botón.
+    */
+
+    window.speechSynthesis.resume();
+
+    window.speechSynthesis.speak(
+        mensaje
+    );
 
 }
 
@@ -573,6 +559,7 @@ async function verificarSesion(){
     if(error){
 
         console.error(error);
+
         return;
 
     }
@@ -1673,10 +1660,27 @@ function mostrarRespuesta(texto){
 
     respuestaTexto.innerText=texto;
 
+    ultimaRespuesta=texto;
+
+    botonEscuchar.innerText =
+    "🔊 Escuchar respuesta";
+
+    botonEscuchar.classList.remove(
+        "reproduciendo"
+    );
+
     estado.innerText=
     "✅ Consulta completada";
 
-    hablar(texto);
+    /*
+       IMPORTANTE:
+
+       YA NO SE LLAMA A hablar(texto).
+
+       El audio solamente se reproduce
+       cuando el usuario pulsa
+       "🔊 Escuchar respuesta".
+    */
 
 }
 
@@ -1696,8 +1700,4 @@ async function iniciar(){
 
 iniciar();
 
-</script>
-
-</body>
-
-</html>
+</script></body></html>
