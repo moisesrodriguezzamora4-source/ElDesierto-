@@ -490,16 +490,15 @@ function hablar(texto){
 
     if(!("speechSynthesis" in window)){
 
-        console.log(
-            "❌ Este navegador no admite síntesis de voz."
-        );
+        estado.innerText =
+        "⚠️ Este navegador no admite audio.";
 
         return;
 
     }
 
 
-    /* DETENER CUALQUIER VOZ ANTERIOR */
+    /* DETENER CUALQUIER AUDIO ANTERIOR */
 
     window.speechSynthesis.cancel();
 
@@ -521,120 +520,37 @@ function hablar(texto){
     mensaje.volume = 1;
 
 
-    /* BUSCAR VOCES NUEVAMENTE */
+    /* CUANDO EMPIEZA */
 
-    cargarVoces();
-
-
-    /* BUSCAR PRIMERO ESPAÑOL DE ESPAÑA */
-
-    let vozEspanol =
-    vocesDisponibles.find(function(voz){
-
-        return voz.lang === "es-ES";
-
-    });
-
-
-    /* SI NO EXISTE, BUSCAR CUALQUIER ESPAÑOL */
-
-    if(!vozEspanol){
-
-        vozEspanol =
-        vocesDisponibles.find(function(voz){
-
-            return (
-                voz.lang &&
-                voz.lang.toLowerCase()
-                .startsWith("es")
-            );
-
-        });
-
-    }
-
-
-    /* USAR LA VOZ */
-
-    if(vozEspanol){
-
-        mensaje.voice =
-        vozEspanol;
-
-        mensaje.lang =
-        vozEspanol.lang;
+    mensaje.onstart = function(){
 
         console.log(
-            "🔊 Voz utilizada:",
-            vozEspanol.name,
-            vozEspanol.lang
+            "🔊 Reproduciendo audio"
         );
-
-    }
-
-    else{
-
-        console.log(
-            "⚠️ No encontré una voz española. Usando la voz predeterminada."
-        );
-
-    }
-
-
-    /* CUANDO EMPIEZA A HABLAR */
-
-    mensaje.onstart =
-    function(){
-
-        console.log(
-            "🔊 ElDesierto comenzó a hablar"
-        );
-
-        estado.innerText =
-        "🔊 ElDesierto está hablando...";
-
-    };
-
-
-    /* CUANDO TERMINA */
-
-    mensaje.onend =
-    function(){
-
-        console.log(
-            "✅ ElDesierto terminó de hablar"
-        );
-
-        estado.innerText =
-        "✅ Consulta completada";
 
     };
 
 
     /* SI OCURRE UN ERROR */
 
-    mensaje.onerror =
-    function(event){
+    mensaje.onerror = function(event){
 
         console.error(
-            "❌ Error al reproducir voz:",
-            event.error
+            "Error de audio:",
+            event
         );
 
         estado.innerText =
-        "⚠️ No se pudo reproducir el audio.";
+        "⚠️ No se pudo reproducir automáticamente. Pulsa nuevamente el micrófono.";
 
     };
 
 
-    /* IMPORTANTE PARA CHROME Y ANDROID */
-
-    window.speechSynthesis.resume();
-
-
-    /* HABLAR */
+    /* REPRODUCIR */
 
     setTimeout(function(){
+
+        window.speechSynthesis.resume();
 
         window.speechSynthesis.speak(
             mensaje
