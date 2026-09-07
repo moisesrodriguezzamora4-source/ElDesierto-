@@ -629,13 +629,11 @@ function escucharRespuesta(){
 
     const synth = window.speechSynthesis;
 
-    console.log("SpeechSynthesis disponible:", !!synth);
-
     const mensaje =
-        new SpeechSynthesisUtterance("Hola");
+        new SpeechSynthesisUtterance("Hola, esta es una prueba de voz de ElDesierto.");
 
-    mensaje.lang = "es-ES";
-    mensaje.rate = 1;
+    mensaje.lang = "es-US";
+    mensaje.rate = 0.9;
     mensaje.pitch = 1;
     mensaje.volume = 1;
 
@@ -644,7 +642,7 @@ function escucharRespuesta(){
         console.log("TTS INICIADO");
 
         estado.innerText =
-        "🔊 Probando voz...";
+        "🔊 Reproduciendo respuesta...";
 
     };
 
@@ -653,7 +651,7 @@ function escucharRespuesta(){
         console.log("TTS TERMINADO");
 
         estado.innerText =
-        "✅ La voz funciona correctamente.";
+        "✅ Voz funcionando correctamente.";
 
     };
 
