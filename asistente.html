@@ -627,155 +627,57 @@ function detenerAudio(){
 
 function escucharRespuesta(){
 
-    if(!ultimaRespuesta){
+    const synth = window.speechSynthesis;
 
-        estado.innerText =
-        "⚠️ No hay ninguna respuesta para reproducir.";
-
-        return;
-
-    }
-
-
-    if(
-        !("speechSynthesis" in window) ||
-        !("SpeechSynthesisUtterance" in window)
-    ){
-
-        estado.innerText =
-        "⚠️ Este navegador no admite síntesis de voz.";
-
-        return;
-
-    }
-
-
-    const synth =
-    window.speechSynthesis;
-
-
-    synth.cancel();
-
-
-    const texto =
-    limpiarTextoParaVoz(
-        ultimaRespuesta
-    );
-
-
-    if(!texto){
-
-        estado.innerText =
-        "⚠️ No hay texto válido para reproducir.";
-
-        return;
-
-    }
-
-
-    botonEscuchar.innerText =
-    "🔊 Reproduciendo...";
-
-    botonEscuchar.classList.add(
-        "reproduciendo"
-    );
-
-    estado.innerText =
-    "🔊 Reproduciendo respuesta...";
-
+    console.log("SpeechSynthesis disponible:", !!synth);
 
     const mensaje =
-    new SpeechSynthesisUtterance();
-
-
-    mensaje.text = texto;
+        new SpeechSynthesisUtterance("Hola");
 
     mensaje.lang = "es-ES";
-
-    mensaje.rate = 0.85;
-
+    mensaje.rate = 1;
     mensaje.pitch = 1;
-
     mensaje.volume = 1;
-
 
     mensaje.onstart = function(){
 
-        botonEscuchar.innerText =
-        "🔊 Reproduciendo...";
+        console.log("TTS INICIADO");
 
-        botonEscuchar.classList.add(
-            "reproduciendo"
-        );
+        estado.innerText =
+        "🔊 Probando voz...";
 
     };
-
 
     mensaje.onend = function(){
 
-        botonEscuchar.innerText =
-        "🔊 Escuchar respuesta";
-
-        botonEscuchar.classList.remove(
-            "reproduciendo"
-        );
+        console.log("TTS TERMINADO");
 
         estado.innerText =
-        "✅ Respuesta reproducida.";
+        "✅ La voz funciona correctamente.";
 
     };
-
 
     mensaje.onerror = function(event){
 
         console.error(
             "ERROR TTS:",
+            event.error,
             event
         );
 
-        botonEscuchar.innerText =
-        "🔊 Escuchar respuesta";
-
-        botonEscuchar.classList.remove(
-            "reproduciendo"
-        );
-
         estado.innerText =
-        "⚠️ Error de voz: " +
+        "❌ Error de voz: " +
         event.error;
 
     };
 
+    synth.cancel();
 
     synth.resume();
 
-
     setTimeout(function(){
 
-        try{
-
-            synth.speak(
-                mensaje
-            );
-
-        }catch(error){
-
-            console.error(
-                "Error al ejecutar speak:",
-                error
-            );
-
-            botonEscuchar.innerText =
-            "🔊 Escuchar respuesta";
-
-            botonEscuchar.classList.remove(
-                "reproduciendo"
-            );
-
-            estado.innerText =
-            "❌ No se pudo iniciar el motor de voz.";
-
-        }
+        synth.speak(mensaje);
 
     },300);
 
