@@ -441,21 +441,116 @@ function normalizar(texto){
    HABLAR
 ===================================================== */
 
-function hablar(texto){
+let vocesDisponibles = [];
+
+
+/* CARGAR VOCES */
+
+function cargarVoces(){
 
     if(!("speechSynthesis" in window))
         return;
 
+    vocesDisponibles =
+    window.speechSynthesis.getVoices();
+
+}
+
+
+/* ESCUCHAR CUANDO EL TELÉFONO CARGA LAS VOCES */
+
+if("speechSynthesis" in window){
+
+    cargarVoces();
+
+    window.speechSynthesis.onvoiceschanged =
+    cargarVoces;
+
+}
+
+
+/* HABLAR */
+
+function hablar(texto){
+
+    if(!("speechSynthesis" in window)){
+
+        console.log(
+            "Este navegador no admite síntesis de voz."
+        );
+
+        return;
+
+    }
+
+
+    /* DETENER CUALQUIER VOZ ANTERIOR */
+
     window.speechSynthesis.cancel();
 
-    const voz =
+
+    /* VOLVER A CARGAR LAS VOCES */
+
+    cargarVoces();
+
+
+    const mensaje =
     new SpeechSynthesisUtterance(texto);
 
-    voz.lang="es-ES";
-    voz.rate=0.95;
-    voz.pitch=1;
 
-    window.speechSynthesis.speak(voz);
+    /* CONFIGURACIÓN */
+
+    mensaje.lang = "es-ES";
+
+    mensaje.rate = 0.9;
+
+    mensaje.pitch = 1;
+
+    mensaje.volume = 1;
+
+
+    /* BUSCAR UNA VOZ EN ESPAÑOL */
+
+    const vozEspanol =
+    vocesDisponibles.find(voz =>
+
+        voz.lang &&
+        voz.lang.toLowerCase()
+        .startsWith("es")
+
+    );
+
+
+    /* USAR VOZ ESPAÑOLA SI EXISTE */
+
+    if(vozEspanol){
+
+        mensaje.voice =
+        vozEspanol;
+
+        console.log(
+            "Voz utilizada:",
+            vozEspanol.name
+        );
+
+    }else{
+
+        console.log(
+            "No se encontró una voz en español."
+        );
+
+    }
+
+
+    /* HABLAR */
+
+    setTimeout(function(){
+
+        window.speechSynthesis.speak(
+            mensaje
+        );
+
+    },200);
 
 }
 
