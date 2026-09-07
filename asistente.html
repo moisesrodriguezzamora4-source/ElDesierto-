@@ -654,16 +654,8 @@ function escucharRespuesta(){
     window.speechSynthesis;
 
 
-    /*
-       Detener cualquier audio anterior.
-    */
-
     synth.cancel();
 
-
-    /*
-       Limpiar emojis y símbolos.
-    */
 
     const texto =
     limpiarTextoParaVoz(
@@ -681,17 +673,6 @@ function escucharRespuesta(){
     }
 
 
-    /*
-       Dividir respuestas largas.
-    */
-
-    const partes =
-    dividirTextoVoz(texto);
-
-
-    let indice = 0;
-
-
     botonEscuchar.innerText =
     "🔊 Reproduciendo...";
 
@@ -703,9 +684,86 @@ function escucharRespuesta(){
     "🔊 Reproduciendo respuesta...";
 
 
-    function reproducirSiguiente(){
+    const mensaje =
+    new SpeechSynthesisUtterance();
 
-        if(indice >= partes.length){
+
+    mensaje.text = texto;
+
+    mensaje.lang = "es-ES";
+
+    mensaje.rate = 0.85;
+
+    mensaje.pitch = 1;
+
+    mensaje.volume = 1;
+
+
+    mensaje.onstart = function(){
+
+        botonEscuchar.innerText =
+        "🔊 Reproduciendo...";
+
+        botonEscuchar.classList.add(
+            "reproduciendo"
+        );
+
+    };
+
+
+    mensaje.onend = function(){
+
+        botonEscuchar.innerText =
+        "🔊 Escuchar respuesta";
+
+        botonEscuchar.classList.remove(
+            "reproduciendo"
+        );
+
+        estado.innerText =
+        "✅ Respuesta reproducida.";
+
+    };
+
+
+    mensaje.onerror = function(event){
+
+        console.error(
+            "ERROR TTS:",
+            event
+        );
+
+        botonEscuchar.innerText =
+        "🔊 Escuchar respuesta";
+
+        botonEscuchar.classList.remove(
+            "reproduciendo"
+        );
+
+        estado.innerText =
+        "⚠️ Error de voz: " +
+        event.error;
+
+    };
+
+
+    synth.resume();
+
+
+    setTimeout(function(){
+
+        try{
+
+            synth.speak(
+                mensaje
+            );
+
+        }catch(error){
+
+            console.error(
+                "Error al ejecutar speak:",
+                error
+            );
 
             botonEscuchar.innerText =
             "🔊 Escuchar respuesta";
@@ -715,162 +773,11 @@ function escucharRespuesta(){
             );
 
             estado.innerText =
-            "✅ Consulta completada";
-
-            return;
+            "❌ No se pudo iniciar el motor de voz.";
 
         }
 
-
-        const parte =
-        partes[indice];
-
-        indice++;
-
-
-        const mensaje =
-        new SpeechSynthesisUtterance(
-            parte
-        );
-
-
-        /*
-           IMPORTANTE:
-           No seleccionamos manualmente
-           ninguna voz del teléfono.
-
-           Chrome/Android escogerá
-           automáticamente el motor disponible.
-        */
-
-        mensaje.lang =
-        "es-ES";
-
-        mensaje.rate =
-        0.9;
-
-        mensaje.pitch =
-        1;
-
-        mensaje.volume =
-        1;
-
-
-        mensaje.onstart=function(){
-
-            botonEscuchar.innerText =
-            "🔊 Reproduciendo...";
-
-        };
-
-
-        mensaje.onend=function(){
-
-            setTimeout(
-                reproducirSiguiente,
-                100
-            );
-
-        };
-
-
-        mensaje.onerror=function(event){
-
-            console.error(
-                "Error de síntesis:",
-                event.error,
-                event
-            );
-
-
-            detenerAudio();
-
-
-            if(
-                event.error ===
-                "synthesis-failed"
-            ){
-
-                estado.innerText =
-                "⚠️ El motor de voz de Android no pudo reproducir el texto. Pulsa nuevamente.";
-
-            }
-
-            else if(
-                event.error ===
-                "language-unavailable"
-            ){
-
-                estado.innerText =
-                "⚠️ El idioma español no está disponible en el motor de voz del teléfono.";
-
-            }
-
-            else if(
-                event.error ===
-                "voice-unavailable"
-            ){
-
-                estado.innerText =
-                "⚠️ La voz seleccionada no está disponible.";
-
-            }
-
-            else if(
-                event.error ===
-                "audio-hardware"
-            ){
-
-                estado.innerText =
-                "⚠️ No se pudo acceder al audio del teléfono.";
-
-            }
-
-            else if(
-                event.error ===
-                "not-allowed"
-            ){
-
-                estado.innerText =
-                "⚠️ Chrome no tiene permitido reproducir audio.";
-
-            }
-
-            else{
-
-                estado.innerText =
-                "⚠️ Error de voz: " +
-                event.error;
-
-            }
-
-        };
-
-
-        /*
-           Reactivar el motor antes de hablar.
-        */
-
-        synth.resume();
-
-
-        /*
-           Pequeño retraso para que Chrome
-           termine de cancelar el audio anterior.
-        */
-
-        setTimeout(function(){
-
-            synth.speak(
-                mensaje
-            );
-
-        },100);
-
-    }
-
-
-    reproducirSiguiente();
+    },300);
 
 }
 
