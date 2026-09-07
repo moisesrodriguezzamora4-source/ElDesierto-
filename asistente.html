@@ -627,10 +627,16 @@ function detenerAudio(){
 
 function escucharRespuesta(){
 
+    if(!ultimaRespuesta){
+        estado.innerText =
+        "⚠️ No hay ninguna respuesta para escuchar.";
+        return;
+    }
+
     const synth = window.speechSynthesis;
 
     const mensaje =
-        new SpeechSynthesisUtterance("Hola, esta es una prueba de voz de ElDesierto.");
+        new SpeechSynthesisUtterance(ultimaRespuesta);
 
     mensaje.lang = "es-US";
     mensaje.rate = 0.9;
@@ -639,7 +645,7 @@ function escucharRespuesta(){
 
     mensaje.onstart = function(){
 
-        console.log("TTS INICIADO");
+        botonEscuchar.classList.add("reproduciendo");
 
         estado.innerText =
         "🔊 Reproduciendo respuesta...";
@@ -648,14 +654,16 @@ function escucharRespuesta(){
 
     mensaje.onend = function(){
 
-        console.log("TTS TERMINADO");
+        botonEscuchar.classList.remove("reproduciendo");
 
         estado.innerText =
-        "✅ Voz funcionando correctamente.";
+        "✅ Respuesta reproducida.";
 
     };
 
     mensaje.onerror = function(event){
+
+        botonEscuchar.classList.remove("reproduciendo");
 
         console.error(
             "ERROR TTS:",
@@ -670,7 +678,6 @@ function escucharRespuesta(){
     };
 
     synth.cancel();
-
     synth.resume();
 
     setTimeout(function(){
