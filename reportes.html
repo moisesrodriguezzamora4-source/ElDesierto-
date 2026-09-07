@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ElDesierto - Reportes</title>
+
+<style>
+
+/* =====================================================
+   CONFIGURACIÓN GENERAL
+===================================================== */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+    min-height:100%;
+}
+
+body{
+
+    font-family:Arial, Helvetica, sans-serif;
+
+    background:
+        radial-gradient(
+            circle at top,
+            #3b0000 0%,
+            #140000 35%,
+            #050505 70%,
+            #000000 100%
+        );
+
+    color:white;
+
+    padding:15px;
+
+}
+
+
+/* =====================================================
+   CONTENEDOR PRINCIPAL
+===================================================== */
+
+.contenedor{
+
+    max-width:1100px;
+
+    margin:auto;
+
+}
+
+
+/* =====================================================
+   ENCABEZADO
+===================================================== */
+
+.encabezado{
+
+    text-align:center;
+
+    padding:20px 10px 15px;
+
+}
+
+.logo{
+
+    width:75px;
+    height:75px;
+
+    margin:auto;
+    margin-bottom:10px;
+
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:40px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ff3333,
+            #8b0000
+        );
+
+    border:2px solid #ff4444;
+
+    box-shadow:
+        0 5px 0 #4d0000,
+        0 10px 20px rgba(255,0,0,.35),
+        inset 0 2px 5px rgba(255,255,255,.25);
+
+}
+
+h1{
+
+    font-size:30px;
+
+    color:#ff3333;
+
+    text-shadow:
+        0 0 10px rgba(255,0,0,.6);
+
+}
+
+.subtitulo{
+
+    margin-top:6px;
+
+    color:#aaa;
+
+    font-size:14px;
+
+}
+
+
+/* =====================================================
+   BOTÓN VOLVER
+===================================================== */
+
+.btn-volver{
+
+    width:100%;
+
+    border:none;
+
+    padding:14px;
+
+    margin:10px 0 18px;
+
+    border-radius:12px;
+
+    color:white;
+
+    font-size:16px;
+    font-weight:bold;
+
+    background:
+        linear-gradient(
+            145deg,
+            #252525,
+            #0b0b0b
+        );
+
+    border:1px solid #444;
+
+    box-shadow:
+        0 5px 0 #000,
+        0 8px 15px rgba(0,0,0,.5),
+        inset 0 1px 2px rgba(255,255,255,.12);
+
+    cursor:pointer;
+
+}
+
+.btn-volver:active{
+
+    transform:translateY(4px);
+
+    box-shadow:
+        0 1px 0 #000,
+        inset 0 1px 2px rgba(255,255,255,.1);
+
+}
+
+
+/* =====================================================
+   TARJETAS
+===================================================== */
+
+.caja{
+
+    background:
+        linear-gradient(
+            145deg,
+            #181818,
+            #090909
+        );
+
+    border:1px solid #3a3a3a;
+
+    border-radius:18px;
+
+    padding:16px;
+
+    margin-bottom:20px;
+
+    box-shadow:
+        0 8px 0 #000,
+        0 15px 30px rgba(0,0,0,.65),
+        inset 0 1px 2px rgba(255,255,255,.08);
+
+}
+
+.caja h2{
+
+    color:#ff3333;
+
+    font-size:20px;
+
+    margin-bottom:15px;
+
+    text-shadow:
+        0 0 8px rgba(255,0,0,.35);
+
+}
+
+
+/* =====================================================
+   SELECTOR DE MES
+===================================================== */
+
+.selector{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+    margin-bottom:18px;
+
+}
+
+.selector label{
+
+    color:#ccc;
+
+    font-weight:bold;
+
+}
+
+.selector input{
+
+    width:100%;
+
+    padding:13px;
+
+    border-radius:10px;
+
+    border:1px solid #555;
+
+    background:#050505;
+
+    color:white;
+
+    font-size:16px;
+
+    outline:none;
+
+}
+
+.selector input:focus{
+
+    border-color:#ff3333;
+
+    box-shadow:
+        0 0 10px rgba(255,0,0,.25);
+
+}
+
+
+/* =====================================================
+   TABLAS
+===================================================== */
+
+.tabla-contenedor{
+
+    width:100%;
+
+    overflow-x:auto;
+
+    border-radius:12px;
+
+}
+
+table{
+
+    width:100%;
+
+    min-width:650px;
+
+    border-collapse:separate;
+
+    border-spacing:0;
+
+}
+
+th,
+td{
+
+    padding:11px 8px;
+
+    text-align:center;
+
+    border-bottom:1px solid #333;
+
+}
+
+th{
+
+    background:
+        linear-gradient(
+            145deg,
+            #c40000,
+            #650000
+        );
+
+    color:white;
+
+    font-size:14px;
+
+}
+
+td{
+
+    background:#101010;
+
+    color:#ddd;
+
+    font-size:14px;
+
+}
+
+tr:last-child td{
+
+    border-bottom:none;
+
+}
+
+tr:hover td{
+
+    background:#191919;
+
+}
+
+
+/* =====================================================
+   COLORES DE ENTRADA / SALIDA
+===================================================== */
+
+.entrada{
+
+    color:#35e56b !important;
+
+    font-weight:bold;
+
+}
+
+.salida{
+
+    color:#ff4545 !important;
+
+    font-weight:bold;
+
+}
+
+.balance-positivo{
+
+    color:#35e56b !important;
+
+    font-weight:bold;
+
+}
+
+.balance-negativo{
+
+    color:#ff4545 !important;
+
+    font-weight:bold;
+
+}
+
+
+/* =====================================================
+   RESUMEN
+===================================================== */
+
+.resumen-titulo{
+
+    text-align:center;
+
+    margin-bottom:5px;
+
+}
+
+.resumen-subtitulo{
+
+    text-align:center;
+
+    color:#999;
+
+    font-size:13px;
+
+    margin-bottom:15px;
+
+}
+
+.sin-datos{
+
+    text-align:center;
+
+    padding:20px;
+
+    color:#888;
+
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:600px){
+
+    body{
+
+        padding:10px;
+
+    }
+
+    h1{
+
+        font-size:26px;
+
+    }
+
+    .caja{
+
+        padding:12px;
+
+    }
+
+    th,
+    td{
+
+        padding:9px 6px;
+
+        font-size:13px;
+
+    }
+
+}
+
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+</head>
+
+
+<body>
+
+
+<div class="contenedor">
+
+
+<!-- =====================================================
+     ENCABEZADO
+===================================================== -->
+
+<div class="encabezado">
+
+    <div class="logo">
+        🐷
+    </div>
+
+    <h1>Reportes</h1>
+
+    <div class="subtitulo">
+        Control y resumen de movimientos
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     BOTÓN VOLVER
+===================================================== -->
+
+<button
+    class="btn-volver"
+    onclick="window.location.href='menu.html'">
+
+    ⬅ Volver al menú
+
+</button>
+
+
+<!-- =====================================================
+     MOVIMIENTOS
+===================================================== -->
+
+<div class="caja">
+
+    <h2>📋 Movimientos registrados</h2>
+
+    <div class="tabla-contenedor">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Fecha</th>
+
+                    <th>Producto</th>
+
+                    <th>Tipo</th>
+
+                    <th>Cantidad</th>
+
+                    <th>Usuario</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="tablaReportes">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     RESUMEN MENSUAL
+===================================================== -->
+
+<div class="caja">
+
+    <h2 class="resumen-titulo">
+        📊 Resumen mensual
+    </h2>
+
+    <div class="resumen-subtitulo">
+        Cantidad individual de cada producto
+    </div>
+
+
+    <div class="selector">
+
+        <label for="mes">
+
+            Seleccionar mes:
+
+        </label>
+
+        <input
+            type="month"
+            id="mes"
+            onchange="generarResumen()">
+
+    </div>
+
+
+    <div class="tabla-contenedor">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Producto</th>
+
+                    <th>Entradas</th>
+
+                    <th>Salidas</th>
+
+                    <th>Balance</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="tablaResumen">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     SUPABASE
+===================================================== -->
+
+<script src="supabase.js"></script>
+
+
+<script>
+
+/* =====================================================
+   VERIFICAR SESIÓN
+===================================================== */
+
+async function verificarSesion(){
+
+    const { data } =
+        await clienteSupabase.auth.getSession();
+
+    if(!data.session){
+
+        window.location.href = "login.html";
+
+    }
+
+}
+
+verificarSesion();
+
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+let movimientos = [];
+
+
+/* =====================================================
+   CARGAR TODOS LOS MOVIMIENTOS
+===================================================== */
+
+async function cargarReportes(){
+
+    const { data, error } =
+        await clienteSupabase
+
+        .from("movimientos")
+
+        .select("*")
+
+        .order(
+            "Fecha",
+            { ascending:false }
+        );
+
+
+    if(error){
+
+        alert(
+            "Error cargando reportes: "
+            + error.message
+        );
+
+        return;
+
+    }
+
+
+    movimientos = data || [];
+
+
+    const tabla =
+        document.getElementById(
+            "tablaReportes"
+        );
+
+
+    tabla.innerHTML = "";
+
+
+    if(movimientos.length === 0){
+
+        tabla.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="5"
+                    class="sin-datos">
+
+                    No hay movimientos registrados.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    movimientos.forEach(
+        movimiento => {
+
+            const tipo =
+                (movimiento.Tipo || "")
+                .toLowerCase();
+
+
+            const claseTipo =
+                tipo === "entrada"
+                ? "entrada"
+                : tipo === "salida"
+                ? "salida"
+                : "";
+
+
+            tabla.innerHTML += `
+
+                <tr>
+
+                    <td>
+                        ${movimiento.Fecha || ""}
+                    </td>
+
+                    <td>
+                        ${movimiento.Producto || ""}
+                    </td>
+
+                    <td class="${claseTipo}">
+                        ${movimiento.Tipo || ""}
+                    </td>
+
+                    <td>
+                        ${movimiento.Cantidad || 0}
+                    </td>
+
+                    <td>
+                        ${movimiento.Usuario || ""}
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   ESTABLECER MES ACTUAL
+===================================================== */
+
+function establecerMesActual(){
+
+    const hoy = new Date();
+
+    const año =
+        hoy.getFullYear();
+
+    const mes =
+        String(
+            hoy.getMonth() + 1
+        ).padStart(2, "0");
+
+
+    document.getElementById("mes").value =
+        `${año}-${mes}`;
+
+}
+
+
+/* =====================================================
+   GENERAR RESUMEN MENSUAL
+===================================================== */
+
+function generarResumen(){
+
+    const valorMes =
+        document.getElementById("mes").value;
+
+
+    const tabla =
+        document.getElementById(
+            "tablaResumen"
+        );
+
+
+    tabla.innerHTML = "";
+
+
+    if(!valorMes){
+
+        tabla.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="4"
+                    class="sin-datos">
+
+                    Selecciona un mes.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    /* -----------------------------------------------
+       FILTRAR MOVIMIENTOS DEL MES
+    ------------------------------------------------ */
+
+    const movimientosMes =
+        movimientos.filter(
+            movimiento => {
+
+                if(!movimiento.Fecha){
+
+                    return false;
+
+                }
+
+
+                const fecha =
+                    String(
+                        movimiento.Fecha
+                    );
+
+
+                return fecha.startsWith(
+                    valorMes
+                );
+
+            }
+        );
+
+
+    /* -----------------------------------------------
+       AGRUPAR POR PRODUCTO
+    ------------------------------------------------ */
+
+    const resumen = {};
+
+
+    movimientosMes.forEach(
+        movimiento => {
+
+            const producto =
+                movimiento.Producto
+                || "Sin producto";
+
+
+            const tipo =
+                (
+                    movimiento.Tipo
+                    || ""
+                ).toLowerCase();
+
+
+            const cantidad =
+                Number(
+                    movimiento.Cantidad
+                ) || 0;
+
+
+            if(!resumen[producto]){
+
+                resumen[producto] = {
+
+                    entrada:0,
+
+                    salida:0
+
+                };
+
+            }
+
+
+            if(tipo === "entrada"){
+
+                resumen[producto].entrada
+                    += cantidad;
+
+            }
+
+
+            if(tipo === "salida"){
+
+                resumen[producto].salida
+                    += cantidad;
+
+            }
+
+        }
+    );
+
+
+    /* -----------------------------------------------
+       VERIFICAR SI HAY DATOS
+    ------------------------------------------------ */
+
+    const productos =
+        Object.keys(resumen);
+
+
+    if(productos.length === 0){
+
+        tabla.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="4"
+                    class="sin-datos">
+
+                    No hay movimientos
+                    registrados en este mes.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    /* -----------------------------------------------
+       MOSTRAR RESUMEN
+    ------------------------------------------------ */
+
+    productos.sort();
+
+
+    productos.forEach(
+        producto => {
+
+            const entrada =
+                resumen[producto].entrada;
+
+
+            const salida =
+                resumen[producto].salida;
+
+
+            const balance =
+                entrada - salida;
+
+
+            let claseBalance =
+                "balance-positivo";
+
+
+            if(balance < 0){
+
+                claseBalance =
+                    "balance-negativo";
+
+            }
+
+
+            tabla.innerHTML += `
+
+                <tr>
+
+                    <td>
+                        <strong>
+                            ${producto}
+                        </strong>
+                    </td>
+
+                    <td class="entrada">
+
+                        ${formatearNumero(entrada)}
+                        kg
+
+                    </td>
+
+                    <td class="salida">
+
+                        ${formatearNumero(salida)}
+                        kg
+
+                    </td>
+
+                    <td class="${claseBalance}">
+
+                        ${formatearNumero(balance)}
+                        kg
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   FORMATEAR NÚMEROS
+===================================================== */
+
+function formatearNumero(numero){
+
+    return Number(numero).toLocaleString(
+        "es-ES",
+        {
+            maximumFractionDigits:2
+        }
+    );
+
+}
+
+
+/* =====================================================
+   INICIAR
+===================================================== */
+
+async function iniciar(){
+
+    await verificarSesion();
+
+    establecerMesActual();
+
+    await cargarReportes();
+
+    generarResumen();
+
+}
+
+
+iniciar();
+
+</script>
+
+
+</body>
+
+</html>

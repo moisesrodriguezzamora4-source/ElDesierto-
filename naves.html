@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ElDesierto - Naves</title>
+
+<style>
+
+/* ==========================================
+   ESTILO GENERAL
+========================================== */
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    background:
+    radial-gradient(circle at top,#1d1d1d,#050505 65%);
+    color:white;
+    margin:0;
+    padding:20px;
+    text-align:center;
+    min-height:100vh;
+}
+
+
+/* ==========================================
+   ENCABEZADOS
+========================================== */
+
+h1{
+    color:#ff3030;
+    font-size:32px;
+    margin:10px 0 5px;
+    text-shadow:
+    0 0 10px rgba(255,0,0,.6);
+}
+
+h2{
+    color:#ff4b4b;
+}
+
+
+/* ==========================================
+   BOTONES GENERALES
+========================================== */
+
+.boton{
+    display:block;
+    width:90%;
+    max-width:500px;
+    margin:15px auto;
+
+    padding:16px;
+
+    background:
+    linear-gradient(
+        145deg,
+        #ff3838,
+        #9d0000
+    );
+
+    color:white;
+
+    border:none;
+    border-radius:14px;
+
+    font-size:17px;
+    font-weight:bold;
+
+    cursor:pointer;
+
+    box-shadow:
+    0 7px 0 #500000,
+    0 12px 25px rgba(255,0,0,.18);
+
+    transition:.2s;
+}
+
+.boton:active{
+    transform:translateY(5px);
+
+    box-shadow:
+    0 2px 0 #500000;
+}
+
+
+/* ==========================================
+   TARJETA DE NAVE
+========================================== */
+
+.nave{
+
+    width:95%;
+    max-width:850px;
+
+    margin:25px auto;
+
+    padding:20px;
+
+    border-radius:20px;
+
+    background:
+    linear-gradient(
+        145deg,
+        #202020,
+        #090909
+    );
+
+    border:1px solid #3a3a3a;
+
+    box-shadow:
+
+    10px 10px 25px #000,
+
+    -3px -3px 15px #252525,
+
+    inset 0 0 15px rgba(255,0,0,.05);
+
+}
+
+
+/* ==========================================
+   TÍTULO DE NAVE
+========================================== */
+
+.nave h2{
+
+    margin-top:0;
+
+    color:#ff3b3b;
+
+    text-shadow:
+    0 0 8px rgba(255,0,0,.5);
+
+}
+
+
+/* ==========================================
+   CONTENEDOR DE CUARTONES
+========================================== */
+
+.contenedorNave{
+
+    background:
+    linear-gradient(
+        145deg,
+        #151515,
+        #050505
+    );
+
+    border:2px solid #8f0000;
+
+    border-radius:16px;
+
+    padding:14px;
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(5,1fr);
+
+    gap:10px;
+
+    box-shadow:
+    inset 0 0 15px black,
+    0 0 12px rgba(255,0,0,.15);
+
+}
+
+
+/* ==========================================
+   CUARTONES
+========================================== */
+
+.cuarton{
+
+    min-height:85px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    cursor:pointer;
+
+    border-radius:12px;
+
+    background:
+    linear-gradient(
+        145deg,
+        #292929,
+        #101010
+    );
+
+    border:1px solid #4a4a4a;
+
+    box-shadow:
+    5px 5px 10px #000,
+    -2px -2px 6px #303030;
+
+    transition:.2s;
+
+}
+
+
+.cuarton:hover{
+
+    border-color:#ff2525;
+
+    box-shadow:
+    0 0 15px rgba(255,0,0,.6);
+
+    transform:translateY(-2px);
+
+}
+
+
+.cuarton:active{
+
+    transform:scale(.96);
+
+}
+
+
+/* ==========================================
+   NÚMERO DEL CUARTÓN
+========================================== */
+
+.numero{
+
+    color:#ff5555;
+
+    font-size:13px;
+
+    font-weight:bold;
+
+}
+
+
+/* ==========================================
+   CERDOS
+========================================== */
+
+.cerdos{
+
+    font-size:22px;
+
+    margin-top:8px;
+
+    color:white;
+
+}
+
+
+/* ==========================================
+   TOTAL DE NAVE
+========================================== */
+
+.totalNave{
+
+    margin-top:18px;
+
+    padding:14px;
+
+    border-radius:12px;
+
+    background:
+    linear-gradient(
+        145deg,
+        #280000,
+        #100000
+    );
+
+    color:#ff5555;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    border:1px solid #750000;
+
+    box-shadow:
+    inset 0 0 10px black;
+
+}
+
+
+/* ==========================================
+   PANEL GENERAL
+========================================== */
+
+.panel{
+
+    width:90%;
+
+    max-width:430px;
+
+    margin:25px auto;
+
+    padding:22px;
+
+    border-radius:20px;
+
+    background:
+    linear-gradient(
+        145deg,
+        #202020,
+        #080808
+    );
+
+    border:1px solid #3a3a3a;
+
+    box-shadow:
+    10px 10px 25px #000,
+    -3px -3px 12px #252525;
+
+}
+
+
+/* ==========================================
+   BOTONES INTERNOS
+========================================== */
+
+.panel button{
+
+    display:block;
+
+    width:100%;
+
+    padding:14px;
+
+    margin:12px 0;
+
+    border:none;
+
+    border-radius:12px;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    color:white;
+
+    cursor:pointer;
+
+    background:
+    linear-gradient(
+        145deg,
+        #e50000,
+        #850000
+    );
+
+    box-shadow:
+    0 5px 0 #480000,
+    0 10px 18px rgba(255,0,0,.12);
+
+}
+
+
+.panel button:active{
+
+    transform:translateY(4px);
+
+    box-shadow:
+    0 1px 0 #480000;
+
+}
+
+
+/* ==========================================
+   INPUTS
+========================================== */
+
+input{
+
+    width:100%;
+
+    padding:14px;
+
+    box-sizing:border-box;
+
+    margin:12px 0;
+
+    border-radius:12px;
+
+    font-size:16px;
+
+    color:white;
+
+    background:#101010;
+
+    border:1px solid #4a4a4a;
+
+    outline:none;
+
+    box-shadow:
+    inset 0 0 10px #000;
+
+}
+
+
+input:focus{
+
+    border-color:#ff3030;
+
+    box-shadow:
+    0 0 10px rgba(255,0,0,.4);
+
+}
+
+
+/* ==========================================
+   OCULTAR
+========================================== */
+
+.oculto{
+    display:none;
+}
+
+
+/* ==========================================
+   MENSAJES
+========================================== */
+
+#mensaje{
+
+    margin:20px;
+
+    font-weight:bold;
+
+    color:#ff5555;
+
+}
+
+
+/* ==========================================
+   TOTAL GENERAL
+========================================== */
+
+.totalGeneral{
+
+    width:95%;
+
+    max-width:850px;
+
+    margin:30px auto;
+
+    padding:25px;
+
+    border-radius:22px;
+
+    background:
+    linear-gradient(
+        145deg,
+        #e60000,
+        #750000
+    );
+
+    box-shadow:
+
+    0 8px 0 #400000,
+
+    0 15px 30px rgba(255,0,0,.25);
+
+}
+
+
+.totalGeneral h2{
+
+    color:white;
+
+    margin-top:0;
+
+}
+
+
+.numeroTotal{
+
+    font-size:42px;
+
+    font-weight:bold;
+
+}
+
+
+/* ==========================================
+   RESUMEN DEL DÍA
+========================================== */
+
+.resumen{
+
+    width:95%;
+
+    max-width:850px;
+
+    margin:25px auto;
+
+    padding:22px;
+
+    border-radius:20px;
+
+    background:
+    linear-gradient(
+        145deg,
+        #1d1d1d,
+        #080808
+    );
+
+    border:1px solid #3a3a3a;
+
+    box-shadow:
+    8px 8px 25px #000;
+
+}
+
+
+.movimientoResumen{
+
+    padding:13px;
+
+    margin:8px 0;
+
+    border-radius:10px;
+
+    background:#111;
+
+    border-left:4px solid #e00000;
+
+    font-weight:bold;
+
+}
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media(max-width:600px){
+
+    body{
+        padding:12px;
+    }
+
+    .contenedorNave{
+        grid-template-columns:
+        repeat(3,1fr);
+    }
+
+    .cuarton{
+        min-height:75px;
+    }
+
+}
+
+
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+</head>
+
+
+<body>
+
+
+<h1>🐷 Naves</h1>
+
+<button class="boton"
+onclick="window.location.href='menu.html'">
+
+⬅️ Volver al menú
+
+</button>
+
+
+<div id="contenido">
+
+Cargando naves...
+
+</div>
+
+
+
+<!-- ==========================================
+     PANEL CUARTÓN
+========================================== -->
+
+<div id="panelCuarton" class="panel oculto">
+
+<h2 id="tituloCuarton">
+Cuartón
+</h2>
+
+
+<div id="cantidadActual">
+🐷 Cerdos actuales: 0
+</div>
+
+
+<button onclick="mostrarAgregar()">
+
+➕ Agregar cerdos
+
+</button>
+
+
+<button onclick="mostrarMotivoSalida()">
+
+➖ Sacar cerdos
+
+</button>
+
+
+<button onclick="cerrarPanel()">
+
+Cancelar
+
+</button>
+
+</div>
+
+
+
+<!-- ==========================================
+     AGREGAR CERDOS
+========================================== -->
+
+<div id="panelAgregar" class="panel oculto">
+
+<h2>➕ Agregar cerdos</h2>
+
+
+<input
+type="number"
+id="cantidadAgregar"
+min="1"
+placeholder="Cantidad de cerdos">
+
+
+<button onclick="agregarCerdos()">
+
+Guardar
+
+</button>
+
+
+<button onclick="cerrarPanel()">
+
+Cancelar
+
+</button>
+
+</div>
+
+
+
+<!-- ==========================================
+     MOTIVO SALIDA
+========================================== -->
+
+<div id="panelMotivo" class="panel oculto">
+
+<h2>➖ Sacar cerdos</h2>
+
+<p>Selecciona el motivo:</p>
+
+
+<button onclick="mostrarCantidadSalida('Venta')">
+
+💰 Venta
+
+</button>
+
+
+<button onclick="mostrarCantidadSalida('Muerte')">
+
+☠️ Muerte
+
+</button>
+
+
+<button onclick="mostrarCantidadSalida('Solo sacar')">
+
+🐷 Solo sacar
+
+</button>
+
+
+<button onclick="cerrarPanel()">
+
+Cancelar
+
+</button>
+
+</div>
+
+
+
+<!-- ==========================================
+     CANTIDAD SALIDA
+========================================== -->
+
+<div id="panelSalida" class="panel oculto">
+
+<h2 id="tituloSalida">
+
+➖ Sacar cerdos
+
+</h2>
+
+
+<input
+type="number"
+id="cantidadSalida"
+min="1"
+placeholder="Cantidad de cerdos">
+
+
+<button onclick="sacarCerdos()">
+
+Confirmar salida
+
+</button>
+
+
+<button onclick="cerrarPanel()">
+
+Cancelar
+
+</button>
+
+</div>
+
+
+
+<div id="mensaje"></div>
+
+
+<script src="supabase.js"></script>
+
+
+<script>
+
+
+let naveSeleccionada=null;
+let cuartonSeleccionado=null;
+let motivoSeleccionado=null;
+
+
+/* ==========================================
+   SESIÓN
+========================================== */
+
+async function verificarSesion(){
+
+const {data}=await clienteSupabase.auth.getSession();
+
+if(!data.session){
+
+window.location.href="login.html";
+
+}
+
+}
+
+
+/* ==========================================
+   CARGAR NAVES
+========================================== */
+
+async function cargarNaves(){
+
+const {data:naves,error:errorNaves} =
+await clienteSupabase
+.from("naves")
+.select("*")
+.order("id");
+
+
+if(errorNaves){
+
+document.getElementById("contenido").innerHTML=
+"❌ Error cargando naves: "
++
+errorNaves.message;
+
+return;
+
+}
+
+
+let html="";
+
+let totalGeneral=0;
+
+
+/* ==========================================
+   NAVES
+========================================== */
+
+for(const nave of naves){
+
+const {data:cuartones,error:errorCuartones} =
+await clienteSupabase
+.from("cuartones")
+.select("*")
+.eq("nave_id",nave.id)
+.order("numero");
+
+
+if(errorCuartones){
+
+document.getElementById("contenido").innerHTML=
+"❌ Error cargando cuartones: "
++
+errorCuartones.message;
+
+return;
+
+}
+
+
+let totalNave=0;
+
+
+html+=`
+
+<div class="nave">
+
+<h2>🐷 ${nave.nombre}</h2>
+
+<div class="contenedorNave">
+
+`;
+
+
+cuartones.forEach(cuarton=>{
+
+totalNave += Number(cuarton.cantidad_cerdos);
+
+totalGeneral += Number(cuarton.cantidad_cerdos);
+
+
+html+=`
+
+<div
+
+class="cuarton"
+
+onclick="seleccionarCuarton(
+${nave.id},
+${cuarton.id},
+'${nave.nombre}',
+${cuarton.numero},
+${cuarton.cantidad_cerdos}
+)">
+
+<div class="numero">
+
+CUARTÓN ${cuarton.numero}
+
+</div>
+
+<div class="cerdos">
+
+🐷 ${cuarton.cantidad_cerdos}
+
+</div>
+
+</div>
+
+`;
+
+});
+
+
+html+=`
+
+</div>
+
+<div class="totalNave">
+
+🐷 Total en ${nave.nombre}: ${totalNave}
+
+</div>
+
+</div>
+
+`;
+
+}
+
+
+/* ==========================================
+   TOTAL GENERAL
+========================================== */
+
+html+=`
+
+<div class="totalGeneral">
+
+<h2>🐷 TOTAL DE CERDOS</h2>
+
+<div class="numeroTotal">
+
+${totalGeneral}
+
+</div>
+
+<div>
+
+Total de las 4 naves
+
+</div>
+
+</div>
+
+`;
+
+
+/* ==========================================
+   RESUMEN DE HOY
+========================================== */
+
+const ahora = new Date();
+
+const inicioHoy = new Date(
+ahora.getFullYear(),
+ahora.getMonth(),
+ahora.getDate()
+);
+
+const finHoy = new Date(
+ahora.getFullYear(),
+ahora.getMonth(),
+ahora.getDate()+1
+);
+
+
+const {data:movimientos,error:errorMovimientos} =
+await clienteSupabase
+
+.from("movimientos_naves")
+
+.select("*")
+
+.gte("fecha",inicioHoy.toISOString())
+
+.lt("fecha",finHoy.toISOString())
+
+.order("fecha",{ascending:false});
+
+
+if(!errorMovimientos){
+
+let ventas=[];
+let muertes=[];
+
+
+movimientos.forEach(m=>{
+
+if(m.motivo==="Venta"){
+
+ventas.push(m);
+
+}
+
+if(m.motivo==="Muerte"){
+
+muertes.push(m);
+
+}
+
+});
+
+
+html+=`
+
+<div class="resumen">
+
+<h2>📊 Resumen de hoy</h2>
+
+<h3 style="color:#ff5555;">
+
+💰 Ventas de hoy
+
+</h3>
+
+`;
+
+
+if(ventas.length===0){
+
+html+=`
+
+<p>
+No hay ventas registradas hoy.
+</p>
+
+`;
+
+}else{
+
+ventas.forEach(v=>{
+
+html+=`
+
+<div class="movimientoResumen">
+
+N${v.nave_id} - C${v.cuarton}
+
+:
+
+${v.cantidad} 🐷
+
+</div>
+
+`;
+
+});
+
+}
+
+
+html+=`
+
+<h3 style="color:#ff5555;margin-top:25px;">
+
+☠️ Muertes de hoy
+
+</h3>
+
+`;
+
+
+if(muertes.length===0){
+
+html+=`
+
+<p>
+No hay muertes registradas hoy.
+</p>
+
+`;
+
+}else{
+
+muertes.forEach(m=>{
+
+html+=`
+
+<div class="movimientoResumen">
+
+N${m.nave_id} - C${m.cuarton}
+
+:
+
+${m.cantidad} 🐷
+
+</div>
+
+`;
+
+});
+
+}
+
+
+html+=`
+
+</div>
+
+`;
+
+}
+
+
+document.getElementById("contenido").innerHTML=html;
+
+}
+
+
+/* ==========================================
+   SELECCIONAR CUARTÓN
+========================================== */
+
+function seleccionarCuarton(
+naveId,
+cuartonId,
+naveNombre,
+numero,
+cantidad
+){
+
+naveSeleccionada={
+
+id:naveId,
+
+nombre:naveNombre
+
+};
+
+
+cuartonSeleccionado={
+
+id:cuartonId,
+
+numero:numero,
+
+cantidad:cantidad
+
+};
+
+
+document.getElementById("tituloCuarton").innerText=
+"Cuartón "
++
+numero
++
+" - "
++
+naveNombre;
+
+
+document.getElementById("cantidadActual").innerText=
+"🐷 Cerdos actuales: "
++
+cantidad;
+
+
+ocultarTodosLosPaneles();
+
+document
+.getElementById("panelCuarton")
+.classList.remove("oculto");
+
+}
+
+
+/* ==========================================
+   AGREGAR CERDOS
+========================================== */
+
+function mostrarAgregar(){
+
+ocultarTodosLosPaneles();
+
+document
+.getElementById("panelAgregar")
+.classList.remove("oculto");
+
+}
+
+
+async function agregarCerdos(){
+
+const cantidad=Number(
+document.getElementById("cantidadAgregar").value
+);
+
+
+if(!cantidad || cantidad<=0){
+
+alert("Introduce una cantidad válida.");
+
+return;
+
+}
+
+
+const nuevaCantidad=
+Number(cuartonSeleccionado.cantidad)
++
+cantidad;
+
+
+const {error}=await clienteSupabase
+
+.from("cuartones")
+
+.update({
+
+cantidad_cerdos:nuevaCantidad
+
+})
+
+.eq("id",cuartonSeleccionado.id);
+
+
+if(error){
+
+alert(
+"Error agregando cerdos: "
++
+error.message
+);
+
+return;
+
+}
+
+
+await registrarMovimiento(
+"Entrada",
+cantidad,
+"Entrada de cerdos"
+);
+
+
+alert(
+"✅ Se agregaron "
++
+cantidad
++
+" cerdos correctamente."
+);
+
+
+cerrarPanel();
+
+cargarNaves();
+
+}
+
+
+/* ==========================================
+   SALIDA
+========================================== */
+
+function mostrarMotivoSalida(){
+
+ocultarTodosLosPaneles();
+
+document
+.getElementById("panelMotivo")
+.classList.remove("oculto");
+
+}
+
+
+function mostrarCantidadSalida(motivo){
+
+motivoSeleccionado=motivo;
+
+
+document.getElementById("tituloSalida").innerText=
+"➖ "
++
+motivo;
+
+
+ocultarTodosLosPaneles();
+
+document
+.getElementById("panelSalida")
+.classList.remove("oculto");
+
+}
+
+
+async function sacarCerdos(){
+
+const cantidad=Number(
+document.getElementById("cantidadSalida").value
+);
+
+
+if(!cantidad || cantidad<=0){
+
+alert("Introduce una cantidad válida.");
+
+return;
+
+}
+
+
+const cantidadActual=
+Number(cuartonSeleccionado.cantidad);
+
+
+if(cantidad>cantidadActual){
+
+alert(
+"No puedes sacar más cerdos de los que hay en el cuartón."
+);
+
+return;
+
+}
+
+
+const nuevaCantidad=
+cantidadActual-cantidad;
+
+
+const {error}=await clienteSupabase
+
+.from("cuartones")
+
+.update({
+
+cantidad_cerdos:nuevaCantidad
+
+})
+
+.eq("id",cuartonSeleccionado.id);
+
+
+if(error){
+
+alert(
+"Error sacando cerdos: "
++
+error.message
+);
+
+return;
+
+}
+
+
+await registrarMovimiento(
+"Salida",
+cantidad,
+motivoSeleccionado
+);
+
+
+alert(
+"✅ Se sacaron "
++
+cantidad
++
+" cerdos correctamente."
+);
+
+
+cerrarPanel();
+
+cargarNaves();
+
+}
+
+
+/* ==========================================
+   REGISTRAR MOVIMIENTO
+========================================== */
+
+async function registrarMovimiento(
+operacion,
+cantidad,
+motivo
+){
+
+const {data:sesionData}=
+
+await clienteSupabase
+.auth.getSession();
+
+
+if(!sesionData.session){
+
+window.location.href="login.html";
+
+return;
+
+}
+
+
+const correoUsuario=
+
+sesionData.session.user.email
+
+||
+
+"Sin correo";
+
+
+const {error}=
+
+await clienteSupabase
+
+.from("movimientos_naves")
+
+.insert({
+
+fecha:new Date().toISOString(),
+
+nave_id:naveSeleccionada.id,
+
+cuarton_id:cuartonSeleccionado.id,
+
+nave:naveSeleccionada.nombre,
+
+cuarton:cuartonSeleccionado.numero,
+
+operacion:operacion,
+
+cantidad:cantidad,
+
+usuario:correoUsuario,
+
+motivo:motivo
+
+});
+
+
+if(error){
+
+alert(
+"Error registrando movimiento:\n\n"
++
+error.message
+);
+
+}
+
+}
+
+
+/* ==========================================
+   CERRAR PANELES
+========================================== */
+
+function cerrarPanel(){
+
+ocultarTodosLosPaneles();
+
+document.getElementById("cantidadAgregar").value="";
+
+document.getElementById("cantidadSalida").value="";
+
+motivoSeleccionado=null;
+
+}
+
+
+function ocultarTodosLosPaneles(){
+
+document
+.getElementById("panelCuarton")
+.classList.add("oculto");
+
+document
+.getElementById("panelAgregar")
+.classList.add("oculto");
+
+document
+.getElementById("panelMotivo")
+.classList.add("oculto");
+
+document
+.getElementById("panelSalida")
+.classList.add("oculto");
+
+}
+
+
+/* ==========================================
+   INICIAR
+========================================== */
+
+async function iniciar(){
+
+await verificarSesion();
+
+await cargarNaves();
+
+}
+
+
+iniciar();
+
+
+</script>
+
+</body>
+
+</html>

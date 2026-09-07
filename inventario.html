@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>ElDesierto - Inventario</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+/* =====================================================
+   CONFIGURACIÓN GENERAL
+===================================================== */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+    width:100%;
+    min-height:100%;
+    font-family:Arial, Helvetica, sans-serif;
+    background:#0d0d0d;
+    color:#ffffff;
+}
+
+/* =====================================================
+   CONTENEDOR
+===================================================== */
+
+.contenedor{
+    width:100%;
+    max-width:600px;
+    min-height:100vh;
+    margin:auto;
+    padding:20px;
+}
+
+/* =====================================================
+   CABECERA
+===================================================== */
+
+.cabecera{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:30px;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.logo-icon{
+    width:52px;
+    height:52px;
+    border-radius:14px;
+    background:#b00020;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    box-shadow:0 5px 15px rgba(176,0,32,0.35);
+}
+
+.nombre{
+    font-size:22px;
+    font-weight:700;
+    letter-spacing:0.5px;
+}
+
+.subtitulo{
+    font-size:12px;
+    color:#999;
+    margin-top:3px;
+}
+
+/* =====================================================
+   TÍTULO
+===================================================== */
+
+.titulo{
+    font-size:28px;
+    font-weight:700;
+    margin-bottom:25px;
+}
+
+/* =====================================================
+   OPCIONES
+===================================================== */
+
+.opciones{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+}
+
+/* =====================================================
+   TARJETAS
+===================================================== */
+
+.tarjeta{
+    width:100%;
+    min-height:95px;
+
+    background:#171717;
+    border:1px solid #292929;
+    border-radius:18px;
+
+    display:flex;
+    align-items:center;
+
+    padding:18px;
+
+    cursor:pointer;
+
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease,
+        border-color 0.15s ease;
+
+    box-shadow:0 6px 18px rgba(0,0,0,0.25);
+}
+
+.tarjeta:active{
+    transform:scale(0.98);
+    background:#202020;
+    border-color:#b00020;
+}
+
+/* =====================================================
+   ICONOS
+===================================================== */
+
+.icono{
+    width:58px;
+    height:58px;
+
+    min-width:58px;
+
+    border-radius:15px;
+
+    background:#242424;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:29px;
+
+    margin-right:15px;
+}
+
+/* =====================================================
+   TEXTO
+===================================================== */
+
+.texto{
+    flex:1;
+}
+
+.texto h2{
+    font-size:18px;
+    font-weight:700;
+    margin-bottom:6px;
+}
+
+.texto p{
+    font-size:13px;
+    line-height:1.4;
+    color:#999;
+}
+
+/* =====================================================
+   FLECHA
+===================================================== */
+
+.flecha{
+    font-size:32px;
+    color:#777;
+    margin-left:10px;
+}
+
+/* =====================================================
+   BOTÓN VOLVER
+===================================================== */
+
+.volver{
+    width:100%;
+
+    margin-top:30px;
+
+    padding:16px;
+
+    border:none;
+    border-radius:15px;
+
+    background:#222;
+    color:#fff;
+
+    font-size:16px;
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:background 0.15s ease;
+}
+
+.volver:active{
+    background:#333;
+}
+
+/* =====================================================
+   PIE
+===================================================== */
+
+.pie{
+    text-align:center;
+
+    margin-top:30px;
+
+    font-size:12px;
+
+    color:#666;
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:380px){
+
+    .contenedor{
+        padding:16px;
+    }
+
+    .titulo{
+        font-size:25px;
+    }
+
+    .tarjeta{
+        padding:15px;
+    }
+
+    .icono{
+        width:52px;
+        height:52px;
+        min-width:52px;
+        font-size:25px;
+    }
+
+    .texto h2{
+        font-size:16px;
+    }
+
+    .texto p{
+        font-size:12px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="contenedor">
+
+    <!-- =================================================
+         CABECERA
+    ================================================== -->
+
+    <header class="cabecera">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                🐷
+            </div>
+
+        </div>
+
+        <div>
+
+            <div class="nombre">
+                ElDesierto
+            </div>
+
+            <div class="subtitulo">
+                Sistema de Gestión
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =================================================
+         TÍTULO
+    ================================================== -->
+
+    <h1 class="titulo">
+        📦 Inventario
+    </h1>
+
+
+    <!-- =================================================
+         OPCIONES
+    ================================================== -->
+
+    <main class="opciones">
+
+
+        <!-- =============================================
+             MATERIAS PRIMAS
+        ============================================== -->
+
+        <div
+        class="tarjeta"
+        onclick="window.location.href='materias_primas.html'">
+
+            <div class="icono">
+                📦
+            </div>
+
+            <div class="texto">
+
+                <h2>
+                    Materias primas
+                </h2>
+
+                <p>
+                    Consulta y controla las existencias
+                    de las materias primas.
+                </p>
+
+            </div>
+
+            <div class="flecha">
+                ›
+            </div>
+
+        </div>
+
+
+        <!-- =============================================
+             PRODUCTOS ELABORADOS
+        ============================================== -->
+
+        <div
+        class="tarjeta"
+        onclick="window.location.href='productos_elaborados.html'">
+
+            <div class="icono">
+                🏭
+            </div>
+
+            <div class="texto">
+
+                <h2>
+                    Productos elaborados
+                </h2>
+
+                <p>
+                    Consulta los productos fabricados
+                    y sus cantidades disponibles.
+                </p>
+
+            </div>
+
+            <div class="flecha">
+                ›
+            </div>
+
+        </div>
+
+
+        <!-- =============================================
+             MATERIALES DE CONSTRUCCIÓN
+        ============================================== -->
+
+        <div
+        class="tarjeta"
+        onclick="window.location.href='materiales_construccion.html'">
+
+            <div class="icono">
+                🏗️
+            </div>
+
+            <div class="texto">
+
+                <h2>
+                    Materiales de construcción
+                </h2>
+
+                <p>
+                    Consulta y controla los materiales
+                    de construcción disponibles.
+                </p>
+
+            </div>
+
+            <div class="flecha">
+                ›
+            </div>
+
+        </div>
+
+
+    </main>
+
+
+    <!-- =================================================
+         VOLVER
+    ================================================== -->
+
+    <button
+    class="volver"
+    onclick="window.location.href='menu.html'">
+
+        ← Volver al menú
+
+    </button>
+
+
+    <!-- =================================================
+         PIE
+    ================================================== -->
+
+    <div class="pie">
+
+        ElDesierto · Sistema de Gestión
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     SUPABASE
+===================================================== -->
+
+<script src="supabase.js"></script>
+
+
+<script>
+
+/* =====================================================
+   VERIFICAR SESIÓN
+===================================================== */
+
+async function verificarSesion(){
+
+    const {
+        data,
+        error
+    } = await clienteSupabase.auth.getSession();
+
+
+    if(error){
+
+        console.error(
+            "Error verificando sesión:",
+            error
+        );
+
+        return;
+    }
+
+
+    if(!data.session){
+
+        window.location.href = "login.html";
+
+    }
+
+}
+
+
+/* =====================================================
+   INICIAR
+===================================================== */
+
+verificarSesion();
+
+</script>
+
+</body>
+
+</html>

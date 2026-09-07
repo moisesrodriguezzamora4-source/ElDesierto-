@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ElDesierto - Ajustes</title>
+
+<style>
+
+/* ==========================================
+   CONFIGURACIÓN GENERAL
+========================================== */
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,sans-serif;
+
+    background:
+    radial-gradient(
+        circle at top,
+        #1d1d1d,
+        #050505 65%
+    );
+
+    color:white;
+
+    margin:0;
+    padding:20px;
+
+    min-height:100vh;
+
+    text-align:center;
+}
+
+
+/* ==========================================
+   ENCABEZADO
+========================================== */
+
+.iconoPrincipal{
+    font-size:60px;
+    margin-top:10px;
+
+    filter:
+    drop-shadow(
+        0 0 12px
+        rgba(255,0,0,.35)
+    );
+}
+
+
+h1{
+    color:#ff3030;
+
+    font-size:32px;
+
+    margin:10px 0;
+
+    text-shadow:
+    0 0 10px
+    rgba(255,0,0,.6);
+}
+
+
+.subtitulo{
+    color:#aaa;
+
+    margin-bottom:25px;
+
+    font-size:15px;
+}
+
+
+/* ==========================================
+   BOTÓN PRINCIPAL
+========================================== */
+
+.boton{
+
+    display:block;
+
+    width:90%;
+    max-width:500px;
+
+    margin:15px auto;
+
+    padding:16px;
+
+    background:
+    linear-gradient(
+        145deg,
+        #ff3838,
+        #9d0000
+    );
+
+    color:white;
+
+    border:none;
+
+    border-radius:14px;
+
+    font-size:17px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    box-shadow:
+
+    0 7px 0 #500000,
+
+    0 12px 25px
+    rgba(255,0,0,.18);
+
+    transition:.2s;
+}
+
+
+.boton:hover{
+
+    filter:brightness(1.1);
+
+}
+
+
+.boton:active{
+
+    transform:translateY(5px);
+
+    box-shadow:
+
+    0 2px 0 #500000;
+
+}
+
+
+/* ==========================================
+   CONTENEDOR PRINCIPAL
+========================================== */
+
+.caja{
+
+    width:95%;
+    max-width:650px;
+
+    margin:30px auto;
+
+    padding:20px;
+
+    border-radius:22px;
+
+    background:
+    linear-gradient(
+        145deg,
+        #202020,
+        #080808
+    );
+
+    border:
+    1px solid #3a3a3a;
+
+    box-shadow:
+
+    10px 10px 25px #000,
+
+    -3px -3px 15px #252525,
+
+    inset
+    0 0 15px
+    rgba(255,0,0,.04);
+
+}
+
+
+/* ==========================================
+   TÍTULO DE SECCIÓN
+========================================== */
+
+.tituloSeccion{
+
+    color:#ff4b4b;
+
+    font-size:20px;
+
+    font-weight:bold;
+
+    margin-bottom:18px;
+
+    text-shadow:
+    0 0 8px
+    rgba(255,0,0,.4);
+
+}
+
+
+/* ==========================================
+   OPCIONES
+========================================== */
+
+.opcion{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    text-align:left;
+
+    padding:17px;
+
+    margin:12px 0;
+
+    border-radius:14px;
+
+    background:
+    linear-gradient(
+        145deg,
+        #292929,
+        #101010
+    );
+
+    border:
+    1px solid #3d3d3d;
+
+    box-shadow:
+
+    5px 5px 12px #000,
+
+    -2px -2px 6px #2d2d2d;
+
+    transition:.2s;
+
+}
+
+
+.opcion:hover{
+
+    transform:translateY(-2px);
+
+    border-color:#8f0000;
+
+    box-shadow:
+
+    0 0 14px
+    rgba(255,0,0,.15);
+
+}
+
+
+/* ==========================================
+   ICONOS
+========================================== */
+
+.iconoOpcion{
+
+    width:45px;
+    height:45px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:23px;
+
+    border-radius:12px;
+
+    background:
+    linear-gradient(
+        145deg,
+        #500000,
+        #200000
+    );
+
+    box-shadow:
+
+    inset 0 0 8px #000,
+
+    0 3px 8px
+    rgba(255,0,0,.2);
+
+}
+
+
+/* ==========================================
+   TEXTO DE OPCIONES
+========================================== */
+
+.contenidoOpcion{
+
+    flex:1;
+
+}
+
+
+.nombreOpcion{
+
+    font-size:13px;
+
+    color:#999;
+
+    margin-bottom:4px;
+
+}
+
+
+.valorOpcion{
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    color:white;
+
+    word-break:break-word;
+
+}
+
+
+/* ==========================================
+   PIE DE PÁGINA
+========================================== */
+
+.footer{
+
+    color:#777;
+
+    font-size:13px;
+
+    margin:35px 0 15px;
+
+}
+
+
+.footer span{
+
+    color:#ff4444;
+
+}
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media(max-width:600px){
+
+    body{
+        padding:12px;
+    }
+
+    h1{
+        font-size:28px;
+    }
+
+    .caja{
+        padding:15px;
+    }
+
+    .opcion{
+        padding:14px;
+    }
+
+}
+
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+</head>
+
+
+<body>
+
+
+<!-- ==========================================
+     ENCABEZADO
+========================================== -->
+
+<div class="iconoPrincipal">
+⚙️
+</div>
+
+
+<h1>Ajustes</h1>
+
+
+<div class="subtitulo">
+Configuración e información del sistema
+</div>
+
+
+
+<!-- ==========================================
+     VOLVER
+========================================== -->
+
+<button
+class="boton"
+onclick="window.location.href='menu.html'">
+
+⬅️ Volver al menú
+
+</button>
+
+
+
+<!-- ==========================================
+     INFORMACIÓN DEL SISTEMA
+========================================== -->
+
+<div class="caja">
+
+
+<div class="tituloSeccion">
+
+⚙️ Información del sistema
+
+</div>
+
+
+
+<!-- PRODUCTOS -->
+
+<div class="opcion">
+
+<div class="iconoOpcion">
+📦
+</div>
+
+<div class="contenidoOpcion">
+
+<div class="nombreOpcion">
+INVENTARIO
+</div>
+
+<div
+class="valorOpcion"
+id="totalProductos">
+
+Cargando productos...
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- UNIDAD -->
+
+<div class="opcion">
+
+<div class="iconoOpcion">
+⚖️
+</div>
+
+<div class="contenidoOpcion">
+
+<div class="nombreOpcion">
+UNIDAD DE MEDIDA
+</div>
+
+<div class="valorOpcion">
+
+Kilogramos (kg)
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- USUARIO -->
+
+<div class="opcion">
+
+<div class="iconoOpcion">
+👤
+</div>
+
+<div class="contenidoOpcion">
+
+<div class="nombreOpcion">
+USUARIO ACTUAL
+</div>
+
+<div
+class="valorOpcion"
+id="usuarioActual">
+
+Cargando usuario...
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- VERSIÓN -->
+
+<div class="opcion">
+
+<div class="iconoOpcion">
+📱
+</div>
+
+<div class="contenidoOpcion">
+
+<div class="nombreOpcion">
+VERSIÓN
+</div>
+
+<div class="valorOpcion">
+
+ElDesierto v1.1
+
+</div>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+
+<!-- ==========================================
+     PIE
+========================================== -->
+
+<div class="footer">
+
+<span>ElDesierto</span>
+
+• Sistema de gestión
+
+</div>
+
+
+
+<script src="supabase.js"></script>
+
+
+<script>
+
+
+/* ==========================================
+   VERIFICAR SESIÓN
+========================================== */
+
+async function verificarSesion(){
+
+    const { data, error } =
+        await clienteSupabase
+        .auth
+        .getSession();
+
+
+    if(error){
+
+        console.log(
+            "Error verificando sesión:",
+            error.message
+        );
+
+        window.location.href="login.html";
+
+        return;
+
+    }
+
+
+    if(!data.session){
+
+        window.location.href="login.html";
+
+        return;
+
+    }
+
+
+    const correo =
+        data.session.user.email ||
+        "Usuario";
+
+
+    document
+    .getElementById("usuarioActual")
+    .innerHTML = correo;
+
+}
+
+
+
+/* ==========================================
+   CONTAR PRODUCTOS
+========================================== */
+
+async function cargarTotalProductos(){
+
+
+    const {count,error} =
+        await clienteSupabase
+
+        .from("productos")
+
+        .select(
+            "*",
+            {
+                count:"exact",
+                head:true
+            }
+        );
+
+
+    if(error){
+
+        console.log(
+            "Error cargando productos:",
+            error.message
+        );
+
+
+        document
+        .getElementById("totalProductos")
+        .innerHTML =
+        "❌ Error cargando productos";
+
+        return;
+
+    }
+
+
+    document
+    .getElementById("totalProductos")
+    .innerHTML =
+
+    count +
+
+    " productos registrados";
+
+}
+
+
+
+/* ==========================================
+   INICIAR
+========================================== */
+
+async function iniciar(){
+
+    await verificarSesion();
+
+    await cargarTotalProductos();
+
+}
+
+
+iniciar();
+
+
+</script>
+
+
+</body>
+
+</html>

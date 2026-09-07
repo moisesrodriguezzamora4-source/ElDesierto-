@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ElDesierto - Historial de Naves</title>
+
+<style>
+
+/* ==========================================
+   ESTILO GENERAL
+========================================== */
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,sans-serif;
+
+    background:
+    radial-gradient(circle at top,#1d1d1d,#050505 65%);
+
+    color:white;
+
+    margin:0;
+    padding:20px;
+
+    min-height:100vh;
+}
+
+
+/* ==========================================
+   TÍTULO
+========================================== */
+
+h1{
+    text-align:center;
+
+    color:#ff3030;
+
+    font-size:32px;
+
+    margin:10px 0 25px;
+
+    text-shadow:
+    0 0 10px rgba(255,0,0,.6);
+}
+
+h2{
+    color:#ff5555;
+}
+
+
+/* ==========================================
+   BOTONES
+========================================== */
+
+.boton{
+
+    display:block;
+
+    width:90%;
+    max-width:500px;
+
+    margin:15px auto;
+
+    padding:16px;
+
+    background:
+    linear-gradient(
+        145deg,
+        #ff3838,
+        #9d0000
+    );
+
+    color:white;
+
+    border:none;
+
+    border-radius:14px;
+
+    font-size:17px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    box-shadow:
+    0 7px 0 #500000,
+    0 12px 25px rgba(255,0,0,.18);
+
+    transition:.2s;
+}
+
+
+.boton:active{
+
+    transform:translateY(5px);
+
+    box-shadow:
+    0 2px 0 #500000;
+
+}
+
+
+/* ==========================================
+   ESTADÍSTICAS
+========================================== */
+
+.estadisticas{
+
+    width:95%;
+    max-width:1100px;
+
+    margin:25px auto;
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(5,1fr);
+
+    gap:15px;
+
+}
+
+
+.estadistica{
+
+    padding:20px 12px;
+
+    border-radius:18px;
+
+    text-align:center;
+
+    background:
+    linear-gradient(
+        145deg,
+        #242424,
+        #090909
+    );
+
+    border:1px solid #3b3b3b;
+
+    box-shadow:
+
+    8px 8px 18px #000,
+
+    -3px -3px 10px #252525;
+
+}
+
+
+.estadistica .icono{
+
+    font-size:30px;
+
+    margin-bottom:8px;
+
+}
+
+
+.estadistica .titulo{
+
+    font-size:13px;
+
+    color:#aaa;
+
+    margin-bottom:8px;
+
+}
+
+
+.estadistica .numero{
+
+    font-size:28px;
+
+    font-weight:bold;
+
+    color:#ff4040;
+
+    text-shadow:
+    0 0 10px rgba(255,0,0,.4);
+
+}
+
+
+/* ==========================================
+   FILTROS
+========================================== */
+
+.filtros{
+
+    width:95%;
+    max-width:1100px;
+
+    margin:25px auto;
+
+    padding:20px;
+
+    border-radius:20px;
+
+    background:
+    linear-gradient(
+        145deg,
+        #202020,
+        #080808
+    );
+
+    border:1px solid #3a3a3a;
+
+    box-shadow:
+    8px 8px 25px #000;
+
+}
+
+
+.filtros h2{
+
+    text-align:center;
+
+    margin-top:0;
+
+}
+
+
+.contenedorFiltros{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(4,1fr);
+
+    gap:12px;
+
+}
+
+
+select,
+input{
+
+    width:100%;
+
+    padding:14px;
+
+    border-radius:12px;
+
+    border:1px solid #444;
+
+    background:#101010;
+
+    color:white;
+
+    font-size:15px;
+
+    outline:none;
+
+}
+
+
+select:focus,
+input:focus{
+
+    border-color:#ff3030;
+
+    box-shadow:
+    0 0 10px rgba(255,0,0,.3);
+
+}
+
+
+.botonFiltro{
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:12px;
+
+    font-weight:bold;
+
+    color:white;
+
+    cursor:pointer;
+
+    background:
+    linear-gradient(
+        145deg,
+        #e50000,
+        #850000
+    );
+
+    box-shadow:
+    0 5px 0 #480000;
+
+}
+
+
+.botonFiltro:active{
+
+    transform:translateY(4px);
+
+    box-shadow:
+    0 1px 0 #480000;
+
+}
+
+
+/* ==========================================
+   CAJA TABLA
+========================================== */
+
+.caja{
+
+    width:100%;
+    max-width:1200px;
+
+    margin:25px auto;
+
+    padding:20px;
+
+    border-radius:20px;
+
+    background:
+    linear-gradient(
+        145deg,
+        #202020,
+        #080808
+    );
+
+    border:1px solid #3a3a3a;
+
+    box-shadow:
+
+    10px 10px 25px #000,
+
+    -3px -3px 15px #252525;
+
+    overflow-x:auto;
+
+}
+
+
+/* ==========================================
+   TABLA
+========================================== */
+
+table{
+
+    width:100%;
+
+    min-width:900px;
+
+    border-collapse:separate;
+
+    border-spacing:0 8px;
+
+}
+
+
+th{
+
+    padding:14px 10px;
+
+    color:#ff5555;
+
+    background:
+    linear-gradient(
+        145deg,
+        #2a0000,
+        #120000
+    );
+
+}
+
+
+td{
+
+    padding:14px 10px;
+
+    text-align:center;
+
+    background:
+    linear-gradient(
+        145deg,
+        #202020,
+        #111
+    );
+
+    color:#eee;
+
+}
+
+
+td:first-child{
+
+    border-radius:12px 0 0 12px;
+
+}
+
+
+td:last-child{
+
+    border-radius:0 12px 12px 0;
+
+}
+
+
+tbody tr:hover td{
+
+    background:#292929;
+
+}
+
+
+/* ==========================================
+   ELIMINAR
+========================================== */
+
+.eliminar{
+
+    padding:10px 14px;
+
+    border:none;
+
+    border-radius:10px;
+
+    color:white;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    background:
+    linear-gradient(
+        145deg,
+        #ff2424,
+        #820000
+    );
+
+    box-shadow:
+    0 4px 0 #480000;
+
+}
+
+
+.eliminar:active{
+
+    transform:translateY(3px);
+
+    box-shadow:
+    0 1px 0 #480000;
+
+}
+
+
+.sinPermiso{
+
+    color:#777;
+
+}
+
+
+/* ==========================================
+   MENSAJE
+========================================== */
+
+.mensaje{
+
+    text-align:center;
+
+    padding:30px;
+
+    font-size:17px;
+
+    font-weight:bold;
+
+    color:#ff5555;
+
+}
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media(max-width:850px){
+
+    .estadisticas{
+
+        grid-template-columns:
+        repeat(2,1fr);
+
+    }
+
+    .contenedorFiltros{
+
+        grid-template-columns:
+        repeat(2,1fr);
+
+    }
+
+}
+
+
+@media(max-width:500px){
+
+    body{
+        padding:12px;
+    }
+
+    h1{
+        font-size:27px;
+    }
+
+    .estadisticas{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .contenedorFiltros{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+</head>
+
+
+<body>
+
+
+<h1>📜 Historial de Naves</h1>
+
+
+<button
+class="boton"
+onclick="window.location.href='naves.html'">
+
+⬅️ Volver a Naves
+
+</button>
+
+
+
+<!-- ==========================================
+     ESTADÍSTICAS
+========================================== -->
+
+<div class="estadisticas">
+
+
+<div class="estadistica">
+
+<div class="icono">➕🐷</div>
+
+<div class="titulo">
+CERDOS INGRESADOS
+</div>
+
+<div
+class="numero"
+id="totalEntradas">
+
+0
+
+</div>
+
+</div>
+
+
+
+<div class="estadistica">
+
+<div class="icono">💰</div>
+
+<div class="titulo">
+CERDOS VENDIDOS
+</div>
+
+<div
+class="numero"
+id="totalVentas">
+
+0
+
+</div>
+
+</div>
+
+
+
+<div class="estadistica">
+
+<div class="icono">☠️</div>
+
+<div class="titulo">
+MUERTES
+</div>
+
+<div
+class="numero"
+id="totalMuertes">
+
+0
+
+</div>
+
+</div>
+
+
+
+<div class="estadistica">
+
+<div class="icono">➖🐷</div>
+
+<div class="titulo">
+OTRAS SALIDAS
+</div>
+
+<div
+class="numero"
+id="totalSalidas">
+
+0
+
+</div>
+
+</div>
+
+
+
+<div class="estadistica">
+
+<div class="icono">📊</div>
+
+<div class="titulo">
+MOVIMIENTOS
+</div>
+
+<div
+class="numero"
+id="totalMovimientos">
+
+0
+
+</div>
+
+</div>
+
+
+</div>
+
+
+
+<!-- ==========================================
+     FILTROS
+========================================== -->
+
+<div class="filtros">
+
+<h2>🔎 Filtrar historial</h2>
+
+
+<div class="contenedorFiltros">
+
+
+<select id="filtroNave">
+
+<option value="">
+🏠 Todas las naves
+</option>
+
+</select>
+
+
+
+<select id="filtroMotivo">
+
+<option value="">
+📋 Todas las operaciones
+</option>
+
+<option value="Entrada">
+➕ Entradas
+</option>
+
+<option value="Venta">
+💰 Ventas
+</option>
+
+<option value="Muerte">
+☠️ Muertes
+</option>
+
+<option value="Solo sacar">
+➖ Otras salidas
+</option>
+
+</select>
+
+
+
+<input
+type="date"
+id="filtroFecha">
+
+
+
+<button
+class="botonFiltro"
+onclick="aplicarFiltros()">
+
+🔎 Buscar
+
+</button>
+
+
+</div>
+
+
+<button
+class="botonFiltro"
+style="width:100%;margin-top:15px;"
+onclick="limpiarFiltros()">
+
+🔄 Limpiar filtros
+
+</button>
+
+
+</div>
+
+
+
+<!-- ==========================================
+     TABLA
+========================================== -->
+
+<div class="caja">
+
+
+<table>
+
+
+<thead>
+
+<tr>
+
+<th>📅 Fecha</th>
+<th>🕒 Hora</th>
+<th>🏠 Nave</th>
+<th>🐷 Cuartón</th>
+<th>📦 Operación</th>
+<th>🔢 Cantidad</th>
+<th>📋 Motivo</th>
+<th>👤 Usuario</th>
+<th>⚙️ Acción</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="tablaHistorial">
+
+<tr>
+
+<td colspan="9" class="mensaje">
+
+⏳ Cargando historial...
+
+</td>
+
+</tr>
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+
+<button
+class="boton"
+onclick="window.location.href='menu.html'">
+
+⬅️ Volver al menú
+
+</button>
+
+
+
+<script src="supabase.js"></script>
+
+
+<script>
+
+
+let esAdministrador=false;
+
+let todosLosMovimientos=[];
+
+
+/* ==========================================
+   SESIÓN Y ROL
+========================================== */
+
+async function verificarSesion(){
+
+    const {data,error} =
+    await clienteSupabase
+    .auth.getSession();
+
+
+    if(error || !data.session){
+
+        window.location.href="login.html";
+
+        return false;
+
+    }
+
+
+    const usuarioId =
+    data.session.user.id;
+
+
+    const {data:perfil,error:errorPerfil} =
+
+    await clienteSupabase
+
+    .from("perfiles")
+
+    .select("id,rol")
+
+    .eq("id",usuarioId)
+
+    .maybeSingle();
+
+
+    if(errorPerfil){
+
+        alert(
+            "Error buscando perfil:\n\n"+
+            errorPerfil.message
+        );
+
+        return false;
+
+    }
+
+
+    if(!perfil){
+
+        alert(
+            "⚠️ Este usuario no tiene un perfil."
+        );
+
+        return false;
+
+    }
+
+
+    const rol =
+    String(perfil.rol || "")
+    .trim()
+    .toLowerCase();
+
+
+    esAdministrador =
+    rol==="administrador";
+
+
+    return true;
+
+}
+
+
+
+/* ==========================================
+   CARGAR NAVES EN FILTRO
+========================================== */
+
+async function cargarNavesFiltro(){
+
+    const {data,error} =
+
+    await clienteSupabase
+
+    .from("naves")
+
+    .select("*")
+
+    .order("id");
+
+
+    if(error){
+
+        console.log(error);
+
+        return;
+
+    }
+
+
+    const select =
+    document.getElementById("filtroNave");
+
+
+    data.forEach(nave=>{
+
+        select.innerHTML+=`
+
+        <option value="${nave.id}">
+
+        ${nave.nombre}
+
+        </option>
+
+        `;
+
+    });
+
+}
+
+
+
+/* ==========================================
+   CARGAR HISTORIAL
+========================================== */
+
+async function cargarHistorial(){
+
+    const tabla =
+    document.getElementById("tablaHistorial");
+
+
+    tabla.innerHTML=`
+
+    <tr>
+
+    <td colspan="9" class="mensaje">
+
+    ⏳ Cargando historial...
+
+    </td>
+
+    </tr>
+
+    `;
+
+
+    const {data,error} =
+
+    await clienteSupabase
+
+    .from("movimientos_naves")
+
+    .select("*")
+
+    .order("fecha",{
+        ascending:false
+    });
+
+
+    if(error){
+
+        tabla.innerHTML=`
+
+        <tr>
+
+        <td colspan="9" class="mensaje">
+
+        ❌ Error cargando historial:
+
+        <br><br>
+
+        ${error.message}
+
+        </td>
+
+        </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    todosLosMovimientos =
+    data || [];
+
+
+    mostrarHistorial(
+        todosLosMovimientos
+    );
+
+
+}
+
+
+
+/* ==========================================
+   MOSTRAR HISTORIAL
+========================================== */
+
+function mostrarHistorial(movimientos){
+
+    const tabla =
+    document.getElementById("tablaHistorial");
+
+
+    actualizarEstadisticas(
+        movimientos
+    );
+
+
+    if(!movimientos ||
+    movimientos.length===0){
+
+        tabla.innerHTML=`
+
+        <tr>
+
+        <td colspan="9" class="mensaje">
+
+        📭 No hay movimientos para mostrar.
+
+        </td>
+
+        </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    let html="";
+
+
+    movimientos.forEach(movimiento=>{
+
+
+        const fechaCompleta =
+        new Date(movimiento.fecha);
+
+
+        const fecha =
+        fechaCompleta.toLocaleDateString(
+            "es-ES"
+        );
+
+
+        const hora =
+        fechaCompleta.toLocaleTimeString(
+            "es-ES",
+            {
+                hour:"2-digit",
+                minute:"2-digit"
+            }
+        );
+
+
+        const nave =
+        movimiento.nave ||
+        "N" + movimiento.nave_id;
+
+
+        const botonEliminar =
+
+        esAdministrador
+
+        ?
+
+        `
+        <button
+        class="eliminar"
+        onclick="eliminarMovimiento(${movimiento.id})">
+
+        🗑️ Eliminar
+
+        </button>
+        `
+
+        :
+
+        `
+        <span class="sinPermiso">
+
+        🔒 Sin permiso
+
+        </span>
+        `;
+
+
+        html+=`
+
+        <tr>
+
+        <td>${fecha}</td>
+
+        <td>${hora}</td>
+
+        <td>${nave}</td>
+
+        <td>🐷 C${movimiento.cuarton}</td>
+
+        <td>
+        ${movimiento.operacion || ""}
+        </td>
+
+        <td>
+        <strong>
+        ${movimiento.cantidad || 0}
+        </strong>
+        </td>
+
+        <td>
+        ${movimiento.motivo || ""}
+        </td>
+
+        <td>
+        ${movimiento.usuario || ""}
+        </td>
+
+        <td>
+
+        ${botonEliminar}
+
+        </td>
+
+        </tr>
+
+        `;
+
+    });
+
+
+    tabla.innerHTML=html;
+
+}
+
+
+
+/* ==========================================
+   ESTADÍSTICAS
+========================================== */
+
+function actualizarEstadisticas(movimientos){
+
+    let entradas=0;
+
+    let ventas=0;
+
+    let muertes=0;
+
+    let salidas=0;
+
+
+    movimientos.forEach(m=>{
+
+
+        const cantidad =
+        Number(m.cantidad || 0);
+
+
+        /* ENTRADAS */
+
+        if(
+            m.operacion==="Entrada"
+        ){
+
+            entradas+=cantidad;
+
+        }
+
+
+        /* VENTAS */
+
+        if(
+            m.motivo==="Venta"
+        ){
+
+            ventas+=cantidad;
+
+        }
+
+
+        /* MUERTES */
+
+        if(
+            m.motivo==="Muerte"
+        ){
+
+            muertes+=cantidad;
+
+        }
+
+
+        /* OTRAS SALIDAS */
+
+        if(
+            m.motivo==="Solo sacar"
+        ){
+
+            salidas+=cantidad;
+
+        }
+
+
+    });
+
+
+    document
+    .getElementById("totalEntradas")
+    .innerText=entradas;
+
+
+    document
+    .getElementById("totalVentas")
+    .innerText=ventas;
+
+
+    document
+    .getElementById("totalMuertes")
+    .innerText=muertes;
+
+
+    document
+    .getElementById("totalSalidas")
+    .innerText=salidas;
+
+
+    document
+    .getElementById("totalMovimientos")
+    .innerText=movimientos.length;
+
+}
+
+
+
+/* ==========================================
+   APLICAR FILTROS
+========================================== */
+
+function aplicarFiltros(){
+
+    const nave =
+    document.getElementById("filtroNave").value;
+
+
+    const motivo =
+    document.getElementById("filtroMotivo").value;
+
+
+    const fecha =
+    document.getElementById("filtroFecha").value;
+
+
+    let resultado =
+    [...todosLosMovimientos];
+
+
+    /* FILTRO NAVE */
+
+    if(nave){
+
+        resultado =
+        resultado.filter(m=>
+
+            String(m.nave_id)===
+            String(nave)
+
+        );
+
+    }
+
+
+    /* FILTRO OPERACIÓN */
+
+    if(motivo){
+
+        if(motivo==="Entrada"){
+
+            resultado =
+            resultado.filter(m=>
+
+                m.operacion==="Entrada"
+
+            );
+
+        }else{
+
+            resultado =
+            resultado.filter(m=>
+
+                m.motivo===motivo
+
+            );
+
+        }
+
+    }
+
+
+    /* FILTRO FECHA */
+
+    if(fecha){
+
+        resultado =
+        resultado.filter(m=>{
+
+            const fechaMovimiento =
+            new Date(m.fecha);
+
+            const fechaLocal =
+
+            fechaMovimiento
+            .getFullYear()
+
+            + "-"
+
+            +
+
+            String(
+                fechaMovimiento.getMonth()+1
+            )
+            .padStart(2,"0")
+
+            + "-"
+
+            +
+
+            String(
+                fechaMovimiento.getDate()
+            )
+            .padStart(2,"0");
+
+
+            return fechaLocal===fecha;
+
+        });
+
+    }
+
+
+    mostrarHistorial(resultado);
+
+}
+
+
+
+/* ==========================================
+   LIMPIAR FILTROS
+========================================== */
+
+function limpiarFiltros(){
+
+    document
+    .getElementById("filtroNave")
+    .value="";
+
+
+    document
+    .getElementById("filtroMotivo")
+    .value="";
+
+
+    document
+    .getElementById("filtroFecha")
+    .value="";
+
+
+    mostrarHistorial(
+        todosLosMovimientos
+    );
+
+}
+
+
+
+/* ==========================================
+   ELIMINAR MOVIMIENTO
+========================================== */
+
+async function eliminarMovimiento(id){
+
+    if(!esAdministrador){
+
+        alert(
+            "❌ No tienes permisos para eliminar registros."
+        );
+
+        return;
+
+    }
+
+
+    const confirmar=
+
+    confirm(
+
+        "⚠️ ¿Seguro que deseas eliminar este registro?\n\n"+
+
+        "Esta acción no se puede deshacer."
+
+    );
+
+
+    if(!confirmar){
+
+        return;
+
+    }
+
+
+    const {error}=
+
+    await clienteSupabase
+
+    .from("movimientos_naves")
+
+    .delete()
+
+    .eq("id",id);
+
+
+    if(error){
+
+        alert(
+
+            "❌ Error eliminando el registro:\n\n"+
+
+            error.message
+
+        );
+
+        return;
+
+    }
+
+
+    alert(
+        "✅ Registro eliminado correctamente."
+    );
+
+
+    await cargarHistorial();
+
+}
+
+
+
+/* ==========================================
+   INICIAR
+========================================== */
+
+async function iniciar(){
+
+    const sesionCorrecta =
+    await verificarSesion();
+
+
+    if(!sesionCorrecta){
+
+        return;
+
+    }
+
+
+    await cargarNavesFiltro();
+
+
+    await cargarHistorial();
+
+}
+
+
+iniciar();
+
+
+</script>
+
+
+</body>
+
+</html>

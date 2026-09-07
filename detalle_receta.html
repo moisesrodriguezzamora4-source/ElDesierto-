@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Detalle Receta - ElDesierto</title>
+
+<style>
+
+/* =====================================================
+   CONFIGURACIÓN GENERAL
+===================================================== */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    -webkit-tap-highlight-color:transparent;
+}
+
+body{
+
+    font-family:Arial, Helvetica, sans-serif;
+
+    min-height:100vh;
+
+    background:
+        radial-gradient(
+            circle at top,
+            #3b0000 0%,
+            #160000 35%,
+            #050505 75%,
+            #000000 100%
+        );
+
+    color:white;
+
+    padding:15px;
+
+}
+
+
+/* =====================================================
+   CONTENEDOR
+===================================================== */
+
+.contenedor{
+
+    max-width:800px;
+
+    margin:auto;
+
+}
+
+
+/* =====================================================
+   ENCABEZADO
+===================================================== */
+
+.encabezado{
+
+    text-align:center;
+
+    padding:15px 0 25px;
+
+}
+
+.logo{
+
+    width:80px;
+    height:80px;
+
+    margin:auto auto 12px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:42px;
+
+    border-radius:50%;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ff3333,
+            #850000
+        );
+
+    border:2px solid #ff5555;
+
+    box-shadow:
+        0 6px 0 #4b0000,
+        0 12px 25px rgba(255,0,0,.3),
+        inset 0 2px 6px rgba(255,255,255,.25);
+
+}
+
+h1{
+
+    color:#ff3333;
+
+    font-size:30px;
+
+    text-shadow:
+        0 0 10px #ff0000,
+        0 0 25px rgba(180,0,0,.5);
+
+}
+
+.subtitulo{
+
+    margin-top:7px;
+
+    color:#aaa;
+
+}
+
+
+/* =====================================================
+   TARJETAS
+===================================================== */
+
+.tarjeta{
+
+    width:100%;
+
+    margin:15px auto;
+
+    padding:18px;
+
+    text-align:left;
+
+    border-radius:18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #1c1c1c,
+            #090909
+        );
+
+    border:1px solid #3f3f3f;
+
+    box-shadow:
+        0 8px 0 #000,
+        0 15px 30px rgba(0,0,0,.65),
+        inset 0 1px 2px rgba(255,255,255,.08);
+
+}
+
+
+/* =====================================================
+   INFORMACIÓN DE RECETA
+===================================================== */
+
+.nombre-receta{
+
+    font-size:22px;
+
+    color:#ff4444;
+
+    margin-bottom:18px;
+
+    text-align:center;
+
+}
+
+.info-receta{
+
+    margin:12px 0;
+
+    padding:10px;
+
+    border-radius:10px;
+
+    background:#0b0b0b;
+
+    border-left:3px solid #e51b23;
+
+    color:#ccc;
+
+}
+
+.info-receta strong{
+
+    color:white;
+
+}
+
+
+/* =====================================================
+   TÍTULOS
+===================================================== */
+
+h3{
+
+    color:#ff4444;
+
+    text-align:center;
+
+    margin-bottom:15px;
+
+    font-size:20px;
+
+}
+
+
+/* =====================================================
+   BOTONES
+===================================================== */
+
+.boton{
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    width:100%;
+
+    padding:15px;
+
+    margin:12px 0;
+
+    border:none;
+
+    border-radius:13px;
+
+    color:white;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    background:
+        linear-gradient(
+            145deg,
+            #e51b23,
+            #850000
+        );
+
+    border:1px solid #ff4444;
+
+    box-shadow:
+        0 5px 0 #4a0000,
+        0 10px 18px rgba(0,0,0,.5),
+        inset 0 2px 5px rgba(255,255,255,.18);
+
+    transition:.15s;
+
+}
+
+.boton:active{
+
+    transform:translateY(4px);
+
+    box-shadow:
+        0 1px 0 #4a0000,
+        inset 0 2px 5px rgba(255,255,255,.15);
+
+}
+
+
+/* =====================================================
+   BOTÓN SECUNDARIO
+===================================================== */
+
+.boton-secundario{
+
+    background:
+        linear-gradient(
+            145deg,
+            #303030,
+            #101010
+        );
+
+    border-color:#555;
+
+    box-shadow:
+        0 5px 0 #000,
+        0 10px 18px rgba(0,0,0,.5);
+
+}
+
+
+/* =====================================================
+   MATERIAS PRIMAS
+===================================================== */
+
+.materia{
+
+    margin:12px 0;
+
+    padding:14px;
+
+    border-radius:13px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #151515,
+            #080808
+        );
+
+    border:1px solid #333;
+
+    border-left:4px solid #e51b23;
+
+}
+
+.materia-nombre{
+
+    color:white;
+
+    font-weight:bold;
+
+    font-size:17px;
+
+}
+
+.materia-cantidad{
+
+    color:#ff5555;
+
+    margin-top:7px;
+
+    font-size:15px;
+
+}
+
+.botones-materia{
+
+    display:flex;
+
+    gap:10px;
+
+    margin-top:12px;
+
+}
+
+.btn-pequeno{
+
+    flex:1;
+
+    padding:10px;
+
+    border:none;
+
+    border-radius:9px;
+
+    color:white;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+.btn-editar{
+
+    background:
+        linear-gradient(
+            145deg,
+            #ff7a00,
+            #9a3900
+        );
+
+    border:1px solid #ff9a40;
+
+    box-shadow:0 4px 0 #5c2100;
+
+}
+
+.btn-eliminar{
+
+    background:
+        linear-gradient(
+            145deg,
+            #e51b23,
+            #750000
+        );
+
+    border:1px solid #ff5555;
+
+    box-shadow:0 4px 0 #450000;
+
+}
+
+.btn-pequeno:active{
+
+    transform:translateY(3px);
+
+    box-shadow:none;
+
+}
+
+
+/* =====================================================
+   FORMULARIO
+===================================================== */
+
+#formulario{
+
+    display:none;
+
+}
+
+input{
+
+    width:100%;
+
+    padding:14px;
+
+    margin:8px 0;
+
+    border-radius:10px;
+
+    border:1px solid #444;
+
+    background:#080808;
+
+    color:white;
+
+    font-size:16px;
+
+    outline:none;
+
+}
+
+input:focus{
+
+    border-color:#e51b23;
+
+    box-shadow:
+        0 0 10px rgba(255,0,0,.25);
+
+}
+
+
+/* =====================================================
+   MENSAJES
+===================================================== */
+
+.mensaje{
+
+    text-align:center;
+
+    padding:20px;
+
+    color:#999;
+
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:500px){
+
+    body{
+        padding:10px;
+    }
+
+    h1{
+        font-size:27px;
+    }
+
+    .tarjeta{
+        padding:14px;
+    }
+
+    .botones-materia{
+        flex-direction:column;
+    }
+
+}
+
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+</head>
+
+
+<body>
+
+
+<div class="contenedor">
+
+
+<!-- =====================================================
+     ENCABEZADO
+===================================================== -->
+
+<div class="encabezado">
+
+    <div class="logo">🧪</div>
+
+    <h1>Detalle de receta</h1>
+
+    <div class="subtitulo">
+        Materias primas y composición de producción
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     DATOS DE LA RECETA
+===================================================== -->
+
+<div
+id="datosReceta"
+class="tarjeta">
+
+<div class="mensaje">
+
+⏳ Cargando receta...
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     AGREGAR MATERIA PRIMA
+===================================================== -->
+
+<button
+class="boton"
+onclick="mostrarFormulario()">
+
+➕ Agregar materia prima
+
+</button>
+
+
+<!-- =====================================================
+     FORMULARIO
+===================================================== -->
+
+<div
+id="formulario"
+class="tarjeta">
+
+<h3>➕ Nueva materia prima</h3>
+
+<input
+id="materiaPrima"
+placeholder="Nombre de la materia prima">
+
+
+<input
+id="cantidad"
+type="number"
+placeholder="Cantidad (kg)"
+min="0"
+step="any">
+
+
+<button
+class="boton"
+onclick="guardarMateria()">
+
+💾 Guardar materia prima
+
+</button>
+
+
+<button
+class="boton boton-secundario"
+onclick="ocultarFormulario()">
+
+✖ Cancelar
+
+</button>
+
+</div>
+
+
+<!-- =====================================================
+     LISTA DE MATERIAS
+===================================================== -->
+
+<div class="tarjeta">
+
+<h3>🌽 Materias primas</h3>
+
+<div id="listaMaterias">
+
+<div class="mensaje">
+
+⏳ Cargando materias primas...
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     VOLVER
+===================================================== -->
+
+<button
+class="boton boton-secundario"
+onclick="window.location.href='recetas.html'">
+
+⬅️ Volver a recetas
+
+</button>
+
+
+</div>
+
+
+<script src="supabase.js"></script>
+
+
+<script>
+
+
+/* =====================================================
+   OBTENER ID DE LA RECETA
+===================================================== */
+
+const parametros =
+new URLSearchParams(
+    window.location.search
+);
+
+
+const idReceta =
+parametros.get("id");
+
+
+/* =====================================================
+   MOSTRAR / OCULTAR FORMULARIO
+===================================================== */
+
+function mostrarFormulario(){
+
+    document
+    .getElementById("formulario")
+    .style.display="block";
+
+
+    document
+    .getElementById("formulario")
+    .scrollIntoView({
+        behavior:"smooth",
+        block:"center"
+    });
+
+}
+
+
+function ocultarFormulario(){
+
+    document
+    .getElementById("formulario")
+    .style.display="none";
+
+}
+
+
+/* =====================================================
+   CARGAR RECETA
+===================================================== */
+
+async function cargarReceta(){
+
+
+const {data,error} =
+await clienteSupabase
+
+.from("recetas")
+
+.select("*")
+
+.eq("id",idReceta)
+
+.single();
+
+
+if(error){
+
+document
+.getElementById("datosReceta")
+.innerHTML = `
+
+<div class="mensaje">
+
+❌ Error cargando receta.
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+document
+.getElementById("datosReceta")
+.innerHTML = `
+
+<div class="nombre-receta">
+
+🧪 ${data.nombre}
+
+</div>
+
+
+<div class="info-receta">
+
+<strong>🏭 Producto elaborado:</strong>
+
+<br>
+
+${data.producto_resultado}
+
+</div>
+
+
+<div class="info-receta">
+
+<strong>⚖️ Cantidad de producción:</strong>
+
+<br>
+
+${data.cantidad_resultado} kg
+
+</div>
+
+
+<div class="info-receta">
+
+<strong>📝 Descripción:</strong>
+
+<br>
+
+${data.descripcion || "Sin descripción"}
+
+</div>
+
+`;
+
+
+cargarMaterias();
+
+}
+
+
+/* =====================================================
+   CARGAR MATERIAS PRIMAS
+===================================================== */
+
+async function cargarMaterias(){
+
+
+const {data,error} =
+await clienteSupabase
+
+.from("detalle_recetas")
+
+.select("*")
+
+.eq(
+    "receta_id",
+    idReceta
+);
+
+
+if(error){
+
+document
+.getElementById("listaMaterias")
+.innerHTML = `
+
+<div class="mensaje">
+
+❌ Error cargando materias primas.
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+if(!data || data.length === 0){
+
+document
+.getElementById("listaMaterias")
+.innerHTML = `
+
+<div class="mensaje">
+
+📭 Sin materias primas agregadas.
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+let html="";
+
+
+data.forEach(m => {
+
+
+html += `
+
+<div class="materia">
+
+
+<div class="materia-nombre">
+
+🌽 ${m.materia_prima}
+
+</div>
+
+
+<div class="materia-cantidad">
+
+⚖️ Cantidad: ${m.cantidad} kg
+
+</div>
+
+
+<div class="botones-materia">
+
+
+<button
+class="btn-pequeno btn-editar"
+onclick="editarMateria(${m.id}, ${m.cantidad})">
+
+✏️ Editar
+
+</button>
+
+
+<button
+class="btn-pequeno btn-eliminar"
+onclick="eliminarMateria(${m.id})">
+
+🗑️ Eliminar
+
+</button>
+
+
+</div>
+
+
+</div>
+
+`;
+
+});
+
+
+document
+.getElementById("listaMaterias")
+.innerHTML = html;
+
+}
+
+
+/* =====================================================
+   GUARDAR MATERIA PRIMA
+===================================================== */
+
+async function guardarMateria(){
+
+
+let materia =
+document
+.getElementById("materiaPrima")
+.value
+.trim();
+
+
+let cantidad =
+document
+.getElementById("cantidad")
+.value;
+
+
+if(!materia || !cantidad){
+
+alert(
+"⚠️ Completa todos los campos."
+);
+
+return;
+
+}
+
+
+if(Number(cantidad) <= 0){
+
+alert(
+"⚠️ La cantidad debe ser mayor que cero."
+);
+
+return;
+
+}
+
+
+const {error} =
+await clienteSupabase
+
+.from("detalle_recetas")
+
+.insert({
+
+receta_id:idReceta,
+
+materia_prima:materia,
+
+cantidad:Number(cantidad)
+
+});
+
+
+if(error){
+
+alert(
+"❌ Error guardando:\n\n"
++
+error.message
+);
+
+return;
+
+}
+
+
+alert(
+"✅ Materia prima agregada correctamente."
+);
+
+
+document
+.getElementById("materiaPrima")
+.value="";
+
+
+document
+.getElementById("cantidad")
+.value="";
+
+
+ocultarFormulario();
+
+
+cargarMaterias();
+
+}
+
+
+/* =====================================================
+   EDITAR MATERIA PRIMA
+===================================================== */
+
+async function editarMateria(
+id,
+cantidadActual
+){
+
+
+let nuevaCantidad =
+prompt(
+"Nueva cantidad en kg:",
+cantidadActual
+);
+
+
+if(
+nuevaCantidad === null
+){
+
+return;
+
+}
+
+
+nuevaCantidad =
+Number(nuevaCantidad);
+
+
+if(
+isNaN(nuevaCantidad)
+||
+nuevaCantidad <= 0
+){
+
+alert(
+"⚠️ Introduce una cantidad válida mayor que cero."
+);
+
+return;
+
+}
+
+
+const {error} =
+await clienteSupabase
+
+.from("detalle_recetas")
+
+.update({
+
+cantidad:nuevaCantidad
+
+})
+
+.eq(
+"id",
+id
+);
+
+
+if(error){
+
+alert(
+"❌ Error actualizando:\n\n"
++
+error.message
+);
+
+return;
+
+}
+
+
+alert(
+"✅ Cantidad actualizada correctamente."
+);
+
+
+cargarMaterias();
+
+}
+
+
+/* =====================================================
+   ELIMINAR MATERIA PRIMA
+===================================================== */
+
+async function eliminarMateria(id){
+
+
+let confirmar =
+confirm(
+"⚠️ ¿Eliminar esta materia prima?\n\nEsta acción no se puede deshacer."
+);
+
+
+if(!confirmar){
+
+return;
+
+}
+
+
+const {error} =
+await clienteSupabase
+
+.from("detalle_recetas")
+
+.delete()
+
+.eq(
+"id",
+id
+);
+
+
+if(error){
+
+alert(
+"❌ Error eliminando:\n\n"
++
+error.message
+);
+
+return;
+
+}
+
+
+alert(
+"✅ Materia prima eliminada correctamente."
+);
+
+
+cargarMaterias();
+
+}
+
+
+/* =====================================================
+   INICIAR
+===================================================== */
+
+if(!idReceta){
+
+document
+.getElementById("datosReceta")
+.innerHTML = `
+
+<div class="mensaje">
+
+❌ No se encontró la receta.
+
+</div>
+
+`;
+
+}else{
+
+cargarReceta();
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>

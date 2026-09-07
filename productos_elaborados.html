@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Productos elaborados - ElDesierto</title>
+
+<style>
+
+/* ================================
+   CONFIGURACIÓN
+================================ */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    min-height:100vh;
+    padding:20px 15px;
+
+    background:
+    radial-gradient(
+        circle at top,
+        #3b0000 0%,
+        #140000 35%,
+        #000 75%
+    );
+
+    color:white;
+}
+
+
+/* ================================
+   CONTENEDOR
+================================ */
+
+.contenedor{
+    width:100%;
+    max-width:1000px;
+    margin:auto;
+}
+
+
+/* ================================
+   ENCABEZADO
+================================ */
+
+.encabezado{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.logo{
+    font-size:48px;
+
+    filter:
+    drop-shadow(0 0 8px red)
+    drop-shadow(0 0 15px #8b0000);
+
+    margin-bottom:5px;
+}
+
+.marca{
+    font-size:28px;
+    font-weight:bold;
+
+    color:#ff2020;
+
+    text-shadow:
+    0 0 8px #ff0000,
+    0 0 18px #8b0000;
+}
+
+.subtitulo{
+    color:#999;
+    font-size:14px;
+    margin-top:5px;
+}
+
+.titulo{
+    margin-top:22px;
+
+    font-size:26px;
+    font-weight:bold;
+}
+
+.descripcion{
+    color:#aaa;
+    margin-top:7px;
+    font-size:14px;
+}
+
+
+/* ================================
+   BOTÓN VOLVER
+================================ */
+
+.boton-volver{
+
+    display:inline-block;
+
+    margin-bottom:20px;
+
+    padding:13px 22px;
+
+    color:white;
+
+    background:
+    linear-gradient(
+        145deg,
+        #ff3030,
+        #a40000
+    );
+
+    border:none;
+
+    border-radius:12px;
+
+    font-size:15px;
+    font-weight:bold;
+
+    cursor:pointer;
+
+    box-shadow:
+    0 5px 0 #650000,
+    0 8px 15px rgba(255,0,0,.35);
+
+    transition:.15s;
+}
+
+.boton-volver:active{
+
+    transform:translateY(4px);
+
+    box-shadow:
+    0 1px 0 #650000,
+    0 3px 8px rgba(255,0,0,.3);
+}
+
+
+/* ================================
+   PANEL
+================================ */
+
+.panel{
+
+    background:
+    linear-gradient(
+        145deg,
+        rgba(35,35,35,.96),
+        rgba(8,8,8,.98)
+    );
+
+    border:1px solid #450000;
+
+    border-radius:18px;
+
+    padding:15px;
+
+    box-shadow:
+
+    inset 0 1px 0
+    rgba(255,255,255,.08),
+
+    0 12px 30px
+    rgba(0,0,0,.7),
+
+    0 0 18px
+    rgba(180,0,0,.12);
+
+    overflow-x:auto;
+}
+
+
+/* ================================
+   TABLA
+================================ */
+
+table{
+
+    width:100%;
+
+    min-width:500px;
+
+    border-collapse:separate;
+
+    border-spacing:0;
+
+    overflow:hidden;
+}
+
+
+/* ENCABEZADOS */
+
+th{
+
+    background:
+    linear-gradient(
+        145deg,
+        #e00000,
+        #850000
+    );
+
+    color:white;
+
+    padding:15px 10px;
+
+    font-size:14px;
+
+    border-bottom:2px solid #ff3333;
+}
+
+th:first-child{
+    border-radius:10px 0 0 0;
+}
+
+th:last-child{
+    border-radius:0 10px 0 0;
+}
+
+
+/* CELDAS */
+
+td{
+
+    padding:14px 10px;
+
+    text-align:center;
+
+    color:#eee;
+
+    background:#111;
+
+    border-bottom:1px solid #292929;
+}
+
+
+/* FILAS ALTERNAS */
+
+tr:nth-child(even) td{
+    background:#181818;
+}
+
+
+/* EFECTO AL TOCAR/PASAR */
+
+tr:hover td{
+    background:#260000;
+}
+
+
+/* CANTIDAD */
+
+td:last-child{
+
+    color:#ff3030;
+
+    font-weight:bold;
+
+    font-size:16px;
+}
+
+
+/* ================================
+   TABLA VACÍA
+================================ */
+
+.vacio{
+
+    text-align:center;
+
+    padding:25px;
+
+    color:#888;
+}
+
+
+/* ================================
+   MÓVIL
+================================ */
+
+@media(max-width:600px){
+
+    body{
+        padding:15px 10px;
+    }
+
+    .logo{
+        font-size:42px;
+    }
+
+    .marca{
+        font-size:24px;
+    }
+
+    .titulo{
+        font-size:22px;
+    }
+
+    .panel{
+        padding:10px;
+    }
+
+    th,
+    td{
+        padding:12px 8px;
+        font-size:14px;
+    }
+
+}
+
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+</head>
+
+
+<body>
+
+
+<div class="contenedor">
+
+
+    <!-- =========================
+         ENCABEZADO
+    ========================== -->
+
+    <div class="encabezado">
+
+        <div class="logo">
+            🐷
+        </div>
+
+        <div class="marca">
+            ElDesierto
+        </div>
+
+        <div class="subtitulo">
+            Sistema de control y gestión
+        </div>
+
+        <div class="titulo">
+            🏭 Productos elaborados
+        </div>
+
+        <div class="descripcion">
+            Existencias actuales de productos elaborados
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         VOLVER
+    ========================== -->
+
+    <button
+        class="boton-volver"
+        onclick="window.location.href='inventario.html'">
+
+        ⬅ Volver al inventario
+
+    </button>
+
+
+    <!-- =========================
+         TABLA
+    ========================== -->
+
+    <div class="panel">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Producto
+                    </th>
+
+                    <th>
+                        Unidad
+                    </th>
+
+                    <th>
+                        Cantidad
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="tablaElaborados">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+</div>
+
+
+<!-- SUPABASE -->
+
+<script src="supabase.js"></script>
+
+
+<script>
+
+async function cargarElaborados(){
+
+    const {data,error}=await clienteSupabase
+
+    .from("productos_elaborados")
+
+    .select("Nombre, Unidad, Cantidad");
+
+
+    if(error){
+
+        alert(
+            "Error cargando productos elaborados: "
+            + error.message
+        );
+
+        return;
+
+    }
+
+
+    const tabla=
+        document.getElementById(
+            "tablaElaborados"
+        );
+
+
+    tabla.innerHTML="";
+
+
+    if(!data || data.length===0){
+
+        tabla.innerHTML=`
+
+            <tr>
+
+                <td
+                    colspan="3"
+                    class="vacio">
+
+                    No hay productos elaborados registrados.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    data.forEach(producto=>{
+
+        tabla.innerHTML+=`
+
+            <tr>
+
+                <td>
+                    ${producto.Nombre}
+                </td>
+
+                <td>
+                    ${producto.Unidad}
+                </td>
+
+                <td>
+                    ${producto.Cantidad}
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+}
+
+
+cargarElaborados();
+
+</script>
+
+
+</body>
+
+</html>

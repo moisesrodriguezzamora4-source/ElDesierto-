@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>ElDesierto - Asistente IA</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    -webkit-tap-highlight-color:transparent;
+}
+
+body{
+    min-height:100vh;
+    font-family:Arial,sans-serif;
+    background:
+    radial-gradient(circle at top,#3b1111 0%,#171717 40%,#050505 100%);
+    color:white;
+    padding:20px;
+}
+
+.contenedor{
+    max-width:700px;
+    margin:auto;
+}
+
+.cabecera{
+    text-align:center;
+    padding:15px 0 25px;
+}
+
+.logo{
+    font-size:55px;
+    margin-bottom:5px;
+}
+
+.titulo{
+    font-size:30px;
+    font-weight:bold;
+    color:#ff3030;
+    text-shadow:0 3px 8px rgba(255,0,0,.35);
+}
+
+.subtitulo{
+    color:#aaa;
+    margin-top:7px;
+    font-size:14px;
+}
+
+.volver{
+    width:100%;
+    border:0;
+    border-radius:15px;
+    padding:15px;
+    margin-bottom:20px;
+    background:linear-gradient(#ff3030,#b40000);
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    box-shadow:
+    0 5px 0 #650000,
+    0 8px 18px rgba(0,0,0,.5);
+}
+
+.volver:active{
+    transform:translateY(4px);
+    box-shadow:0 1px 0 #650000;
+}
+
+.panel{
+    background:rgba(25,25,25,.95);
+    border:1px solid #333;
+    border-radius:22px;
+    padding:20px;
+    box-shadow:0 15px 40px rgba(0,0,0,.5);
+}
+
+.estado{
+    text-align:center;
+    color:#aaa;
+    font-size:14px;
+    margin-bottom:15px;
+    min-height:20px;
+}
+
+.mic{
+    width:125px;
+    height:125px;
+    margin:15px auto 20px;
+    border-radius:50%;
+    border:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:55px;
+    cursor:pointer;
+    background:linear-gradient(145deg,#ff3434,#9d0000);
+    box-shadow:
+    0 8px 0 #5c0000,
+    0 12px 25px rgba(0,0,0,.6);
+}
+
+.mic:active{
+    transform:translateY(5px);
+    box-shadow:0 3px 0 #5c0000;
+}
+
+.mic.escuchando{
+    animation:pulsar 1s infinite;
+}
+
+@keyframes pulsar{
+
+    0%{
+        transform:scale(1);
+    }
+
+    50%{
+        transform:scale(1.08);
+    }
+
+    100%{
+        transform:scale(1);
+    }
+
+}
+
+.ayuda{
+    text-align:center;
+    color:#999;
+    font-size:13px;
+    margin-bottom:20px;
+}
+
+.entrada{
+    display:flex;
+    gap:8px;
+}
+
+.entrada input{
+    flex:1;
+    padding:15px;
+    border-radius:12px;
+    border:1px solid #444;
+    outline:none;
+    background:#111;
+    color:white;
+    font-size:15px;
+}
+
+.entrada button{
+    border:0;
+    border-radius:12px;
+    padding:0 18px;
+    background:#d71919;
+    color:white;
+    font-size:20px;
+}
+
+.respuesta{
+    margin-top:20px;
+    background:#111;
+    border:1px solid #333;
+    border-radius:15px;
+    padding:18px;
+}
+
+.etiqueta{
+    color:#ff3434;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+#respuestaTexto{
+    color:#eee;
+    line-height:1.6;
+    white-space:pre-line;
+}
+
+.ejemplos{
+    margin-top:20px;
+}
+
+.ejemplos h3{
+    color:#ddd;
+    font-size:15px;
+    margin-bottom:12px;
+}
+
+.ejemplo{
+    display:block;
+    width:100%;
+    text-align:left;
+    padding:12px;
+    margin-bottom:8px;
+    border-radius:10px;
+    border:1px solid #333;
+    background:#181818;
+    color:#ccc;
+}
+
+.ejemplo:active{
+    background:#292929;
+}
+
+.cargando{
+    color:#ffb0b0 !important;
+}
+
+.error{
+    color:#ff5c5c !important;
+}
+
+.exito{
+    color:#8cff9b !important;
+}
+
+#textoEscuchado{
+    margin-top:15px;
+    padding:12px;
+    border-radius:10px;
+    background:#181818;
+    border:1px solid #333;
+    color:#bbb;
+    font-size:14px;
+    display:none;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="contenedor">
+
+<header class="cabecera">
+
+    <div class="logo">🎙️</div>
+
+    <div class="titulo">
+        Asistente IA
+    </div>
+
+    <div class="subtitulo">
+        Consulta los datos de ElDesierto por voz
+    </div>
+
+</header>
+
+
+<button
+class="volver"
+onclick="window.location.href='menu.html'">
+
+⬅️ Volver al menú
+
+</button>
+
+
+<div class="panel">
+
+<div id="estado" class="estado">
+    Preparado para ayudarte
+</div>
+
+
+<button
+id="botonMic"
+class="mic"
+onclick="iniciarEscucha()">
+
+🎙️
+
+</button>
+
+
+<div class="ayuda">
+
+Pulsa el micrófono y habla después del aviso del teléfono.
+
+</div>
+
+
+<div id="textoEscuchado">
+    🎧 Escuchando: <span id="textoVoz"></span>
+</div>
+
+
+<div class="entrada">
+
+<input
+id="pregunta"
+type="text"
+placeholder="Ej: ¿Cuánto maíz queda?"
+autocomplete="off">
+
+<button onclick="procesarDesdeTexto()">
+➤
+</button>
+
+</div>
+
+
+<div class="respuesta">
+
+<div class="etiqueta">
+🤖 ElDesierto
+</div>
+
+<div id="respuestaTexto">
+Esperando tu pregunta...
+</div>
+
+</div>
+
+
+<div class="ejemplos">
+
+<h3>Preguntas que puedes hacer</h3>
+
+<button class="ejemplo"
+onclick="usarEjemplo('¿Cuánto maíz queda?')">
+🌽 ¿Cuánto maíz queda?
+</button>
+
+<button class="ejemplo"
+onclick="usarEjemplo('¿Cuánto pienso hay?')">
+🐷 ¿Cuánto pienso hay?
+</button>
+
+<button class="ejemplo"
+onclick="usarEjemplo('¿Cuántos cerdos hay en total?')">
+🐖 ¿Cuántos cerdos hay en total?
+</button>
+
+<button class="ejemplo"
+onclick="usarEjemplo('¿Cuánto cemento queda?')">
+🧱 ¿Cuánto cemento queda?
+</button>
+
+<button class="ejemplo"
+onclick="usarEjemplo('¿Cuánto entró hoy?')">
+📥 ¿Cuánto entró hoy?
+</button>
+
+<button class="ejemplo"
+onclick="usarEjemplo('¿Cuánto salió hoy?')">
+📤 ¿Cuánto salió hoy?
+</button>
+
+<button class="ejemplo"
+onclick="usarEjemplo('¿Qué productos hay?')">
+📦 ¿Qué productos hay?
+</button>
+
+<button class="ejemplo"
+onclick="usarEjemplo('¿Qué materiales de construcción hay?')">
+🧱 ¿Qué materiales de construcción hay?
+</button>
+
+<button class="ejemplo"
+onclick="usarEjemplo('¿Qué recetas hay?')">
+🍲 ¿Qué recetas hay?
+</button>
+
+<button class="ejemplo"
+onclick="usarEjemplo('¿Cuáles fueron las últimas salidas?')">
+📋 ¿Cuáles fueron las últimas salidas?
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+let reconocimiento = null;
+
+let escuchando = false;
+
+
+/* =====================================================
+   ELEMENTOS
+===================================================== */
+
+const estado =
+document.getElementById("estado");
+
+const pregunta =
+document.getElementById("pregunta");
+
+const botonMic =
+document.getElementById("botonMic");
+
+const textoEscuchado =
+document.getElementById("textoEscuchado");
+
+const textoVoz =
+document.getElementById("textoVoz");
+
+const respuestaTexto =
+document.getElementById("respuestaTexto");
+
+
+/* =====================================================
+   NORMALIZAR
+===================================================== */
+
+function normalizar(texto){
+
+    return texto
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"")
+    .trim();
+
+}
+
+
+/* =====================================================
+   HABLAR
+===================================================== */
+
+function hablar(texto){
+
+    if(!("speechSynthesis" in window))
+        return;
+
+    window.speechSynthesis.cancel();
+
+    const voz =
+    new SpeechSynthesisUtterance(texto);
+
+    voz.lang="es-ES";
+    voz.rate=0.95;
+    voz.pitch=1;
+
+    window.speechSynthesis.speak(voz);
+
+}
+
+
+/* =====================================================
+   SESIÓN
+===================================================== */
+
+async function verificarSesion(){
+
+    const {data,error} =
+    await clienteSupabase.auth.getSession();
+
+    if(error){
+
+        console.error(error);
+        return;
+
+    }
+
+    if(!data.session){
+
+        window.location.href="login.html";
+
+    }
+
+}
+
+
+/* =====================================================
+   PREPARAR RECONOCIMIENTO
+===================================================== */
+
+function prepararReconocimiento(){
+
+    const API =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+
+    if(!API){
+
+        estado.innerText =
+        "⚠️ El navegador no admite reconocimiento de voz.";
+
+        botonMic.disabled=true;
+
+        botonMic.style.opacity="0.5";
+
+        return false;
+
+    }
+
+
+    reconocimiento = new API();
+
+
+    reconocimiento.lang="es-ES";
+
+    reconocimiento.continuous=false;
+
+    reconocimiento.interimResults=true;
+
+    reconocimiento.maxAlternatives=1;
+
+
+    reconocimiento.onstart=function(){
+
+        escuchando=true;
+
+        botonMic.classList.add("escuchando");
+
+        botonMic.innerText="🔴";
+
+        estado.innerText=
+        "🎙️ Escuchando... habla ahora";
+
+        textoEscuchado.style.display="block";
+
+        textoVoz.innerText="";
+
+    };
+
+
+    reconocimiento.onresult=function(event){
+
+        let textoFinal="";
+
+        let textoTemporal="";
+
+
+        for(
+            let i=event.resultIndex;
+            i<event.results.length;
+            i++
+        ){
+
+            const texto =
+            event.results[i][0].transcript;
+
+
+            if(event.results[i].isFinal){
+
+                textoFinal += texto;
+
+            }else{
+
+                textoTemporal += texto;
+
+            }
+
+        }
+
+
+        const mostrado =
+        textoFinal || textoTemporal;
+
+
+        textoVoz.innerText=mostrado;
+
+
+        if(textoFinal){
+
+            pregunta.value=
+            textoFinal.trim();
+
+            estado.innerText=
+            "✅ Pregunta recibida";
+
+            setTimeout(function(){
+
+                procesarPregunta(
+                    textoFinal.trim()
+                );
+
+            },300);
+
+        }
+
+    };
+
+
+    reconocimiento.onerror=function(event){
+
+        console.error(
+            "Error de reconocimiento:",
+            event.error
+        );
+
+
+        escuchando=false;
+
+        botonMic.classList.remove("escuchando");
+
+        botonMic.innerText="🎙️";
+
+
+        if(event.error==="not-allowed"){
+
+            estado.innerText=
+            "❌ Permiso de micrófono denegado.";
+
+            respuestaTexto.className="error";
+
+            respuestaTexto.innerText=
+            "Activa el permiso del micrófono para este sitio en Chrome.";
+
+        }
+
+        else if(event.error==="no-speech"){
+
+            estado.innerText=
+            "⚠️ No detecté voz. Acércate al teléfono y vuelve a intentarlo.";
+
+        }
+
+        else if(event.error==="audio-capture"){
+
+            estado.innerText=
+            "❌ No se encontró el micrófono.";
+
+        }
+
+        else if(event.error==="network"){
+
+            estado.innerText=
+            "❌ Error de conexión del reconocimiento de voz.";
+
+        }
+
+        else{
+
+            estado.innerText=
+            "⚠️ Error de voz: "+event.error;
+
+        }
+
+    };
+
+
+    reconocimiento.onend=function(){
+
+        escuchando=false;
+
+        botonMic.classList.remove("escuchando");
+
+        botonMic.innerText="🎙️";
+
+    };
+
+
+    return true;
+
+}
+
+
+/* =====================================================
+   INICIAR ESCUCHA
+===================================================== */
+
+function iniciarEscucha(){
+
+    if(!reconocimiento){
+
+        const preparado =
+        prepararReconocimiento();
+
+        if(!preparado)
+            return;
+
+    }
+
+
+    if(escuchando){
+
+        reconocimiento.stop();
+
+        return;
+
+    }
+
+
+    textoVoz.innerText="";
+
+    textoEscuchado.style.display="block";
+
+
+    try{
+
+        reconocimiento.start();
+
+    }catch(error){
+
+        console.error(error);
+
+        reconocimiento=null;
+
+        prepararReconocimiento();
+
+        try{
+
+            reconocimiento.start();
+
+        }catch(e){
+
+            estado.innerText=
+            "❌ No se pudo iniciar el micrófono.";
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   EJEMPLOS
+===================================================== */
+
+function usarEjemplo(texto){
+
+    pregunta.value=texto;
+
+    procesarPregunta(texto);
+
+}
+
+
+/* =====================================================
+   TEXTO
+===================================================== */
+
+function procesarDesdeTexto(){
+
+    const texto =
+    pregunta.value.trim();
+
+    if(!texto)
+        return;
+
+    procesarPregunta(texto);
+
+}
+
+
+pregunta.addEventListener(
+"keydown",
+function(event){
+
+    if(event.key==="Enter"){
+
+        procesarDesdeTexto();
+
+    }
+
+});
+
+
+/* =====================================================
+   PRODUCTOS
+===================================================== */
+
+async function obtenerProductos(){
+
+    const {data,error} =
+    await clienteSupabase
+    .from("productos")
+    .select("Identificación,Nombre,Unidad,Cantidad")
+    .order("Nombre");
+
+
+    if(error)
+        throw error;
+
+
+    return data || [];
+
+}
+
+
+/* =====================================================
+   MATERIALES CONSTRUCCIÓN
+===================================================== */
+
+async function obtenerMaterialesConstruccion(){
+
+    const {data,error} =
+    await clienteSupabase
+    .from("materiales_construccion")
+    .select("id,Nombre,Unidad,Cantidad")
+    .order("Nombre");
+
+
+    if(error)
+        throw error;
+
+
+    return data || [];
+
+}
+
+
+/* =====================================================
+   BUSCAR PRODUCTO
+===================================================== */
+
+function buscarProducto(texto,productos){
+
+    const q=normalizar(texto);
+
+
+    let producto =
+    productos.find(p => {
+
+        const nombre =
+        normalizar(p.Nombre || "");
+
+        return nombre &&
+        q.includes(nombre);
+
+    });
+
+
+    if(producto)
+        return producto;
+
+
+    const equivalencias={
+
+        "maiz":"maiz",
+        "maz":"maiz",
+        "soya":"soya",
+        "soja":"soya",
+        "cebada":"cebada",
+        "salvado":"salvado",
+        "sal":"sal",
+        "calcio":"calcio",
+        "premezcla":"premezcla",
+        "miel":"miel",
+        "palmiche":"palmiche",
+        "chicharo":"chicharo",
+        "pienso":"pienso"
+
+    };
+
+
+    for(const palabra in equivalencias){
+
+        if(q.includes(palabra)){
+
+            const objetivo =
+            equivalencias[palabra];
+
+
+            producto =
+            productos.find(p =>
+                normalizar(p.Nombre || "")
+                .includes(objetivo)
+            );
+
+
+            if(producto)
+                return producto;
+
+        }
+
+    }
+
+
+    return null;
+
+}
+
+
+/* =====================================================
+   BUSCAR MATERIAL
+===================================================== */
+
+function buscarMaterial(texto,materiales){
+
+    const q=normalizar(texto);
+
+
+    return materiales.find(m => {
+
+        const nombre =
+        normalizar(m.Nombre || "");
+
+        return nombre &&
+        q.includes(nombre);
+
+    }) || null;
+
+}
+
+
+/* =====================================================
+   HOY
+===================================================== */
+
+function inicioFinHoy(){
+
+    const ahora=new Date();
+
+
+    const inicio=new Date(
+        ahora.getFullYear(),
+        ahora.getMonth(),
+        ahora.getDate()
+    );
+
+
+    const fin=new Date(
+        ahora.getFullYear(),
+        ahora.getMonth(),
+        ahora.getDate()+1
+    );
+
+
+    return {
+        inicio:inicio.toISOString(),
+        fin:fin.toISOString()
+    };
+
+}
+
+
+/* =====================================================
+   MOVIMIENTOS HOY
+===================================================== */
+
+async function obtenerMovimientosHoy(){
+
+    const fechas=inicioFinHoy();
+
+
+    const {data,error} =
+    await clienteSupabase
+    .from("movimientos")
+    .select("*")
+    .gte("Fecha",fechas.inicio)
+    .lt("Fecha",fechas.fin)
+    .order("Fecha",{ascending:false});
+
+
+    if(error)
+        throw error;
+
+
+    return data || [];
+
+}
+
+
+/* =====================================================
+   ENTRADAS HOY
+===================================================== */
+
+async function consultarEntradasHoy(){
+
+    const movimientos =
+    await obtenerMovimientosHoy();
+
+
+    const entradas =
+    movimientos.filter(m =>
+        normalizar(m.Tipo || "")
+        .includes("entrada")
+    );
+
+
+    if(!entradas.length){
+
+        return "No hay entradas de mercancía registradas hoy.";
+
+    }
+
+
+    let total=0;
+
+
+    entradas.forEach(m=>{
+
+        total +=
+        Number(m.Cantidad)||0;
+
+    });
+
+
+    return `Hoy se registraron ${entradas.length} entradas de mercancía, por un total de ${formatearNumero(total)} unidades de cantidad registrada.`;
+
+}
+
+
+/* =====================================================
+   SALIDAS HOY
+===================================================== */
+
+async function consultarSalidasHoy(){
+
+    const movimientos =
+    await obtenerMovimientosHoy();
+
+
+    const salidas =
+    movimientos.filter(m =>
+        normalizar(m.Tipo || "")
+        .includes("salida")
+    );
+
+
+    if(!salidas.length){
+
+        return "No hay salidas de mercancía registradas hoy.";
+
+    }
+
+
+    let total=0;
+
+
+    salidas.forEach(m=>{
+
+        total +=
+        Number(m.Cantidad)||0;
+
+    });
+
+
+    return `Hoy se registraron ${salidas.length} salidas de mercancía, por un total de ${formatearNumero(total)} unidades de cantidad registrada.`;
+
+}
+
+
+/* =====================================================
+   CERDOS
+===================================================== */
+
+async function consultarCerdos(){
+
+    const {data,error} =
+    await clienteSupabase
+    .from("cuartones")
+    .select("cantidad_cerdos");
+
+
+    if(error)
+        throw error;
+
+
+    let total=0;
+
+
+    (data||[]).forEach(c=>{
+
+        total +=
+        Number(c.cantidad_cerdos)||0;
+
+    });
+
+
+    return `Actualmente hay ${formatearNumero(total)} cerdos registrados en ElDesierto.`;
+
+}
+
+
+/* =====================================================
+   ÚLTIMAS SALIDAS
+===================================================== */
+
+async function consultarUltimasSalidas(){
+
+    const {data,error} =
+    await clienteSupabase
+    .from("movimientos")
+    .select("*")
+    .order("Fecha",{ascending:false})
+    .limit(50);
+
+
+    if(error)
+        throw error;
+
+
+    const salidas =
+    (data||[]).filter(m =>
+        normalizar(m.Tipo||"")
+        .includes("salida")
+    );
+
+
+    if(!salidas.length)
+        return "No hay salidas registradas.";
+
+
+    let texto =
+    "Las últimas salidas registradas son:\n\n";
+
+
+    salidas.slice(0,5).forEach((m,i)=>{
+
+        texto +=
+        `${i+1}. ${m.Producto||"Producto"} — ${formatearNumero(Number(m.Cantidad)||0)}\n`;
+
+    });
+
+
+    return texto;
+
+}
+
+
+/* =====================================================
+   ÚLTIMOS MOVIMIENTOS
+===================================================== */
+
+async function consultarUltimosMovimientos(){
+
+    const {data,error} =
+    await clienteSupabase
+    .from("movimientos")
+    .select("*")
+    .order("Fecha",{ascending:false})
+    .limit(5);
+
+
+    if(error)
+        throw error;
+
+
+    if(!data||!data.length)
+        return "No hay movimientos registrados.";
+
+
+    let texto=
+    "Los últimos movimientos son:\n\n";
+
+
+    data.forEach((m,i)=>{
+
+        texto +=
+        `${i+1}. ${m.Tipo||"Movimiento"} — ${m.Producto||""} — ${formatearNumero(Number(m.Cantidad)||0)}\n`;
+
+    });
+
+
+    return texto;
+
+}
+
+
+/* =====================================================
+   LISTA PRODUCTOS
+===================================================== */
+
+async function consultarListaProductos(){
+
+    const productos =
+    await obtenerProductos();
+
+
+    if(!productos.length)
+        return "No hay productos registrados.";
+
+
+    let texto=
+    "Los productos registrados son:\n\n";
+
+
+    productos.forEach((p,i)=>{
+
+        texto +=
+        `${i+1}. ${p.Nombre}: ${formatearNumero(Number(p.Cantidad)||0)} ${p.Unidad||""}\n`;
+
+    });
+
+
+    return texto;
+
+}
+
+
+/* =====================================================
+   LISTA MATERIALES
+===================================================== */
+
+async function consultarListaMateriales(){
+
+    const materiales =
+    await obtenerMaterialesConstruccion();
+
+
+    if(!materiales.length)
+        return "No hay materiales de construcción registrados.";
+
+
+    let texto=
+    "Los materiales de construcción registrados son:\n\n";
+
+
+    materiales.forEach((m,i)=>{
+
+        texto +=
+        `${i+1}. ${m.Nombre}: ${formatearNumero(Number(m.Cantidad)||0)} ${m.Unidad||""}\n`;
+
+    });
+
+
+    return texto;
+
+}
+
+
+/* =====================================================
+   RECETAS
+===================================================== */
+
+async function consultarRecetas(){
+
+    const {data,error} =
+    await clienteSupabase
+    .from("recetas")
+    .select("nombre,producto_resultado,cantidad_resultado")
+    .order("nombre");
+
+
+    if(error)
+        throw error;
+
+
+    if(!data||!data.length)
+        return "No hay recetas registradas.";
+
+
+    let texto=
+    "Las recetas registradas son:\n\n";
+
+
+    data.forEach((r,i)=>{
+
+        texto +=
+        `${i+1}. ${r.nombre}`;
+
+
+        if(r.producto_resultado){
+
+            texto +=
+            ` → ${r.producto_resultado}`;
+
+        }
+
+
+        if(r.cantidad_resultado){
+
+            texto +=
+            ` (${r.cantidad_resultado})`;
+
+        }
+
+
+        texto+="\n";
+
+    });
+
+
+    return texto;
+
+}
+
+
+/* =====================================================
+   FORMATO
+===================================================== */
+
+function formatearNumero(numero){
+
+    return new Intl.NumberFormat(
+        "es-ES",
+        {
+            maximumFractionDigits:2
+        }
+    ).format(numero);
+
+}
+
+
+/* =====================================================
+   PROCESAR PREGUNTA
+===================================================== */
+
+async function procesarPregunta(texto){
+
+    if(!texto)
+        return;
+
+
+    respuestaTexto.className="cargando";
+
+    respuestaTexto.innerText=
+    "🔎 Buscando en ElDesierto...";
+
+
+    estado.innerText=
+    "Consultando los datos...";
+
+
+    try{
+
+        const q=normalizar(texto);
+
+
+        const productos =
+        await obtenerProductos();
+
+
+        const materiales =
+        await obtenerMaterialesConstruccion();
+
+
+        const producto =
+        buscarProducto(q,productos);
+
+
+        const material =
+        buscarMaterial(q,materiales);
+
+
+        /* MATERIALES */
+
+        if(material && (
+
+            q.includes("material") ||
+            q.includes("construccion") ||
+            q.includes("cemento") ||
+            q.includes("bloque") ||
+            q.includes("tubo") ||
+            q.includes("tabla") ||
+            q.includes("cinc") ||
+            q.includes("fibra") ||
+            q.includes("arena") ||
+            q.includes("gravilla") ||
+            q.includes("piedra")
+
+        )){
+
+            mostrarRespuesta(
+                `Hay ${formatearNumero(Number(material.Cantidad)||0)} ${material.Unidad||""} de ${material.Nombre} disponibles en materiales de construcción.`
+            );
+
+            return;
+
+        }
+
+
+        /* LISTA MATERIALES */
+
+        if(
+
+            q.includes("materiales de construccion") ||
+            q.includes("materiales construccion")
+
+        ){
+
+            mostrarRespuesta(
+                await consultarListaMateriales()
+            );
+
+            return;
+
+        }
+
+
+        /* CERDOS */
+
+        if(
+
+            q.includes("cerdos") ||
+            q.includes("puercos") ||
+            q.includes("cochinos")
+
+        ){
+
+            mostrarRespuesta(
+                await consultarCerdos()
+            );
+
+            return;
+
+        }
+
+
+        /* ENTRADAS */
+
+        if(
+
+            q.includes("entrada hoy") ||
+            q.includes("entradas hoy") ||
+            q.includes("entro hoy") ||
+            q.includes("entraron hoy") ||
+            q.includes("cuanto entro")
+
+        ){
+
+            mostrarRespuesta(
+                await consultarEntradasHoy()
+            );
+
+            return;
+
+        }
+
+
+        /* SALIDAS */
+
+        if(
+
+            q.includes("salida hoy") ||
+            q.includes("salidas hoy") ||
+            q.includes("salio hoy") ||
+            q.includes("salieron hoy") ||
+            q.includes("cuanto salio")
+
+        ){
+
+            mostrarRespuesta(
+                await consultarSalidasHoy()
+            );
+
+            return;
+
+        }
+
+
+        /* ÚLTIMAS SALIDAS */
+
+        if(
+
+            q.includes("ultimas salidas") ||
+            q.includes("ultimas salida")
+
+        ){
+
+            mostrarRespuesta(
+                await consultarUltimasSalidas()
+            );
+
+            return;
+
+        }
+
+
+        /* ÚLTIMOS MOVIMIENTOS */
+
+        if(
+
+            q.includes("ultimos movimientos") ||
+            q.includes("ultimo movimiento")
+
+        ){
+
+            mostrarRespuesta(
+                await consultarUltimosMovimientos()
+            );
+
+            return;
+
+        }
+
+
+        /* LISTA PRODUCTOS */
+
+        if(
+
+            q.includes("que productos hay") ||
+            q.includes("productos hay") ||
+            q.includes("lista de productos")
+
+        ){
+
+            mostrarRespuesta(
+                await consultarListaProductos()
+            );
+
+            return;
+
+        }
+
+
+        /* RECETAS */
+
+        if(
+
+            q.includes("que recetas hay") ||
+            q.includes("recetas hay") ||
+            q.includes("lista de recetas")
+
+        ){
+
+            mostrarRespuesta(
+                await consultarRecetas()
+            );
+
+            return;
+
+        }
+
+
+        /* PRODUCTO */
+
+        if(producto){
+
+            mostrarRespuesta(
+                `Hay ${formatearNumero(Number(producto.Cantidad)||0)} ${producto.Unidad||""} de ${producto.Nombre} disponibles en el inventario.`
+            );
+
+            return;
+
+        }
+
+
+        /* NO ENTENDIDO */
+
+        const respuesta =
+        "No encontré esa información registrada en ElDesierto.";
+
+        mostrarRespuesta(respuesta);
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        respuestaTexto.className="error";
+
+        respuestaTexto.innerText=
+        "❌ No pude consultar los datos de ElDesierto.";
+
+        estado.innerText=
+        "Error de conexión con Supabase";
+
+    }
+
+}
+
+
+/* =====================================================
+   MOSTRAR
+===================================================== */
+
+function mostrarRespuesta(texto){
+
+    respuestaTexto.className="exito";
+
+    respuestaTexto.innerText=texto;
+
+    estado.innerText=
+    "✅ Consulta completada";
+
+    hablar(texto);
+
+}
+
+
+/* =====================================================
+   INICIO
+===================================================== */
+
+async function iniciar(){
+
+    await verificarSesion();
+
+    prepararReconocimiento();
+
+}
+
+
+iniciar();
+
+</script>
+
+</body>
+
+</html>

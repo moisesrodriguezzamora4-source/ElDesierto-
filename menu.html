@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>ElDesierto - Menú</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+/* =====================================================
+   CONFIGURACIÓN GENERAL
+===================================================== */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html{
+    min-height:100%;
+}
+
+body{
+
+    min-height:100vh;
+
+    font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+    color:white;
+
+    background:
+    radial-gradient(
+        circle at 50% -10%,
+        #3a0000 0%,
+        #120000 28%,
+        #050505 65%,
+        #000000 100%
+    );
+
+    padding:14px;
+
+}
+
+
+/* =====================================================
+   CONTENEDOR PRINCIPAL
+===================================================== */
+
+.contenedor{
+
+    width:100%;
+    max-width:700px;
+
+    margin:auto;
+
+    background:
+    linear-gradient(
+        145deg,
+        #111111,
+        #050505
+    );
+
+    border:1px solid #3d3d3d;
+
+    border-radius:24px;
+
+    box-shadow:
+    0 0 35px rgba(255,0,0,.18),
+    inset 0 0 25px rgba(255,0,0,.03);
+
+    overflow:hidden;
+
+}
+
+
+/* =====================================================
+   CABECERA
+===================================================== */
+
+.cabecera{
+
+    min-height:125px;
+
+    display:flex;
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:18px;
+
+    background:
+    linear-gradient(
+        145deg,
+        #180000,
+        #080808
+    );
+
+    border-bottom:1px solid #550000;
+
+    box-shadow:
+    0 5px 20px rgba(0,0,0,.7);
+
+}
+
+
+/* LOGO */
+
+.logo{
+
+    display:flex;
+    align-items:center;
+
+    gap:12px;
+
+}
+
+
+/* ICONO LOGO */
+
+.logo-icon{
+
+    width:65px;
+    height:65px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:38px;
+
+    border-radius:18px;
+
+    background:
+    linear-gradient(
+        145deg,
+        #ff2020,
+        #650000
+    );
+
+    border:2px solid #ff4545;
+
+    box-shadow:
+    0 7px 15px #000,
+    inset 0 0 15px rgba(255,255,255,.15);
+
+}
+
+
+/* NOMBRE */
+
+.nombre{
+
+    font-size:31px;
+
+    font-weight:900;
+
+    letter-spacing:-1px;
+
+    text-shadow:
+    0 3px 5px #000;
+
+}
+
+.nombre span{
+
+    color:#ff2222;
+
+}
+
+
+/* SUBTÍTULO */
+
+.subtitulo{
+
+    font-size:14px;
+
+    color:#aaa;
+
+    margin-top:3px;
+
+}
+
+
+/* =====================================================
+   PERFIL
+===================================================== */
+
+.perfil{
+
+    text-align:right;
+
+    padding-left:10px;
+
+}
+
+.perfil-icon{
+
+    width:43px;
+    height:43px;
+
+    margin-left:auto;
+    margin-bottom:5px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:
+    linear-gradient(
+        145deg,
+        #ff2424,
+        #690000
+    );
+
+    border:2px solid #ff3a3a;
+
+    font-size:22px;
+
+    box-shadow:
+    0 4px 10px #000;
+
+}
+
+.perfil strong{
+
+    display:block;
+
+    font-size:13px;
+
+}
+
+.perfil small{
+
+    color:#ff3333;
+
+    font-size:11px;
+
+}
+
+
+/* =====================================================
+   PRESENTACIÓN
+===================================================== */
+
+.presentacion{
+
+    margin:20px;
+
+    min-height:170px;
+
+    padding:25px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    border-radius:20px;
+
+    background:
+    linear-gradient(
+        120deg,
+        #160000,
+        #090909 60%,
+        #1b0000
+    );
+
+    border:1px solid #650000;
+
+    box-shadow:
+    0 10px 25px rgba(0,0,0,.7),
+    inset 0 0 30px rgba(255,0,0,.08);
+
+}
+
+
+/* LÍNEA ROJA SUPERIOR */
+
+.presentacion:before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    left:25%;
+
+    width:50%;
+    height:3px;
+
+    background:
+    linear-gradient(
+        90deg,
+        transparent,
+        #ff2020,
+        transparent
+    );
+
+    box-shadow:
+    0 0 15px #ff0000;
+
+}
+
+
+/* DECORACIÓN */
+
+.presentacion:after{
+
+    content:"🐷";
+
+    position:absolute;
+
+    right:25px;
+    bottom:-18px;
+
+    font-size:105px;
+
+    opacity:.12;
+
+    filter:
+    drop-shadow(
+        0 0 12px #ff0000
+    );
+
+}
+
+
+.presentacion .bienvenido{
+
+    color:#aaa;
+
+    font-size:16px;
+
+    margin-bottom:4px;
+
+}
+
+
+.presentacion h1{
+
+    font-size:35px;
+
+    color:white;
+
+    text-shadow:
+    0 3px 5px #000;
+
+}
+
+
+.presentacion h1 span{
+
+    color:#ff2424;
+
+    text-shadow:
+    0 0 15px rgba(255,0,0,.4);
+
+}
+
+
+.presentacion p{
+
+    margin-top:8px;
+
+    color:#999;
+
+    font-size:15px;
+
+}
+
+
+/* =====================================================
+   MENÚ
+===================================================== */
+
+.menu{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(2, 1fr);
+
+    gap:14px;
+
+    padding:0 20px 20px;
+
+}
+
+
+/* =====================================================
+   BOTONES 3D
+===================================================== */
+
+.boton{
+
+    min-height:105px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    cursor:pointer;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:13px;
+
+    padding:15px;
+
+    color:white;
+
+    text-align:left;
+
+    border-radius:17px;
+
+    border:1px solid #8d1717;
+
+    background:
+    linear-gradient(
+        145deg,
+        #520707,
+        #190000
+    );
+
+    box-shadow:
+
+    0 7px 0 #280000,
+
+    0 10px 18px rgba(0,0,0,.75),
+
+    inset 0 1px 1px rgba(255,255,255,.18),
+
+    inset 0 -8px 15px rgba(0,0,0,.35);
+
+    transition:
+    transform .15s,
+    box-shadow .15s;
+
+}
+
+
+/* BRILLO */
+
+.boton:before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    left:-100%;
+
+    width:60%;
+    height:100%;
+
+    background:
+    linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,.10),
+        transparent
+    );
+
+    transform:
+    skewX(-25deg);
+
+    transition:.4s;
+
+}
+
+
+.boton:hover:before{
+
+    left:130%;
+
+}
+
+
+/* PRESIONAR */
+
+.boton:active{
+
+    transform:
+    translateY(5px);
+
+    box-shadow:
+
+    0 2px 0 #280000,
+
+    0 5px 10px rgba(0,0,0,.7),
+
+    inset 0 1px 1px rgba(255,255,255,.1);
+
+}
+
+
+/* =====================================================
+   ICONOS
+===================================================== */
+
+.icono{
+
+    min-width:55px;
+    width:55px;
+    height:55px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:15px;
+
+    font-size:28px;
+
+    background:
+    linear-gradient(
+        145deg,
+        #ff2929,
+        #690000
+    );
+
+    border:2px solid #ff4141;
+
+    box-shadow:
+
+    0 5px 8px #000,
+
+    inset 0 2px 5px rgba(255,255,255,.2),
+
+    inset 0 -5px 8px rgba(0,0,0,.3);
+
+}
+
+
+/* TEXTO BOTÓN */
+
+.texto{
+
+    min-width:0;
+
+}
+
+
+.texto strong{
+
+    display:block;
+
+    font-size:17px;
+
+    line-height:20px;
+
+    text-shadow:
+    0 2px 3px #000;
+
+}
+
+
+.texto span{
+
+    display:block;
+
+    margin-top:5px;
+
+    color:#aaa;
+
+    font-size:12px;
+
+}
+
+
+/* FLECHA */
+
+.flecha{
+
+    position:absolute;
+
+    right:10px;
+    top:50%;
+
+    transform:
+    translateY(-50%);
+
+    color:#ff2b2b;
+
+    font-size:24px;
+
+    text-shadow:
+    0 0 8px rgba(255,0,0,.5);
+
+}
+
+
+/* =====================================================
+   AJUSTES
+===================================================== */
+
+.ajustes{
+
+    grid-column:
+    1 / -1;
+
+}
+
+
+/* =====================================================
+   CERRAR SESIÓN
+===================================================== */
+
+.cerrar{
+
+    margin:0 20px 22px;
+
+    min-height:62px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    gap:12px;
+
+    cursor:pointer;
+
+    border-radius:16px;
+
+    color:white;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    background:
+    linear-gradient(
+        145deg,
+        #d51b1b,
+        #690000
+    );
+
+    border:1px solid #ff3c3c;
+
+    box-shadow:
+
+    0 6px 0 #3c0000,
+
+    0 10px 20px rgba(0,0,0,.7),
+
+    inset 0 2px 5px rgba(255,255,255,.15);
+
+    transition:.15s;
+
+}
+
+
+.cerrar:active{
+
+    transform:
+    translateY(5px);
+
+    box-shadow:
+    0 2px 0 #3c0000,
+    0 5px 10px rgba(0,0,0,.7);
+
+}
+
+
+/* =====================================================
+   PIE
+===================================================== */
+
+.pie{
+
+    text-align:center;
+
+    padding:
+    0 20px 18px;
+
+    color:#555;
+
+    font-size:10px;
+
+}
+
+
+/* =====================================================
+   MÓVILES PEQUEÑOS
+===================================================== */
+
+@media(max-width:430px){
+
+    body{
+        padding:8px;
+    }
+
+    .cabecera{
+        min-height:105px;
+        padding:12px;
+    }
+
+    .logo-icon{
+        width:52px;
+        height:52px;
+        font-size:30px;
+    }
+
+    .nombre{
+        font-size:25px;
+    }
+
+    .subtitulo{
+        font-size:11px;
+    }
+
+    .perfil strong{
+        font-size:11px;
+    }
+
+    .presentacion{
+        margin:14px;
+        padding:20px;
+        min-height:155px;
+    }
+
+    .presentacion h1{
+        font-size:29px;
+    }
+
+    .menu{
+        gap:10px;
+        padding:0 14px 16px;
+    }
+
+    .boton{
+        min-height:95px;
+        padding:11px;
+        gap:9px;
+    }
+
+    .icono{
+        min-width:45px;
+        width:45px;
+        height:45px;
+        font-size:23px;
+        border-radius:12px;
+    }
+
+    .texto strong{
+        font-size:14px;
+    }
+
+    .texto span{
+        font-size:10px;
+    }
+
+    .flecha{
+        display:none;
+    }
+
+    .cerrar{
+        margin:
+        0 14px 18px;
+    }
+
+}
+
+
+/* =====================================================
+   MÓVILES MUY PEQUEÑOS
+===================================================== */
+
+@media(max-width:350px){
+
+    .menu{
+        grid-template-columns:1fr;
+    }
+
+    .ajustes{
+        grid-column:auto;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="contenedor">
+
+
+    <!-- =================================================
+         CABECERA
+    ================================================== -->
+
+    <header class="cabecera">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                🐷
+            </div>
+
+            <div>
+
+                <div class="nombre">
+                    El<span>Desierto</span>
+                </div>
+
+                <div class="subtitulo">
+                    Sistema de Gestión
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="perfil">
+
+            <div class="perfil-icon">
+                👤
+            </div>
+
+            <strong id="nombreUsuario">
+                Usuario
+            </strong>
+
+            <small id="rolUsuario">
+                —
+            </small>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =================================================
+         PRESENTACIÓN
+    ================================================== -->
+
+    <section class="presentacion">
+
+        <div class="bienvenido">
+            Bienvenido,
+        </div>
+
+        <h1>
+            <span id="bienvenidaUsuario">
+                Usuario
+            </span>
+        </h1>
+
+        <p>
+            Panel principal del sistema
+        </p>
+
+    </section>
+
+
+
+    <!-- =================================================
+         MENÚ
+    ================================================== -->
+
+    <main class="menu">
+
+<!-- DASHBOARD -->
+
+<div class="boton"
+onclick="window.location.href='dashboard.html'">
+
+    <div class="icono">
+        📊
+    </div>
+
+    <div class="texto">
+
+        <strong>
+            Dashboard
+        </strong>
+
+        <span>
+            Resumen del día
+        </span>
+
+    </div>
+
+    <div class="flecha">
+        ›
+    </div>
+
+</div>
+
+      <!-- ASISTENTE IA -->
+
+<div class="boton"
+onclick="window.location.href='asistente.html'">
+
+    <div class="icono">
+        🎙️
+    </div>
+
+    <div class="texto">
+
+        <strong>
+            Asistente IA
+        </strong>
+
+        <span>
+            Habla con ElDesierto
+        </span>
+
+    </div>
+
+    <div class="flecha">
+        ›
+    </div>
+
+</div>
+      
+        <!-- INVENTARIO -->
+
+        <div class="boton"
+        onclick="window.location.href='inventario.html'">
+
+            <div class="icono">
+                📦
+            </div>
+
+            <div class="texto">
+
+                <strong>
+                    Inventario
+                </strong>
+
+                <span>
+                    Control de existencias
+                </span>
+
+            </div>
+
+            <div class="flecha">
+                ›
+            </div>
+
+        </div>
+
+
+
+        <!-- ENTRADA -->
+
+        <div class="boton"
+        onclick="abrirEntrada()">
+
+            <div class="icono">
+                ➕
+            </div>
+
+            <div class="texto">
+
+                <strong>
+                    Entrada
+                </strong>
+
+                <span>
+                    Entrada de mercancía
+                </span>
+
+            </div>
+
+            <div class="flecha">
+                ›
+            </div>
+
+        </div>
+
+
+
+        <!-- SALIDA -->
+
+        <div class="boton"
+        onclick="window.location.href='salida.html'">
+
+            <div class="icono">
+                ➖
+            </div>
+
+            <div class="texto">
+
+                <strong>
+                    Salida
+                </strong>
+
+                <span>
+                    Salida de mercancía
+                </span>
+
+            </div>
+
+            <div class="flecha">
+                ›
+            </div>
+
+        </div>
+
+
+
+        <!-- HISTORIAL -->
+
+        <div class="boton"
+        onclick="window.location.href='historial.html'">
+
+            <div class="icono">
+                📜
+            </div>
+
+            <div class="texto">
+
+                <strong>
+                    Historial
+                </strong>
+
+                <span>
+                    Movimientos realizados
+                </span>
+
+            </div>
+
+            <div class="flecha">
+                ›
+            </div>
+
+        </div>
+
+
+
+        <!-- REPORTES -->
+
+        <div class="boton"
+        onclick="window.location.href='reportes.html'">
+
+            <div class="icono">
+                📊
+            </div>
+
+            <div class="texto">
+
+                <strong>
+                    Reportes
+                </strong>
+
+                <span>
+                    Informes y estadísticas
+                </span>
+
+            </div>
+
+            <div class="flecha">
+                ›
+            </div>
+
+        </div>
+
+
+
+        <!-- RECETAS -->
+
+        <div class="boton"
+        onclick="window.location.href='recetas.html'">
+
+            <div class="icono">
+                🧪
+            </div>
+
+            <div class="texto">
+
+                <strong>
+                    Recetas
+                </strong>
+
+                <span>
+                    Gestión de recetas
+                </span>
+
+            </div>
+
+            <div class="flecha">
+                ›
+            </div>
+
+        </div>
+
+
+
+        <!-- FABRICACIÓN -->
+
+        <div class="boton"
+        onclick="window.location.href='fabricacion.html'">
+
+            <div class="icono">
+                🏭
+            </div>
+
+            <div class="texto">
+
+                <strong>
+                    Fabricación
+                </strong>
+
+                <span>
+                    Producción de pienso
+                </span>
+
+            </div>
+
+            <div class="flecha">
+                ›
+            </div>
+
+        </div>
+
+
+
+        <!-- NAVES -->
+
+        <div class="boton"
+        onclick="window.location.href='naves.html'">
+
+            <div class="icono">
+                🐷
+            </div>
+
+            <div class="texto">
+
+                <strong>
+                    Naves
+                </strong>
+
+                <span>
+                    Gestión de naves
+                </span>
+
+            </div>
+
+            <div class="flecha">
+                ›
+            </div>
+
+        </div>
+
+
+
+        <!-- HISTORIAL NAVES -->
+
+        <div class="boton"
+        onclick="window.location.href='historial_naves.html'">
+
+            <div class="icono">
+                📋
+            </div>
+
+            <div class="texto">
+
+                <strong>
+                    Historial de Naves
+                </strong>
+
+                <span>
+                    Movimientos en naves
+                </span>
+
+            </div>
+
+            <div class="flecha">
+                ›
+            </div>
+
+        </div>
+
+
+
+        <!-- AJUSTES -->
+
+        <div class="boton ajustes"
+        onclick="window.location.href='ajustes.html'">
+
+            <div class="icono">
+                ⚙️
+            </div>
+
+            <div class="texto">
+
+                <strong>
+                    Ajustes
+                </strong>
+
+                <span>
+                    Configuración del sistema
+                </span>
+
+            </div>
+
+            <div class="flecha">
+                ›
+            </div>
+
+        </div>
+
+
+    </main>
+
+
+
+    <!-- =================================================
+         CERRAR SESIÓN
+    ================================================== -->
+
+    <div class="cerrar"
+         onclick="cerrarSesion()">
+
+        <span>
+            🚪
+        </span>
+
+        <span>
+            Cerrar sesión
+        </span>
+
+    </div>
+
+
+    <div class="pie">
+        ElDesierto · Sistema de Gestión
+    </div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     SUPABASE
+===================================================== -->
+
+<script src="supabase.js"></script>
+
+
+<script>
+
+/* =====================================================
+   ENTRADA
+===================================================== */
+
+function abrirEntrada(){
+
+    window.location.href =
+    "entrada.html";
+
+}
+
+
+/* =====================================================
+   VERIFICAR SESIÓN
+===================================================== */
+
+async function verificarSesion(){
+
+    try{
+
+        const { data, error } =
+        await clienteSupabase.auth.getSession();
+
+
+        if(error){
+
+            console.error(
+                "Error de sesión:",
+                error
+            );
+
+            return;
+
+        }
+
+
+        if(!data.session){
+
+            window.location.href =
+            "login.html";
+
+            return;
+
+        }
+
+
+        /* =============================================
+           OBTENER USUARIO
+        ============================================= */
+
+        const usuario =
+        data.session.user;
+
+
+        let nombre =
+        usuario.email || "Usuario";
+
+
+        /*
+         Intentamos obtener el perfil
+         */
+
+        const { data: perfil } =
+        await clienteSupabase
+        .from("perfiles")
+        .select("rol")
+        .eq("id", usuario.id)
+        .maybeSingle();
+
+
+        if(perfil && perfil.rol){
+
+            document.getElementById(
+                "rolUsuario"
+            ).textContent =
+            perfil.rol;
+
+        }
+
+
+        /*
+         Mostrar usuario
+         */
+
+        const parteNombre =
+        nombre.split("@")[0];
+
+
+        document.getElementById(
+            "nombreUsuario"
+        ).textContent =
+        parteNombre;
+
+
+        document.getElementById(
+            "bienvenidaUsuario"
+        ).textContent =
+        parteNombre;
+
+
+    }catch(error){
+
+        console.error(
+            "Error verificando sesión:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   CERRAR SESIÓN
+===================================================== */
+
+async function cerrarSesion(){
+
+    const confirmar =
+    confirm(
+        "¿Deseas cerrar la sesión?"
+    );
+
+
+    if(!confirmar){
+
+        return;
+
+    }
+
+
+    const { error } =
+    await clienteSupabase
+    .auth
+    .signOut();
+
+
+    if(error){
+
+        alert(
+            "No se pudo cerrar la sesión."
+        );
+
+        console.error(error);
+
+        return;
+
+    }
+
+
+    window.location.href =
+    "login.html";
+
+}
+
+
+/* =====================================================
+   INICIAR
+===================================================== */
+
+verificarSesion();
+
+</script>
+
+
+</body>
+</html>

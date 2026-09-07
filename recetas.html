@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ElDesierto - Recetas</title>
+
+<style>
+
+/* =====================================================
+   CONFIGURACIÓN GENERAL
+===================================================== */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    -webkit-tap-highlight-color:transparent;
+}
+
+body{
+
+    font-family:Arial, Helvetica, sans-serif;
+
+    min-height:100vh;
+
+    background:
+        radial-gradient(
+            circle at top,
+            #3b0000 0%,
+            #160000 35%,
+            #050505 75%,
+            #000000 100%
+        );
+
+    color:white;
+
+    padding:15px;
+
+}
+
+
+/* =====================================================
+   CONTENEDOR
+===================================================== */
+
+.contenedor{
+
+    max-width:900px;
+
+    margin:auto;
+
+}
+
+
+/* =====================================================
+   ENCABEZADO
+===================================================== */
+
+.encabezado{
+
+    text-align:center;
+
+    padding:15px 0 25px;
+
+}
+
+.logo{
+
+    width:80px;
+    height:80px;
+
+    margin:auto auto 12px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    font-size:42px;
+
+    border-radius:50%;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ff3333,
+            #850000
+        );
+
+    border:2px solid #ff5555;
+
+    box-shadow:
+
+        0 6px 0 #4b0000,
+
+        0 12px 25px rgba(255,0,0,.3),
+
+        inset 0 2px 6px rgba(255,255,255,.25);
+
+}
+
+h1{
+
+    color:#ff3333;
+
+    font-size:30px;
+
+    text-shadow:
+
+        0 0 10px #ff0000,
+
+        0 0 25px rgba(180,0,0,.5);
+
+}
+
+.subtitulo{
+
+    margin-top:7px;
+
+    color:#aaa;
+
+}
+
+
+/* =====================================================
+   BOTONES
+===================================================== */
+
+.boton{
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    width:100%;
+
+    padding:15px;
+
+    margin:10px 0;
+
+    border:none;
+
+    border-radius:13px;
+
+    color:white;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    background:
+        linear-gradient(
+            145deg,
+            #e51b23,
+            #850000
+        );
+
+    border:1px solid #ff4444;
+
+    box-shadow:
+
+        0 5px 0 #4a0000,
+
+        0 10px 18px rgba(0,0,0,.5),
+
+        inset 0 2px 5px rgba(255,255,255,.18);
+
+    transition:.15s;
+
+}
+
+.boton:active{
+
+    transform:translateY(4px);
+
+    box-shadow:
+
+        0 1px 0 #4a0000,
+
+        inset 0 2px 5px rgba(255,255,255,.15);
+
+}
+
+.boton-secundario{
+
+    background:
+        linear-gradient(
+            145deg,
+            #303030,
+            #101010
+        );
+
+    border-color:#555;
+
+    box-shadow:
+
+        0 5px 0 #000,
+
+        0 10px 18px rgba(0,0,0,.5),
+
+        inset 0 2px 5px rgba(255,255,255,.08);
+
+}
+
+.boton-editar{
+
+    background:
+        linear-gradient(
+            145deg,
+            #ff7a00,
+            #9a3900
+        );
+
+    border-color:#ff9a40;
+
+    box-shadow:
+
+        0 5px 0 #5c2100,
+
+        0 8px 15px rgba(0,0,0,.5);
+
+}
+
+.boton-eliminar{
+
+    background:
+        linear-gradient(
+            145deg,
+            #ff3333,
+            #850000
+        );
+
+}
+
+
+/* =====================================================
+   TARJETAS
+===================================================== */
+
+.tarjeta{
+
+    width:100%;
+
+    margin:15px auto;
+
+    padding:18px;
+
+    text-align:left;
+
+    border-radius:18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #1c1c1c,
+            #090909
+        );
+
+    border:1px solid #3f3f3f;
+
+    box-shadow:
+
+        0 8px 0 #000,
+
+        0 15px 30px rgba(0,0,0,.65),
+
+        inset 0 1px 2px rgba(255,255,255,.08);
+
+}
+
+.tarjeta-receta{
+
+    border-left:4px solid #e51b23;
+
+}
+
+.nombre-receta{
+
+    font-size:21px;
+
+    color:#ff4444;
+
+    margin-bottom:15px;
+
+    text-shadow:
+        0 0 8px rgba(255,0,0,.3);
+
+}
+
+.info{
+
+    margin:8px 0;
+
+    color:#ccc;
+
+}
+
+.info strong{
+
+    color:white;
+
+}
+
+
+/* =====================================================
+   FORMULARIO
+===================================================== */
+
+#formulario{
+
+    display:none;
+
+}
+
+h3{
+
+    color:#ff4444;
+
+    text-align:center;
+
+    margin-bottom:15px;
+
+}
+
+input,
+textarea{
+
+    width:100%;
+
+    padding:14px;
+
+    margin:7px 0;
+
+    border-radius:10px;
+
+    border:1px solid #444;
+
+    background:#080808;
+
+    color:white;
+
+    font-size:15px;
+
+    outline:none;
+
+}
+
+textarea{
+
+    min-height:90px;
+
+    resize:vertical;
+
+}
+
+input:focus,
+textarea:focus{
+
+    border-color:#e51b23;
+
+    box-shadow:
+        0 0 10px rgba(255,0,0,.25);
+
+}
+
+
+/* =====================================================
+   LISTA DE MATERIAS PRIMAS
+===================================================== */
+
+.materias{
+
+    margin-top:15px;
+
+    padding:13px;
+
+    border-radius:12px;
+
+    background:#0b0b0b;
+
+    border:1px solid #292929;
+
+}
+
+.materias-titulo{
+
+    color:#ff5555;
+
+    margin-bottom:8px;
+
+    font-weight:bold;
+
+}
+
+.materia{
+
+    padding:7px 0;
+
+    border-bottom:1px solid #222;
+
+    color:#ccc;
+
+}
+
+.materia:last-child{
+
+    border-bottom:none;
+
+}
+
+
+/* =====================================================
+   SEPARADOR
+===================================================== */
+
+.titulo-seccion{
+
+    text-align:center;
+
+    margin:25px 0 15px;
+
+    color:white;
+
+    font-size:22px;
+
+}
+
+.sin-recetas{
+
+    text-align:center;
+
+    color:#888;
+
+    padding:30px;
+
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:500px){
+
+    body{
+        padding:10px;
+    }
+
+    h1{
+        font-size:27px;
+    }
+
+    .tarjeta{
+        padding:15px;
+    }
+
+}
+
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+</head>
+
+
+<body>
+
+
+<div class="contenedor">
+
+
+<!-- =====================================================
+     ENCABEZADO
+===================================================== -->
+
+<div class="encabezado">
+
+    <div class="logo">🧪</div>
+
+    <h1>Recetas</h1>
+
+    <div class="subtitulo">
+        Gestión de recetas de producción
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     NUEVA RECETA
+===================================================== -->
+
+<button
+class="boton"
+onclick="mostrarFormulario()">
+
+➕ Nueva receta
+
+</button>
+
+
+<!-- =====================================================
+     FORMULARIO
+===================================================== -->
+
+<div
+id="formulario"
+class="tarjeta">
+
+<h3>🧪 Crear nueva receta</h3>
+
+<input
+id="nombre"
+placeholder="Nombre de la receta">
+
+
+<input
+id="producto"
+placeholder="Producto resultado">
+
+
+<input
+id="cantidad"
+type="number"
+placeholder="Cantidad resultado (kg)">
+
+
+<textarea
+id="descripcion"
+placeholder="Descripción de la receta"></textarea>
+
+
+<button
+class="boton"
+onclick="guardarReceta()">
+
+💾 Guardar receta
+
+</button>
+
+
+<button
+class="boton boton-secundario"
+onclick="ocultarFormulario()">
+
+✖ Cancelar
+
+</button>
+
+</div>
+
+
+<!-- =====================================================
+     LISTA
+===================================================== -->
+
+<h2 class="titulo-seccion">
+    📋 Recetas creadas
+</h2>
+
+
+<div id="listaRecetas">
+
+    <div class="sin-recetas">
+        Cargando recetas...
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     VOLVER
+===================================================== -->
+
+<button
+class="boton boton-secundario"
+onclick="window.location.href='menu.html'">
+
+⬅️ Volver al menú
+
+</button>
+
+
+</div>
+
+
+<script src="supabase.js"></script>
+
+
+<script>
+
+
+/* =====================================================
+   MOSTRAR / OCULTAR FORMULARIO
+===================================================== */
+
+function mostrarFormulario(){
+
+    document
+    .getElementById("formulario")
+    .style.display="block";
+
+
+    document
+    .getElementById("formulario")
+    .scrollIntoView({
+        behavior:"smooth"
+    });
+
+}
+
+
+function ocultarFormulario(){
+
+    document
+    .getElementById("formulario")
+    .style.display="none";
+
+}
+
+
+/* =====================================================
+   CARGAR RECETAS
+===================================================== */
+
+async function cargarRecetas(){
+
+const { data, error } = await clienteSupabase
+
+.from("recetas")
+
+.select(`
+
+    *,
+
+    detalle_recetas(
+
+        materia_prima,
+
+        cantidad
+
+    )
+
+`)
+
+.order("id");
+
+
+if(error){
+
+document.getElementById("listaRecetas").innerHTML = `
+
+<div class="sin-recetas">
+
+❌ Error cargando recetas:
+
+<br><br>
+
+${error.message}
+
+</div>
+
+`;
+
+console.log(error);
+
+return;
+
+}
+
+
+if(!data || data.length === 0){
+
+document.getElementById("listaRecetas").innerHTML = `
+
+<div class="sin-recetas">
+
+📭 No hay recetas creadas todavía.
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+let html="";
+
+
+data.forEach(receta=>{
+
+
+let materias = "";
+
+
+if(
+receta.detalle_recetas &&
+receta.detalle_recetas.length > 0
+){
+
+materias =
+
+receta.detalle_recetas
+
+.map(m => `
+
+<div class="materia">
+
+🥣 ${m.materia_prima}
+
+<span style="float:right;color:#ff5555">
+
+${m.cantidad} kg
+
+</span>
+
+</div>
+
+`)
+
+.join("");
+
+
+}else{
+
+materias = `
+
+<div class="materia">
+
+Sin materias primas agregadas.
+
+</div>
+
+`;
+
+}
+
+
+html += `
+
+<div class="tarjeta tarjeta-receta">
+
+
+<div class="nombre-receta">
+
+🧪 ${receta.nombre}
+
+</div>
+
+
+<div class="info">
+
+<strong>🏭 Producto:</strong>
+
+${receta.producto_resultado}
+
+</div>
+
+
+<div class="info">
+
+<strong>⚖️ Cantidad:</strong>
+
+${receta.cantidad_resultado} kg
+
+</div>
+
+
+${
+
+receta.descripcion
+
+?
+
+`
+
+<div class="info">
+
+<strong>📝 Descripción:</strong>
+
+${receta.descripcion}
+
+</div>
+
+`
+
+:
+
+""
+
+}
+
+
+<div class="materias">
+
+<div class="materias-titulo">
+
+🌽 Materias primas
+
+</div>
+
+${materias}
+
+</div>
+
+
+<button
+
+class="boton boton-secundario"
+
+onclick="window.location.href='detalle_receta.html?id=${receta.id}'">
+
+📋 Ver receta completa
+
+</button>
+
+
+<button
+
+class="boton boton-editar"
+
+onclick="editarReceta(${receta.id})">
+
+✏️ Editar receta
+
+</button>
+
+
+<button
+
+class="boton boton-eliminar"
+
+onclick="eliminarReceta(${receta.id})">
+
+🗑️ Eliminar receta
+
+</button>
+
+
+</div>
+
+`;
+
+});
+
+
+document
+.getElementById("listaRecetas")
+.innerHTML=html;
+
+
+}
+
+
+/* =====================================================
+   GUARDAR RECETA
+===================================================== */
+
+async function guardarReceta(){
+
+let nombre=
+document.getElementById("nombre")
+.value.trim();
+
+
+let producto=
+document.getElementById("producto")
+.value.trim();
+
+
+let cantidad=
+document.getElementById("cantidad")
+.value;
+
+
+let descripcion=
+document.getElementById("descripcion")
+.value.trim();
+
+
+if(!nombre || !producto || !cantidad){
+
+alert(
+"⚠️ Completa los campos obligatorios."
+);
+
+return;
+
+}
+
+
+/* =====================================
+   1. CREAR RECETA
+===================================== */
+
+const {
+data:recetaCreada,
+error:errorReceta
+}=
+
+await clienteSupabase
+
+.from("recetas")
+
+.insert({
+
+nombre:nombre,
+
+producto_resultado:producto,
+
+cantidad_resultado:cantidad,
+
+descripcion:descripcion,
+
+usuario:"admin",
+
+fecha:new Date().toISOString()
+
+})
+
+.select()
+
+.single();
+
+
+if(errorReceta){
+
+alert(
+"❌ Error guardando receta:\n\n"
++
+errorReceta.message
+);
+
+return;
+
+}
+
+
+/* =====================================
+   2. BUSCAR PRODUCTO ELABORADO
+===================================== */
+
+const {
+data:productoExistente,
+error:errorBusqueda
+}=
+
+await clienteSupabase
+
+.from("productos_elaborados")
+
+.select(
+"id, Nombre, Unidad, Cantidad"
+)
+
+.eq(
+"Nombre",
+producto
+)
+
+.maybeSingle();
+
+
+if(errorBusqueda){
+
+alert(
+"❌ Error comprobando producto elaborado:\n\n"
++
+errorBusqueda.message
+);
+
+return;
+
+}
+
+
+/* =====================================
+   3. CREAR PRODUCTO SI NO EXISTE
+===================================== */
+
+if(!productoExistente){
+
+const {
+error:errorProducto
+}=
+
+await clienteSupabase
+
+.from("productos_elaborados")
+
+.insert({
+
+Nombre:producto,
+
+Unidad:"kg",
+
+Cantidad:0
+
+});
+
+
+if(errorProducto){
+
+alert(
+"⚠️ La receta fue creada, pero ocurrió un problema creando el producto elaborado:\n\n"
++
+errorProducto.message
+);
+
+return;
+
+}
+
+}
+
+
+/* =====================================
+   TERMINADO
+===================================== */
+
+alert(
+
+"✅ Receta creada correctamente.\n\n"
+
++
+
+"🧪 Receta: "
+
++
+
+nombre
+
++
+
+"\n🏭 Producto elaborado: "
+
++
+
+producto
+
+);
+
+
+/* Limpiar formulario */
+
+document
+.getElementById("nombre")
+.value="";
+
+
+document
+.getElementById("producto")
+.value="";
+
+
+document
+.getElementById("cantidad")
+.value="";
+
+
+document
+.getElementById("descripcion")
+.value="";
+
+
+ocultarFormulario();
+
+
+cargarRecetas();
+
+}
+
+
+/* =====================================================
+   EDITAR RECETA
+===================================================== */
+
+async function editarReceta(id){
+
+const {
+data,
+error
+}=
+
+await clienteSupabase
+
+.from("recetas")
+
+.select("*")
+
+.eq("id",id)
+
+.single();
+
+
+if(error){
+
+alert(error.message);
+
+return;
+
+}
+
+
+let nombre=
+prompt(
+"Nombre de la receta:",
+data.nombre
+);
+
+
+if(nombre===null)return;
+
+
+let producto=
+prompt(
+"Producto resultado:",
+data.producto_resultado
+);
+
+
+if(producto===null)return;
+
+
+let cantidad=
+prompt(
+"Cantidad (kg):",
+data.cantidad_resultado
+);
+
+
+if(cantidad===null)return;
+
+
+let descripcion=
+prompt(
+"Descripción:",
+data.descripcion || ""
+);
+
+
+if(descripcion===null)return;
+
+
+const {
+error:errorUpdate
+}=
+
+await clienteSupabase
+
+.from("recetas")
+
+.update({
+
+nombre:nombre,
+
+producto_resultado:producto,
+
+cantidad_resultado:cantidad,
+
+descripcion:descripcion
+
+})
+
+.eq("id",id);
+
+
+if(errorUpdate){
+
+alert(
+"❌ Error actualizando:\n\n"
++
+errorUpdate.message
+);
+
+return;
+
+}
+
+
+alert(
+"✅ Receta actualizada correctamente."
+);
+
+
+cargarRecetas();
+
+}
+
+
+/* =====================================================
+   ELIMINAR RECETA
+===================================================== */
+
+async function eliminarReceta(id){
+
+let confirmar=
+
+confirm(
+"⚠️ ¿Deseas eliminar esta receta?\n\nEsta acción no se puede deshacer."
+);
+
+
+if(!confirmar){
+
+return;
+
+}
+
+
+/* =====================================
+   ELIMINAR MATERIAS PRIMAS
+===================================== */
+
+const {
+error:errorDetalle
+}=
+
+await clienteSupabase
+
+.from("detalle_recetas")
+
+.delete()
+
+.eq(
+"receta_id",
+id
+);
+
+
+if(errorDetalle){
+
+alert(
+"❌ Error eliminando materias primas:\n\n"
++
+errorDetalle.message
+);
+
+return;
+
+}
+
+
+/* =====================================
+   ELIMINAR RECETA
+===================================== */
+
+const {
+error:errorReceta
+}=
+
+await clienteSupabase
+
+.from("recetas")
+
+.delete()
+
+.eq(
+"id",
+id
+);
+
+
+if(errorReceta){
+
+alert(
+"❌ Error eliminando receta:\n\n"
++
+errorReceta.message
+);
+
+return;
+
+}
+
+
+alert(
+"✅ Receta eliminada correctamente."
+);
+
+
+cargarRecetas();
+
+}
+
+
+/* =====================================================
+   INICIAR
+===================================================== */
+
+cargarRecetas();
+
+</script>
+
+
+</body>
+
+</html>

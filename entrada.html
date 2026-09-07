@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Entrada de mercancía - ElDesierto</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+    width:100%;
+    min-height:100%;
+}
+
+body{
+
+    font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+    background:
+    radial-gradient(
+        circle at top,
+        #3b0000 0%,
+        #140000 35%,
+        #000 75%
+    );
+
+    color:white;
+
+    min-height:100vh;
+
+    padding:20px;
+
+}
+
+.contenedor{
+
+    width:100%;
+    max-width:500px;
+
+    margin:auto;
+
+}
+
+.encabezado{
+
+    text-align:center;
+
+    margin-bottom:20px;
+
+}
+
+.logo{
+
+    font-size:55px;
+
+    margin-bottom:5px;
+
+}
+
+.marca{
+
+    font-size:32px;
+
+    font-weight:bold;
+
+    color:#ff1a1a;
+
+    text-shadow:
+    0 0 10px rgba(255,0,0,.5);
+
+}
+
+.subtitulo{
+
+    color:#aaa;
+
+    font-size:14px;
+
+    margin-top:3px;
+
+}
+
+.titulo{
+
+    margin-top:25px;
+
+    font-size:27px;
+
+    font-weight:bold;
+
+}
+
+.descripcion{
+
+    color:#aaa;
+
+    font-size:14px;
+
+    margin-top:8px;
+
+    line-height:1.5;
+
+}
+
+.boton-volver{
+
+    display:block;
+
+    width:100%;
+
+    margin-top:20px;
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #3b0000,
+        #160000
+    );
+
+    border:1px solid #700000;
+
+    color:white;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+.caja{
+
+    margin-top:20px;
+
+    padding:20px;
+
+    background:
+    rgba(15,0,0,.88);
+
+    border:1px solid #5c0000;
+
+    border-radius:20px;
+
+    box-shadow:
+    0 0 20px rgba(255,0,0,.12);
+
+}
+
+.opciones{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
+}
+
+.boton-opcion{
+
+    width:100%;
+
+    padding:17px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #5c0000,
+        #250000
+    );
+
+    border:1px solid #8b0000;
+
+    color:white;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+.boton-opcion:active{
+
+    transform:scale(.98);
+
+}
+
+.formulario{
+
+    display:none;
+
+    margin-top:20px;
+
+}
+
+.formulario.activo{
+
+    display:block;
+
+}
+
+.campo{
+
+    margin-bottom:16px;
+
+}
+
+.campo label{
+
+    display:block;
+
+    margin-bottom:7px;
+
+    color:#ddd;
+
+    font-size:14px;
+
+    font-weight:bold;
+
+}
+
+.campo input,
+.campo select,
+.campo textarea{
+
+    width:100%;
+
+    padding:13px;
+
+    border-radius:12px;
+
+    border:1px solid #650000;
+
+    background:#090000;
+
+    color:white;
+
+    font-size:15px;
+
+    outline:none;
+
+}
+
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus{
+
+    border-color:#d00000;
+
+    box-shadow:
+    0 0 8px rgba(255,0,0,.25);
+
+}
+
+.campo textarea{
+
+    min-height:90px;
+
+    resize:vertical;
+
+}
+
+.boton-guardar{
+
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #e00000,
+        #7a0000
+    );
+
+    color:white;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    box-shadow:
+    0 5px 15px rgba(255,0,0,.2);
+
+}
+
+.boton-guardar:active{
+
+    transform:scale(.98);
+
+}
+
+@media(max-width:400px){
+
+    body{
+
+        padding:15px;
+
+    }
+
+    .marca{
+
+        font-size:28px;
+
+    }
+
+    .titulo{
+
+        font-size:24px;
+
+    }
+
+    .caja{
+
+        padding:16px;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="contenedor">
+
+
+    <div class="encabezado">
+
+        <div class="logo">
+            🐷
+        </div>
+
+        <div class="marca">
+            ElDesierto
+        </div>
+
+        <div class="subtitulo">
+            Gestión y control de producción porcina
+        </div>
+
+        <div class="titulo">
+            ➕ Entrada de mercancía
+        </div>
+
+        <div class="descripcion">
+            Registra la entrada de materias primas,
+            productos y materiales de construcción.
+        </div>
+
+    </div>
+
+
+    <button
+    class="boton-volver"
+    onclick="window.location.href='inventario.html'">
+
+        ← Volver al inventario
+
+    </button>
+
+
+    <div class="caja">
+
+
+        <div class="opciones">
+
+
+            <button
+            class="boton-opcion"
+            onclick="mostrarFormulario('materias')">
+
+                📦 Entrada de materias primas
+
+            </button>
+
+
+            <button
+            class="boton-opcion"
+            onclick="mostrarFormulario('construccion')">
+
+                🏗️ Entrada de materiales de construcción
+
+            </button>
+
+
+        </div>
+
+
+
+        <!-- =====================================================
+             FORMULARIO MATERIAS PRIMAS
+        ====================================================== -->
+
+        <div
+        id="formMaterias"
+        class="formulario">
+
+
+            <div class="campo">
+
+                <label>
+                    Fecha
+                </label>
+
+                <input
+                type="date"
+                id="fecha">
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>
+                    Producto
+                </label>
+
+                <select
+                id="producto">
+
+                    <option value="">
+                        Selecciona un producto
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>
+                    Cantidad
+                </label>
+
+                <input
+                type="number"
+                id="cantidad"
+                min="0"
+                step="0.01"
+                placeholder="Cantidad">
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>
+                    Observación
+                </label>
+
+                <textarea
+                id="observacion"
+                placeholder="Observación opcional"></textarea>
+
+            </div>
+
+
+            <button
+            class="boton-guardar"
+            onclick="guardarMateriasPrimas()">
+
+                💾 Guardar entrada
+
+            </button>
+
+
+        </div>
+
+
+
+        <!-- =====================================================
+             FORMULARIO CONSTRUCCIÓN
+        ====================================================== -->
+
+        <div
+        id="formConstruccion"
+        class="formulario">
+
+
+            <div class="campo">
+
+                <label>
+                    Fecha
+                </label>
+
+                <input
+                type="date"
+                id="fechaConstruccion">
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>
+                    Material
+                </label>
+
+                <select
+                id="materialConstruccion">
+
+                    <option value="">
+                        Selecciona un material
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>
+                    Cantidad
+                </label>
+
+                <input
+                type="number"
+                id="cantidadConstruccion"
+                min="0"
+                step="0.01"
+                placeholder="Cantidad">
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>
+                    Observación
+                </label>
+
+                <textarea
+                id="observacionConstruccion"
+                placeholder="Observación opcional"></textarea>
+
+            </div>
+
+
+            <button
+            class="boton-guardar"
+            onclick="guardarConstruccion()">
+
+                💾 Guardar entrada
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase.js"></script>
+
+
+<script>
+
+
+/* =====================================================
+   COMPROBAR SESIÓN
+===================================================== */
+
+async function comprobarSesion(){
+
+    const {
+        data:{
+            session
+        }
+    } =
+    await clienteSupabase
+    .auth
+    .getSession();
+
+
+    if(!session){
+
+        window.location.href =
+        "login.html";
+
+    }
+
+}
+
+
+/* =====================================================
+   MOSTRAR FORMULARIO
+===================================================== */
+
+function mostrarFormulario(tipo){
+
+    document
+    .getElementById("formMaterias")
+    .classList
+    .remove("activo");
+
+    document
+    .getElementById("formConstruccion")
+    .classList
+    .remove("activo");
+
+
+    if(tipo === "materias"){
+
+        document
+        .getElementById("formMaterias")
+        .classList
+        .add("activo");
+
+    }
+
+
+    if(tipo === "construccion"){
+
+        document
+        .getElementById("formConstruccion")
+        .classList
+        .add("activo");
+
+    }
+
+}
+
+
+/* =====================================================
+   CARGAR PRODUCTOS
+===================================================== */
+
+async function cargarProductos(){
+
+    const {
+        data,
+        error
+    } =
+    await clienteSupabase
+    .from("productos")
+    .select(
+        "Identificación, Nombre, Unidad"
+    )
+    .order("Nombre");
+
+
+    if(error){
+
+        console.error(
+            "Error cargando productos:",
+            error
+        );
+
+        return;
+
+    }
+
+
+    const select =
+        document.getElementById(
+            "producto"
+        );
+
+
+    data.forEach(producto => {
+
+        const opcion =
+            document.createElement(
+                "option"
+            );
+
+        opcion.value =
+            producto.Identificación;
+
+        opcion.textContent =
+            producto.Nombre
+            + " ("
+            + producto.Unidad
+            + ")";
+
+        select.appendChild(opcion);
+
+    });
+
+}
+
+
+/* =====================================================
+   CARGAR MATERIALES DE CONSTRUCCIÓN
+===================================================== */
+
+async function cargarMaterialesConstruccion(){
+
+    const {
+        data,
+        error
+    } =
+    await clienteSupabase
+    .from("materiales_construccion")
+    .select(
+        "id, Nombre, Unidad"
+    )
+    .order("Nombre");
+
+
+    if(error){
+
+        console.error(
+            "Error cargando materiales:",
+            error
+        );
+
+        return;
+
+    }
+
+
+    const select =
+        document.getElementById(
+            "materialConstruccion"
+        );
+
+
+    data.forEach(material => {
+
+        const opcion =
+            document.createElement(
+                "option"
+            );
+
+        opcion.value =
+            material.id;
+
+        opcion.textContent =
+            material.Nombre
+            + " ("
+            + material.Unidad
+            + ")";
+
+        select.appendChild(opcion);
+
+    });
+
+}
+
+
+/* =====================================================
+   GUARDAR ENTRADA DE MATERIAS PRIMAS
+===================================================== */
+
+async function guardarMateriasPrimas(){
+
+    const fecha =
+        document.getElementById(
+            "fecha"
+        ).value;
+
+
+    const idProducto =
+        Number(
+            document.getElementById(
+                "producto"
+            ).value
+        );
+
+
+    const cantidad =
+        Number(
+            document.getElementById(
+                "cantidad"
+            ).value
+        );
+
+
+    const observacion =
+        document.getElementById(
+            "observacion"
+        ).value;
+
+
+    if(
+        !fecha ||
+        !idProducto ||
+        !cantidad ||
+        cantidad <= 0
+    ){
+
+        alert(
+            "Completa correctamente la fecha, el producto y la cantidad."
+        );
+
+        return;
+
+    }
+
+
+    const {
+        data:productoEncontrado,
+        error:errorBusqueda
+    } =
+    await clienteSupabase
+    .from("productos")
+    .select(
+        "Identificación, Nombre, Unidad, Cantidad"
+    )
+    .eq(
+        "Identificación",
+        idProducto
+    )
+    .single();
+
+
+    if(errorBusqueda){
+
+        alert(
+            "Error buscando el producto: "
+            + errorBusqueda.message
+        );
+
+        return;
+
+    }
+
+
+    if(!productoEncontrado){
+
+        alert(
+            "No se encontró el producto."
+        );
+
+        return;
+
+    }
+
+
+    const nuevaCantidad =
+        Number(
+            productoEncontrado.Cantidad
+        )
+        +
+        cantidad;
+
+
+    const {
+        error:errorActualizacion
+    } =
+    await clienteSupabase
+    .from("productos")
+    .update({
+
+        Cantidad:
+            nuevaCantidad
+
+    })
+    .eq(
+        "Identificación",
+        idProducto
+    );
+
+
+    if(errorActualizacion){
+
+        alert(
+            "Error actualizando el inventario: "
+            + errorActualizacion.message
+        );
+
+        return;
+
+    }
+
+
+    const {
+        data:{
+            session
+        }
+    } =
+    await clienteSupabase
+    .auth
+    .getSession();
+
+
+    const usuario =
+        session?.user?.email
+        || "Sin usuario";
+
+
+    const numeroOperacion =
+        "EN-"
+        +
+        Date.now();
+
+
+    const {
+        error:errorMovimiento
+    } =
+    await clienteSupabase
+    .from("movimientos")
+    .insert([{
+
+        Fecha:
+            fecha,
+
+        Producto:
+            productoEncontrado.Nombre,
+
+        Tipo:
+            "Entrada",
+
+        Cantidad:
+            cantidad,
+
+        Usuario:
+            usuario,
+
+        Observación:
+            observacion,
+
+        Numero_operacion:
+            numeroOperacion
+
+    }]);
+
+
+    if(errorMovimiento){
+
+        alert(
+            "La entrada se registró en el inventario, "
+            + "pero no se pudo guardar en el historial: "
+            + errorMovimiento.message
+        );
+
+        return;
+
+    }
+
+
+    alert(
+        "Entrada registrada correctamente.\n\n"
+        +
+        productoEncontrado.Nombre
+        +
+        ": "
+        +
+        nuevaCantidad
+        +
+        " "
+        +
+        productoEncontrado.Unidad
+    );
+
+
+    document.getElementById(
+        "cantidad"
+    ).value="";
+
+
+    document.getElementById(
+        "observacion"
+    ).value="";
+
+}
+
+
+/* =====================================================
+   GUARDAR ENTRADA DE MATERIALES DE CONSTRUCCIÓN
+   + REGISTRO EN HISTORIAL
+===================================================== */
+
+async function guardarConstruccion(){
+
+    const fecha =
+        document.getElementById(
+            "fechaConstruccion"
+        ).value;
+
+
+    const idMaterial =
+        Number(
+            document.getElementById(
+                "materialConstruccion"
+            ).value
+        );
+
+
+    const cantidad =
+        Number(
+            document.getElementById(
+                "cantidadConstruccion"
+            ).value
+        );
+
+
+    const observacion =
+        document.getElementById(
+            "observacionConstruccion"
+        ).value;
+
+
+    if(
+        !fecha ||
+        !idMaterial ||
+        !cantidad ||
+        cantidad <= 0
+    ){
+
+        alert(
+            "Completa correctamente la fecha, el material y la cantidad."
+        );
+
+        return;
+
+    }
+
+
+    /* -------------------------------------------------
+       BUSCAR MATERIAL
+    ------------------------------------------------- */
+
+    const {
+        data:materialEncontrado,
+        error:errorBusqueda
+    } =
+    await clienteSupabase
+    .from("materiales_construccion")
+    .select(
+        "id, Nombre, Unidad, Cantidad"
+    )
+    .eq(
+        "id",
+        idMaterial
+    )
+    .single();
+
+
+    if(errorBusqueda){
+
+        alert(
+            "Error buscando el material: "
+            + errorBusqueda.message
+        );
+
+        return;
+
+    }
+
+
+    if(!materialEncontrado){
+
+        alert(
+            "No se encontró el material."
+        );
+
+        return;
+
+    }
+
+
+    /* -------------------------------------------------
+       CALCULAR NUEVA CANTIDAD
+    ------------------------------------------------- */
+
+    const nuevaCantidad =
+        Number(
+            materialEncontrado.Cantidad
+        )
+        +
+        cantidad;
+
+
+    /* -------------------------------------------------
+       ACTUALIZAR INVENTARIO
+    ------------------------------------------------- */
+
+    const {
+        error:errorActualizacion
+    } =
+    await clienteSupabase
+    .from("materiales_construccion")
+    .update({
+
+        Cantidad:
+            nuevaCantidad
+
+    })
+    .eq(
+        "id",
+        idMaterial
+    );
+
+
+    if(errorActualizacion){
+
+        alert(
+            "Error actualizando los materiales: "
+            + errorActualizacion.message
+        );
+
+        return;
+
+    }
+
+
+    /* -------------------------------------------------
+       OBTENER USUARIO
+    ------------------------------------------------- */
+
+    const {
+        data:{
+            session
+        }
+    } =
+    await clienteSupabase
+    .auth
+    .getSession();
+
+
+    const usuario =
+        session?.user?.email
+        ||
+        "Sin usuario";
+
+
+    /* -------------------------------------------------
+       CREAR NÚMERO DE OPERACIÓN
+    ------------------------------------------------- */
+
+    const numeroOperacion =
+        "EN-C-"
+        +
+        Date.now();
+
+
+    /* -------------------------------------------------
+       GUARDAR MOVIMIENTO EN HISTORIAL
+    ------------------------------------------------- */
+
+    const {
+        error:errorMovimiento
+    } =
+    await clienteSupabase
+    .from(
+        "movimientos_materiales_construccion"
+    )
+    .insert([{
+
+        Fecha:
+            fecha,
+
+        Material:
+            materialEncontrado.Nombre,
+
+        Tipo:
+            "Entrada",
+
+        Cantidad:
+            cantidad,
+
+        Usuario:
+            usuario,
+
+        Observación:
+            observacion,
+
+        Numero_operacion:
+            numeroOperacion
+
+    }]);
+
+
+    /* -------------------------------------------------
+       SI FALLA EL HISTORIAL
+    ------------------------------------------------- */
+
+    if(errorMovimiento){
+
+        alert(
+            "La entrada se registró en el inventario, "
+            +
+            "pero no se pudo guardar en el historial.\n\n"
+            +
+            errorMovimiento.message
+        );
+
+        return;
+
+    }
+
+
+    /* -------------------------------------------------
+       TODO CORRECTO
+    ------------------------------------------------- */
+
+    alert(
+        "Entrada registrada correctamente.\n\n"
+        +
+        materialEncontrado.Nombre
+        +
+        ": "
+        +
+        nuevaCantidad
+        +
+        " "
+        +
+        materialEncontrado.Unidad
+    );
+
+
+    document.getElementById(
+        "cantidadConstruccion"
+    ).value="";
+
+
+    document.getElementById(
+        "observacionConstruccion"
+    ).value="";
+
+}
+
+
+/* =====================================================
+   INICIAR
+===================================================== */
+
+comprobarSesion();
+
+cargarProductos();
+
+cargarMaterialesConstruccion();
+
+
+</script>
+
+
+</body>
+
+</html>
