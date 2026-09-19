@@ -611,7 +611,7 @@ onclick="window.location.href='naves.html'">
     <button
     id="botonHistorialDestete"
     class="botonHistorial"
-    onclick="mostrarHistorialDestete()">
+    onclick="cambiarHistorialDestete()">
 
     🍼 Historial Destete
 
@@ -933,6 +933,8 @@ id="totalSalidasDestete">
 
 <div class="estadistica">
 
+<div class="estadistica">
+
 <div class="icono">📊</div>
 
 <div class="titulo">
@@ -1147,7 +1149,7 @@ function mostrarHistorialCeba(){
    CAMBIAR A HISTORIAL DESTETE
 ========================================== */
 
-async function mostrarHistorialDestete(){
+async function cambiarHistorialDestete(){
 
     document
     .getElementById("seccionCeba")
@@ -1172,11 +1174,6 @@ async function mostrarHistorialDestete(){
     .classList
     .add("activo");
 
-
-    /*
-       Cargamos Destete solamente cuando
-       el usuario entra en esa sección.
-    */
 
     await cargarHistorialDestete();
 
