@@ -5,13 +5,9 @@
 
 <meta charset="UTF-8">
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Dashboard - ElDesierto</title>
-
 
 <style>
 
@@ -26,13 +22,9 @@
 }
 
 body{
-
     font-family:Arial,sans-serif;
-
     min-height:100vh;
-
     padding:18px 12px;
-
     color:white;
 
     background:
@@ -44,36 +36,23 @@ body{
     );
 }
 
-
-/* ==================================================
-   CONTENEDOR
-================================================== */
-
 .contenedor{
-
     width:100%;
-
     max-width:1200px;
-
     margin:auto;
 }
-
 
 /* ==================================================
    ENCABEZADO
 ================================================== */
 
 .encabezado{
-
     text-align:center;
-
     margin-bottom:20px;
 }
 
 .logo{
-
     font-size:48px;
-
     margin-bottom:5px;
 
     filter:
@@ -82,11 +61,8 @@ body{
 }
 
 .marca{
-
     font-size:29px;
-
     font-weight:bold;
-
     color:#ff2020;
 
     text-shadow:
@@ -95,43 +71,30 @@ body{
 }
 
 .subtitulo{
-
     color:#999;
-
     font-size:14px;
-
     margin-top:5px;
 }
 
 .titulo{
-
     margin-top:20px;
-
     font-size:27px;
-
     font-weight:bold;
 }
 
 .fecha{
-
     color:#aaa;
-
     margin-top:7px;
-
     font-size:14px;
 }
-
 
 /* ==================================================
    BOTÓN VOLVER
 ================================================== */
 
 .boton-volver{
-
     display:inline-block;
-
     margin-bottom:20px;
-
     padding:13px 22px;
 
     color:white;
@@ -144,13 +107,10 @@ body{
     );
 
     border:none;
-
     border-radius:12px;
 
     font-size:15px;
-
     font-weight:bold;
-
     cursor:pointer;
 
     box-shadow:
@@ -161,7 +121,6 @@ body{
 }
 
 .boton-volver:active{
-
     transform:translateY(4px);
 
     box-shadow:
@@ -169,29 +128,21 @@ body{
     0 3px 8px rgba(255,0,0,.3);
 }
 
-
 /* ==================================================
    TARJETAS PRINCIPALES
 ================================================== */
 
 .resumen{
-
     display:grid;
-
-    grid-template-columns:
-    repeat(4,1fr);
-
+    grid-template-columns:repeat(4,1fr);
     gap:14px;
-
     margin-bottom:20px;
 }
 
 .tarjeta{
-
     position:relative;
 
     padding:18px 14px;
-
     min-height:125px;
 
     background:
@@ -202,7 +153,6 @@ body{
     );
 
     border:1px solid #470000;
-
     border-radius:18px;
 
     box-shadow:
@@ -218,27 +168,19 @@ body{
 }
 
 .tarjeta-icono{
-
     font-size:30px;
-
     margin-bottom:8px;
 }
 
 .tarjeta-titulo{
-
     color:#aaa;
-
     font-size:13px;
-
     margin-bottom:6px;
 }
 
 .tarjeta-valor{
-
     color:#ff3030;
-
     font-size:25px;
-
     font-weight:bold;
 
     text-shadow:
@@ -246,44 +188,30 @@ body{
 }
 
 .tarjeta-unidad{
-
     color:#777;
-
     font-size:12px;
-
     margin-left:3px;
 }
 
-
 /* ==================================================
-   SECCIÓN NAVES
+   NAVES
 ================================================== */
 
 .titulo-seccion{
-
     font-size:20px;
-
     font-weight:bold;
-
     margin-bottom:12px;
-
     color:#fff;
 }
 
 .naves-resumen{
-
     display:grid;
-
-    grid-template-columns:
-    repeat(4,1fr);
-
+    grid-template-columns:repeat(4,1fr);
     gap:14px;
-
     margin-bottom:20px;
 }
 
 .tarjeta-nave{
-
     background:
     linear-gradient(
         145deg,
@@ -292,9 +220,7 @@ body{
     );
 
     border:1px solid #450000;
-
     border-radius:16px;
-
     padding:16px;
 
     box-shadow:
@@ -306,49 +232,34 @@ body{
 }
 
 .nave-icono{
-
     font-size:26px;
 }
 
 .nave-nombre{
-
     margin-top:6px;
-
     font-weight:bold;
-
     color:#ddd;
 }
 
 .nave-valor{
-
     margin-top:8px;
-
     color:#ff3030;
-
     font-size:22px;
-
     font-weight:bold;
 }
 
-
 /* ==================================================
-   CONTENEDORES DE INFORMACIÓN
+   PANELES
 ================================================== */
 
 .grid{
-
     display:grid;
-
-    grid-template-columns:
-    repeat(2,1fr);
-
+    grid-template-columns:repeat(2,1fr);
     gap:18px;
-
     margin-bottom:20px;
 }
 
 .panel{
-
     background:
     linear-gradient(
         145deg,
@@ -357,9 +268,7 @@ body{
     );
 
     border:1px solid #450000;
-
     border-radius:18px;
-
     padding:16px;
 
     box-shadow:
@@ -377,39 +286,28 @@ body{
 }
 
 .panel h2{
-
     font-size:18px;
-
     margin-bottom:14px;
-
     color:#fff;
 }
-
 
 /* ==================================================
    TABLAS
 ================================================== */
 
 .tabla-contenedor{
-
     width:100%;
-
     overflow-x:auto;
 }
 
 table{
-
     width:100%;
-
     border-collapse:separate;
-
     border-spacing:0;
-
     min-width:450px;
 }
 
 th{
-
     padding:12px 9px;
 
     background:
@@ -420,74 +318,53 @@ th{
     );
 
     font-size:13px;
-
     border-bottom:2px solid #ff3333;
 }
 
 th:first-child{
-
     border-radius:9px 0 0 0;
 }
 
 th:last-child{
-
     border-radius:0 9px 0 0;
 }
 
 td{
-
     padding:11px 9px;
-
     text-align:center;
-
     color:#ddd;
-
     background:#111;
-
     border-bottom:1px solid #292929;
-
     font-size:13px;
 }
 
 tr:nth-child(even) td{
-
     background:#181818;
 }
 
 tr:hover td{
-
     background:#260000;
 }
 
 .cantidad{
-
     color:#ff3030;
-
     font-weight:bold;
 }
-
 
 /* ==================================================
    ACTIVIDAD
 ================================================== */
 
 .actividad{
-
     display:flex;
-
     flex-direction:column;
-
     gap:9px;
-
     max-height:480px;
-
     overflow-y:auto;
 }
 
 .actividad-item{
-
     padding:12px;
-
     border-radius:12px;
 
     background:
@@ -505,50 +382,35 @@ tr:hover td{
 }
 
 .actividad-cabecera{
-
     display:flex;
-
     justify-content:space-between;
-
     gap:10px;
-
     margin-bottom:5px;
 }
 
 .actividad-tipo{
-
     color:#ff3030;
-
     font-weight:bold;
-
     font-size:13px;
 }
 
 .actividad-fecha{
-
     color:#777;
-
     font-size:11px;
 }
 
 .actividad-detalle{
-
     color:#ddd;
-
     font-size:13px;
-
     line-height:1.4;
 }
-
 
 /* ==================================================
    VOZ
 ================================================== */
 
 .voz{
-
     margin-bottom:20px;
-
     padding:17px;
 
     background:
@@ -559,7 +421,6 @@ tr:hover td{
     );
 
     border:1px solid #560000;
-
     border-radius:18px;
 
     box-shadow:
@@ -572,35 +433,24 @@ tr:hover td{
 }
 
 .voz-titulo{
-
     font-size:17px;
-
     font-weight:bold;
-
     margin-bottom:12px;
 }
 
 .acciones-voz{
-
     display:flex;
-
     flex-wrap:wrap;
-
     gap:9px;
 }
 
 .boton-voz{
-
     border:none;
-
     border-radius:11px;
-
     padding:11px 15px;
 
     color:white;
-
     font-weight:bold;
-
     cursor:pointer;
 
     background:
@@ -616,36 +466,27 @@ tr:hover td{
 }
 
 .boton-voz:active{
-
     transform:translateY(3px);
 
     box-shadow:
     0 1px 0 #580000;
 }
 
-
 /* ==================================================
    ESTADOS
 ================================================== */
 
 .vacio{
-
     text-align:center;
-
     padding:20px;
-
     color:#777;
 }
 
 .cargando{
-
     color:#888;
-
     text-align:center;
-
     padding:15px;
 }
-
 
 /* ==================================================
    RESPONSIVE
@@ -654,15 +495,11 @@ tr:hover td{
 @media(max-width:900px){
 
     .resumen{
-
-        grid-template-columns:
-        repeat(2,1fr);
+        grid-template-columns:repeat(2,1fr);
     }
 
     .naves-resumen{
-
-        grid-template-columns:
-        repeat(2,1fr);
+        grid-template-columns:repeat(2,1fr);
     }
 
 }
@@ -670,63 +507,49 @@ tr:hover td{
 @media(max-width:650px){
 
     body{
-
         padding:15px 9px;
     }
 
     .logo{
-
         font-size:42px;
     }
 
     .marca{
-
         font-size:24px;
     }
 
     .titulo{
-
         font-size:22px;
     }
 
     .resumen{
-
         grid-template-columns:1fr 1fr;
-
         gap:10px;
     }
 
     .tarjeta{
-
         min-height:115px;
-
         padding:14px 11px;
     }
 
     .tarjeta-valor{
-
         font-size:21px;
     }
 
     .naves-resumen{
-
         grid-template-columns:1fr 1fr;
-
         gap:10px;
     }
 
     .grid{
-
         grid-template-columns:1fr;
     }
 
     .acciones-voz{
-
         flex-direction:column;
     }
 
     .boton-voz{
-
         width:100%;
     }
 
@@ -735,12 +558,10 @@ tr:hover td{
 @media(max-width:390px){
 
     .resumen{
-
         grid-template-columns:1fr;
     }
 
     .naves-resumen{
-
         grid-template-columns:1fr;
     }
 
@@ -748,17 +569,13 @@ tr:hover td{
 
 </style>
 
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 </head>
 
-
 <body>
 
-
 <div class="contenedor">
-
 
 <!-- ==================================================
      ENCABEZADO
@@ -766,9 +583,7 @@ tr:hover td{
 
 <div class="encabezado">
 
-    <div class="logo">
-        🐷
-    </div>
+    <div class="logo">🐷</div>
 
     <div class="marca">
         ElDesierto
@@ -789,7 +604,6 @@ tr:hover td{
 
 </div>
 
-
 <!-- ==================================================
      VOLVER
 ================================================== -->
@@ -802,105 +616,103 @@ tr:hover td{
 
 </button>
 
-
 <!-- ==================================================
      RESUMEN PRINCIPAL
 ================================================== -->
 
 <div class="resumen">
 
-
     <div class="tarjeta">
 
-        <div class="tarjeta-icono">
-            📥
-        </div>
+        <div class="tarjeta-icono">📥</div>
 
         <div class="tarjeta-titulo">
             Entradas hoy
         </div>
 
         <div class="tarjeta-valor">
+
             <span id="entradasHoy">0</span>
-            <span class="tarjeta-unidad">kg</span>
+
+            <span class="tarjeta-unidad">
+                kg
+            </span>
+
         </div>
 
     </div>
 
-
     <div class="tarjeta">
 
-        <div class="tarjeta-icono">
-            📤
-        </div>
+        <div class="tarjeta-icono">📤</div>
 
         <div class="tarjeta-titulo">
             Salidas hoy
         </div>
 
         <div class="tarjeta-valor">
+
             <span id="salidasHoy">0</span>
-            <span class="tarjeta-unidad">kg</span>
+
+            <span class="tarjeta-unidad">
+                kg
+            </span>
+
         </div>
 
     </div>
 
-
     <div class="tarjeta">
 
-        <div class="tarjeta-icono">
-            🏭
-        </div>
+        <div class="tarjeta-icono">🏭</div>
 
         <div class="tarjeta-titulo">
             Fabricado hoy
         </div>
 
         <div class="tarjeta-valor">
+
             <span id="fabricadoHoy">0</span>
-            <span class="tarjeta-unidad">kg</span>
+
+            <span class="tarjeta-unidad">
+                kg
+            </span>
+
         </div>
 
     </div>
 
-
     <div class="tarjeta">
 
-        <div class="tarjeta-icono">
-            🐷
-        </div>
+        <div class="tarjeta-icono">🐷</div>
 
         <div class="tarjeta-titulo">
             Cerdos actuales
         </div>
 
         <div class="tarjeta-valor">
+
             <span id="cerdosActuales">0</span>
+
         </div>
 
     </div>
 
-
 </div>
 
-
 <!-- ==================================================
-     RESUMEN DE NAVES
+     RESUMEN NAVES
 ================================================== -->
 
 <div class="titulo-seccion">
     🐖 Movimiento de cerdos hoy
 </div>
 
-
 <div class="naves-resumen">
-
 
     <div class="tarjeta-nave">
 
-        <div class="nave-icono">
-            ➕
-        </div>
+        <div class="nave-icono">➕</div>
 
         <div class="nave-nombre">
             Agregados
@@ -916,12 +728,9 @@ tr:hover td{
 
     </div>
 
-
     <div class="tarjeta-nave">
 
-        <div class="nave-icono">
-            💰
-        </div>
+        <div class="nave-icono">💰</div>
 
         <div class="nave-nombre">
             Vendidos
@@ -937,12 +746,9 @@ tr:hover td{
 
     </div>
 
-
     <div class="tarjeta-nave">
 
-        <div class="nave-icono">
-            ⚰️
-        </div>
+        <div class="nave-icono">⚰️</div>
 
         <div class="nave-nombre">
             Muertes
@@ -958,12 +764,9 @@ tr:hover td{
 
     </div>
 
-
     <div class="tarjeta-nave">
 
-        <div class="nave-icono">
-            ➡️
-        </div>
+        <div class="nave-icono">➡️</div>
 
         <div class="nave-nombre">
             Otras salidas
@@ -979,9 +782,7 @@ tr:hover td{
 
     </div>
 
-
 </div>
-
 
 <!-- ==================================================
      VOZ
@@ -1031,13 +832,11 @@ tr:hover td{
 
 </div>
 
-
 <!-- ==================================================
      MERCANCÍA + PRODUCCIÓN
 ================================================== -->
 
 <div class="grid">
-
 
     <div class="panel">
 
@@ -1054,17 +853,14 @@ tr:hover td{
                     <tr>
 
                         <th>Producto</th>
-
                         <th>Entradas</th>
-
                         <th>Salidas</th>
 
                     </tr>
 
                 </thead>
 
-                <tbody
-                    id="tablaMercancia">
+                <tbody id="tablaMercancia">
 
                     <tr>
 
@@ -1086,7 +882,6 @@ tr:hover td{
 
     </div>
 
-
     <div class="panel">
 
         <h2>
@@ -1102,15 +897,13 @@ tr:hover td{
                     <tr>
 
                         <th>Producto</th>
-
                         <th>Cantidad</th>
 
                     </tr>
 
                 </thead>
 
-                <tbody
-                    id="tablaProduccion">
+                <tbody id="tablaProduccion">
 
                     <tr>
 
@@ -1132,9 +925,7 @@ tr:hover td{
 
     </div>
 
-
 </div>
-
 
 <!-- ==================================================
      ÚLTIMAS FABRICACIONES
@@ -1155,19 +946,15 @@ tr:hover td{
                 <tr>
 
                     <th>Fecha</th>
-
                     <th>Producto</th>
-
                     <th>Cantidad</th>
-
                     <th>Usuario</th>
 
                 </tr>
 
             </thead>
 
-            <tbody
-                id="tablaFabricaciones">
+            <tbody id="tablaFabricaciones">
 
                 <tr>
 
@@ -1189,9 +976,7 @@ tr:hover td{
 
 </div>
 
-
 <br>
-
 
 <!-- ==================================================
      ACTIVIDAD RECIENTE
@@ -1215,12 +1000,9 @@ tr:hover td{
 
 </div>
 
-
 </div>
 
-
 <script src="supabase.js"></script>
-
 
 <script>
 
@@ -1234,7 +1016,7 @@ let textoVozActual = "";
 
 
 /* ==================================================
-   FECHAS
+   FECHA
 ================================================== */
 
 function obtenerInicioHoy(){
@@ -1268,128 +1050,16 @@ function obtenerFinHoy(){
 }
 
 
-function esHoy(fecha){
-
-    if(!fecha){
-
-        return false;
-
-    }
-
-    const d =
-        new Date(fecha);
-
-    if(
-        Number.isNaN(
-            d.getTime()
-        )
-    ){
-
-        return false;
-
-    }
-
-    return (
-        d >= obtenerInicioHoy()
-        &&
-        d < obtenerFinHoy()
-    );
-
-}
-
-
-function obtenerFechaMovimiento(m){
-
-    /*
-       El sistema puede tener Fecha como
-       timestamp o puede tener Fecha + Hora.
-    */
-
-    if(m.Fecha){
-
-        const fecha =
-            new Date(m.Fecha);
-
-        if(
-            !Number.isNaN(
-                fecha.getTime()
-            )
-        ){
-
-            return fecha;
-
-        }
-
-    }
-
-
-    if(
-        m.Fecha &&
-        m.Hora
-    ){
-
-        const fecha =
-            new Date(
-                `${m.Fecha}T${m.Hora}`
-            );
-
-        if(
-            !Number.isNaN(
-                fecha.getTime()
-            )
-        ){
-
-            return fecha;
-
-        }
-
-    }
-
-
-    if(m.fecha){
-
-        const fecha =
-            new Date(m.fecha);
-
-        if(
-            !Number.isNaN(
-                fecha.getTime()
-            )
-        ){
-
-            return fecha;
-
-        }
-
-    }
-
-
-    return null;
-
-}
-
-
-function formatoFecha(fecha){
-
-    const d =
-        new Date(fecha);
-
-    return d.toLocaleDateString(
-        "es-ES",
-        {
-            day:"2-digit",
-            month:"2-digit",
-            year:"numeric"
-        }
-    );
-
-}
-
-
 function formatoHora(fecha){
 
     const d =
         new Date(fecha);
+
+    if(
+        isNaN(d.getTime())
+    ){
+        return "--:--";
+    }
 
     return d.toLocaleTimeString(
         "es-ES",
@@ -1402,10 +1072,6 @@ function formatoHora(fecha){
 }
 
 
-/* ==================================================
-   FECHA MOSTRADA
-================================================== */
-
 function mostrarFecha(){
 
     const ahora =
@@ -1414,6 +1080,7 @@ function mostrarFecha(){
     document.getElementById(
         "fechaActual"
     ).textContent =
+
         ahora.toLocaleDateString(
             "es-ES",
             {
@@ -1423,24 +1090,6 @@ function mostrarFecha(){
                 year:"numeric"
             }
         );
-
-}
-
-
-/* ==================================================
-   ESCAPAR HTML
-================================================== */
-
-function escaparHTML(valor){
-
-    return String(
-        valor ?? ""
-    )
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
 
 }
 
@@ -1458,7 +1107,6 @@ async function comprobarSesion(){
     await clienteSupabase
     .auth
     .getSession();
-
 
     if(
         error ||
@@ -1479,25 +1127,255 @@ async function comprobarSesion(){
 
 
 /* ==================================================
-   CARGAR MOVIMIENTOS
+   DEDUPLICAR FABRICACIONES
+================================================== */
+
+/*
+   Una fabricación puede aparecer duplicada
+   en movimientos.
+
+   Se utiliza:
+
+   1. Numero_operacion
+   2. id
+   3. combinación de datos como respaldo
+
+   Así una misma fabricación no vuelve
+   a sumarse dos veces en el Dashboard.
+*/
+
+function deduplicarFabricaciones(movimientos){
+
+    const vistosOperacion =
+        new Set();
+
+    const vistosId =
+        new Set();
+
+    const vistosRespaldo =
+        new Set();
+
+    const resultado = [];
+
+
+    movimientos.forEach(m=>{
+
+        const numeroOperacion =
+            String(
+                m.Numero_operacion ||
+                m.numero_operacion ||
+                ""
+            ).trim();
+
+
+        const id =
+            String(
+                m.id ||
+                ""
+            ).trim();
+
+
+        const fecha =
+            String(
+                m.Fecha ||
+                ""
+            ).trim();
+
+
+        const producto =
+            String(
+                m.Producto ||
+                ""
+            ).trim()
+            .toLowerCase();
+
+
+        const cantidad =
+            Number(
+                m.Cantidad
+            ) || 0;
+
+
+        /* ------------------------------------------
+           DUPLICADO POR NÚMERO DE OPERACIÓN
+        ------------------------------------------ */
+
+        if(numeroOperacion){
+
+            if(
+                vistosOperacion.has(
+                    numeroOperacion
+                )
+            ){
+
+                return;
+
+            }
+
+            vistosOperacion.add(
+                numeroOperacion
+            );
+
+        }
+
+
+        /* ------------------------------------------
+           DUPLICADO POR ID
+        ------------------------------------------ */
+
+        if(id){
+
+            if(
+                vistosId.has(id)
+            ){
+
+                return;
+
+            }
+
+            vistosId.add(id);
+
+        }
+
+
+        /*
+           RESPALDO.
+
+           Si por alguna razón no existe
+           Numero_operacion ni id.
+        */
+
+        if(
+            !numeroOperacion &&
+            !id
+        ){
+
+            const clave =
+                fecha
+                +
+                "|"
+                +
+                producto
+                +
+                "|"
+                +
+                cantidad
+                +
+                "|"
+                +
+                String(
+                    m.Usuario ||
+                    ""
+                );
+
+            if(
+                vistosRespaldo.has(
+                    clave
+                )
+            ){
+
+                return;
+
+            }
+
+            vistosRespaldo.add(
+                clave
+            );
+
+        }
+
+
+        resultado.push(m);
+
+    });
+
+
+    return resultado;
+
+}
+
+
+/* ==================================================
+   MOVIMIENTOS DE MERCANCÍA
 ================================================== */
 
 async function cargarMovimientos(){
 
-    const {
-        data,
-        error
-    } =
-    await clienteSupabase
-    .from("movimientos")
-    .select("*");
+    const inicio =
+        obtenerInicioHoy();
+
+    const fin =
+        obtenerFinHoy();
 
 
-    if(error){
+    /*
+       Primero intentamos con Fecha
+       como timestamp.
+
+       Si falla, hacemos consulta general
+       para evitar que el Dashboard deje
+       de funcionar por el formato de fecha.
+    */
+
+    let respuesta =
+        await clienteSupabase
+
+        .from("movimientos")
+
+        .select("*")
+
+        .gte(
+            "Fecha",
+            inicio.toISOString()
+        )
+
+        .lt(
+            "Fecha",
+            fin.toISOString()
+        )
+
+        .order(
+            "Fecha",
+            {
+                ascending:false
+            }
+        );
+
+
+    if(
+        respuesta.error
+    ){
+
+        console.warn(
+            "Consulta por rango falló. Se intentará consulta general.",
+            respuesta.error
+        );
+
+
+        respuesta =
+            await clienteSupabase
+
+            .from("movimientos")
+
+            .select("*")
+
+            .order(
+                "Fecha",
+                {
+                    ascending:false
+                }
+            );
+
+    }
+
+
+    if(
+        respuesta.error
+    ){
 
         console.error(
             "Error movimientos:",
-            error
+            respuesta.error
         );
 
         return [];
@@ -1505,41 +1383,53 @@ async function cargarMovimientos(){
     }
 
 
+    const movimientos =
+        respuesta.data || [];
+
+
     /*
-       Filtramos localmente para soportar
-       tanto Fecha como Fecha + Hora.
+       Filtro local de hoy.
+
+       Esto garantiza que el Dashboard
+       muestre solamente el día actual.
     */
 
-    return (data || [])
-        .map(m=>{
+    return movimientos.filter(m=>{
 
-            return {
-                ...m,
-                _fechaDashboard:
-                    obtenerFechaMovimiento(m)
-            };
+        const fecha =
+            new Date(
+                m.Fecha
+            );
 
-        })
-        .filter(m=>
-            m._fechaDashboard &&
-            esHoy(m._fechaDashboard)
-        )
-        .sort(
-            (a,b)=>
-                b._fechaDashboard -
-                a._fechaDashboard
+        if(
+            isNaN(
+                fecha.getTime()
+            )
+        ){
+
+            return false;
+
+        }
+
+        return (
+            fecha >= inicio &&
+            fecha < fin
         );
+
+    });
 
 }
 
 
 /* ==================================================
-   RESUMEN DE MERCANCÍA
+   RESUMEN MERCANCÍA
 ================================================== */
 
-async function cargarResumenMercancia(
-    movimientos
-){
+async function cargarResumenMercancia(){
+
+    const movimientos =
+        await cargarMovimientos();
+
 
     let entradas = 0;
 
@@ -1549,6 +1439,38 @@ async function cargarResumenMercancia(
 
 
     const productos = {};
+
+
+    /*
+       IMPORTANTE:
+
+       Primero eliminamos duplicados
+       solamente de las fabricaciones.
+
+       Las entradas y salidas se mantienen
+       exactamente como están.
+    */
+
+    const fabricaciones =
+        deduplicarFabricaciones(
+
+            movimientos.filter(m=>
+                String(
+                    m.Tipo || ""
+                )
+                .toLowerCase()
+                .includes("fabric")
+            )
+
+        );
+
+
+    const idsFabricaciones =
+        new Set(
+            fabricaciones.map(m=>
+                m.id
+            )
+        );
 
 
     movimientos.forEach(m=>{
@@ -1563,7 +1485,6 @@ async function cargarResumenMercancia(
             String(
                 m.Tipo || ""
             )
-            .trim()
             .toLowerCase();
 
 
@@ -1571,8 +1492,7 @@ async function cargarResumenMercancia(
             tipo.includes("entrada")
         ){
 
-            entradas +=
-                cantidad;
+            entradas += cantidad;
 
         }
 
@@ -1581,8 +1501,7 @@ async function cargarResumenMercancia(
             tipo.includes("salida")
         ){
 
-            salidas +=
-                cantidad;
+            salidas += cantidad;
 
         }
 
@@ -1591,8 +1510,26 @@ async function cargarResumenMercancia(
             tipo.includes("fabric")
         ){
 
-            fabricado +=
-                cantidad;
+            /*
+               Solo sumamos la fabricación
+               si pertenece al conjunto
+               deduplicado.
+            */
+
+            if(
+                idsFabricaciones.has(
+                    m.id
+                )
+                ||
+                (
+                    !m.id &&
+                    fabricaciones.includes(m)
+                )
+            ){
+
+                fabricado += cantidad;
+
+            }
 
         }
 
@@ -1622,8 +1559,7 @@ async function cargarResumenMercancia(
         ){
 
             productos[nombre]
-                .entradas +=
-                cantidad;
+                .entradas += cantidad;
 
         }
 
@@ -1633,8 +1569,7 @@ async function cargarResumenMercancia(
         ){
 
             productos[nombre]
-                .salidas +=
-                cantidad;
+                .salidas += cantidad;
 
         }
 
@@ -1658,6 +1593,8 @@ async function cargarResumenMercancia(
     ).textContent =
         fabricado;
 
+
+    /* TABLA */
 
     const tabla =
         document.getElementById(
@@ -1732,31 +1669,30 @@ async function cargarResumenMercancia(
    PRODUCCIÓN
 ================================================== */
 
-function cargarProduccion(
-    movimientos
-){
+async function cargarProduccion(){
+
+    const movimientos =
+        await cargarMovimientos();
+
+
+    const fabricaciones =
+        deduplicarFabricaciones(
+
+            movimientos.filter(m=>
+                String(
+                    m.Tipo || ""
+                )
+                .toLowerCase()
+                .includes("fabric")
+            )
+
+        );
+
 
     const produccion = {};
 
 
-    movimientos.forEach(m=>{
-
-        const tipo =
-            String(
-                m.Tipo || ""
-            )
-            .trim()
-            .toLowerCase();
-
-
-        if(
-            !tipo.includes("fabric")
-        ){
-
-            return;
-
-        }
-
+    fabricaciones.forEach(m=>{
 
         const nombre =
             m.Producto ||
@@ -1849,20 +1785,36 @@ function cargarProduccion(
    ÚLTIMAS FABRICACIONES
 ================================================== */
 
-function cargarFabricaciones(
-    movimientos
-){
+async function cargarFabricaciones(){
+
+    const movimientos =
+        await cargarMovimientos();
+
 
     const fabricaciones =
-        movimientos
-        .filter(m=>
-            String(
-                m.Tipo || ""
+        deduplicarFabricaciones(
+
+            movimientos.filter(m=>
+                String(
+                    m.Tipo || ""
+                )
+                .toLowerCase()
+                .includes("fabric")
             )
-            .toLowerCase()
-            .includes("fabric")
-        )
-        .slice(0,10);
+
+        );
+
+
+    fabricaciones.sort(
+        (a,b)=>
+            new Date(b.Fecha)
+            -
+            new Date(a.Fecha)
+    );
+
+
+    const ultimas =
+        fabricaciones.slice(0,10);
 
 
     const tabla =
@@ -1875,7 +1827,7 @@ function cargarFabricaciones(
 
 
     if(
-        fabricaciones.length === 0
+        ultimas.length === 0
     ){
 
         tabla.innerHTML = `
@@ -1899,22 +1851,14 @@ function cargarFabricaciones(
     }
 
 
-    fabricaciones.forEach(m=>{
-
-        const fecha =
-            m._fechaDashboard;
-
+    ultimas.forEach(m=>{
 
         tabla.innerHTML += `
 
             <tr>
 
                 <td>
-                    ${fecha ?
-                        formatoHora(fecha)
-                        :
-                        "-"
-                    }
+                    ${formatoHora(m.Fecha)}
                 </td>
 
                 <td>
@@ -1924,9 +1868,7 @@ function cargarFabricaciones(
                 </td>
 
                 <td class="cantidad">
-                    ${Number(
-                        m.Cantidad || 0
-                    )} kg
+                    ${Number(m.Cantidad) || 0} kg
                 </td>
 
                 <td>
@@ -1945,52 +1887,48 @@ function cargarFabricaciones(
 
 
 /* ==================================================
-   MOVIMIENTOS DE NAVES
+   NAVES
 ================================================== */
 
-async function cargarMovimientosNaves(){
+async function cargarNaves(){
+
+    const inicio =
+        obtenerInicioHoy();
+
+    const fin =
+        obtenerFinHoy();
+
 
     const {
         data,
         error
     } =
     await clienteSupabase
+
     .from("movimientos_naves")
-    .select("*");
+
+    .select("*")
+
+    .gte(
+        "fecha",
+        inicio.toISOString()
+    )
+
+    .lt(
+        "fecha",
+        fin.toISOString()
+    );
 
 
     if(error){
 
         console.error(
-            "Error movimientos_naves:",
+            "Error movimientos naves:",
             error
         );
 
-        return [];
-
     }
 
-
-    return (data || [])
-        .filter(m=>
-            esHoy(m.fecha)
-        )
-        .sort(
-            (a,b)=>
-                new Date(b.fecha) -
-                new Date(a.fecha)
-        );
-
-}
-
-
-/* ==================================================
-   RESUMEN DE NAVES
-================================================== */
-
-function cargarNaves(
-    movimientosNaves
-){
 
     let agregados = 0;
 
@@ -2001,7 +1939,7 @@ function cargarNaves(
     let otras = 0;
 
 
-    movimientosNaves.forEach(m=>{
+    (data || []).forEach(m=>{
 
         const cantidad =
             Number(
@@ -2013,7 +1951,6 @@ function cargarNaves(
             String(
                 m.operacion || ""
             )
-            .trim()
             .toLowerCase();
 
 
@@ -2021,95 +1958,56 @@ function cargarNaves(
             String(
                 m.motivo || ""
             )
-            .trim()
             .toLowerCase();
 
 
         /*
-        ==============================================
-        AGREGADOS
+           Agregados reales:
 
-        El sistema actual registra:
-        - Entrada Destete
-        - Entrada Exterior
+           Entrada Destete
+           Entrada Exterior
 
-        Reagrupe NO se registra en historial.
-        ==============================================
+           Reagrupe no se registra como
+           movimiento, por lo que no se
+           cuenta aquí.
         */
 
         if(
-            motivo ===
-                "entrada destete"
+            motivo === "entrada destete"
             ||
-            motivo ===
-                "entrada exterior"
+            motivo === "entrada exterior"
         ){
 
-            agregados +=
-                cantidad;
-
-            return;
+            agregados += cantidad;
 
         }
 
 
-        /*
-        ==============================================
-        VENTAS
-        ==============================================
-        */
-
-        if(
+        else if(
             motivo === "venta"
         ){
 
-            vendidos +=
-                cantidad;
-
-            return;
+            vendidos += cantidad;
 
         }
 
 
-        /*
-        ==============================================
-        MUERTES
-
-        Incluye:
-        - Muerte total
-        - Muerte de venta
-        ==============================================
-        */
-
-        if(
+        else if(
             motivo === "muerte total"
             ||
             motivo === "muerte de venta"
         ){
 
-            muertes +=
-                cantidad;
-
-            return;
+            muertes += cantidad;
 
         }
 
 
-        /*
-        ==============================================
-        OTRAS SALIDAS
-
-        Cualquier Salida que no sea
-        venta o muerte.
-        ==============================================
-        */
-
-        if(
+        else if(
             operacion === "salida"
         ){
 
-            otras +=
-                cantidad;
+            otras += cantidad;
 
         }
 
@@ -2141,15 +2039,10 @@ function cargarNaves(
 
 
     return {
-
         agregados,
-
         vendidos,
-
         muertes,
-
         otras
-
     };
 
 }
@@ -2166,7 +2059,9 @@ async function cargarCerdos(){
         error
     } =
     await clienteSupabase
+
     .from("cuartones")
+
     .select("cantidad_cerdos");
 
 
@@ -2210,84 +2105,157 @@ async function cargarCerdos(){
    ACTIVIDAD RECIENTE
 ================================================== */
 
-function cargarActividad(
-    movimientos,
-    movimientosNaves
-){
+async function cargarActividad(){
+
+    const inicio =
+        obtenerInicioHoy();
+
+    const fin =
+        obtenerFinHoy();
+
+
+    const movimientos =
+        await cargarMovimientos();
+
+
+    const {
+        data:naves,
+        error
+    } =
+    await clienteSupabase
+
+    .from("movimientos_naves")
+
+    .select("*")
+
+    .gte(
+        "fecha",
+        inicio.toISOString()
+    )
+
+    .lt(
+        "fecha",
+        fin.toISOString()
+    )
+
+    .order(
+        "fecha",
+        {
+            ascending:false
+        }
+    );
+
+
+    if(error){
+
+        console.error(
+            "Error actividad naves:",
+            error
+        );
+
+    }
+
 
     const actividades = [];
 
 
     /*
-    ==============================================
-    MOVIMIENTOS DE MERCANCÍA
-    ==============================================
+       Fabricaciones deduplicadas.
+    */
+
+    const fabricaciones =
+        deduplicarFabricaciones(
+
+            movimientos.filter(m=>
+                String(
+                    m.Tipo || ""
+                )
+                .toLowerCase()
+                .includes("fabric")
+            )
+
+        );
+
+
+    /*
+       Agregamos entradas, salidas y
+       fabricaciones.
+
+       Las fabricaciones salen del conjunto
+       deduplicado para no mostrar dos veces
+       la misma operación.
     */
 
     movimientos.forEach(m=>{
 
-        let tipo =
+        const tipo =
             String(
-                m.Tipo ||
-                "Movimiento"
-            );
-
-
-        let icono =
-            "📦";
+                m.Tipo || ""
+            )
+            .toLowerCase();
 
 
         if(
-            tipo
-            .toLowerCase()
-            .includes("entrada")
+            tipo.includes("fabric")
         ){
 
-            icono = "📥";
-
-        }
-
-
-        else if(
-            tipo
-            .toLowerCase()
-            .includes("salida")
-        ){
-
-            icono = "📤";
-
-        }
-
-
-        else if(
-            tipo
-            .toLowerCase()
-            .includes("fabric")
-        ){
-
-            icono = "🏭";
+            return;
 
         }
 
 
         actividades.push({
 
-            fecha:
-                m._fechaDashboard,
+            fecha:m.Fecha,
 
             tipo:
-                icono +
-                " " +
-                tipo,
+                "📦 " +
+                (
+                    m.Tipo ||
+                    "Movimiento"
+                ),
 
             detalle:
-                (m.Producto ||
-                "Producto")
+                (
+                    m.Producto ||
+                    "Producto"
+                )
                 +
                 " — "
                 +
-                (m.Cantidad ||
-                0)
+                (
+                    m.Cantidad ||
+                    0
+                )
+                +
+                " kg"
+
+        });
+
+    });
+
+
+    fabricaciones.forEach(m=>{
+
+        actividades.push({
+
+            fecha:m.Fecha,
+
+            tipo:
+                "🏭 Fabricación",
+
+            detalle:
+                (
+                    m.Producto ||
+                    "Producto"
+                )
+                +
+                " — "
+                +
+                (
+                    m.Cantidad ||
+                    0
+                )
                 +
                 " kg"
 
@@ -2297,49 +2265,21 @@ function cargarActividad(
 
 
     /*
-    ==============================================
-    MOVIMIENTOS DE NAVES
-    ==============================================
+       Actividad de naves.
     */
 
-    movimientosNaves.forEach(m=>{
-
-        const motivo =
-            String(
-                m.motivo || ""
-            );
-
-
-        const operacion =
-            String(
-                m.operacion ||
-                "Movimiento de nave"
-            );
-
-
-        let tipoMostrar =
-            operacion;
-
-
-        if(
-            motivo
-        ){
-
-            tipoMostrar +=
-                " — " +
-                motivo;
-
-        }
-
+    (naves || []).forEach(m=>{
 
         actividades.push({
 
-            fecha:
-                new Date(m.fecha),
+            fecha:m.fecha,
 
             tipo:
                 "🐷 " +
-                tipoMostrar,
+                (
+                    m.operacion ||
+                    "Movimiento de nave"
+                ),
 
             detalle:
                 "Nave "
@@ -2365,16 +2305,14 @@ function cargarActividad(
 
     actividades.sort(
         (a,b)=>
-            new Date(b.fecha) -
+            new Date(b.fecha)
+            -
             new Date(a.fecha)
     );
 
 
     const ultimas =
-        actividades.slice(
-            0,
-            10
-        );
+        actividades.slice(0,10);
 
 
     const contenedor =
@@ -2413,17 +2351,13 @@ function cargarActividad(
 
                     <span class="actividad-tipo">
 
-                        ${escaparHTML(
-                            a.tipo
-                        )}
+                        ${escaparHTML(a.tipo)}
 
                     </span>
 
                     <span class="actividad-fecha">
 
-                        ${formatoHora(
-                            a.fecha
-                        )}
+                        ${formatoHora(a.fecha)}
 
                     </span>
 
@@ -2431,9 +2365,7 @@ function cargarActividad(
 
                 <div class="actividad-detalle">
 
-                    ${escaparHTML(
-                        a.detalle
-                    )}
+                    ${escaparHTML(a.detalle)}
 
                 </div>
 
@@ -2445,21 +2377,35 @@ function cargarActividad(
 
 
     actividadesVoz =
-        ultimas
-        .map(a=>
+        ultimas.map(a=>
             a.tipo
             +
             ". "
             +
             a.detalle
-        )
-        .join(" ");
+        ).join(" ");
 
 }
 
 
 /* ==================================================
-   RESUMEN POR VOZ
+   ESCAPAR HTML
+================================================== */
+
+function escaparHTML(valor){
+
+    return String(valor)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* ==================================================
+   TEXTO DE VOZ
 ================================================== */
 
 function crearTextoVoz(){
@@ -2513,50 +2459,67 @@ function crearTextoVoz(){
 
 
     textoVozActual =
+
         "Resumen del día de ElDesierto. "
+
         +
+
         "Entradas de mercancía: "
         +
         entradas
         +
         " kilogramos. "
+
         +
+
         "Salidas de mercancía: "
         +
         salidas
         +
         " kilogramos. "
+
         +
+
         "Fabricado hoy: "
         +
         fabricado
         +
         " kilogramos. "
+
         +
+
         "Cerdos actuales: "
         +
         cerdos
         +
         ". "
+
         +
+
         "Cerdos agregados hoy: "
         +
         agregados
         +
         ". "
+
         +
+
         "Cerdos vendidos: "
         +
         vendidos
         +
         ". "
+
         +
+
         "Muertes: "
         +
         muertes
         +
         ". "
+
         +
+
         "Otras salidas: "
         +
         otras
@@ -2569,7 +2532,9 @@ function crearTextoVoz(){
     ){
 
         textoVozActual +=
+
             "Actividad reciente. "
+
             +
             actividadesVoz;
 
@@ -2582,16 +2547,13 @@ function crearTextoVoz(){
 
 
 /* ==================================================
-   ESCUCHAR RESUMEN
+   ESCUCHAR
 ================================================== */
 
 function escucharResumen(){
 
     if(
-        !(
-            "speechSynthesis"
-            in window
-        )
+        !("speechSynthesis" in window)
     ){
 
         alert(
@@ -2640,7 +2602,7 @@ function escucharResumen(){
 
 
 /* ==================================================
-   PAUSAR VOZ
+   PAUSAR
 ================================================== */
 
 function pausarVoz(){
@@ -2658,7 +2620,7 @@ function pausarVoz(){
 
 
 /* ==================================================
-   CONTINUAR VOZ
+   CONTINUAR
 ================================================== */
 
 function continuarVoz(){
@@ -2676,7 +2638,7 @@ function continuarVoz(){
 
 
 /* ==================================================
-   DETENER VOZ
+   DETENER
 ================================================== */
 
 function detenerVoz(){
@@ -2713,88 +2675,21 @@ async function iniciarDashboard(){
     }
 
 
-    /*
-    Cargamos primero los datos.
-    Después construimos todas las secciones
-    usando los mismos datos.
-    */
-
-    const [
-        movimientos,
-        movimientosNaves
-    ] =
     await Promise.all([
 
-        cargarMovimientos(),
+        cargarResumenMercancia(),
 
-        cargarMovimientosNaves()
+        cargarProduccion(),
+
+        cargarFabricaciones(),
+
+        cargarNaves(),
+
+        cargarCerdos(),
+
+        cargarActividad()
 
     ]);
-
-
-    /*
-    ==============================================
-    MERCANCÍA
-    ==============================================
-    */
-
-    cargarResumenMercancia(
-        movimientos
-    );
-
-
-    /*
-    ==============================================
-    PRODUCCIÓN
-    ==============================================
-    */
-
-    cargarProduccion(
-        movimientos
-    );
-
-
-    /*
-    ==============================================
-    FABRICACIONES
-    ==============================================
-    */
-
-    cargarFabricaciones(
-        movimientos
-    );
-
-
-    /*
-    ==============================================
-    NAVES
-    ==============================================
-    */
-
-    cargarNaves(
-        movimientosNaves
-    );
-
-
-    /*
-    ==============================================
-    CERDOS ACTUALES
-    ==============================================
-    */
-
-    await cargarCerdos();
-
-
-    /*
-    ==============================================
-    ACTIVIDAD
-    ==============================================
-    */
-
-    cargarActividad(
-        movimientos,
-        movimientosNaves
-    );
 
 }
 
@@ -2806,7 +2701,6 @@ async function iniciarDashboard(){
 iniciarDashboard();
 
 </script>
-
 
 </body>
 
