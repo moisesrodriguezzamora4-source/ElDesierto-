@@ -384,10 +384,6 @@ Cancelar
 
 <p>Selecciona el tipo de entrada:</p>
 
-<button onclick="mostrarCantidadEntrada('Reagrupe')">
-🔄 Entrada por reagrupe
-</button>
-
 <button onclick="mostrarCantidadEntrada('Entrada Destete')">
 🍼 Entrada por destete
 </button>
@@ -418,18 +414,6 @@ type="number"
 id="cantidadAgregar"
 min="1"
 placeholder="Cantidad de cerdos">
-
-<div id="destinoReagrupe" class="oculto">
-
-<select id="cuartonDestino">
-
-<option value="">
-Selecciona cuartón destino
-</option>
-
-</select>
-
-</div>
 
 <button onclick="agregarCerdos()">
 Guardar
@@ -659,12 +643,33 @@ Cancelar
 
 
 <!-- ==========================================
-     REAGRUPACIÓN SALIDA
+     REAGRUPACIÓN
 ========================================== -->
 
 <div id="panelReagrupeSalida" class="panel oculto">
 
 <h2>🔄 Reagrupe</h2>
+
+<p>
+Cuartón de origen:
+</p>
+
+<div
+style="
+padding:14px;
+margin:12px 0;
+border-radius:12px;
+background:#100000;
+border:1px solid #700000;
+font-weight:bold;
+color:#ff5555;
+">
+
+🐷 <span id="origenReagrupeTexto">
+Cuartón seleccionado
+</span>
+
+</div>
 
 <input
 type="number"
@@ -1035,22 +1040,13 @@ async function cargarNaves(){
 
 
 /* ==========================================
-   OPCIONES CUARTONES REAGRUPE
+   OPCIONES CUARTONES REAGRUPACIÓN
 ========================================== */
 
 async function cargarOpcionesCuartones(naves){
 
-    const destinos=
-    document.getElementById("cuartonDestino");
-
     const destinosSalida=
     document.getElementById("cuartonDestinoSalida");
-
-    destinos.innerHTML=`
-    <option value="">
-    Selecciona cuartón destino
-    </option>
-    `;
 
     destinosSalida.innerHTML=`
     <option value="">
@@ -1072,13 +1068,6 @@ async function cargarOpcionesCuartones(naves){
 
             const texto=
             `${nave.nombre} - Cuartón ${c.numero}`;
-
-            destinos.innerHTML+=`
-
-            <option value="${c.id}">
-            ${texto}
-            </option>
-            `;
 
             destinosSalida.innerHTML+=`
 
@@ -1198,7 +1187,7 @@ function seleccionarCuarton(
     cuartonSeleccionado={
         id:cuartonId,
         numero:numero,
-        cantidad:cantidad
+        cantidad:Number(cantidad)
     };
 
     document.getElementById("tituloCuarton").innerText=
@@ -1214,6 +1203,14 @@ function seleccionarCuarton(
     "🐷 Cerdos actuales: "
     +
     cantidad;
+
+    document.getElementById("origenReagrupeTexto").innerText=
+    naveNombre+
+    " - Cuartón "+
+    numero+
+    " — "+
+    cantidad+
+    " cerdos";
 
     ocultarTodosLosPaneles();
 
@@ -1250,27 +1247,12 @@ function mostrarCantidadEntrada(tipo){
     document.getElementById("tituloAgregar").innerText=
     "➕ "+tipo;
 
-    document
-    .getElementById("destinoReagrupe")
-    .classList
-    .add("oculto");
-
     ocultarTodosLosPaneles();
 
     document
     .getElementById("panelAgregar")
     .classList
     .remove("oculto");
-
-    if(tipo==="Reagrupe"){
-
-        document
-        .getElementById("destinoReagrupe")
-        .classList
-        .remove("oculto");
-
-    }
-
 }
 
 
@@ -1295,63 +1277,31 @@ async function agregarCerdos(){
 
     }
 
-    if(tipoEntradaSeleccionado==="Reagrupe"){
+    /*
+       El reagrupe ya NO se procesa aquí.
+       Ahora solamente existen entradas externas
+       desde el cuartón que el usuario tocó.
+    */
 
-        const destino=
-        document.getElementById(
-            "cuartonDestino"
-        ).value;
+    const {data:actual,error:errorConsulta}=
+    await clienteSupabase
+    .from("cuartones")
+    .select("cantidad_cerdos")
+    .eq("id",cuartonSeleccionado.id)
+    .single();
 
-        if(!destino){
-
-            alert(
-                "Selecciona el cuartón destino."
-            );
-
-            return;
-
-        }
-
-        const okSumar=
-        await sumarCerdosCuarton(
-            destino,
-            cantidad
-        );
-
-        if(!okSumar){
-            return;
-        }
-
-        const okRestar=
-        await restarCerdosCuarton(
-            cuartonSeleccionado.id,
-            cantidad
-        );
-
-        if(!okRestar){
-
-            await restarCerdosCuarton(
-                destino,
-                cantidad
-            );
-
-            return;
-        }
+    if(errorConsulta){
 
         alert(
-            "✅ Reagrupe realizado correctamente."
+            "Error leyendo el cuartón:\n\n"+
+            errorConsulta.message
         );
 
-        cerrarPanel();
-
-        cargarNaves();
-
         return;
-
     }
 
     const nuevaCantidad=
-    Number(cuartonSeleccionado.cantidad)
+    Number(actual.cantidad_cerdos || 0)
     +
     cantidad;
 
@@ -1391,7 +1341,7 @@ async function agregarCerdos(){
 
     cerrarPanel();
 
-    cargarNaves();
+    await cargarNaves();
 }
 
 
@@ -1691,9 +1641,26 @@ async function procesarVenta(){
         return;
     }
 
+    const {data:actual,error:errorConsulta}=
+    await clienteSupabase
+    .from("cuartones")
+    .select("cantidad_cerdos")
+    .eq("id",cuartonSeleccionado.id)
+    .single();
+
+    if(errorConsulta){
+
+        alert(
+            "Error verificando el cuartón:\n\n"+
+            errorConsulta.message
+        );
+
+        return;
+    }
+
     if(
         cantidad>
-        Number(cuartonSeleccionado.cantidad)
+        Number(actual.cantidad_cerdos)
     ){
 
         alert(
@@ -1713,7 +1680,7 @@ async function procesarVenta(){
     }
 
     const nuevaCantidad=
-    Number(cuartonSeleccionado.cantidad)
+    Number(actual.cantidad_cerdos)
     -
     cantidad;
 
@@ -1750,7 +1717,7 @@ async function procesarVenta(){
 
     cerrarPanel();
 
-    cargarNaves();
+    await cargarNaves();
 }
 
 
@@ -1791,13 +1758,6 @@ async function procesarVentaGrupo(){
         cantidadTotal+=Number(v.cantidad);
     });
 
-
-    /*
-       Volvemos a consultar los cuartones
-       antes de modificar nada para evitar
-       vender una cantidad que ya cambió.
-    */
-
     const ids=
     ventaGrupo.map(v=>v.cuarton_id);
 
@@ -1817,7 +1777,6 @@ async function procesarVentaGrupo(){
 
         return;
     }
-
 
     for(const venta of ventaGrupo){
 
@@ -1854,11 +1813,6 @@ async function procesarVentaGrupo(){
 
     }
 
-
-    /*
-       Actualizar todos los cuartones.
-    */
-
     const actualizados=[];
 
     for(const venta of ventaGrupo){
@@ -1884,11 +1838,6 @@ async function procesarVentaGrupo(){
         .eq("id",venta.cuarton_id);
 
         if(error){
-
-            /*
-               Intentamos restaurar los anteriores
-               si ocurre un error.
-            */
 
             for(const anterior of actualizados){
 
@@ -1924,18 +1873,6 @@ async function procesarVentaGrupo(){
 
     }
 
-
-    /*
-       Datos que se guardarán:
-       
-       cuartones = C28,C27,...
-       naves     = N4,N3,...
-       
-       cuarton mantiene el primer cuartón
-       para conservar compatibilidad con
-       registros antiguos.
-    */
-
     const cuartonesTexto=
     ventaGrupo
     .map(v=>"C"+v.cuarton_numero)
@@ -1945,7 +1882,6 @@ async function procesarVentaGrupo(){
     ventaGrupo
     .map(v=>"N"+v.nave_id)
     .join(",");
-
 
     const primerElemento=
     ventaGrupo[0];
@@ -1966,7 +1902,6 @@ async function procesarVentaGrupo(){
     const correoUsuario=
     sesionData.session.user.email ||
     "Sin correo";
-
 
     const {error:errorHistorial}=
 
@@ -2000,15 +1935,7 @@ async function procesarVentaGrupo(){
 
     });
 
-
     if(errorHistorial){
-
-        /*
-           IMPORTANTE:
-           Si el historial falla, devolvemos
-           todos los cuartones a su cantidad
-           anterior.
-        */
 
         for(const anterior of actualizados){
 
@@ -2033,7 +1960,6 @@ async function procesarVentaGrupo(){
         return;
     }
 
-
     alert(
         "✅ Venta por grupo registrada correctamente.\n\n"+
         "Cerdos: "+cantidadTotal+
@@ -2043,10 +1969,9 @@ async function procesarVentaGrupo(){
         "\nNaves: "+navesTexto
     );
 
-
     cerrarPanel();
 
-    cargarNaves();
+    await cargarNaves();
 }
 
 
@@ -2098,9 +2023,26 @@ async function procesarMuerteTotal(){
         return;
     }
 
+    const {data:actual,error:errorConsulta}=
+    await clienteSupabase
+    .from("cuartones")
+    .select("cantidad_cerdos")
+    .eq("id",cuartonSeleccionado.id)
+    .single();
+
+    if(errorConsulta){
+
+        alert(
+            "Error verificando el cuartón:\n\n"+
+            errorConsulta.message
+        );
+
+        return;
+    }
+
     if(
         cantidad>
-        Number(cuartonSeleccionado.cantidad)
+        Number(actual.cantidad_cerdos)
     ){
 
         alert(
@@ -2111,7 +2053,7 @@ async function procesarMuerteTotal(){
     }
 
     const nuevaCantidad=
-    Number(cuartonSeleccionado.cantidad)
+    Number(actual.cantidad_cerdos)
     -
     cantidad;
 
@@ -2146,7 +2088,7 @@ async function procesarMuerteTotal(){
 
     cerrarPanel();
 
-    cargarNaves();
+    await cargarNaves();
 }
 
 
@@ -2190,9 +2132,26 @@ async function procesarMuerteVenta(){
         return;
     }
 
+    const {data:actual,error:errorConsulta}=
+    await clienteSupabase
+    .from("cuartones")
+    .select("cantidad_cerdos")
+    .eq("id",cuartonSeleccionado.id)
+    .single();
+
+    if(errorConsulta){
+
+        alert(
+            "Error verificando el cuartón:\n\n"+
+            errorConsulta.message
+        );
+
+        return;
+    }
+
     if(
         cantidad>
-        Number(cuartonSeleccionado.cantidad)
+        Number(actual.cantidad_cerdos)
     ){
 
         alert(
@@ -2212,7 +2171,7 @@ async function procesarMuerteVenta(){
     }
 
     const nuevaCantidad=
-    Number(cuartonSeleccionado.cantidad)
+    Number(actual.cantidad_cerdos)
     -
     cantidad;
 
@@ -2249,15 +2208,30 @@ async function procesarMuerteVenta(){
 
     cerrarPanel();
 
-    cargarNaves();
+    await cargarNaves();
 }
 
 
 /* ==========================================
-   REAGRUPACIÓN SALIDA
+   REAGRUPACIÓN
 ========================================== */
 
 function mostrarReagrupeSalida(){
+
+    /*
+       El cuartón que el usuario tocó ES EL ORIGEN.
+       Ya no se vuelve a seleccionar el origen.
+    */
+
+    document.getElementById(
+        "origenReagrupeTexto"
+    ).innerText=
+    naveSeleccionada.nombre+
+    " - Cuartón "+
+    cuartonSeleccionado.numero+
+    " — "+
+    cuartonSeleccionado.cantidad+
+    " cerdos";
 
     ocultarTodosLosPaneles();
 
@@ -2312,170 +2286,325 @@ async function procesarReagrupe(){
         return;
     }
 
-    if(
-        cantidad>
-        Number(cuartonSeleccionado.cantidad)
-    ){
 
-        alert(
-            "No puedes reagrupar más cerdos de los que hay."
-        );
+    /*
+       IMPORTANTE:
+       Volvemos a leer el origen y el destino
+       directamente desde Supabase.
+       Así no usamos cantidades antiguas
+       que hayan quedado en memoria.
+    */
 
-        return;
-    }
-
-    const okRestar=
-    await restarCerdosCuarton(
+    const ids=[
         cuartonSeleccionado.id,
-        cantidad
-    );
+        Number(destino)
+    ];
 
-    if(!okRestar){
+    const {data:cuartones,error:errorConsulta}=
+
+    await clienteSupabase
+    .from("cuartones")
+    .select("id,cantidad_cerdos,nave_id,numero")
+    .in("id",ids);
+
+    if(errorConsulta){
+
+        alert(
+            "Error verificando los cuartones:\n\n"+
+            errorConsulta.message
+        );
+
         return;
     }
 
-    const okSumar=
-    await sumarCerdosCuarton(
-        destino,
-        cantidad
+    const origenActual=
+    cuartones.find(c=>
+        String(c.id)===
+        String(cuartonSeleccionado.id)
     );
 
-    if(!okSumar){
+    const destinoActual=
+    cuartones.find(c=>
+        String(c.id)===
+        String(cuartonDestinoSalida.value)
+    );
 
-        await sumarCerdosCuarton(
-            cuartonSeleccionado.id,
-            cantidad
+    if(!origenActual){
+
+        alert(
+            "No se encontró el cuartón de origen."
         );
 
         return;
     }
 
-    alert(
-        "✅ Reagrupe realizado correctamente.\n\n"+
-        "Cerdos trasladados: "+cantidad
-    );
-
-    cerrarPanel();
-
-    cargarNaves();
-}
-
-
-/* ==========================================
-   SUMAR
-========================================== */
-
-async function sumarCerdosCuarton(
-    id,
-    cantidad
-){
-
-    const {data,error}=
-    await clienteSupabase
-    .from("cuartones")
-    .select("cantidad_cerdos")
-    .eq("id",id)
-    .single();
-
-    if(error){
+    if(!destinoActual){
 
         alert(
-            "Error leyendo cuartón destino:\n\n"+
-            error.message
+            "No se encontró el cuartón destino."
         );
 
-        return false;
-    }
-
-    const nueva=
-    Number(data.cantidad_cerdos || 0)
-    +
-    cantidad;
-
-    const {error:errorUpdate}=
-    await clienteSupabase
-    .from("cuartones")
-    .update({
-        cantidad_cerdos:nueva
-    })
-    .eq("id",id);
-
-    if(errorUpdate){
-
-        alert(
-            "Error agregando cerdos:\n\n"+
-            errorUpdate.message
-        );
-
-        return false;
-    }
-
-    return true;
-}
-
-
-/* ==========================================
-   RESTAR
-========================================== */
-
-async function restarCerdosCuarton(
-    id,
-    cantidad
-){
-
-    const {data,error}=
-    await clienteSupabase
-    .from("cuartones")
-    .select("cantidad_cerdos")
-    .eq("id",id)
-    .single();
-
-    if(error){
-
-        alert(
-            "Error leyendo cuartón:\n\n"+
-            error.message
-        );
-
-        return false;
+        return;
     }
 
     if(
         cantidad>
-        Number(data.cantidad_cerdos || 0)
+        Number(origenActual.cantidad_cerdos || 0)
     ){
 
         alert(
-            "No hay suficientes cerdos."
+            "No puedes reagrupar más cerdos de los que hay en el cuartón de origen."
         );
 
-        return false;
+        return;
     }
 
-    const nueva=
-    Number(data.cantidad_cerdos || 0)
+
+    /*
+       Cantidades definitivas.
+    */
+
+    const cantidadOrigenNueva=
+    Number(origenActual.cantidad_cerdos || 0)
     -
     cantidad;
 
-    const {error:errorUpdate}=
+    const cantidadDestinoNueva=
+    Number(destinoActual.cantidad_cerdos || 0)
+    +
+    cantidad;
+
+
+    /*
+       Primero actualizamos el origen.
+    */
+
+    const {error:errorOrigen}=
     await clienteSupabase
     .from("cuartones")
     .update({
-        cantidad_cerdos:nueva
+        cantidad_cerdos:cantidadOrigenNueva
     })
-    .eq("id",id);
+    .eq(
+        "id",
+        origenActual.id
+    );
 
-    if(errorUpdate){
+    if(errorOrigen){
 
         alert(
-            "Error restando cerdos:\n\n"+
-            errorUpdate.message
+            "Error restando los cerdos del origen:\n\n"+
+            errorOrigen.message
         );
 
-        return false;
+        return;
     }
 
-    return true;
+
+    /*
+       Ahora actualizamos el destino.
+    */
+
+    const {error:errorDestino}=
+    await clienteSupabase
+    .from("cuartones")
+    .update({
+        cantidad_cerdos:cantidadDestinoNueva
+    })
+    .eq(
+        "id",
+        destinoActual.id
+    );
+
+
+    /*
+       Si falla el destino,
+       restauramos el origen.
+    */
+
+    if(errorDestino){
+
+        await clienteSupabase
+        .from("cuartones")
+        .update({
+            cantidad_cerdos:
+            Number(origenActual.cantidad_cerdos)
+        })
+        .eq(
+            "id",
+            origenActual.id
+        );
+
+        alert(
+            "❌ No se pudo completar el reagrupe.\n\n"+
+            "Los cerdos del origen fueron restaurados.\n\n"+
+            errorDestino.message
+        );
+
+        return;
+    }
+
+
+    /*
+       Buscar información completa de origen
+       y destino para guardar el historial.
+    */
+
+    const origenInfo=
+    todosLosCuartones.find(c=>
+        String(c.id)===
+        String(origenActual.id)
+    );
+
+    const destinoInfo=
+    todosLosCuartones.find(c=>
+        String(c.id)===
+        String(destinoActual.id)
+    );
+
+
+    const {data:sesionData}=
+
+    await clienteSupabase
+    .auth
+    .getSession();
+
+    if(!sesionData.session){
+
+        /*
+           Si la sesión desaparece después de
+           actualizar, restauramos ambos.
+        */
+
+        await clienteSupabase
+        .from("cuartones")
+        .update({
+            cantidad_cerdos:
+            Number(origenActual.cantidad_cerdos)
+        })
+        .eq(
+            "id",
+            origenActual.id
+        );
+
+        await clienteSupabase
+        .from("cuartones")
+        .update({
+            cantidad_cerdos:
+            Number(destinoActual.cantidad_cerdos)
+        })
+        .eq(
+            "id",
+            destinoActual.id
+        );
+
+        window.location.href="login.html";
+
+        return;
+    }
+
+    const correoUsuario=
+    sesionData.session.user.email ||
+    "Sin correo";
+
+
+    /*
+       Guardar UN movimiento de reagrupe.
+    */
+
+    const {error:errorHistorial}=
+
+    await clienteSupabase
+    .from("movimientos_naves")
+    .insert({
+
+        fecha:new Date().toISOString(),
+
+        nave_id:origenActual.nave_id,
+
+        cuarton_id:origenActual.id,
+
+        nave:origenInfo
+        ?
+        origenInfo.nave_nombre
+        :
+        naveSeleccionada.nombre,
+
+        cuarton:origenActual.numero,
+
+        operacion:"Reagrupe",
+
+        cantidad:cantidad,
+
+        peso_kg:0,
+
+        usuario:correoUsuario,
+
+        motivo:"Reagrupe"
+
+    });
+
+
+    /*
+       Si el historial falla,
+       restauramos ambos cuartones.
+    */
+
+    if(errorHistorial){
+
+        await clienteSupabase
+        .from("cuartones")
+        .update({
+            cantidad_cerdos:
+            Number(origenActual.cantidad_cerdos)
+        })
+        .eq(
+            "id",
+            origenActual.id
+        );
+
+        await clienteSupabase
+        .from("cuartones")
+        .update({
+            cantidad_cerdos:
+            Number(destinoActual.cantidad_cerdos)
+        })
+        .eq(
+            "id",
+            destinoActual.id
+        );
+
+        alert(
+            "❌ El reagrupe fue cancelado porque no se pudo guardar el historial:\n\n"+
+            errorHistorial.message
+        );
+
+        return;
+    }
+
+
+    alert(
+        "✅ Reagrupe realizado correctamente.\n\n"+
+        "Cerdos trasladados: "+cantidad+
+        "\n\n"+
+        "Origen: "+
+        (origenInfo
+        ?
+        origenInfo.nave_nombre+" - C"+origenInfo.numero
+        :
+        "C"+origenActual.numero)+
+        "\nDestino: "+
+        (destinoInfo
+        ?
+        destinoInfo.nave_nombre+" - C"+destinoInfo.numero
+        :
+        "C"+destinoActual.numero)
+    );
+
+
+    cerrarPanel();
+
+    await cargarNaves();
 }
 
 
