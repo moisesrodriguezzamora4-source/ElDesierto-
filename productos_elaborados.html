@@ -187,7 +187,7 @@ table{
 
     width:100%;
 
-    min-width:500px;
+    min-width:650px;
 
     border-collapse:separate;
 
@@ -258,13 +258,133 @@ tr:hover td{
 
 /* CANTIDAD */
 
-td:last-child{
+td:nth-child(3){
 
     color:#ff3030;
 
     font-weight:bold;
 
     font-size:16px;
+}
+
+
+/* ================================
+   BOTÓN CONSUMIR
+================================ */
+
+.boton-consumir{
+
+    padding:9px 12px;
+
+    border:none;
+
+    border-radius:9px;
+
+    color:white;
+
+    font-size:14px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    background:
+    linear-gradient(
+        145deg,
+        #ff3030,
+        #8b0000
+    );
+
+    box-shadow:
+    0 4px 0 #500000,
+    0 6px 12px rgba(255,0,0,.25);
+
+    transition:.15s;
+}
+
+.boton-consumir:active{
+
+    transform:translateY(3px);
+
+    box-shadow:
+    0 1px 0 #500000;
+
+}
+
+
+/* ================================
+   MENÚ DE CONSUMO
+================================ */
+
+.menu-consumo{
+
+    margin-top:10px;
+
+    padding:12px;
+
+    border-radius:12px;
+
+    background:
+    linear-gradient(
+        145deg,
+        #252525,
+        #0a0a0a
+    );
+
+    border:1px solid #600000;
+
+    box-shadow:
+    inset 0 0 10px #000;
+
+}
+
+
+/* ================================
+   BOTONES DEL MENÚ
+================================ */
+
+.boton-opcion{
+
+    display:block;
+
+    width:100%;
+
+    margin:7px 0;
+
+    padding:11px;
+
+    border:none;
+
+    border-radius:9px;
+
+    color:white;
+
+    font-size:14px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    background:
+    linear-gradient(
+        145deg,
+        #d90000,
+        #760000
+    );
+
+    box-shadow:
+    0 4px 0 #450000;
+
+}
+
+
+.boton-opcion:active{
+
+    transform:translateY(3px);
+
+    box-shadow:
+    0 1px 0 #450000;
+
 }
 
 
@@ -312,6 +432,11 @@ td:last-child{
     td{
         padding:12px 8px;
         font-size:14px;
+    }
+
+    .boton-consumir{
+        font-size:13px;
+        padding:8px 10px;
     }
 
 }
@@ -396,6 +521,10 @@ td:last-child{
                         Cantidad
                     </th>
 
+                    <th>
+                        Consumo
+                    </th>
+
                 </tr>
 
             </thead>
@@ -420,13 +549,17 @@ td:last-child{
 
 <script>
 
+/* ==========================================
+   CARGAR PRODUCTOS
+========================================== */
+
 async function cargarElaborados(){
 
     const {data,error}=await clienteSupabase
 
     .from("productos_elaborados")
 
-    .select("Nombre, Unidad, Cantidad");
+    .select("id, Nombre, Unidad, Cantidad");
 
 
     if(error){
@@ -457,7 +590,7 @@ async function cargarElaborados(){
             <tr>
 
                 <td
-                    colspan="3"
+                    colspan="4"
                     class="vacio">
 
                     No hay productos elaborados registrados.
@@ -491,6 +624,49 @@ async function cargarElaborados(){
                     ${producto.Cantidad}
                 </td>
 
+                <td>
+
+                    <button
+                        class="boton-consumir"
+                        onclick="mostrarMenuConsumo(${producto.id})">
+
+                        🍽️ Consumir
+
+                    </button>
+
+                    <div
+                        id="menu-${producto.id}"
+                        class="menu-consumo"
+                        style="display:none;">
+
+                        <button
+                            class="boton-opcion"
+                            onclick="consumirTodo(${producto.id}, '${producto.Nombre}')">
+
+                            🍽️ Consumir todo
+
+                        </button>
+
+                        <button
+                            class="boton-opcion"
+                            onclick="consumirCantidad(${producto.id}, '${producto.Nombre}', ${Number(producto.Cantidad)})">
+
+                            ⚖️ Consumir cantidad específica
+
+                        </button>
+
+                        <button
+                            class="boton-opcion"
+                            onclick="cerrarMenuConsumo(${producto.id})">
+
+                            ❌ Cancelar
+
+                        </button>
+
+                    </div>
+
+                </td>
+
             </tr>
 
         `;
@@ -499,6 +675,254 @@ async function cargarElaborados(){
 
 }
 
+
+/* ==========================================
+   MOSTRAR MENÚ
+========================================== */
+
+function mostrarMenuConsumo(id){
+
+    const menu=
+        document.getElementById(
+            "menu-"+id
+        );
+
+    if(menu){
+
+        menu.style.display="block";
+
+    }
+
+}
+
+
+/* ==========================================
+   CERRAR MENÚ
+========================================== */
+
+function cerrarMenuConsumo(id){
+
+    const menu=
+        document.getElementById(
+            "menu-"+id
+        );
+
+    if(menu){
+
+        menu.style.display="none";
+
+    }
+
+}
+
+
+/* ==========================================
+   CONSUMIR TODO
+========================================== */
+
+async function consumirTodo(id,nombre){
+
+    const confirmar=
+        confirm(
+            "¿Deseas consumir TODO el producto:\n\n"
+            +
+            nombre
+            +
+            "?\n\nLa cantidad quedará en 0 kg."
+        );
+
+
+    if(!confirmar){
+
+        return;
+
+    }
+
+
+    const {error}=
+
+        await clienteSupabase
+
+        .from("productos_elaborados")
+
+        .update({
+
+            Cantidad:0
+
+        })
+
+        .eq("id",id);
+
+
+    if(error){
+
+        alert(
+            "❌ Error consumiendo el producto:\n\n"
+            +
+            error.message
+        );
+
+        return;
+
+    }
+
+
+    alert(
+        "✅ Producto consumido completamente."
+    );
+
+
+    cargarElaborados();
+
+}
+
+
+/* ==========================================
+   CONSUMIR CANTIDAD ESPECÍFICA
+========================================== */
+
+async function consumirCantidad(
+    id,
+    nombre,
+    cantidadDisponible
+){
+
+    if(cantidadDisponible<=0){
+
+        alert(
+            "⚠️ Este producto no tiene cantidad disponible."
+        );
+
+        return;
+
+    }
+
+
+    const cantidad=
+        prompt(
+            "¿Cuántos kg de "
+            +
+            nombre
+            +
+            " deseas consumir?\n\n"
+            +
+            "Disponible: "
+            +
+            cantidadDisponible
+            +
+            " kg"
+        );
+
+
+    if(cantidad===null){
+
+        return;
+
+    }
+
+
+    const cantidadConsumir=
+        Number(cantidad);
+
+
+    if(
+        !Number.isFinite(cantidadConsumir)
+        ||
+        cantidadConsumir<=0
+    ){
+
+        alert(
+            "⚠️ Introduce una cantidad válida."
+        );
+
+        return;
+
+    }
+
+
+    if(cantidadConsumir>cantidadDisponible){
+
+        alert(
+            "❌ No puedes consumir "
+            +
+            cantidadConsumir
+            +
+            " kg.\n\n"
+            +
+            "Solo hay "
+            +
+            cantidadDisponible
+            +
+            " kg disponibles."
+        );
+
+        return;
+
+    }
+
+
+    const nuevaCantidad=
+        cantidadDisponible-
+        cantidadConsumir;
+
+
+    const {error}=
+
+        await clienteSupabase
+
+        .from("productos_elaborados")
+
+        .update({
+
+            Cantidad:nuevaCantidad
+
+        })
+
+        .eq("id",id);
+
+
+    if(error){
+
+        alert(
+            "❌ Error actualizando el producto:\n\n"
+            +
+            error.message
+        );
+
+        return;
+
+    }
+
+
+    alert(
+        "✅ Consumo realizado correctamente.\n\n"
+        +
+        "Producto: "
+        +
+        nombre
+        +
+        "\nConsumido: "
+        +
+        cantidadConsumir
+        +
+        " kg"
+        +
+        "\nDisponible: "
+        +
+        nuevaCantidad
+        +
+        " kg"
+    );
+
+
+    cargarElaborados();
+
+}
+
+
+/* ==========================================
+   INICIAR
+========================================== */
 
 cargarElaborados();
 
