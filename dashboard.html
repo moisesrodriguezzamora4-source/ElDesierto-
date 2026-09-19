@@ -1039,8 +1039,6 @@ tr:hover td{
 <div class="grid">
 
 
-    <!-- MERCANCÍA -->
-
     <div class="panel">
 
         <h2>
@@ -1055,17 +1053,11 @@ tr:hover td{
 
                     <tr>
 
-                        <th>
-                            Producto
-                        </th>
+                        <th>Producto</th>
 
-                        <th>
-                            Entradas
-                        </th>
+                        <th>Entradas</th>
 
-                        <th>
-                            Salidas
-                        </th>
+                        <th>Salidas</th>
 
                     </tr>
 
@@ -1095,8 +1087,6 @@ tr:hover td{
     </div>
 
 
-    <!-- PRODUCCIÓN -->
-
     <div class="panel">
 
         <h2>
@@ -1111,13 +1101,9 @@ tr:hover td{
 
                     <tr>
 
-                        <th>
-                            Producto
-                        </th>
+                        <th>Producto</th>
 
-                        <th>
-                            Cantidad
-                        </th>
+                        <th>Cantidad</th>
 
                     </tr>
 
@@ -1168,21 +1154,13 @@ tr:hover td{
 
                 <tr>
 
-                    <th>
-                        Fecha
-                    </th>
+                    <th>Fecha</th>
 
-                    <th>
-                        Producto
-                    </th>
+                    <th>Producto</th>
 
-                    <th>
-                        Cantidad
-                    </th>
+                    <th>Cantidad</th>
 
-                    <th>
-                        Usuario
-                    </th>
+                    <th>Usuario</th>
 
                 </tr>
 
@@ -1241,15 +1219,10 @@ tr:hover td{
 </div>
 
 
-<!-- ==================================================
-     SUPABASE
-================================================== -->
-
 <script src="supabase.js"></script>
 
 
 <script>
-
 
 /* ==================================================
    VARIABLES
@@ -1261,7 +1234,7 @@ let textoVozActual = "";
 
 
 /* ==================================================
-   FECHA DE HOY
+   FECHAS
 ================================================== */
 
 function obtenerInicioHoy(){
@@ -1280,9 +1253,11 @@ function obtenerInicioHoy(){
 
 function obtenerFinHoy(){
 
-    const inicio = obtenerInicioHoy();
+    const inicio =
+        obtenerInicioHoy();
 
-    const fin = new Date(inicio);
+    const fin =
+        new Date(inicio);
 
     fin.setDate(
         fin.getDate()+1
@@ -1293,9 +1268,111 @@ function obtenerFinHoy(){
 }
 
 
+function esHoy(fecha){
+
+    if(!fecha){
+
+        return false;
+
+    }
+
+    const d =
+        new Date(fecha);
+
+    if(
+        Number.isNaN(
+            d.getTime()
+        )
+    ){
+
+        return false;
+
+    }
+
+    return (
+        d >= obtenerInicioHoy()
+        &&
+        d < obtenerFinHoy()
+    );
+
+}
+
+
+function obtenerFechaMovimiento(m){
+
+    /*
+       El sistema puede tener Fecha como
+       timestamp o puede tener Fecha + Hora.
+    */
+
+    if(m.Fecha){
+
+        const fecha =
+            new Date(m.Fecha);
+
+        if(
+            !Number.isNaN(
+                fecha.getTime()
+            )
+        ){
+
+            return fecha;
+
+        }
+
+    }
+
+
+    if(
+        m.Fecha &&
+        m.Hora
+    ){
+
+        const fecha =
+            new Date(
+                `${m.Fecha}T${m.Hora}`
+            );
+
+        if(
+            !Number.isNaN(
+                fecha.getTime()
+            )
+        ){
+
+            return fecha;
+
+        }
+
+    }
+
+
+    if(m.fecha){
+
+        const fecha =
+            new Date(m.fecha);
+
+        if(
+            !Number.isNaN(
+                fecha.getTime()
+            )
+        ){
+
+            return fecha;
+
+        }
+
+    }
+
+
+    return null;
+
+}
+
+
 function formatoFecha(fecha){
 
-    const d = new Date(fecha);
+    const d =
+        new Date(fecha);
 
     return d.toLocaleDateString(
         "es-ES",
@@ -1311,7 +1388,8 @@ function formatoFecha(fecha){
 
 function formatoHora(fecha){
 
-    const d = new Date(fecha);
+    const d =
+        new Date(fecha);
 
     return d.toLocaleTimeString(
         "es-ES",
@@ -1330,7 +1408,8 @@ function formatoHora(fecha){
 
 function mostrarFecha(){
 
-    const ahora = new Date();
+    const ahora =
+        new Date();
 
     document.getElementById(
         "fechaActual"
@@ -1344,6 +1423,24 @@ function mostrarFecha(){
                 year:"numeric"
             }
         );
+
+}
+
+
+/* ==================================================
+   ESCAPAR HTML
+================================================== */
+
+function escaparHTML(valor){
+
+    return String(
+        valor ?? ""
+    )
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 
 }
 
@@ -1382,46 +1479,18 @@ async function comprobarSesion(){
 
 
 /* ==================================================
-   MOVIMIENTOS DE MERCANCÍA
+   CARGAR MOVIMIENTOS
 ================================================== */
 
 async function cargarMovimientos(){
-
-    const inicio =
-        obtenerInicioHoy();
-
-    const fin =
-        obtenerFinHoy();
-
 
     const {
         data,
         error
     } =
     await clienteSupabase
-
     .from("movimientos")
-
-    .select(
-        "Fecha, Producto, Tipo, Cantidad, Usuario"
-    )
-
-    .gte(
-        "Fecha",
-        inicio.toISOString()
-    )
-
-    .lt(
-        "Fecha",
-        fin.toISOString()
-    )
-
-    .order(
-        "Fecha",
-        {
-            ascending:false
-        }
-    );
+    .select("*");
 
 
     if(error){
@@ -1436,7 +1505,30 @@ async function cargarMovimientos(){
     }
 
 
-    return data || [];
+    /*
+       Filtramos localmente para soportar
+       tanto Fecha como Fecha + Hora.
+    */
+
+    return (data || [])
+        .map(m=>{
+
+            return {
+                ...m,
+                _fechaDashboard:
+                    obtenerFechaMovimiento(m)
+            };
+
+        })
+        .filter(m=>
+            m._fechaDashboard &&
+            esHoy(m._fechaDashboard)
+        )
+        .sort(
+            (a,b)=>
+                b._fechaDashboard -
+                a._fechaDashboard
+        );
 
 }
 
@@ -1445,11 +1537,9 @@ async function cargarMovimientos(){
    RESUMEN DE MERCANCÍA
 ================================================== */
 
-async function cargarResumenMercancia(){
-
-    const movimientos =
-        await cargarMovimientos();
-
+async function cargarResumenMercancia(
+    movimientos
+){
 
     let entradas = 0;
 
@@ -1464,19 +1554,25 @@ async function cargarResumenMercancia(){
     movimientos.forEach(m=>{
 
         const cantidad =
-            Number(m.Cantidad) || 0;
+            Number(
+                m.Cantidad
+            ) || 0;
+
 
         const tipo =
             String(
                 m.Tipo || ""
-            ).toLowerCase();
+            )
+            .trim()
+            .toLowerCase();
 
 
         if(
             tipo.includes("entrada")
         ){
 
-            entradas += cantidad;
+            entradas +=
+                cantidad;
 
         }
 
@@ -1485,7 +1581,8 @@ async function cargarResumenMercancia(){
             tipo.includes("salida")
         ){
 
-            salidas += cantidad;
+            salidas +=
+                cantidad;
 
         }
 
@@ -1494,7 +1591,8 @@ async function cargarResumenMercancia(){
             tipo.includes("fabric")
         ){
 
-            fabricado += cantidad;
+            fabricado +=
+                cantidad;
 
         }
 
@@ -1504,11 +1602,16 @@ async function cargarResumenMercancia(){
             "Sin producto";
 
 
-        if(!productos[nombre]){
+        if(
+            !productos[nombre]
+        ){
 
             productos[nombre] = {
+
                 entradas:0,
+
                 salidas:0
+
             };
 
         }
@@ -1519,7 +1622,8 @@ async function cargarResumenMercancia(){
         ){
 
             productos[nombre]
-                .entradas += cantidad;
+                .entradas +=
+                cantidad;
 
         }
 
@@ -1529,7 +1633,8 @@ async function cargarResumenMercancia(){
         ){
 
             productos[nombre]
-                .salidas += cantidad;
+                .salidas +=
+                cantidad;
 
         }
 
@@ -1554,8 +1659,6 @@ async function cargarResumenMercancia(){
         fabricado;
 
 
-    /* TABLA MERCANCÍA */
-
     const tabla =
         document.getElementById(
             "tablaMercancia"
@@ -1569,7 +1672,9 @@ async function cargarResumenMercancia(){
         Object.keys(productos);
 
 
-    if(nombres.length===0){
+    if(
+        nombres.length === 0
+    ){
 
         tabla.innerHTML = `
 
@@ -1603,7 +1708,7 @@ async function cargarResumenMercancia(){
             <tr>
 
                 <td>
-                    ${nombre}
+                    ${escaparHTML(nombre)}
                 </td>
 
                 <td class="cantidad">
@@ -1627,65 +1732,21 @@ async function cargarResumenMercancia(){
    PRODUCCIÓN
 ================================================== */
 
-async function cargarProduccion(){
-
-    const inicio =
-        obtenerInicioHoy();
-
-    const fin =
-        obtenerFinHoy();
-
-
-    const {
-        data,
-        error
-    } =
-    await clienteSupabase
-
-    .from("movimientos")
-
-    .select(
-        "Fecha, Producto, Tipo, Cantidad, Usuario"
-    )
-
-    .gte(
-        "Fecha",
-        inicio.toISOString()
-    )
-
-    .lt(
-        "Fecha",
-        fin.toISOString()
-    )
-
-    .order(
-        "Fecha",
-        {
-            ascending:false
-        }
-    );
-
-
-    if(error){
-
-        console.error(
-            error
-        );
-
-        return;
-
-    }
-
+function cargarProduccion(
+    movimientos
+){
 
     const produccion = {};
 
 
-    (data || []).forEach(m=>{
+    movimientos.forEach(m=>{
 
         const tipo =
             String(
                 m.Tipo || ""
-            ).toLowerCase();
+            )
+            .trim()
+            .toLowerCase();
 
 
         if(
@@ -1703,7 +1764,9 @@ async function cargarProduccion(){
 
 
         const cantidad =
-            Number(m.Cantidad) || 0;
+            Number(
+                m.Cantidad
+            ) || 0;
 
 
         if(
@@ -1734,7 +1797,9 @@ async function cargarProduccion(){
         Object.keys(produccion);
 
 
-    if(nombres.length===0){
+    if(
+        nombres.length === 0
+    ){
 
         tabla.innerHTML = `
 
@@ -1764,7 +1829,7 @@ async function cargarProduccion(){
             <tr>
 
                 <td>
-                    ${nombre}
+                    ${escaparHTML(nombre)}
                 </td>
 
                 <td class="cantidad">
@@ -1784,56 +1849,12 @@ async function cargarProduccion(){
    ÚLTIMAS FABRICACIONES
 ================================================== */
 
-async function cargarFabricaciones(){
-
-    const inicio =
-        obtenerInicioHoy();
-
-    const fin =
-        obtenerFinHoy();
-
-
-    const {
-        data,
-        error
-    } =
-    await clienteSupabase
-
-    .from("movimientos")
-
-    .select(
-        "Fecha, Producto, Tipo, Cantidad, Usuario"
-    )
-
-    .gte(
-        "Fecha",
-        inicio.toISOString()
-    )
-
-    .lt(
-        "Fecha",
-        fin.toISOString()
-    )
-
-    .order(
-        "Fecha",
-        {
-            ascending:false
-        }
-    );
-
-
-    if(error){
-
-        console.error(error);
-
-        return;
-
-    }
-
+function cargarFabricaciones(
+    movimientos
+){
 
     const fabricaciones =
-        (data || [])
+        movimientos
         .filter(m=>
             String(
                 m.Tipo || ""
@@ -1854,7 +1875,7 @@ async function cargarFabricaciones(){
 
 
     if(
-        fabricaciones.length===0
+        fabricaciones.length === 0
     ){
 
         tabla.innerHTML = `
@@ -1880,24 +1901,38 @@ async function cargarFabricaciones(){
 
     fabricaciones.forEach(m=>{
 
+        const fecha =
+            m._fechaDashboard;
+
+
         tabla.innerHTML += `
 
             <tr>
 
                 <td>
-                    ${formatoHora(m.Fecha)}
+                    ${fecha ?
+                        formatoHora(fecha)
+                        :
+                        "-"
+                    }
                 </td>
 
                 <td>
-                    ${m.Producto || "-"}
+                    ${escaparHTML(
+                        m.Producto || "-"
+                    )}
                 </td>
 
                 <td class="cantidad">
-                    ${m.Cantidad || 0} kg
+                    ${Number(
+                        m.Cantidad || 0
+                    )} kg
                 </td>
 
                 <td>
-                    ${m.Usuario || "-"}
+                    ${escaparHTML(
+                        m.Usuario || "-"
+                    )}
                 </td>
 
             </tr>
@@ -1910,48 +1945,52 @@ async function cargarFabricaciones(){
 
 
 /* ==================================================
-   NAVES
+   MOVIMIENTOS DE NAVES
 ================================================== */
 
-async function cargarNaves(){
-
-    const inicio =
-        obtenerInicioHoy();
-
-    const fin =
-        obtenerFinHoy();
-
+async function cargarMovimientosNaves(){
 
     const {
         data,
         error
     } =
     await clienteSupabase
-
     .from("movimientos_naves")
-
-    .select("*")
-
-    .gte(
-        "fecha",
-        inicio.toISOString()
-    )
-
-    .lt(
-        "fecha",
-        fin.toISOString()
-    );
+    .select("*");
 
 
     if(error){
 
         console.error(
-            "Error movimientos naves:",
+            "Error movimientos_naves:",
             error
         );
 
+        return [];
+
     }
 
+
+    return (data || [])
+        .filter(m=>
+            esHoy(m.fecha)
+        )
+        .sort(
+            (a,b)=>
+                new Date(b.fecha) -
+                new Date(a.fecha)
+        );
+
+}
+
+
+/* ==================================================
+   RESUMEN DE NAVES
+================================================== */
+
+function cargarNaves(
+    movimientosNaves
+){
 
     let agregados = 0;
 
@@ -1962,74 +2001,115 @@ async function cargarNaves(){
     let otras = 0;
 
 
-    (data || []).forEach(m=>{
+    movimientosNaves.forEach(m=>{
 
         const cantidad =
             Number(
-                m.cantidad ||
-                m.Cantidad ||
-                0
+                m.cantidad || 0
             );
 
 
         const operacion =
             String(
-                m.operacion ||
-                m.Operacion ||
-                ""
-            ).toLowerCase();
+                m.operacion || ""
+            )
+            .trim()
+            .toLowerCase();
 
 
         const motivo =
             String(
-                m.motivo ||
-                m.Motivo ||
-                ""
-            ).toLowerCase();
+                m.motivo || ""
+            )
+            .trim()
+            .toLowerCase();
 
+
+        /*
+        ==============================================
+        AGREGADOS
+
+        El sistema actual registra:
+        - Entrada Destete
+        - Entrada Exterior
+
+        Reagrupe NO se registra en historial.
+        ==============================================
+        */
 
         if(
-            operacion.includes("agreg")
+            motivo ===
+                "entrada destete"
             ||
-            operacion.includes("entrada")
-            ||
-            operacion.includes("añad")
+            motivo ===
+                "entrada exterior"
         ){
 
-            agregados += cantidad;
+            agregados +=
+                cantidad;
+
+            return;
 
         }
 
 
-        else if(
-            motivo.includes("venta")
-            ||
-            operacion.includes("venta")
+        /*
+        ==============================================
+        VENTAS
+        ==============================================
+        */
+
+        if(
+            motivo === "venta"
         ){
 
-            vendidos += cantidad;
+            vendidos +=
+                cantidad;
+
+            return;
 
         }
 
 
-        else if(
-            motivo.includes("muerte")
+        /*
+        ==============================================
+        MUERTES
+
+        Incluye:
+        - Muerte total
+        - Muerte de venta
+        ==============================================
+        */
+
+        if(
+            motivo === "muerte total"
             ||
-            motivo.includes("muert")
+            motivo === "muerte de venta"
         ){
 
-            muertes += cantidad;
+            muertes +=
+                cantidad;
+
+            return;
 
         }
 
 
-        else if(
-            operacion.includes("sal")
-            ||
-            operacion.includes("retir")
+        /*
+        ==============================================
+        OTRAS SALIDAS
+
+        Cualquier Salida que no sea
+        venta o muerte.
+        ==============================================
+        */
+
+        if(
+            operacion === "salida"
         ){
 
-            otras += cantidad;
+            otras +=
+                cantidad;
 
         }
 
@@ -2061,10 +2141,15 @@ async function cargarNaves(){
 
 
     return {
+
         agregados,
+
         vendidos,
+
         muertes,
+
         otras
+
     };
 
 }
@@ -2081,9 +2166,7 @@ async function cargarCerdos(){
         error
     } =
     await clienteSupabase
-
     .from("cuartones")
-
     .select("cantidad_cerdos");
 
 
@@ -2127,73 +2210,84 @@ async function cargarCerdos(){
    ACTIVIDAD RECIENTE
 ================================================== */
 
-async function cargarActividad(){
-
-    const inicio =
-        obtenerInicioHoy();
-
-    const fin =
-        obtenerFinHoy();
-
-
-    const movimientos =
-        await cargarMovimientos();
-
-
-    const {
-        data:naves,
-        error
-    } =
-    await clienteSupabase
-
-    .from("movimientos_naves")
-
-    .select("*")
-
-    .gte(
-        "fecha",
-        inicio.toISOString()
-    )
-
-    .lt(
-        "fecha",
-        fin.toISOString()
-    )
-
-    .order(
-        "fecha",
-        {
-            ascending:false
-        }
-    );
-
-
-    if(error){
-
-        console.error(error);
-
-    }
-
+function cargarActividad(
+    movimientos,
+    movimientosNaves
+){
 
     const actividades = [];
 
 
-    (movimientos || []).forEach(m=>{
+    /*
+    ==============================================
+    MOVIMIENTOS DE MERCANCÍA
+    ==============================================
+    */
+
+    movimientos.forEach(m=>{
+
+        let tipo =
+            String(
+                m.Tipo ||
+                "Movimiento"
+            );
+
+
+        let icono =
+            "📦";
+
+
+        if(
+            tipo
+            .toLowerCase()
+            .includes("entrada")
+        ){
+
+            icono = "📥";
+
+        }
+
+
+        else if(
+            tipo
+            .toLowerCase()
+            .includes("salida")
+        ){
+
+            icono = "📤";
+
+        }
+
+
+        else if(
+            tipo
+            .toLowerCase()
+            .includes("fabric")
+        ){
+
+            icono = "🏭";
+
+        }
+
 
         actividades.push({
 
-            fecha:m.Fecha,
+            fecha:
+                m._fechaDashboard,
 
             tipo:
-                "📦 " +
-                (m.Tipo || "Movimiento"),
+                icono +
+                " " +
+                tipo,
 
             detalle:
-                (m.Producto || "Producto")
+                (m.Producto ||
+                "Producto")
                 +
                 " — "
                 +
-                (m.Cantidad || 0)
+                (m.Cantidad ||
+                0)
                 +
                 " kg"
 
@@ -2202,27 +2296,56 @@ async function cargarActividad(){
     });
 
 
-    (naves || []).forEach(m=>{
+    /*
+    ==============================================
+    MOVIMIENTOS DE NAVES
+    ==============================================
+    */
+
+    movimientosNaves.forEach(m=>{
+
+        const motivo =
+            String(
+                m.motivo || ""
+            );
+
+
+        const operacion =
+            String(
+                m.operacion ||
+                "Movimiento de nave"
+            );
+
+
+        let tipoMostrar =
+            operacion;
+
+
+        if(
+            motivo
+        ){
+
+            tipoMostrar +=
+                " — " +
+                motivo;
+
+        }
+
 
         actividades.push({
 
             fecha:
-                m.fecha,
+                new Date(m.fecha),
 
             tipo:
                 "🐷 " +
-                (
-                    m.operacion ||
-                    m.Operacion ||
-                    "Movimiento de nave"
-                ),
+                tipoMostrar,
 
             detalle:
                 "Nave "
                 +
                 (
                     m.nave ||
-                    m.Nave ||
                     "-"
                 )
                 +
@@ -2230,7 +2353,6 @@ async function cargarActividad(){
                 +
                 (
                     m.cantidad ||
-                    m.Cantidad ||
                     0
                 )
                 +
@@ -2243,14 +2365,16 @@ async function cargarActividad(){
 
     actividades.sort(
         (a,b)=>
-            new Date(b.fecha)
-            -
+            new Date(b.fecha) -
             new Date(a.fecha)
     );
 
 
     const ultimas =
-        actividades.slice(0,10);
+        actividades.slice(
+            0,
+            10
+        );
 
 
     const contenedor =
@@ -2262,7 +2386,9 @@ async function cargarActividad(){
     contenedor.innerHTML = "";
 
 
-    if(ultimas.length===0){
+    if(
+        ultimas.length === 0
+    ){
 
         contenedor.innerHTML = `
 
@@ -2287,13 +2413,17 @@ async function cargarActividad(){
 
                     <span class="actividad-tipo">
 
-                        ${a.tipo}
+                        ${escaparHTML(
+                            a.tipo
+                        )}
 
                     </span>
 
                     <span class="actividad-fecha">
 
-                        ${formatoHora(a.fecha)}
+                        ${formatoHora(
+                            a.fecha
+                        )}
 
                     </span>
 
@@ -2301,7 +2431,9 @@ async function cargarActividad(){
 
                 <div class="actividad-detalle">
 
-                    ${a.detalle}
+                    ${escaparHTML(
+                        a.detalle
+                    )}
 
                 </div>
 
@@ -2313,13 +2445,15 @@ async function cargarActividad(){
 
 
     actividadesVoz =
-        ultimas.map(a=>
+        ultimas
+        .map(a=>
             a.tipo
             +
             ". "
             +
             a.detalle
-        ).join(" ");
+        )
+        .join(" ");
 
 }
 
@@ -2335,35 +2469,42 @@ function crearTextoVoz(){
             "entradasHoy"
         ).textContent;
 
+
     const salidas =
         document.getElementById(
             "salidasHoy"
         ).textContent;
+
 
     const fabricado =
         document.getElementById(
             "fabricadoHoy"
         ).textContent;
 
+
     const cerdos =
         document.getElementById(
             "cerdosActuales"
         ).textContent;
+
 
     const agregados =
         document.getElementById(
             "agregadosHoy"
         ).textContent;
 
+
     const vendidos =
         document.getElementById(
             "vendidosHoy"
         ).textContent;
 
+
     const muertes =
         document.getElementById(
             "muertesHoy"
         ).textContent;
+
 
     const otras =
         document.getElementById(
@@ -2423,7 +2564,9 @@ function crearTextoVoz(){
         ". ";
 
 
-    if(actividadesVoz){
+    if(
+        actividadesVoz
+    ){
 
         textoVozActual +=
             "Actividad reciente. "
@@ -2439,13 +2582,16 @@ function crearTextoVoz(){
 
 
 /* ==================================================
-   ESCUCHAR
+   ESCUCHAR RESUMEN
 ================================================== */
 
 function escucharResumen(){
 
     if(
-        !("speechSynthesis" in window)
+        !(
+            "speechSynthesis"
+            in window
+        )
     ){
 
         alert(
@@ -2473,11 +2619,14 @@ function escucharResumen(){
     voz.lang =
         "es-ES";
 
+
     voz.rate =
         0.95;
 
+
     voz.pitch =
         1;
+
 
     voz.volume =
         1;
@@ -2491,7 +2640,7 @@ function escucharResumen(){
 
 
 /* ==================================================
-   PAUSAR
+   PAUSAR VOZ
 ================================================== */
 
 function pausarVoz(){
@@ -2509,7 +2658,7 @@ function pausarVoz(){
 
 
 /* ==================================================
-   CONTINUAR
+   CONTINUAR VOZ
 ================================================== */
 
 function continuarVoz(){
@@ -2527,7 +2676,7 @@ function continuarVoz(){
 
 
 /* ==================================================
-   DETENER
+   DETENER VOZ
 ================================================== */
 
 function detenerVoz(){
@@ -2564,21 +2713,88 @@ async function iniciarDashboard(){
     }
 
 
+    /*
+    Cargamos primero los datos.
+    Después construimos todas las secciones
+    usando los mismos datos.
+    */
+
+    const [
+        movimientos,
+        movimientosNaves
+    ] =
     await Promise.all([
 
-        cargarResumenMercancia(),
+        cargarMovimientos(),
 
-        cargarProduccion(),
-
-        cargarFabricaciones(),
-
-        cargarNaves(),
-
-        cargarCerdos(),
-
-        cargarActividad()
+        cargarMovimientosNaves()
 
     ]);
+
+
+    /*
+    ==============================================
+    MERCANCÍA
+    ==============================================
+    */
+
+    cargarResumenMercancia(
+        movimientos
+    );
+
+
+    /*
+    ==============================================
+    PRODUCCIÓN
+    ==============================================
+    */
+
+    cargarProduccion(
+        movimientos
+    );
+
+
+    /*
+    ==============================================
+    FABRICACIONES
+    ==============================================
+    */
+
+    cargarFabricaciones(
+        movimientos
+    );
+
+
+    /*
+    ==============================================
+    NAVES
+    ==============================================
+    */
+
+    cargarNaves(
+        movimientosNaves
+    );
+
+
+    /*
+    ==============================================
+    CERDOS ACTUALES
+    ==============================================
+    */
+
+    await cargarCerdos();
+
+
+    /*
+    ==============================================
+    ACTIVIDAD
+    ==============================================
+    */
+
+    cargarActividad(
+        movimientos,
+        movimientosNaves
+    );
 
 }
 
@@ -2588,7 +2804,6 @@ async function iniciarDashboard(){
 ================================================== */
 
 iniciarDashboard();
-
 
 </script>
 
