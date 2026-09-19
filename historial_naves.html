@@ -1,579 +1,176 @@
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-
+<!DOCTYPE html><html lang="es"><head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>ElDesierto - Historial de Naves</title>
-
-<style>
-
-*{
-    box-sizing:border-box;
-}
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>ElDesierto - Historial de Naves</title><style>
+*{box-sizing:border-box}
 
 body{
-    font-family:Arial,sans-serif;
-
-    background:
-    radial-gradient(circle at top,#1d1d1d,#050505 65%);
-
-    color:white;
-
-    margin:0;
-
-    padding:20px;
-
-    min-height:100vh;
+font-family:Arial,sans-serif;
+background:radial-gradient(circle at top,#1d1d1d,#050505 65%);
+color:white;margin:0;padding:20px;min-height:100vh
 }
 
 h1{
-    text-align:center;
-
-    color:#ff3030;
-
-    font-size:32px;
-
-    margin:10px 0 25px;
-
-    text-shadow:
-    0 0 10px rgba(255,0,0,.6);
+text-align:center;color:#ff3030;font-size:32px;margin:10px 0 25px;
+text-shadow:0 0 10px rgba(255,0,0,.6)
 }
 
-h2{
-    color:#ff5555;
-}
+h2{color:#ff5555}
 
 .boton{
-
-    display:block;
-
-    width:90%;
-
-    max-width:500px;
-
-    margin:15px auto;
-
-    padding:16px;
-
-    background:
-    linear-gradient(
-        145deg,
-        #ff3838,
-        #9d0000
-    );
-
-    color:white;
-
-    border:none;
-
-    border-radius:14px;
-
-    font-size:17px;
-
-    font-weight:bold;
-
-    cursor:pointer;
-
-    box-shadow:
-    0 7px 0 #500000,
-    0 12px 25px rgba(255,0,0,.18);
-
-    transition:.2s;
+display:block;width:90%;max-width:500px;margin:15px auto;padding:16px;
+background:linear-gradient(145deg,#ff3838,#9d0000);color:white;border:none;
+border-radius:14px;font-size:17px;font-weight:bold;cursor:pointer;
+box-shadow:0 7px 0 #500000,0 12px 25px rgba(255,0,0,.18);transition:.2s
 }
 
-.boton:active{
-
-    transform:translateY(5px);
-
-    box-shadow:
-    0 2px 0 #500000;
-}
+.boton:active{transform:translateY(5px);box-shadow:0 2px 0 #500000}
 
 .estadisticas{
-
-    width:95%;
-
-    max-width:1100px;
-
-    margin:25px auto;
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(5,1fr);
-
-    gap:15px;
+width:95%;max-width:1100px;margin:25px auto;display:grid;
+grid-template-columns:repeat(5,1fr);gap:15px
 }
 
 .estadistica{
-
-    padding:20px 12px;
-
-    border-radius:18px;
-
-    text-align:center;
-
-    background:
-    linear-gradient(
-        145deg,
-        #242424,
-        #090909
-    );
-
-    border:1px solid #3b3b3b;
-
-    box-shadow:
-    8px 8px 18px #000,
-    -3px -3px 10px #252525;
+padding:20px 12px;border-radius:18px;text-align:center;
+background:linear-gradient(145deg,#242424,#090909);
+border:1px solid #3b3b3b;
+box-shadow:8px 8px 18px #000,-3px -3px 10px #252525
 }
 
-.estadistica .icono{
-
-    font-size:30px;
-
-    margin-bottom:8px;
-}
-
-.estadistica .titulo{
-
-    font-size:13px;
-
-    color:#aaa;
-
-    margin-bottom:8px;
-}
-
+.estadistica .icono{font-size:30px;margin-bottom:8px}
+.estadistica .titulo{font-size:13px;color:#aaa;margin-bottom:8px}
 .estadistica .numero{
-
-    font-size:28px;
-
-    font-weight:bold;
-
-    color:#ff4040;
-
-    text-shadow:
-    0 0 10px rgba(255,0,0,.4);
+font-size:28px;font-weight:bold;color:#ff4040;
+text-shadow:0 0 10px rgba(255,0,0,.4)
 }
 
 .filtros{
-
-    width:95%;
-
-    max-width:1100px;
-
-    margin:25px auto;
-
-    padding:20px;
-
-    border-radius:20px;
-
-    background:
-    linear-gradient(
-        145deg,
-        #202020,
-        #080808
-    );
-
-    border:1px solid #3a3a3a;
-
-    box-shadow:
-    8px 8px 25px #000;
+width:95%;max-width:1100px;margin:25px auto;padding:20px;border-radius:20px;
+background:linear-gradient(145deg,#202020,#080808);border:1px solid #3a3a3a;
+box-shadow:8px 8px 25px #000
 }
 
-.filtros h2{
-
-    text-align:center;
-
-    margin-top:0;
-}
+.filtros h2{text-align:center;margin-top:0}
 
 .contenedorFiltros{
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(4,1fr);
-
-    gap:12px;
+display:grid;grid-template-columns:repeat(4,1fr);gap:12px
 }
 
-select,
-input{
-
-    width:100%;
-
-    padding:14px;
-
-    border-radius:12px;
-
-    border:1px solid #444;
-
-    background:#101010;
-
-    color:white;
-
-    font-size:15px;
-
-    outline:none;
+select,input{
+width:100%;padding:14px;border-radius:12px;border:1px solid #444;
+background:#101010;color:white;font-size:15px;outline:none
 }
 
-select:focus,
-input:focus{
-
-    border-color:#ff3030;
-
-    box-shadow:
-    0 0 10px rgba(255,0,0,.3);
+select:focus,input:focus{
+border-color:#ff3030;box-shadow:0 0 10px rgba(255,0,0,.3)
 }
 
 .botonFiltro{
-
-    padding:14px;
-
-    border:none;
-
-    border-radius:12px;
-
-    font-weight:bold;
-
-    color:white;
-
-    cursor:pointer;
-
-    background:
-    linear-gradient(
-        145deg,
-        #e50000,
-        #850000
-    );
-
-    box-shadow:
-    0 5px 0 #480000;
+padding:14px;border:none;border-radius:12px;font-weight:bold;color:white;
+cursor:pointer;background:linear-gradient(145deg,#e50000,#850000);
+box-shadow:0 5px 0 #480000
 }
 
 .botonFiltro:active{
-
-    transform:translateY(4px);
-
-    box-shadow:
-    0 1px 0 #480000;
+transform:translateY(4px);box-shadow:0 1px 0 #480000
 }
 
 .caja{
-
-    width:100%;
-
-    max-width:1300px;
-
-    margin:25px auto;
-
-    padding:20px;
-
-    border-radius:20px;
-
-    background:
-    linear-gradient(
-        145deg,
-        #202020,
-        #080808
-    );
-
-    border:1px solid #3a3a3a;
-
-    box-shadow:
-    10px 10px 25px #000,
-    -3px -3px 15px #252525;
-
-    overflow-x:auto;
+width:100%;max-width:1300px;margin:25px auto;padding:20px;border-radius:20px;
+background:linear-gradient(145deg,#202020,#080808);border:1px solid #3a3a3a;
+box-shadow:10px 10px 25px #000,-3px -3px 15px #252525;overflow-x:auto
 }
 
 table{
-
-    width:100%;
-
-    min-width:1100px;
-
-    border-collapse:separate;
-
-    border-spacing:0 8px;
+width:100%;min-width:1100px;border-collapse:separate;border-spacing:0 8px
 }
 
 th{
-
-    padding:14px 10px;
-
-    color:#ff5555;
-
-    background:
-    linear-gradient(
-        145deg,
-        #2a0000,
-        #120000
-    );
+padding:14px 10px;color:#ff5555;
+background:linear-gradient(145deg,#2a0000,#120000)
 }
 
 td{
-
-    padding:14px 10px;
-
-    text-align:center;
-
-    background:
-    linear-gradient(
-        145deg,
-        #202020,
-        #111
-    );
-
-    color:#eee;
+padding:14px 10px;text-align:center;
+background:linear-gradient(145deg,#202020,#111);color:#eee
 }
 
-td:first-child{
-
-    border-radius:12px 0 0 12px;
-}
-
-td:last-child{
-
-    border-radius:0 12px 12px 0;
-}
-
-tbody tr:hover td{
-
-    background:#292929;
-}
+td:first-child{border-radius:12px 0 0 12px}
+td:last-child{border-radius:0 12px 12px 0}
+tbody tr:hover td{background:#292929}
 
 .eliminar{
-
-    padding:10px 14px;
-
-    border:none;
-
-    border-radius:10px;
-
-    color:white;
-
-    font-weight:bold;
-
-    cursor:pointer;
-
-    background:
-    linear-gradient(
-        145deg,
-        #ff2424,
-        #820000
-    );
-
-    box-shadow:
-    0 4px 0 #480000;
+padding:10px 14px;border:none;border-radius:10px;color:white;font-weight:bold;
+cursor:pointer;background:linear-gradient(145deg,#ff2424,#820000);
+box-shadow:0 4px 0 #480000
 }
 
 .eliminar:active{
-
-    transform:translateY(3px);
-
-    box-shadow:
-    0 1px 0 #480000;
+transform:translateY(3px);box-shadow:0 1px 0 #480000
 }
 
-.sinPermiso{
-
-    color:#777;
-}
+.sinPermiso{color:#777}
 
 .mensaje{
+text-align:center;padding:30px;font-size:17px;font-weight:bold;color:#ff5555
+}
 
-    text-align:center;
-
-    padding:30px;
-
-    font-size:17px;
-
-    font-weight:bold;
-
-    color:#ff5555;
+.grupo{
+display:inline-block;
+margin:3px;
+padding:5px 8px;
+border-radius:7px;
+background:#300000;
+border:1px solid #750000;
+color:#ff7777;
+font-weight:bold;
 }
 
 @media(max-width:850px){
-
-    .estadisticas{
-
-        grid-template-columns:
-        repeat(2,1fr);
-    }
-
-    .contenedorFiltros{
-
-        grid-template-columns:
-        repeat(2,1fr);
-    }
+.estadisticas{grid-template-columns:repeat(2,1fr)}
+.contenedorFiltros{grid-template-columns:repeat(2,1fr)}
 }
 
 @media(max-width:500px){
-
-    body{
-        padding:12px;
-    }
-
-    h1{
-        font-size:27px;
-    }
-
-    .estadisticas{
-
-        grid-template-columns:1fr;
-    }
-
-    .contenedorFiltros{
-
-        grid-template-columns:1fr;
-    }
+body{padding:12px}
+h1{font-size:27px}
+.estadisticas{grid-template-columns:1fr}
+.contenedorFiltros{grid-template-columns:1fr}
 }
-
-</style>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-</head>
-
-
-<body>
-
-<h1>📜 Historial de Naves</h1>
-
-
-<button
-class="boton"
-onclick="window.location.href='naves.html'">
-
+</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><h1>📜 Historial de Naves</h1><button class="boton" onclick="window.location.href='naves.html'">
 ⬅️ Volver a Naves
-
-</button>
-
-
-<div class="estadisticas">
-
-<div class="estadistica">
+</button><div class="estadisticas"><div class="estadistica">
 <div class="icono">➕🐷</div>
 <div class="titulo">CERDOS INGRESADOS</div>
 <div class="numero" id="totalEntradas">0</div>
-</div>
-
-
-<div class="estadistica">
+</div><div class="estadistica">
 <div class="icono">💰</div>
 <div class="titulo">CERDOS VENDIDOS</div>
 <div class="numero" id="totalVentas">0</div>
-</div>
-
-
-<div class="estadistica">
+</div><div class="estadistica">
 <div class="icono">☠️</div>
 <div class="titulo">MUERTES</div>
 <div class="numero" id="totalMuertes">0</div>
-</div>
-
-
-<div class="estadistica">
+</div><div class="estadistica">
 <div class="icono">⚖️</div>
 <div class="titulo">MUERTES DE VENTA</div>
 <div class="numero" id="totalMuertesVenta">0</div>
-</div>
-
-
-<div class="estadistica">
+</div><div class="estadistica">
 <div class="icono">📊</div>
 <div class="titulo">MOVIMIENTOS</div>
 <div class="numero" id="totalMovimientos">0</div>
-</div>
-
-</div>
-
-
-<div class="filtros">
-
-<h2>🔎 Filtrar historial</h2>
-
-
-<div class="contenedorFiltros">
-
-<select id="filtroNave">
-
-<option value="">
-🏠 Todas las naves
-</option>
-
-</select>
-
-
-<select id="filtroMotivo">
-
-<option value="">
-📋 Todas las operaciones
-</option>
-
-<option value="Entrada Destete">
-🍼 Entrada Destete
-</option>
-
-<option value="Entrada Exterior">
-🚚 Entrada Exterior
-</option>
-
-<option value="Venta">
-💰 Ventas
-</option>
-
-<option value="Muerte total">
-☠️ Muerte total
-</option>
-
-<option value="Muerte de venta">
-⚖️ Muerte de venta
-</option>
-
-</select>
-
-
-<input
-type="date"
-id="filtroFecha">
-
-
-<button
-class="botonFiltro"
-onclick="aplicarFiltros()">
-
+</div></div><div class="filtros"><h2>🔎 Filtrar historial</h2><div class="contenedorFiltros"><select id="filtroNave">
+<option value="">🏠 Todas las naves</option>
+</select><select id="filtroMotivo"><option value="">📋 Todas las operaciones</option><option value="Entrada Destete">🍼 Entrada Destete</option><option value="Entrada Exterior">🚚 Entrada Exterior</option><option value="Venta">💰 Ventas</option><option value="Muerte total">☠️ Muerte total</option><option value="Muerte de venta">⚖️ Muerte de venta</option></select><input type="date" id="filtroFecha"><button class="botonFiltro" onclick="aplicarFiltros">
 🔎 Buscar
-
-</button>
-
-</div>
-
-
-<button
+</button></div><button
 class="botonFiltro"
 style="width:100%;margin-top:15px;"
 onclick="limpiarFiltros()">
-
 🔄 Limpiar filtros
-
 </button>
 
-</div>
-
-
-<div class="caja">
-
-<table>
-
-<thead>
-
-<tr>
-
+</div><div class="caja"><table><thead><tr>
 <th>📅 Fecha</th>
 <th>🕒 Hora</th>
 <th>🏠 Nave</th>
@@ -584,726 +181,437 @@ onclick="limpiarFiltros()">
 <th>📋 Motivo</th>
 <th>👤 Usuario</th>
 <th>⚙️ Acción</th>
-
-</tr>
-
-</thead>
-
-
-<tbody id="tablaHistorial">
-
-<tr>
-
+</tr></thead><tbody id="tablaHistorial"><tr>
 <td colspan="10" class="mensaje">
-
 ⏳ Cargando historial...
-
 </td>
-
-</tr>
-
-</tbody>
-
-</table>
-
-</div>
-
-
-<button
-class="boton"
-onclick="window.location.href='menu.html'">
-
+</tr></tbody></table></div><button class="boton" onclick="window.location.href='menu.html'">
 ⬅️ Volver al menú
-
-</button>
-
-
-<script src="supabase.js"></script>
-
-
-<script>
+</button><script src="supabase.js"></script><script>
 
 let esAdministrador=false;
-
 let todosLosMovimientos=[];
 
 
-/* ==========================================
-   SESIÓN
-========================================== */
+/* SESIÓN */
 
 async function verificarSesion(){
 
-    const {data,error}=
-    await clienteSupabase
-    .auth
-    .getSession();
+const {data,error}=await clienteSupabase.auth.getSession();
 
+if(error||!data.session){
+window.location.href="login.html";
+return false;
+}
 
-    if(error || !data.session){
+const usuarioId=data.session.user.id;
 
-        window.location.href="login.html";
+const {data:perfil,error:errorPerfil}=await clienteSupabase
+.from("perfiles")
+.select("id,rol")
+.eq("id",usuarioId)
+.maybeSingle();
 
-        return false;
+if(errorPerfil){
+alert("Error buscando perfil:\n\n"+errorPerfil.message);
+return false;
+}
 
-    }
+if(!perfil){
+alert("⚠️ Este usuario no tiene un perfil.");
+return false;
+}
 
+esAdministrador=
+String(perfil.rol||"").trim().toLowerCase()==="administrador";
 
-    const usuarioId=
-    data.session.user.id;
-
-
-    const {data:perfil,error:errorPerfil}=
-
-    await clienteSupabase
-
-    .from("perfiles")
-
-    .select("id,rol")
-
-    .eq("id",usuarioId)
-
-    .maybeSingle();
-
-
-    if(errorPerfil){
-
-        alert(
-            "Error buscando perfil:\n\n"+
-            errorPerfil.message
-        );
-
-        return false;
-
-    }
-
-
-    if(!perfil){
-
-        alert(
-            "⚠️ Este usuario no tiene un perfil."
-        );
-
-        return false;
-
-    }
-
-
-    esAdministrador=
-    String(perfil.rol || "")
-    .trim()
-    .toLowerCase()
-    ===
-    "administrador";
-
-
-    return true;
-
+return true;
 }
 
 
-/* ==========================================
-   NAVES FILTRO
-========================================== */
+/* NAVES */
 
 async function cargarNavesFiltro(){
 
-    const {data,error}=
+const {data,error}=await clienteSupabase
+.from("naves").select("*").order("id");
 
-    await clienteSupabase
+if(error){
+console.log(error);
+return;
+}
 
-    .from("naves")
+const select=document.getElementById("filtroNave");
 
-    .select("*")
+(data||[]).forEach(nave=>{
 
-    .order("id");
+select.innerHTML+=`
+<option value="${nave.id}">
+${nave.nombre}
+</option>
+`;
 
-
-    if(error){
-
-        console.log(error);
-
-        return;
-
-    }
-
-
-    const select=
-    document.getElementById("filtroNave");
-
-
-    data.forEach(nave=>{
-
-        select.innerHTML+=`
-
-        <option value="${nave.id}">
-
-        ${nave.nombre}
-
-        </option>
-
-        `;
-
-    });
+});
 
 }
 
 
-/* ==========================================
-   CARGAR HISTORIAL
-========================================== */
+/* HISTORIAL */
 
 async function cargarHistorial(){
 
-    const tabla=
-    document.getElementById(
-        "tablaHistorial"
-    );
+const tabla=document.getElementById("tablaHistorial");
 
+tabla.innerHTML=`
+<tr>
+<td colspan="10" class="mensaje">
+⏳ Cargando historial...
+</td>
+</tr>
+`;
 
-    tabla.innerHTML=`
+const {data,error}=await clienteSupabase
+.from("movimientos_naves")
+.select("*")
+.order("fecha",{ascending:false});
 
-    <tr>
+if(error){
 
-    <td colspan="10" class="mensaje">
+tabla.innerHTML=`
+<tr>
+<td colspan="10" class="mensaje">
+❌ Error cargando historial:<br><br>
+${escapeHTML(error.message)}
+</td>
+</tr>
+`;
 
-    ⏳ Cargando historial...
+return;
+}
 
-    </td>
+todosLosMovimientos=data||[];
 
-    </tr>
-
-    `;
-
-
-    const {data,error}=
-
-    await clienteSupabase
-
-    .from("movimientos_naves")
-
-    .select("*")
-
-    .order(
-        "fecha",
-        {
-            ascending:false
-        }
-    );
-
-
-    if(error){
-
-        tabla.innerHTML=`
-
-        <tr>
-
-        <td colspan="10" class="mensaje">
-
-        ❌ Error cargando historial:
-
-        <br><br>
-
-        ${error.message}
-
-        </td>
-
-        </tr>
-
-        `;
-
-        return;
-
-    }
-
-
-    todosLosMovimientos=data || [];
-
-
-    mostrarHistorial(
-        todosLosMovimientos
-    );
-
+mostrarHistorial(todosLosMovimientos);
 }
 
 
-/* ==========================================
-   MOSTRAR
-========================================== */
+/* MOSTRAR */
 
 function mostrarHistorial(movimientos){
 
-    const tabla=
-    document.getElementById(
-        "tablaHistorial"
-    );
+const tabla=document.getElementById("tablaHistorial");
 
+actualizarEstadisticas(movimientos);
 
-    actualizarEstadisticas(
-        movimientos
-    );
+if(!movimientos||movimientos.length===0){
 
+tabla.innerHTML=`
+<tr>
+<td colspan="10" class="mensaje">
+📭 No hay movimientos para mostrar.
+</td>
+</tr>
+`;
 
-    if(!movimientos ||
-       movimientos.length===0){
+return;
+}
 
-        tabla.innerHTML=`
+let html="";
 
-        <tr>
+movimientos.forEach(m=>{
 
-        <td colspan="10" class="mensaje">
+const fechaCompleta=new Date(m.fecha);
 
-        📭 No hay movimientos para mostrar.
+const fecha=fechaCompleta.toLocaleDateString("es-ES");
 
-        </td>
+const hora=fechaCompleta.toLocaleTimeString(
+"es-ES",
+{hour:"2-digit",minute:"2-digit"}
+);
 
-        </tr>
+const nave=m.nave||"N"+m.nave_id;
 
-        `;
+const peso=Number(m.peso_kg||0);
 
-        return;
+const esGrupo=
+String(m.nave||"").includes(",")||
+String(m.cuarton||"").includes(",");
 
-    }
+const naveHTML=formatearLista(m.nave||("N"+m.nave_id));
+const cuartonHTML=formatearLista(m.cuarton);
 
+const botonEliminar=esAdministrador
+?
+`
+<button
+class="eliminar"
+onclick="eliminarMovimiento(${m.id})">
+🗑️ Eliminar
+</button>
+`
+:
+`
+<span class="sinPermiso">
+🔒 Sin permiso
+</span>
+`;
 
-    let html="";
+html+=`
 
+<tr>
 
-    movimientos.forEach(m=>{
+<td>${fecha}</td>
 
-        const fechaCompleta=
-        new Date(m.fecha);
+<td>${hora}</td>
 
+<td>${naveHTML}</td>
 
-        const fecha=
-        fechaCompleta
-        .toLocaleDateString("es-ES");
+<td>${cuartonHTML}</td>
 
+<td>
+${escapeHTML(m.operacion||"")}
+${esGrupo?"<br><small style='color:#ff5555;'>Venta grupal</small>":""}
+</td>
 
-        const hora=
-        fechaCompleta
-        .toLocaleTimeString(
-            "es-ES",
-            {
-                hour:"2-digit",
-                minute:"2-digit"
-            }
-        );
+<td>
+<strong>${m.cantidad||0}</strong>
+</td>
 
+<td>
+${peso>0?peso.toFixed(2):"—"}
+</td>
 
-        const nave=
-        m.nave ||
-        "N"+m.nave_id;
+<td>
+${escapeHTML(m.motivo||"")}
+</td>
 
+<td>
+${escapeHTML(m.usuario||"")}
+</td>
 
-        const peso=
-        Number(m.peso_kg || 0);
+<td>
+${botonEliminar}
+</td>
 
+</tr>
+`;
 
-        const botonEliminar=
+});
 
-        esAdministrador
-
-        ?
-
-        `
-
-        <button
-        class="eliminar"
-        onclick="eliminarMovimiento(${m.id})">
-
-        🗑️ Eliminar
-
-        </button>
-
-        `
-
-        :
-
-        `
-
-        <span class="sinPermiso">
-
-        🔒 Sin permiso
-
-        </span>
-
-        `;
-
-
-        html+=`
-
-        <tr>
-
-        <td>${fecha}</td>
-
-        <td>${hora}</td>
-
-        <td>${nave}</td>
-
-        <td>🐷 C${m.cuarton}</td>
-
-        <td>
-
-        ${m.operacion || ""}
-
-        </td>
-
-        <td>
-
-        <strong>
-
-        ${m.cantidad || 0}
-
-        </strong>
-
-        </td>
-
-        <td>
-
-        ${
-            peso>0
-            ?
-            peso.toFixed(2)
-            :
-            "—"
-        }
-
-        </td>
-
-        <td>
-
-        ${m.motivo || ""}
-
-        </td>
-
-        <td>
-
-        ${m.usuario || ""}
-
-        </td>
-
-        <td>
-
-        ${botonEliminar}
-
-        </td>
-
-        </tr>
-
-        `;
-
-    });
-
-
-    tabla.innerHTML=html;
-
+tabla.innerHTML=html;
 }
 
 
-/* ==========================================
-   ESTADÍSTICAS
-========================================== */
+/* ESTADÍSTICAS */
 
 function actualizarEstadisticas(movimientos){
 
-    let entradas=0;
+let entradas=0;
+let ventas=0;
+let muertes=0;
+let muertesVenta=0;
 
-    let ventas=0;
+(movimientos||[]).forEach(m=>{
 
-    let muertes=0;
+const cantidad=Number(m.cantidad||0);
 
-    let muertesVenta=0;
+const motivo=
+String(m.motivo||"")
+.trim()
+.toLowerCase();
 
+if(motivo==="entrada destete"||
+motivo==="entrada exterior"){
+entradas+=cantidad;
+}
 
-    movimientos.forEach(m=>{
+if(motivo==="venta"){
+ventas+=cantidad;
+}
 
-        const cantidad=
-        Number(m.cantidad || 0);
+if(motivo==="muerte total"){
+muertes+=cantidad;
+}
 
+if(motivo==="muerte de venta"){
+muertesVenta+=cantidad;
+}
 
-        const motivo=
-        String(m.motivo || "")
-        .trim()
-        .toLowerCase();
+});
 
-
-        if(
-            motivo==="entrada destete" ||
-            motivo==="entrada exterior"
-        ){
-
-            entradas+=cantidad;
-
-        }
-
-
-        if(motivo==="venta"){
-
-            ventas+=cantidad;
-
-        }
-
-
-        if(
-            motivo==="muerte total"
-        ){
-
-            muertes+=cantidad;
-
-        }
-
-
-        if(
-            motivo==="muerte de venta"
-        ){
-
-            muertesVenta+=cantidad;
-
-        }
-
-    });
-
-
-    document
-    .getElementById("totalEntradas")
-    .innerText=entradas;
-
-
-    document
-    .getElementById("totalVentas")
-    .innerText=ventas;
-
-
-    document
-    .getElementById("totalMuertes")
-    .innerText=muertes;
-
-
-    document
-    .getElementById("totalMuertesVenta")
-    .innerText=muertesVenta;
-
-
-    document
-    .getElementById("totalMovimientos")
-    .innerText=
-    movimientos.length;
-
+document.getElementById("totalEntradas").innerText=entradas;
+document.getElementById("totalVentas").innerText=ventas;
+document.getElementById("totalMuertes").innerText=muertes;
+document.getElementById("totalMuertesVenta").innerText=muertesVenta;
+document.getElementById("totalMovimientos").innerText=
+(movimientos||[]).length;
 }
 
 
-/* ==========================================
-   FILTROS
-========================================== */
+/* FILTROS */
 
 function aplicarFiltros(){
 
-    const nave=
-    document
-    .getElementById("filtroNave")
-    .value;
+const nave=document.getElementById("filtroNave").value;
+const motivo=document.getElementById("filtroMotivo").value;
+const fecha=document.getElementById("filtroFecha").value;
 
+let resultado=[...todosLosMovimientos];
 
-    const motivo=
-    document
-    .getElementById("filtroMotivo")
-    .value;
+if(nave){
 
-
-    const fecha=
-    document
-    .getElementById("filtroFecha")
-    .value;
-
-
-    let resultado=
-    [...todosLosMovimientos];
-
-
-    if(nave){
-
-        resultado=
-        resultado.filter(m=>
-
-            String(m.nave_id)
-            ===
-            String(nave)
-
-        );
-
-    }
-
-
-    if(motivo){
-
-        resultado=
-        resultado.filter(m=>
-
-            String(m.motivo || "")
-            .trim()
-            ===
-            motivo
-
-        );
-
-    }
-
-
-    if(fecha){
-
-        resultado=
-        resultado.filter(m=>{
-
-            const d=
-            new Date(m.fecha);
-
-
-            const local=
-
-            d.getFullYear()
-            +
-            "-"
-            +
-            String(
-                d.getMonth()+1
-            ).padStart(2,"0")
-            +
-            "-"
-            +
-            String(
-                d.getDate()
-            ).padStart(2,"0");
-
-
-            return local===fecha;
-
-        });
-
-    }
-
-
-    mostrarHistorial(resultado);
+resultado=resultado.filter(m=>
+String(m.nave_id)===String(nave)||
+String(m.nave||"").split(",").some(n=>
+String(n).trim()==="N"+nave||
+String(n).trim()===obtenerNombreNavePorId(nave)
+)
+);
 
 }
 
+if(motivo){
 
-/* ==========================================
-   LIMPIAR
-========================================== */
+resultado=resultado.filter(m=>
+String(m.motivo||"").trim()===motivo
+);
+
+}
+
+if(fecha){
+
+resultado=resultado.filter(m=>{
+
+const d=new Date(m.fecha);
+
+const local=
+d.getFullYear()+"-"+
+String(d.getMonth()+1).padStart(2,"0")+"-"+
+String(d.getDate()).padStart(2,"0");
+
+return local===fecha;
+
+});
+
+}
+
+mostrarHistorial(resultado);
+}
+
+
+/* LIMPIAR */
 
 function limpiarFiltros(){
 
-    document
-    .getElementById("filtroNave")
-    .value="";
+document.getElementById("filtroNave").value="";
+document.getElementById("filtroMotivo").value="";
+document.getElementById("filtroFecha").value="";
 
-
-    document
-    .getElementById("filtroMotivo")
-    .value="";
-
-
-    document
-    .getElementById("filtroFecha")
-    .value="";
-
-
-    mostrarHistorial(
-        todosLosMovimientos
-    );
-
+mostrarHistorial(todosLosMovimientos);
 }
 
 
-/* ==========================================
-   ELIMINAR
-========================================== */
+/* ELIMINAR */
 
 async function eliminarMovimiento(id){
 
-    if(!esAdministrador){
+if(!esAdministrador){
 
-        alert(
-            "❌ No tienes permisos para eliminar registros."
-        );
+alert("❌ No tienes permisos para eliminar registros.");
+return;
 
-        return;
+}
 
-    }
+if(!confirm(
+"⚠️ ¿Seguro que deseas eliminar este registro?\n\n"+
+"Esta acción no se puede deshacer."
+)){
+return;
+}
 
+const {error}=await clienteSupabase
+.from("movimientos_naves")
+.delete()
+.eq("id",id);
 
-    if(!confirm(
-        "⚠️ ¿Seguro que deseas eliminar este registro?\n\n"+
-        "Esta acción no se puede deshacer."
-    )){
+if(error){
 
-        return;
+alert(
+"❌ Error eliminando el registro:\n\n"+
+error.message
+);
 
-    }
+return;
+}
 
+alert("✅ Registro eliminado correctamente.");
 
-    const {error}=
-
-    await clienteSupabase
-
-    .from("movimientos_naves")
-
-    .delete()
-
-    .eq("id",id);
-
-
-    if(error){
-
-        alert(
-            "❌ Error eliminando el registro:\n\n"+
-            error.message
-        );
-
-        return;
-
-    }
+await cargarHistorial();
+}
 
 
-    alert(
-        "✅ Registro eliminado correctamente."
-    );
+/* UTILIDADES */
+
+function formatearLista(valor){
+
+if(!valor)return "—";
+
+const partes=String(valor)
+.split(",");
+
+if(partes.length===1){
+
+const texto=String(partes[0]).trim();
+
+return texto.startsWith("C")
+?escapeHTML(texto)
+:escapeHTML(texto);
+}
+
+return partes.map(x=>
+`<span class="grupo">${escapeHTML(String(x).trim())}</span>`
+).join("");
+}
 
 
-    await cargarHistorial();
+function obtenerNombreNavePorId(id){
+
+const select=document.getElementById("filtroNave");
+
+const opcion=
+Array.from(select.options)
+.find(o=>String(o.value)===String(id));
+
+return opcion?opcion.textContent.trim():"";
+}
+
+
+function escapeHTML(valor){
+
+return String(valor)
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
 
 }
 
 
-/* ==========================================
-   INICIAR
-========================================== */
+/* INICIAR */
 
 async function iniciar(){
 
-    const ok=
-    await verificarSesion();
+const ok=await verificarSesion();
 
+if(!ok)return;
 
-    if(!ok){
-
-        return;
-
-    }
-
-
-    await cargarNavesFiltro();
-
-    await cargarHistorial();
+await cargarNavesFiltro();
+await cargarHistorial();
 
 }
 
-
 iniciar();
 
-</script>
-
-</body>
-
+</script></body>
 </html>
