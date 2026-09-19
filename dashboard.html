@@ -1130,20 +1130,6 @@ async function comprobarSesion(){
    DEDUPLICAR FABRICACIONES
 ================================================== */
 
-/*
-   Una fabricación puede aparecer duplicada
-   en movimientos.
-
-   Se utiliza:
-
-   1. Numero_operacion
-   2. id
-   3. combinación de datos como respaldo
-
-   Así una misma fabricación no vuelve
-   a sumarse dos veces en el Dashboard.
-*/
-
 function deduplicarFabricaciones(movimientos){
 
     const vistosOperacion =
@@ -1196,10 +1182,6 @@ function deduplicarFabricaciones(movimientos){
             ) || 0;
 
 
-        /* ------------------------------------------
-           DUPLICADO POR NÚMERO DE OPERACIÓN
-        ------------------------------------------ */
-
         if(numeroOperacion){
 
             if(
@@ -1219,10 +1201,6 @@ function deduplicarFabricaciones(movimientos){
         }
 
 
-        /* ------------------------------------------
-           DUPLICADO POR ID
-        ------------------------------------------ */
-
         if(id){
 
             if(
@@ -1237,13 +1215,6 @@ function deduplicarFabricaciones(movimientos){
 
         }
 
-
-        /*
-           RESPALDO.
-
-           Si por alguna razón no existe
-           Numero_operacion ni id.
-        */
 
         if(
             !numeroOperacion &&
@@ -1307,15 +1278,6 @@ async function cargarMovimientos(){
     const fin =
         obtenerFinHoy();
 
-
-    /*
-       Primero intentamos con Fecha
-       como timestamp.
-
-       Si falla, hacemos consulta general
-       para evitar que el Dashboard deje
-       de funcionar por el formato de fecha.
-    */
 
     let respuesta =
         await clienteSupabase
@@ -1387,13 +1349,6 @@ async function cargarMovimientos(){
         respuesta.data || [];
 
 
-    /*
-       Filtro local de hoy.
-
-       Esto garantiza que el Dashboard
-       muestre solamente el día actual.
-    */
-
     return movimientos.filter(m=>{
 
         const fecha =
@@ -1440,16 +1395,6 @@ async function cargarResumenMercancia(){
 
     const productos = {};
 
-
-    /*
-       IMPORTANTE:
-
-       Primero eliminamos duplicados
-       solamente de las fabricaciones.
-
-       Las entradas y salidas se mantienen
-       exactamente como están.
-    */
 
     const fabricaciones =
         deduplicarFabricaciones(
@@ -1509,12 +1454,6 @@ async function cargarResumenMercancia(){
         else if(
             tipo.includes("fabric")
         ){
-
-            /*
-               Solo sumamos la fabricación
-               si pertenece al conjunto
-               deduplicado.
-            */
 
             if(
                 idsFabricaciones.has(
@@ -1593,8 +1532,6 @@ async function cargarResumenMercancia(){
     ).textContent =
         fabricado;
 
-
-    /* TABLA */
 
     const tabla =
         document.getElementById(
@@ -1962,14 +1899,15 @@ async function cargarNaves(){
 
 
         /*
-           Agregados reales:
+           Las ventas grupales llegan como:
 
-           Entrada Destete
-           Entrada Exterior
+           operacion = Salida
+           motivo = Venta
+           cantidad = total de todos
+           los cuartones seleccionados.
 
-           Reagrupe no se registra como
-           movimiento, por lo que no se
-           cuenta aquí.
+           Por eso una venta grupal se suma
+           automáticamente completa.
         */
 
         if(
@@ -2102,20 +2040,170 @@ async function cargarCerdos(){
 
 
 /* ==================================================
+   FORMATEAR UBICACIÓN DE MOVIMIENTO
+================================================== */
+
+/*
+   NUEVO SISTEMA DE NAVES
+
+   Venta individual:
+
+   nave = N4
+   cuarton = 28
+
+   Venta grupal:
+
+   naves = N4,N3
+   cuartones = C28,C1
+
+   También mantenemos compatibilidad
+   con registros antiguos.
+*/
+
+function obtenerUbicacionMovimiento(m){
+
+    let naves = "";
+
+    let cuartones = "";
+
+
+    /*
+       Primero usamos los nuevos campos
+       para ventas grupales.
+    */
+
+    if(
+        m.naves
+    ){
+
+        naves =
+            String(
+                m.naves
+            ).trim();
+
+    }
+
+
+    if(
+        m.cuartones
+    ){
+
+        cuartones =
+            String(
+                m.cuartones
+            ).trim();
+
+    }
+
+
+    /*
+       Compatibilidad con registros
+       individuales antiguos.
+    */
+
+    if(
+        !naves
+    ){
+
+        if(
+            m.nave
+        ){
+
+            naves =
+                String(
+                    m.nave
+                ).trim();
+
+        }
+        else if(
+            m.nave_id
+        ){
+
+            naves =
+                "N" +
+                m.nave_id;
+
+        }
+
+    }
+
+
+    if(
+        !cuartones
+    ){
+
+        if(
+            m.cuarton
+        ){
+
+            cuartones =
+                "C" +
+                m.cuarton;
+
+        }
+
+    }
+
+
+    /*
+       Si existe nave pero no cuartón,
+       solamente mostramos la nave.
+    */
+
+    if(
+        naves &&
+        cuartones
+    ){
+
+        return (
+            naves
+            +
+            " — "
+            +
+            cuartones
+        );
+
+    }
+
+
+    if(
+        naves
+    ){
+
+        return naves;
+
+    }
+
+
+    if(
+        cuartones
+    ){
+
+        return cuartones;
+
+    }
+
+
+    return "Ubicación no indicada";
+
+}
+
+
+/* ==================================================
    ACTIVIDAD RECIENTE
 ================================================== */
 
 async function cargarActividad(){
+
+    const movimientos =
+        await cargarMovimientos();
+
 
     const inicio =
         obtenerInicioHoy();
 
     const fin =
         obtenerFinHoy();
-
-
-    const movimientos =
-        await cargarMovimientos();
 
 
     const {
@@ -2178,12 +2266,10 @@ async function cargarActividad(){
 
 
     /*
-       Agregamos entradas, salidas y
-       fabricaciones.
+       MERCANCÍA
 
-       Las fabricaciones salen del conjunto
-       deduplicado para no mostrar dos veces
-       la misma operación.
+       Las fabricaciones se agregan
+       posteriormente para evitar duplicados.
     */
 
     movimientos.forEach(m=>{
@@ -2235,6 +2321,10 @@ async function cargarActividad(){
     });
 
 
+    /*
+       FABRICACIONES
+    */
+
     fabricaciones.forEach(m=>{
 
         actividades.push({
@@ -2265,43 +2355,186 @@ async function cargarActividad(){
 
 
     /*
-       Actividad de naves.
+       MOVIMIENTOS DE NAVES
+
+       AQUÍ ESTÁ LA ADAPTACIÓN PRINCIPAL.
+
+       Ahora Dashboard reconoce:
+
+       - Venta individual
+       - Venta grupal
+       - Varias naves
+       - Varios cuartones
+       - Entradas
+       - Muertes
+       - Peso de la operación
     */
 
     (naves || []).forEach(m=>{
+
+        const cantidad =
+            Number(
+                m.cantidad || 0
+            );
+
+
+        const peso =
+            Number(
+                m.peso_kg || 0
+            );
+
+
+        const motivo =
+            String(
+                m.motivo || ""
+            ).trim();
+
+
+        const operacion =
+            String(
+                m.operacion || ""
+            ).trim();
+
+
+        const ubicacion =
+            obtenerUbicacionMovimiento(
+                m
+            );
+
+
+        /*
+           Para que la actividad muestre
+           claramente el tipo de movimiento.
+        */
+
+        let tipoMovimiento =
+            motivo ||
+            operacion ||
+            "Movimiento de nave";
+
+
+        let icono =
+            "🐷";
+
+
+        const motivoLower =
+            motivo.toLowerCase();
+
+
+        if(
+            motivoLower.includes("venta")
+        ){
+
+            icono = "💰";
+
+        }
+
+        else if(
+            motivoLower.includes("muerte")
+        ){
+
+            icono = "⚰️";
+
+        }
+
+        else if(
+            motivoLower.includes("entrada")
+        ){
+
+            icono = "➕";
+
+        }
+
+        else if(
+            motivoLower.includes("reagrupe")
+        ){
+
+            icono = "🔄";
+
+        }
+
+
+        /*
+           DETALLE
+
+           Ejemplo individual:
+
+           N4 — C28 — 5 cerdos
+
+           Ejemplo grupal:
+
+           N4,N3 — C28,C1 — 9 cerdos — 420 kg
+        */
+
+        let detalle =
+            ubicacion
+            +
+            " — "
+            +
+            cantidad
+            +
+            " cerdos";
+
+
+        /*
+           El peso se muestra cuando
+           existe y es mayor que cero.
+
+           Esto permite ver el peso total
+           de una venta grupal.
+        */
+
+        if(
+            peso > 0
+        ){
+
+            detalle +=
+                " — "
+                +
+                peso
+                +
+                " kg";
+
+        }
+
+
+        /*
+           Identificación adicional para
+           venta grupal.
+        */
+
+        if(
+            m.naves ||
+            m.cuartones
+        ){
+
+            detalle +=
+                " — Venta grupal";
+
+        }
+
 
         actividades.push({
 
             fecha:m.fecha,
 
             tipo:
-                "🐷 " +
-                (
-                    m.operacion ||
-                    "Movimiento de nave"
-                ),
+                icono
+                +
+                " "
+                +
+                tipoMovimiento,
 
-            detalle:
-                "Nave "
-                +
-                (
-                    m.nave ||
-                    "-"
-                )
-                +
-                " — "
-                +
-                (
-                    m.cantidad ||
-                    0
-                )
-                +
-                " cerdos"
+            detalle:detalle
 
         });
 
     });
 
+
+    /*
+       ORDENAR POR FECHA
+    */
 
     actividades.sort(
         (a,b)=>
@@ -2704,4 +2937,4 @@ iniciarDashboard();
 
 </body>
 
-</html>
+   </html>
