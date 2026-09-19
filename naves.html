@@ -6,282 +6,304 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Naves - ElDesierto</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase.js"></script>
+<title>ElDesierto - Naves</title>
 
 <style>
 
 *{
     box-sizing:border-box;
-    margin:0;
-    padding:0;
 }
 
 body{
     font-family:Arial,sans-serif;
-    min-height:100vh;
     background:
-        radial-gradient(circle at top,#2b0000 0%,#100000 35%,#050505 75%);
+    radial-gradient(circle at top,#1d1d1d,#050505 65%);
     color:white;
+    margin:0;
     padding:20px;
+    text-align:center;
+    min-height:100vh;
 }
 
 h1{
-    text-align:center;
-    color:#ff2020;
+    color:#ff3030;
     font-size:32px;
-    margin-bottom:20px;
-    text-shadow:0 0 12px #ff0000;
+    margin:10px 0 5px;
+    text-shadow:0 0 10px rgba(255,0,0,.6);
 }
 
-.menu-btn{
+h2{
+    color:#ff4b4b;
+}
+
+.boton{
     display:block;
-    margin:0 auto 20px;
-    padding:12px 25px;
-    border:none;
-    border-radius:12px;
-    background:linear-gradient(145deg,#ff2020,#8b0000);
+    width:90%;
+    max-width:500px;
+    margin:15px auto;
+    padding:16px;
+    background:
+    linear-gradient(145deg,#ff3838,#9d0000);
     color:white;
-    font-size:16px;
+    border:none;
+    border-radius:14px;
+    font-size:17px;
     font-weight:bold;
     cursor:pointer;
-    box-shadow:0 5px 15px rgba(255,0,0,.35);
+    box-shadow:
+    0 7px 0 #500000,
+    0 12px 25px rgba(255,0,0,.18);
+    transition:.2s;
 }
 
-.menu-btn:hover{
-    transform:scale(1.03);
-}
-
-#contenido{
-    max-width:1100px;
-    margin:auto;
+.boton:active{
+    transform:translateY(5px);
+    box-shadow:0 2px 0 #500000;
 }
 
 .nave{
-    margin-bottom:25px;
+    width:95%;
+    max-width:850px;
+    margin:25px auto;
     padding:20px;
     border-radius:20px;
-    background:linear-gradient(145deg,#181818,#080808);
-    border:1px solid #3a0000;
+    background:
+    linear-gradient(145deg,#202020,#090909);
+    border:1px solid #3a3a3a;
     box-shadow:
-        0 8px 25px rgba(0,0,0,.7),
-        inset 0 0 15px rgba(255,0,0,.05);
+    10px 10px 25px #000,
+    -3px -3px 15px #252525,
+    inset 0 0 15px rgba(255,0,0,.05);
 }
 
 .nave h2{
-    color:#ff2525;
-    margin-bottom:15px;
-    text-shadow:0 0 8px #ff0000;
+    margin-top:0;
+    color:#ff3b3b;
+    text-shadow:0 0 8px rgba(255,0,0,.5);
 }
 
-.total-nave{
-    margin-bottom:15px;
-    font-size:17px;
-    color:#ddd;
-}
-
-.cuartones{
+.contenedorNave{
+    background:
+    linear-gradient(145deg,#151515,#050505);
+    border:2px solid #8f0000;
+    border-radius:16px;
+    padding:14px;
     display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(105px,1fr));
+    grid-template-columns:repeat(5,1fr);
     gap:10px;
+    box-shadow:
+    inset 0 0 15px black,
+    0 0 12px rgba(255,0,0,.15);
 }
 
 .cuarton{
-    padding:15px 8px;
-    border-radius:14px;
-    background:linear-gradient(145deg,#202020,#090909);
-    border:1px solid #3b0000;
-    text-align:center;
+    min-height:85px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
     cursor:pointer;
+    border-radius:12px;
+    background:
+    linear-gradient(145deg,#292929,#101010);
+    border:1px solid #4a4a4a;
+    box-shadow:
+    5px 5px 10px #000,
+    -2px -2px 6px #303030;
     transition:.2s;
-    box-shadow:0 4px 10px rgba(0,0,0,.5);
 }
 
 .cuarton:hover{
-    transform:translateY(-3px);
-    border-color:#ff2020;
-    box-shadow:0 0 15px rgba(255,0,0,.25);
+    border-color:#ff2525;
+    box-shadow:0 0 15px rgba(255,0,0,.6);
+    transform:translateY(-2px);
 }
 
-.cuarton .numero{
-    font-size:17px;
-    color:#ff3030;
+.cuarton:active{
+    transform:scale(.96);
+}
+
+.numero{
+    color:#ff5555;
+    font-size:13px;
     font-weight:bold;
 }
 
-.cuarton .cantidad{
-    margin-top:7px;
+.cerdos{
     font-size:22px;
-    font-weight:bold;
+    margin-top:8px;
+    color:white;
 }
 
-.resumen{
-    margin-top:20px;
-    padding:20px;
-    border-radius:18px;
-    background:linear-gradient(145deg,#181818,#080808);
-    border:1px solid #350000;
-}
-
-.resumen h2{
-    color:#ff2424;
-    margin-bottom:15px;
-}
-
-.resumen-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-    gap:12px;
-}
-
-.resumen-card{
-    padding:15px;
+.totalNave{
+    margin-top:18px;
+    padding:14px;
     border-radius:12px;
-    background:#111;
-    border:1px solid #300000;
-}
-
-.resumen-card strong{
-    display:block;
-    color:#aaa;
-    margin-bottom:5px;
-}
-
-.resumen-card span{
-    color:#ff2525;
-    font-size:24px;
+    background:
+    linear-gradient(145deg,#280000,#100000);
+    color:#ff5555;
+    font-size:18px;
     font-weight:bold;
+    border:1px solid #750000;
+    box-shadow:inset 0 0 10px black;
 }
 
 .panel{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.82);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding:20px;
-    z-index:1000;
-}
-
-.panel-contenido{
-    width:100%;
-    max-width:430px;
-    max-height:90vh;
-    overflow-y:auto;
-    padding:25px;
-    border-radius:22px;
-    background:linear-gradient(145deg,#1b1b1b,#070707);
-    border:1px solid #4a0000;
+    width:90%;
+    max-width:500px;
+    margin:25px auto;
+    padding:22px;
+    border-radius:20px;
+    background:
+    linear-gradient(145deg,#202020,#080808);
+    border:1px solid #3a3a3a;
     box-shadow:
-        0 0 30px rgba(255,0,0,.2),
-        0 15px 50px rgba(0,0,0,.9);
+    10px 10px 25px #000,
+    -3px -3px 12px #252525;
 }
 
-.panel-contenido h2{
-    text-align:center;
-    color:#ff2525;
-    margin-bottom:20px;
+.panel button{
+    display:block;
+    width:100%;
+    padding:14px;
+    margin:12px 0;
+    border:none;
+    border-radius:12px;
+    font-size:16px;
+    font-weight:bold;
+    color:white;
+    cursor:pointer;
+    background:
+    linear-gradient(145deg,#e50000,#850000);
+    box-shadow:
+    0 5px 0 #480000,
+    0 10px 18px rgba(255,0,0,.12);
 }
 
-.panel-contenido p{
-    color:#ddd;
-    line-height:1.5;
-    margin-bottom:15px;
-    text-align:center;
+.panel button:active{
+    transform:translateY(4px);
+    box-shadow:0 1px 0 #480000;
 }
 
 input,
 select{
     width:100%;
-    padding:13px;
-    margin:8px 0;
-    border-radius:10px;
-    border:1px solid #450000;
-    background:#101010;
-    color:white;
-    outline:none;
+    padding:14px;
+    box-sizing:border-box;
+    margin:12px 0;
+    border-radius:12px;
     font-size:16px;
+    color:white;
+    background:#101010;
+    border:1px solid #4a4a4a;
+    outline:none;
+    box-shadow:inset 0 0 10px #000;
 }
 
 input:focus,
 select:focus{
-    border-color:#ff2020;
-    box-shadow:0 0 8px rgba(255,0,0,.2);
-}
-
-button{
-    width:100%;
-    padding:13px;
-    margin-top:10px;
-    border:none;
-    border-radius:11px;
-    background:linear-gradient(145deg,#ff2020,#870000);
-    color:white;
-    font-size:16px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-button:hover{
-    filter:brightness(1.12);
-}
-
-button.secundario{
-    background:linear-gradient(145deg,#333,#151515);
-    border:1px solid #444;
-}
-
-button.peligro{
-    background:linear-gradient(145deg,#d00000,#550000);
-}
-
-button.exito{
-    background:linear-gradient(145deg,#a50000,#550000);
+    border-color:#ff3030;
+    box-shadow:0 0 10px rgba(255,0,0,.4);
 }
 
 .oculto{
-    display:none !important;
+    display:none;
 }
 
-.grupo-lista{
-    margin-top:12px;
-    max-height:220px;
-    overflow-y:auto;
+#mensaje{
+    margin:20px;
+    font-weight:bold;
+    color:#ff5555;
 }
 
-.grupo-item{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-    padding:12px;
-    margin-bottom:8px;
+.totalGeneral{
+    width:95%;
+    max-width:850px;
+    margin:30px auto;
+    padding:25px;
+    border-radius:22px;
+    background:
+    linear-gradient(145deg,#e60000,#750000);
+    box-shadow:
+    0 8px 0 #400000,
+    0 15px 30px rgba(255,0,0,.25);
+}
+
+.totalGeneral h2{
+    color:white;
+    margin-top:0;
+}
+
+.numeroTotal{
+    font-size:42px;
+    font-weight:bold;
+}
+
+.resumen{
+    width:95%;
+    max-width:850px;
+    margin:25px auto;
+    padding:22px;
+    border-radius:20px;
+    background:
+    linear-gradient(145deg,#1d1d1d,#080808);
+    border:1px solid #3a3a3a;
+    box-shadow:8px 8px 25px #000;
+}
+
+.movimientoResumen{
+    padding:13px;
+    margin:8px 0;
     border-radius:10px;
     background:#111;
-    border:1px solid #300000;
-}
-
-.grupo-item label{
-    flex:1;
-}
-
-.grupo-item input{
-    width:auto;
-    margin:0;
-}
-
-.info-origen{
-    padding:15px;
-    margin-bottom:15px;
-    border-radius:12px;
-    background:#101010;
-    border:1px solid #450000;
-    color:#ff3030;
-    text-align:center;
+    border-left:4px solid #e00000;
     font-weight:bold;
+}
+
+.seleccionGrupo{
+    margin:10px 0;
+    padding:14px;
+    border-radius:12px;
+    background:
+    linear-gradient(145deg,#252525,#101010);
+    border:1px solid #444;
+    text-align:left;
+}
+
+.seleccionGrupo strong{
+    color:#ff5555;
+}
+
+.botonQuitar{
+    background:
+    linear-gradient(145deg,#555,#222) !important;
+    box-shadow:
+    0 4px 0 #111 !important;
+    padding:9px !important;
+    margin:8px 0 0 !important;
+    font-size:14px !important;
+}
+
+.resumenGrupo{
+    margin-top:15px;
+    padding:15px;
+    border-radius:12px;
+    background:#100000;
+    border:1px solid #700000;
+    text-align:left;
+}
+
+.itemDisponible{
+    margin:8px 0;
+    padding:12px;
+    border-radius:10px;
+    background:#151515;
+    border:1px solid #333;
+    cursor:pointer;
+}
+
+.itemDisponible:hover{
+    border-color:#ff3030;
 }
 
 @media(max-width:600px){
@@ -290,29 +312,19 @@ button.exito{
         padding:12px;
     }
 
-    h1{
-        font-size:27px;
-    }
-
-    .nave{
-        padding:14px;
-    }
-
-    .cuartones{
+    .contenedorNave{
         grid-template-columns:repeat(3,1fr);
     }
 
     .cuarton{
-        padding:12px 5px;
-    }
-
-    .cuarton .cantidad{
-        font-size:19px;
+        min-height:75px;
     }
 
 }
 
 </style>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 </head>
 
@@ -320,839 +332,844 @@ button.exito{
 
 <h1>🐷 Naves</h1>
 
-<button class="menu-btn" onclick="window.location.href='menu.html'">
-    ⬅ Volver al menú
+<button
+class="boton"
+onclick="window.location.href='menu.html'">
+
+⬅️ Volver al menú
+
 </button>
 
 <div id="contenido">
-    <p style="text-align:center;color:#aaa;">Cargando naves...</p>
+Cargando naves...
 </div>
 
 
-<!-- =========================================
+<!-- ==========================================
      PANEL CUARTÓN
-========================================= -->
+========================================== -->
 
 <div id="panelCuarton" class="panel oculto">
 
-    <div class="panel-contenido">
+<h2 id="tituloCuarton">
+Cuartón
+</h2>
 
-        <h2 id="tituloCuarton">Cuartón</h2>
+<div id="cantidadActual">
+🐷 Cerdos actuales: 0
+</div>
 
-        <div class="info-origen">
-            🐷 Cerdos actuales:
-            <span id="cantidadCuarton">0</span>
-        </div>
+<button onclick="mostrarAgregar()">
+➕ Agregar cerdos
+</button>
 
-        <button onclick="mostrarAgregar()">
-            ➕ Agregar cerdos
-        </button>
+<button onclick="mostrarMotivoSalida()">
+➖ Sacar cerdos
+</button>
 
-        <button onclick="mostrarSalida()">
-            ➖ Sacar cerdos
-        </button>
-
-        <button class="secundario" onclick="cerrarPanel()">
-            Cancelar
-        </button>
-
-    </div>
+<button onclick="cerrarPanel()">
+Cancelar
+</button>
 
 </div>
 
 
-<!-- =========================================
-     PANEL ENTRADA
-========================================= -->
+<!-- ==========================================
+     TIPO ENTRADA
+========================================== -->
 
 <div id="panelEntrada" class="panel oculto">
 
-    <div class="panel-contenido">
+<h2>➕ Entrada de cerdos</h2>
 
-        <h2>Agregar cerdos</h2>
+<p>Selecciona el tipo de entrada:</p>
 
-        <button onclick="mostrarCantidadEntrada('Destete')">
-            🐷 Entrada por destete
-        </button>
+<button onclick="mostrarCantidadEntrada('Entrada Destete')">
+🍼 Entrada por destete
+</button>
 
-        <button onclick="mostrarCantidadEntrada('Exterior')">
-            🚚 Entrada del exterior
-        </button>
+<button onclick="mostrarCantidadEntrada('Entrada Exterior')">
+🚚 Entrada exterior
+</button>
 
-        <button class="secundario" onclick="cerrarPanel()">
-            Cancelar
-        </button>
-
-    </div>
+<button onclick="cerrarPanel()">
+Cancelar
+</button>
 
 </div>
 
 
-<!-- =========================================
-     PANEL CANTIDAD ENTRADA
-========================================= -->
+<!-- ==========================================
+     CANTIDAD ENTRADA
+========================================== -->
 
 <div id="panelAgregar" class="panel oculto">
 
-    <div class="panel-contenido">
+<h2 id="tituloAgregar">
+➕ Agregar cerdos
+</h2>
 
-        <h2 id="tituloAgregar">Agregar cerdos</h2>
+<input
+type="number"
+id="cantidadAgregar"
+min="1"
+placeholder="Cantidad de cerdos">
 
-        <input
-            id="cantidadAgregar"
-            type="number"
-            min="1"
-            placeholder="Cantidad de cerdos"
-        >
+<button onclick="agregarCerdos()">
+Guardar
+</button>
 
-        <button onclick="agregarCerdos()">
-            💾 Guardar
-        </button>
-
-        <button class="secundario" onclick="cerrarPanel()">
-            Cancelar
-        </button>
-
-    </div>
+<button onclick="cerrarPanel()">
+Cancelar
+</button>
 
 </div>
 
 
-<!-- =========================================
-     PANEL MOTIVO SALIDA
-========================================= -->
+<!-- ==========================================
+     MOTIVO SALIDA
+========================================== -->
 
 <div id="panelMotivo" class="panel oculto">
 
-    <div class="panel-contenido">
+<h2>➖ Sacar cerdos</h2>
 
-        <h2>Tipo de salida</h2>
+<p>Selecciona el motivo:</p>
 
-        <button onclick="mostrarVenta()">
-            💰 Venta
-        </button>
+<button onclick="mostrarVenta()">
+💰 Venta
+</button>
 
-        <button onclick="mostrarMuerte()">
-            ☠️ Muerte
-        </button>
+<button onclick="mostrarMuerte()">
+☠️ Muerte
+</button>
 
-        <button onclick="mostrarReagrupeSalida()">
-            🔄 Reagrupación
-        </button>
+<button onclick="mostrarReagrupeSalida()">
+🔄 Reagrupe
+</button>
 
-        <button class="secundario" onclick="cerrarPanel()">
-            Cancelar
-        </button>
-
-    </div>
+<button onclick="cerrarPanel()">
+Cancelar
+</button>
 
 </div>
 
 
-<!-- =========================================
-     PANEL VENTA
-========================================= -->
+<!-- ==========================================
+     VENTA INDIVIDUAL
+========================================== -->
 
 <div id="panelVenta" class="panel oculto">
 
-    <div class="panel-contenido">
+<h2>💰 Venta</h2>
 
-        <h2>💰 Venta de cerdos</h2>
+<input
+type="number"
+id="cantidadVenta"
+min="1"
+placeholder="Cantidad de cerdos">
 
-        <input
-            id="cantidadVenta"
-            type="number"
-            min="1"
-            placeholder="Cantidad de cerdos"
-        >
+<input
+type="number"
+id="pesoVenta"
+min="0"
+step="0.01"
+placeholder="Peso total de los cerdos (kg)">
 
-        <input
-            id="pesoVenta"
-            type="number"
-            min="0"
-            step="0.01"
-            placeholder="Peso total (kg)"
-        >
+<button onclick="procesarVenta()">
+Confirmar venta
+</button>
 
-        <button onclick="procesarVenta()">
-            Confirmar venta
-        </button>
+<button onclick="mostrarVentaGrupo()">
+🐷 Vender por grupo
+</button>
 
-        <button class="secundario" onclick="mostrarVentaGrupo()">
-            Venta de varios cuartones
-        </button>
-
-        <button class="secundario" onclick="cerrarPanel()">
-            Cancelar
-        </button>
-
-    </div>
+<button onclick="cerrarPanel()">
+Cancelar
+</button>
 
 </div>
 
 
-<!-- =========================================
-     PANEL VENTA GRUPO
-========================================= -->
+<!-- ==========================================
+     VENTA POR GRUPO
+========================================== -->
 
 <div id="panelVentaGrupo" class="panel oculto">
 
-    <div class="panel-contenido">
+<h2>🐷 Vender por grupo</h2>
 
-        <h2>💰 Venta de varios cuartones</h2>
+<p>
+Selecciona un cuartón y la cantidad de cerdos que vas a vender.
+</p>
 
-        <select id="grupoNaveSeleccionada"
-                onchange="cargarCuartonesGrupo()">
-            <option value="">Seleccione una nave</option>
-        </select>
+<select id="grupoNaveSeleccionada"
+onchange="cargarCuartonesGrupo()">
 
-        <div id="grupoCuartones"
-             class="grupo-lista"></div>
+<option value="">
+🏠 Selecciona una nave
+</option>
 
-        <input
-            id="pesoVentaGrupo"
-            type="number"
-            min="0"
-            step="0.01"
-            placeholder="Peso total (kg)"
-        >
+</select>
 
-        <button onclick="procesarVentaGrupo()">
-            Confirmar venta grupal
-        </button>
+<select id="grupoCuartonSeleccionado">
 
-        <button class="secundario" onclick="mostrarVenta()">
-            Volver
-        </button>
+<option value="">
+🐷 Selecciona un cuartón
+</option>
 
-        <button class="secundario" onclick="cerrarPanel()">
-            Cancelar
-        </button>
+</select>
 
-    </div>
+<input
+type="number"
+id="cantidadGrupo"
+min="1"
+placeholder="Cantidad de cerdos">
+
+<button onclick="agregarCuartonGrupo()">
+➕ Agregar
+</button>
+
+<div id="listaGrupo"></div>
+
+<div class="resumenGrupo">
+
+<strong>📊 Resumen de la venta</strong>
+
+<div id="resumenGrupoTexto">
+No hay cuartones seleccionados.
+</div>
+
+</div>
+
+<input
+type="number"
+id="pesoGrupo"
+min="0"
+step="0.01"
+placeholder="Peso total de todos los cerdos (kg)">
+
+<button onclick="procesarVentaGrupo()">
+💰 Confirmar venta del grupo
+</button>
+
+<button onclick="cerrarPanel()">
+Cancelar
+</button>
 
 </div>
 
 
-<!-- =========================================
-     PANEL MUERTE
-========================================= -->
+<!-- ==========================================
+     MUERTE
+========================================== -->
 
 <div id="panelMuerte" class="panel oculto">
 
-    <div class="panel-contenido">
+<h2>☠️ Muerte</h2>
 
-        <h2>☠️ Registrar muerte</h2>
+<p>Selecciona el tipo:</p>
 
-        <button onclick="mostrarMuerteTotal()">
-            Muerte sin peso
-        </button>
+<button onclick="mostrarMuerteTotal()">
+☠️ Muerte total
+</button>
 
-        <button onclick="mostrarMuerteVenta()">
-            Muerte con peso
-        </button>
+<button onclick="mostrarMuerteVenta()">
+⚖️ Muerte de venta
+</button>
 
-        <button class="secundario" onclick="cerrarPanel()">
-            Cancelar
-        </button>
-
-    </div>
+<button onclick="cerrarPanel()">
+Cancelar
+</button>
 
 </div>
 
 
-<!-- =========================================
-     PANEL MUERTE TOTAL
-========================================= -->
+<!-- ==========================================
+     MUERTE TOTAL
+========================================== -->
 
 <div id="panelMuerteTotal" class="panel oculto">
 
-    <div class="panel-contenido">
+<h2>☠️ Muerte total</h2>
 
-        <h2>☠️ Muerte</h2>
+<input
+type="number"
+id="cantidadMuerteTotal"
+min="1"
+placeholder="Cantidad de cerdos">
 
-        <input
-            id="cantidadMuerteTotal"
-            type="number"
-            min="1"
-            placeholder="Cantidad de cerdos"
-        >
+<button onclick="procesarMuerteTotal()">
+Confirmar muerte
+</button>
 
-        <button class="peligro" onclick="procesarMuerteTotal()">
-            Registrar muerte
-        </button>
-
-        <button class="secundario" onclick="cerrarPanel()">
-            Cancelar
-        </button>
-
-    </div>
+<button onclick="cerrarPanel()">
+Cancelar
+</button>
 
 </div>
 
 
-<!-- =========================================
-     PANEL MUERTE CON PESO
-========================================= -->
+<!-- ==========================================
+     MUERTE DE VENTA
+========================================== -->
 
 <div id="panelMuerteVenta" class="panel oculto">
 
-    <div class="panel-contenido">
+<h2>⚖️ Muerte de venta</h2>
 
-        <h2>☠️ Muerte con peso</h2>
+<input
+type="number"
+id="cantidadMuerteVenta"
+min="1"
+placeholder="Cantidad de cerdos muertos">
 
-        <input
-            id="cantidadMuerteVenta"
-            type="number"
-            min="1"
-            placeholder="Cantidad de cerdos"
-        >
+<input
+type="number"
+id="pesoMuerteVenta"
+min="0"
+step="0.01"
+placeholder="Peso total (kg)">
 
-        <input
-            id="pesoMuerteVenta"
-            type="number"
-            min="0"
-            step="0.01"
-            placeholder="Peso total (kg)"
-        >
+<button onclick="procesarMuerteVenta()">
+Confirmar muerte de venta
+</button>
 
-        <button class="peligro" onclick="procesarMuerteVenta()">
-            Registrar muerte
-        </button>
-
-        <button class="secundario" onclick="cerrarPanel()">
-            Cancelar
-        </button>
-
-    </div>
+<button onclick="cerrarPanel()">
+Cancelar
+</button>
 
 </div>
 
 
-<!-- =========================================
-     PANEL REAGRUPACIÓN
-========================================= -->
+<!-- ==========================================
+     REAGRUPACIÓN
+========================================== -->
 
 <div id="panelReagrupeSalida" class="panel oculto">
 
-    <div class="panel-contenido">
+<h2>🔄 Reagrupe</h2>
 
-        <h2>🔄 Reagrupación</h2>
+<p>
+Cuartón de origen:
+</p>
 
-        <div class="info-origen">
+<div
+style="
+padding:14px;
+margin:12px 0;
+border-radius:12px;
+background:#100000;
+border:1px solid #700000;
+font-weight:bold;
+color:#ff5555;
+">
 
-            <div id="origenReagrupeTexto">
-                —
-            </div>
-
-        </div>
-
-        <input
-            id="cantidadReagrupe"
-            type="number"
-            min="1"
-            placeholder="Cantidad de cerdos"
-        >
-
-        <select id="cuartonDestinoSalida">
-            <option value="">
-                Seleccione cuartón destino
-            </option>
-        </select>
-
-        <button onclick="procesarReagrupe()">
-            🔄 Confirmar reagrupación
-        </button>
-
-        <button class="secundario" onclick="cerrarPanel()">
-            Cancelar
-        </button>
-
-    </div>
+🐷 <span id="origenReagrupeTexto">
+Cuartón seleccionado
+</span>
 
 </div>
 
+<input
+type="number"
+id="cantidadReagrupeSalida"
+min="1"
+placeholder="Cantidad de cerdos">
+
+<select id="cuartonDestinoSalida">
+
+<option value="">
+Selecciona cuartón destino
+</option>
+
+</select>
+
+<button onclick="procesarReagrupe()">
+Confirmar reagrupe
+</button>
+
+<button onclick="cerrarPanel()">
+Cancelar
+</button>
+
+</div>
+
+<div id="mensaje"></div>
+
+<script src="supabase.js"></script>
 
 <script>
 
-/* ==================================================
-   VARIABLES
-================================================== */
+let naveSeleccionada=null;
+let cuartonSeleccionado=null;
+let tipoEntradaSeleccionado=null;
 
-let naveSeleccionada = null;
-let cuartonSeleccionado = null;
+let todasLasNaves=[];
+let todosLosCuartones=[];
 
-let tipoEntradaSeleccionado = null;
-
-let todasLasNaves = [];
-let todosLosCuartones = [];
-
-let ventaGrupo = [];
+let ventaGrupo=[];
 
 
-/* ==================================================
-   VERIFICAR SESIÓN
-================================================== */
+/* ==========================================
+   SESIÓN
+========================================== */
 
 async function verificarSesion(){
 
-    const {data} =
-        await clienteSupabase.auth.getSession();
+    const {data}=await clienteSupabase
+    .auth
+    .getSession();
 
     if(!data.session){
 
         window.location.href="login.html";
 
         return false;
+
     }
 
     return true;
 }
 
 
-/* ==================================================
+/* ==========================================
    CARGAR NAVES
-================================================== */
+========================================== */
 
 async function cargarNaves(){
 
-    const contenido =
-        document.getElementById("contenido");
+    const {data:naves,error:errorNaves}=
 
-    contenido.innerHTML =
-        "<p style='text-align:center;color:#aaa;'>Cargando naves...</p>";
-
-    const {data:naves,error:errorNaves} =
-        await clienteSupabase
-        .from("naves")
-        .select("*")
-        .order("id",{ascending:true});
+    await clienteSupabase
+    .from("naves")
+    .select("*")
+    .order("id");
 
     if(errorNaves){
 
-        console.error(errorNaves);
-
-        contenido.innerHTML =
-            "<p style='text-align:center;color:#f33;'>Error cargando naves</p>";
+        document.getElementById("contenido").innerHTML=
+        "❌ Error cargando naves: "
+        +
+        errorNaves.message;
 
         return;
     }
 
-    todasLasNaves = naves || [];
-    todosLosCuartones = [];
+    todasLasNaves=naves || [];
 
-    contenido.innerHTML = "";
+    todosLosCuartones=[];
 
-    let totalGeneral = 0;
+    let html="";
+    let totalGeneral=0;
 
-    for(const nave of todasLasNaves){
+    for(const nave of naves){
 
-        const {data:cuartones,error:errorCuartones} =
-            await clienteSupabase
-            .from("cuartones")
-            .select("*")
-            .eq("nave_id",nave.id)
-            .order("numero",{ascending:true});
+        const {data:cuartones,error:errorCuartones}=
+
+        await clienteSupabase
+        .from("cuartones")
+        .select("*")
+        .eq("nave_id",nave.id)
+        .order("numero");
 
         if(errorCuartones){
 
-            console.error(errorCuartones);
+            document.getElementById("contenido").innerHTML=
+            "❌ Error cargando cuartones: "
+            +
+            errorCuartones.message;
 
-            continue;
+            return;
         }
 
-        const lista = cuartones || [];
+        let totalNave=0;
 
-        let totalNave = 0;
+        html+=`
 
-        lista.forEach(c=>{
+        <div class="nave">
 
-            totalNave += Number(c.cantidad_cerdos || 0);
+        <h2>🐷 ${nave.nombre}</h2>
 
-            totalGeneral += Number(c.cantidad_cerdos || 0);
-
-            todosLosCuartones.push({
-
-                ...c,
-
-                nave_nombre:nave.nombre
-
-            });
-
-        });
-
-        const divNave =
-            document.createElement("div");
-
-        divNave.className="nave";
-
-        divNave.innerHTML = `
-
-            <h2>🐷 ${nave.nombre}</h2>
-
-            <div class="total-nave">
-                Total de cerdos:
-                <strong>${totalNave}</strong>
-            </div>
-
-            <div class="cuartones"></div>
-
+        <div class="contenedorNave">
         `;
 
-        const contenedorCuartones =
-            divNave.querySelector(".cuartones");
+        cuartones.forEach(cuarton=>{
 
-        lista.forEach(c=>{
+            totalNave+=Number(cuarton.cantidad_cerdos);
+            totalGeneral+=Number(cuarton.cantidad_cerdos);
 
-            const div =
-                document.createElement("div");
+            todosLosCuartones.push({
+                ...cuarton,
+                nave_nombre:nave.nombre
+            });
 
-            div.className="cuarton";
+            html+=`
 
-            div.innerHTML = `
+            <div
+            class="cuarton"
+            onclick="seleccionarCuarton(
+                ${nave.id},
+                ${cuarton.id},
+                '${String(nave.nombre).replace(/'/g,"\\'")}',
+                ${cuarton.numero},
+                ${cuarton.cantidad_cerdos}
+            )">
 
-                <div class="numero">
-                    C${c.numero}
-                </div>
+            <div class="numero">
+            CUARTÓN ${cuarton.numero}
+            </div>
 
-                <div class="cantidad">
-                    ${Number(c.cantidad_cerdos || 0)}
-                </div>
+            <div class="cerdos">
+            🐷 ${cuarton.cantidad_cerdos}
+            </div>
 
+            </div>
             `;
-
-            div.onclick=()=>{
-
-                seleccionarCuarton(
-                    nave.id,
-                    c.id,
-                    nave.nombre,
-                    c.numero,
-                    c.cantidad_cerdos
-                );
-
-            };
-
-            contenedorCuartones.appendChild(div);
 
         });
 
-        contenido.appendChild(divNave);
-
-    }
-
-    /* ==============================================
-       RESUMEN
-    ============================================== */
-
-    const hoy =
-        new Date().toISOString().split("T")[0];
-
-    const {data:movimientos,error:errorMovimientos} =
-        await clienteSupabase
-        .from("movimientos_naves")
-        .select("*")
-        .gte("fecha",hoy+"T00:00:00")
-        .lt("fecha",hoy+"T23:59:59");
-
-    if(errorMovimientos){
-
-        console.error(errorMovimientos);
-
-    }
-
-    let ventas = 0;
-    let pesoVentas = 0;
-
-    let muertes = 0;
-    let pesoMuertes = 0;
-
-    (movimientos || []).forEach(m=>{
-
-        if(
-            m.operacion==="Salida" &&
-            m.motivo==="Venta"
-        ){
-
-            ventas += Number(m.cantidad || 0);
-
-            pesoVentas += Number(m.peso_kg || 0);
-
-        }
-
-        if(
-            m.operacion==="Salida" &&
-            (
-                m.motivo==="Muerte total" ||
-                m.motivo==="Muerte de venta"
-            )
-        ){
-
-            muertes += Number(m.cantidad || 0);
-
-            pesoMuertes += Number(m.peso_kg || 0);
-
-        }
-
-    });
-
-    contenido.insertAdjacentHTML(
-        "beforeend",
-
-        `
-
-        <div class="resumen">
-
-            <h2>📊 Resumen de hoy</h2>
-
-            <div class="resumen-grid">
-
-                <div class="resumen-card">
-
-                    <strong>Cerdos actuales</strong>
-
-                    <span>${totalGeneral}</span>
-
-                </div>
-
-                <div class="resumen-card">
-
-                    <strong>Cerdos vendidos</strong>
-
-                    <span>${ventas}</span>
-
-                </div>
-
-                <div class="resumen-card">
-
-                    <strong>Peso vendido</strong>
-
-                    <span>${pesoVentas.toFixed(2)} kg</span>
-
-                </div>
-
-                <div class="resumen-card">
-
-                    <strong>Cerdos muertos</strong>
-
-                    <span>${muertes}</span>
-
-                </div>
-
-                <div class="resumen-card">
-
-                    <strong>Peso de muertes</strong>
-
-                    <span>${pesoMuertes.toFixed(2)} kg</span>
-
-                </div>
-
-            </div>
+        html+=`
 
         </div>
 
-        `
+        <div class="totalNave">
+        🐷 Total en ${nave.nombre}: ${totalNave}
+        </div>
 
+        </div>
+        `;
+
+    }
+
+    html+=`
+
+    <div class="totalGeneral">
+
+    <h2>🐷 TOTAL DE CERDOS</h2>
+
+    <div class="numeroTotal">
+    ${totalGeneral}
+    </div>
+
+    <div>
+    Total de las 4 naves
+    </div>
+
+    </div>
+    `;
+
+
+    /* RESUMEN DE HOY */
+
+    const ahora=new Date();
+
+    const inicioHoy=new Date(
+        ahora.getFullYear(),
+        ahora.getMonth(),
+        ahora.getDate()
     );
 
-    await cargarOpcionesCuartones();
-    await cargarNavesVentaGrupo();
+    const finHoy=new Date(
+        ahora.getFullYear(),
+        ahora.getMonth(),
+        ahora.getDate()+1
+    );
 
-}
+    const {data:movimientos,error:errorMovimientos}=
 
+    await clienteSupabase
+    .from("movimientos_naves")
+    .select("*")
+    .gte("fecha",inicioHoy.toISOString())
+    .lt("fecha",finHoy.toISOString())
+    .order("fecha",{ascending:false});
 
-/* ==================================================
-   OPCIONES DE CUARTONES PARA DESTINO
-================================================== */
+    if(!errorMovimientos){
 
-async function cargarOpcionesCuartones(){
+        let ventas=[];
+        let muertes=[];
 
-    const select =
-        document.getElementById(
-            "cuartonDestinoSalida"
-        );
+        movimientos.forEach(m=>{
 
-    if(!select) return;
+            if(
+                String(m.motivo || "")
+                .toLowerCase()
+                .includes("venta")
+            ){
 
-    select.innerHTML =
-        `<option value="">Seleccione cuartón destino</option>`;
+                ventas.push(m);
 
-    for(const nave of todasLasNaves){
+            }
 
-        const cuartones =
-            todosLosCuartones.filter(
-                c=>Number(c.nave_id)===Number(nave.id)
-            );
+            if(
+                String(m.motivo || "")
+                .toLowerCase()
+                .includes("muerte")
+            ){
 
-        if(!cuartones.length) continue;
+                muertes.push(m);
 
-        const grupo =
-            document.createElement("optgroup");
-
-        grupo.label=nave.nombre;
-
-        cuartones.forEach(c=>{
-
-            const option =
-                document.createElement("option");
-
-            option.value=c.id;
-
-            option.textContent =
-                `C${c.numero} — ${Number(c.cantidad_cerdos || 0)} cerdos`;
-
-            grupo.appendChild(option);
+            }
 
         });
 
-        select.appendChild(grupo);
+        html+=`
 
+        <div class="resumen">
+
+        <h2>📊 Resumen de hoy</h2>
+
+        <h3 style="color:#ff5555;">
+        💰 Ventas de hoy
+        </h3>
+        `;
+
+        if(ventas.length===0){
+
+            html+=`
+            <p>No hay ventas registradas hoy.</p>
+            `;
+
+        }else{
+
+            ventas.forEach(v=>{
+
+                const cuartonesTexto=
+                    v.cuartones
+                    ?
+                    v.cuartones
+                    :
+                    "C"+v.cuarton;
+
+                html+=`
+
+                <div class="movimientoResumen">
+
+                ${
+                    v.naves
+                    ?
+                    "Naves: "+v.naves
+                    :
+                    "N"+v.nave_id
+                }
+
+                <br>
+
+                Cuartones: ${cuartonesTexto}
+
+                <br>
+
+                ${v.cantidad} 🐷
+
+                ${
+                    Number(v.peso_kg || 0)>0
+                    ?
+                    " • "+Number(v.peso_kg).toFixed(2)+" kg"
+                    :
+                    ""
+                }
+
+                </div>
+                `;
+
+            });
+
+        }
+
+        html+=`
+
+        <h3 style="color:#ff5555;margin-top:25px;">
+        ☠️ Muertes de hoy
+        </h3>
+        `;
+
+        if(muertes.length===0){
+
+            html+=`
+            <p>No hay muertes registradas hoy.</p>
+            `;
+
+        }else{
+
+            muertes.forEach(m=>{
+
+                html+=`
+
+                <div class="movimientoResumen">
+
+                N${m.nave_id} - C${m.cuarton}
+
+                :
+
+                ${m.cantidad} 🐷
+
+                ${
+                    Number(m.peso_kg || 0)>0
+                    ?
+                    " • "+Number(m.peso_kg).toFixed(2)+" kg"
+                    :
+                    ""
+                }
+
+                <br>
+
+                <span style="color:#aaa;font-size:13px;">
+                ${m.motivo}
+                </span>
+
+                </div>
+                `;
+
+            });
+
+        }
+
+        html+=`
+        </div>
+        `;
     }
+
+    document.getElementById("contenido").innerHTML=html;
+
+    cargarOpcionesCuartones(naves);
+
+    cargarNavesVentaGrupo();
 
 }
 
 
-/* ==================================================
-   OPCIONES VENTA GRUPO
-================================================== */
+/* ==========================================
+   OPCIONES CUARTONES REAGRUPACIÓN
+========================================== */
 
-async function cargarNavesVentaGrupo(){
+async function cargarOpcionesCuartones(naves){
 
-    const select =
-        document.getElementById(
-            "grupoNaveSeleccionada"
-        );
+    const destinosSalida=
+    document.getElementById("cuartonDestinoSalida");
 
-    if(!select) return;
+    destinosSalida.innerHTML=`
+    <option value="">
+    Selecciona cuartón destino
+    </option>
+    `;
 
-    select.innerHTML =
-        `<option value="">Seleccione una nave</option>`;
+    for(const nave of naves){
+
+        const {data:cuartones}=
+
+        await clienteSupabase
+        .from("cuartones")
+        .select("*")
+        .eq("nave_id",nave.id)
+        .order("numero");
+
+        (cuartones || []).forEach(c=>{
+
+            const texto=
+            `${nave.nombre} - Cuartón ${c.numero}`;
+
+            destinosSalida.innerHTML+=`
+
+            <option value="${c.id}">
+            ${texto}
+            </option>
+            `;
+
+        });
+
+    }
+}
+
+
+/* ==========================================
+   CARGAR NAVES VENTA GRUPO
+========================================== */
+
+function cargarNavesVentaGrupo(){
+
+    const select=
+    document.getElementById(
+        "grupoNaveSeleccionada"
+    );
+
+    select.innerHTML=`
+
+    <option value="">
+    🏠 Selecciona una nave
+    </option>
+
+    `;
 
     todasLasNaves.forEach(nave=>{
 
-        const option =
-            document.createElement("option");
+        select.innerHTML+=`
 
-        option.value=nave.id;
-
-        option.textContent=nave.nombre;
-
-        select.appendChild(option);
-
-    });
-
-}
-
-
-/* ==================================================
-   CARGAR CUARTONES GRUPO
-================================================== */
-
-function cargarCuartonesGrupo(){
-
-    const naveId =
-        Number(
-            document.getElementById(
-                "grupoNaveSeleccionada"
-            ).value
-        );
-
-    const contenedor =
-        document.getElementById(
-            "grupoCuartones"
-        );
-
-    contenedor.innerHTML="";
-
-    ventaGrupo=[];
-
-    if(!naveId){
-
-        actualizarResumenGrupo();
-
-        return;
-    }
-
-    const cuartones =
-        todosLosCuartones.filter(
-            c=>Number(c.nave_id)===naveId
-        );
-
-    cuartones.forEach(c=>{
-
-        const div =
-            document.createElement("div");
-
-        div.className="grupo-item";
-
-        div.innerHTML = `
-
-            <label>
-                C${c.numero}
-                —
-                ${Number(c.cantidad_cerdos || 0)} cerdos
-            </label>
-
-            <input
-                type="number"
-                min="0"
-                max="${Number(c.cantidad_cerdos || 0)}"
-                placeholder="Cantidad"
-                data-cuarton-id="${c.id}"
-                data-cuarton-numero="${c.numero}"
-                data-nave-id="${c.nave_id}"
-                data-nave-nombre="${c.nave_nombre}"
-                oninput="actualizarResumenGrupo()"
-            >
+        <option value="${nave.id}">
+        ${nave.nombre}
+        </option>
 
         `;
 
-        contenedor.appendChild(div);
-
     });
-
-    actualizarResumenGrupo();
 
 }
 
 
-/* ==================================================
-   RESUMEN GRUPO
-================================================== */
+/* ==========================================
+   CARGAR CUARTONES VENTA GRUPO
+========================================== */
 
-function actualizarResumenGrupo(){
+function cargarCuartonesGrupo(){
 
-    const inputs =
-        document.querySelectorAll(
-            "#grupoCuartones input"
-        );
+    const naveId=
+    document.getElementById(
+        "grupoNaveSeleccionada"
+    ).value;
 
-    let total=0;
+    const select=
+    document.getElementById(
+        "grupoCuartonSeleccionado"
+    );
 
-    inputs.forEach(input=>{
+    select.innerHTML=`
 
-        total += Number(input.value || 0);
+    <option value="">
+    🐷 Selecciona un cuartón
+    </option>
 
-    });
+    `;
 
-    const anterior =
-        document.getElementById(
-            "resumenGrupoCantidad"
-        );
-
-    if(anterior){
-
-        anterior.innerText =
-            "Total seleccionado: "+total;
-
+    if(!naveId){
+        return;
     }
 
+    const cuartones=
+    todosLosCuartones.filter(c=>
+        String(c.nave_id)===String(naveId)
+    );
+
+    cuartones.forEach(c=>{
+
+        select.innerHTML+=`
+
+        <option value="${c.id}">
+
+        C${c.numero}
+        — ${c.cantidad_cerdos} cerdos disponibles
+
+        </option>
+
+        `;
+
+    });
+
 }
 
 
-/* ==================================================
+/* ==========================================
    SELECCIONAR CUARTÓN
-================================================== */
+========================================== */
 
 function seleccionarCuarton(
     naveId,
@@ -1163,918 +1180,262 @@ function seleccionarCuarton(
 ){
 
     naveSeleccionada={
-
         id:naveId,
         nombre:naveNombre
-
     };
 
     cuartonSeleccionado={
-
         id:cuartonId,
         numero:numero,
-        cantidad:Number(cantidad || 0)
-
+        cantidad:Number(cantidad)
     };
 
-    document.getElementById(
-        "tituloCuarton"
-    ).innerText =
-        naveNombre+" - Cuartón "+numero;
+    document.getElementById("tituloCuarton").innerText=
+    "Cuartón "
+    +
+    numero
+    +
+    " - "
+    +
+    naveNombre;
 
-    document.getElementById(
-        "cantidadCuarton"
-    ).innerText =
-        Number(cantidad || 0);
+    document.getElementById("cantidadActual").innerText=
+    "🐷 Cerdos actuales: "
+    +
+    cantidad;
 
-    document.getElementById(
-        "origenReagrupeTexto"
-    ).innerText =
-
-        naveNombre+
-        " - Cuartón "+
-        numero+
-        " — "+
-        Number(cantidad || 0)+
-        " cerdos";
+    document.getElementById("origenReagrupeTexto").innerText=
+    naveNombre+
+    " - Cuartón "+
+    numero+
+    " — "+
+    cantidad+
+    " cerdos";
 
     ocultarTodosLosPaneles();
 
-    document.getElementById(
-        "panelCuarton"
-    ).classList.remove("oculto");
-
+    document
+    .getElementById("panelCuarton")
+    .classList
+    .remove("oculto");
 }
 
 
-/* ==================================================
-   MOSTRAR AGREGAR
-================================================== */
+/* ==========================================
+   AGREGAR
+========================================== */
 
 function mostrarAgregar(){
 
     ocultarTodosLosPaneles();
 
-    document.getElementById(
-        "panelEntrada"
-    ).classList.remove("oculto");
-
+    document
+    .getElementById("panelEntrada")
+    .classList
+    .remove("oculto");
 }
 
 
-/* ==================================================
-   MOSTRAR CANTIDAD ENTRADA
-================================================== */
+/* ==========================================
+   TIPO ENTRADA
+========================================== */
 
 function mostrarCantidadEntrada(tipo){
 
     tipoEntradaSeleccionado=tipo;
 
-    document.getElementById(
-        "tituloAgregar"
-    ).innerText =
-        "Entrada por "+tipo;
+    document.getElementById("tituloAgregar").innerText=
+    "➕ "+tipo;
 
     ocultarTodosLosPaneles();
 
-    document.getElementById(
-        "panelAgregar"
-    ).classList.remove("oculto");
-
+    document
+    .getElementById("panelAgregar")
+    .classList
+    .remove("oculto");
 }
 
 
-/* ==================================================
-   AGREGAR CERDOS
-================================================== */
+/* ==========================================
+   GUARDAR ENTRADA
+========================================== */
 
 async function agregarCerdos(){
 
-    const cantidad =
-        Number(
-            document.getElementById(
-                "cantidadAgregar"
-            ).value
-        );
+    const cantidad=
+    Number(
+        document.getElementById(
+            "cantidadAgregar"
+        ).value
+    );
 
     if(!cantidad || cantidad<=0){
 
         alert("Introduce una cantidad válida.");
 
         return;
+
     }
 
-    if(!cuartonSeleccionado){
+    const {data:actual,error:errorConsulta}=
+    await clienteSupabase
+    .from("cuartones")
+    .select("cantidad_cerdos")
+    .eq("id",cuartonSeleccionado.id)
+    .single();
 
-        alert("No hay un cuartón seleccionado.");
-
-        return;
-    }
-
-    const {data:cuartonActual,error:errorConsulta} =
-        await clienteSupabase
-        .from("cuartones")
-        .select("cantidad_cerdos")
-        .eq("id",cuartonSeleccionado.id)
-        .single();
-
-    if(errorConsulta || !cuartonActual){
-
-        console.error(errorConsulta);
-
-        alert("No se pudo consultar el cuartón.");
-
-        return;
-    }
-
-    const nuevaCantidad =
-        Number(cuartonActual.cantidad_cerdos || 0)
-        + cantidad;
-
-    const {error:errorUpdate} =
-        await clienteSupabase
-        .from("cuartones")
-        .update({
-            cantidad_cerdos:nuevaCantidad
-        })
-        .eq("id",cuartonSeleccionado.id);
-
-    if(errorUpdate){
-
-        console.error(errorUpdate);
+    if(errorConsulta){
 
         alert(
-            "❌ No se pudo actualizar el cuartón."
+            "Error leyendo el cuartón:\n\n"+
+            errorConsulta.message
         );
 
         return;
     }
 
-    const registrado =
-        await registrarMovimiento(
-            "Entrada",
-            cantidad,
-            tipoEntradaSeleccionado,
-            0
+    const nuevaCantidad=
+    Number(actual.cantidad_cerdos || 0)
+    +
+    cantidad;
+
+    const {error}=
+    await clienteSupabase
+    .from("cuartones")
+    .update({
+        cantidad_cerdos:nuevaCantidad
+    })
+    .eq("id",cuartonSeleccionado.id);
+
+    if(error){
+
+        alert(
+            "Error agregando cerdos:\n\n"+
+            error.message
         );
 
-    if(!registrado){
-
-        await clienteSupabase
-        .from("cuartones")
-        .update({
-            cantidad_cerdos:
-                Number(cuartonActual.cantidad_cerdos || 0)
-        })
-        .eq("id",cuartonSeleccionado.id);
-
         return;
+
     }
+
+    await registrarMovimiento(
+        tipoEntradaSeleccionado,
+        cantidad,
+        tipoEntradaSeleccionado,
+        0
+    );
 
     alert(
-        "✅ Entrada registrada correctamente."
+        "✅ Se agregaron "
+        +
+        cantidad
+        +
+        " cerdos correctamente."
     );
 
     cerrarPanel();
 
     await cargarNaves();
-
 }
 
 
-/* ==================================================
-   MOSTRAR SALIDA
-================================================== */
+/* ==========================================
+   MOTIVO SALIDA
+========================================== */
 
-function mostrarSalida(){
+function mostrarMotivoSalida(){
 
     ocultarTodosLosPaneles();
 
-    document.getElementById(
-        "panelMotivo"
-    ).classList.remove("oculto");
-
+    document
+    .getElementById("panelMotivo")
+    .classList
+    .remove("oculto");
 }
 
 
-/* ==================================================
-   MOSTRAR VENTA
-================================================== */
+/* ==========================================
+   VENTA INDIVIDUAL
+========================================== */
 
 function mostrarVenta(){
 
     ocultarTodosLosPaneles();
 
-    document.getElementById(
-        "panelVenta"
-    ).classList.remove("oculto");
-
+    document
+    .getElementById("panelVenta")
+    .classList
+    .remove("oculto");
 }
 
 
-/* ==================================================
-   MOSTRAR VENTA GRUPO
-================================================== */
+/* ==========================================
+   ABRIR VENTA GRUPO
+========================================== */
 
 function mostrarVentaGrupo(){
 
-    ocultarTodosLosPaneles();
+    ventaGrupo=[];
+
+    actualizarResumenGrupo();
 
     document.getElementById(
-        "panelVentaGrupo"
-    ).classList.remove("oculto");
+        "grupoNaveSeleccionada"
+    ).value="";
 
-    cargarCuartonesGrupo();
+    document.getElementById(
+        "grupoCuartonSeleccionado"
+    ).innerHTML=`
 
+    <option value="">
+    🐷 Selecciona un cuartón
+    </option>
+
+    `;
+
+    document.getElementById(
+        "cantidadGrupo"
+    ).value="";
+
+    document.getElementById(
+        "pesoGrupo"
+    ).value="";
+
+    ocultarTodosLosPaneles();
+
+    document
+    .getElementById("panelVentaGrupo")
+    .classList
+    .remove("oculto");
 }
 
 
-/* ==================================================
-   PROCESAR VENTA
-================================================== */
+/* ==========================================
+   AGREGAR CUARTÓN AL GRUPO
+========================================== */
 
-async function procesarVenta(){
+function agregarCuartonGrupo(){
 
-    const cantidad =
-        Number(
-            document.getElementById(
-                "cantidadVenta"
-            ).value
-        );
+    const cuartonId=
+    document.getElementById(
+        "grupoCuartonSeleccionado"
+    ).value;
 
-    const peso =
-        Number(
-            document.getElementById(
-                "pesoVenta"
-            ).value
-        );
-
-    if(!cantidad || cantidad<=0){
-
-        alert("Introduce una cantidad válida.");
-
-        return;
-    }
-
-    if(!peso || peso<=0){
-
-        alert("Introduce el peso total.");
-
-        return;
-    }
-
-    const {data:cuartonActual,error:errorConsulta} =
-        await clienteSupabase
-        .from("cuartones")
-        .select("cantidad_cerdos")
-        .eq("id",cuartonSeleccionado.id)
-        .single();
-
-    if(errorConsulta || !cuartonActual){
-
-        alert(
-            "No se pudo consultar el cuartón."
-        );
-
-        return;
-    }
-
-    const actual =
-        Number(cuartonActual.cantidad_cerdos || 0);
-
-    if(cantidad>actual){
-
-        alert(
-            "❌ No hay suficientes cerdos en el cuartón."
-        );
-
-        return;
-    }
-
-    const nuevaCantidad =
-        actual-cantidad;
-
-    const {error:errorUpdate} =
-        await clienteSupabase
-        .from("cuartones")
-        .update({
-            cantidad_cerdos:nuevaCantidad
-        })
-        .eq("id",cuartonSeleccionado.id);
-
-    if(errorUpdate){
-
-        console.error(errorUpdate);
-
-        alert("❌ No se pudo actualizar el cuartón.");
-
-        return;
-    }
-
-    const registrado =
-        await registrarMovimiento(
-            "Salida",
-            cantidad,
-            "Venta",
-            peso
-        );
-
-    if(!registrado){
-
-        await clienteSupabase
-        .from("cuartones")
-        .update({
-            cantidad_cerdos:actual
-        })
-        .eq("id",cuartonSeleccionado.id);
-
-        return;
-    }
-
-    alert(
-        "✅ Venta registrada correctamente."
+    const cantidad=
+    Number(
+        document.getElementById(
+            "cantidadGrupo"
+        ).value
     );
 
-    cerrarPanel();
-
-    await cargarNaves();
-
-}
-
-
-/* ==================================================
-   PROCESAR VENTA GRUPO
-================================================== */
-
-async function procesarVentaGrupo(){
-
-    const inputs =
-        document.querySelectorAll(
-            "#grupoCuartones input"
-        );
-
-    const peso =
-        Number(
-            document.getElementById(
-                "pesoVentaGrupo"
-            ).value
-        );
-
-    if(!peso || peso<=0){
-
-        alert("Introduce el peso total.");
-
-        return;
-    }
-
-    const seleccionados=[];
-
-    inputs.forEach(input=>{
-
-        const cantidad =
-            Number(input.value || 0);
-
-        if(cantidad>0){
-
-            seleccionados.push({
-
-                id:Number(input.dataset.cuartonId),
-
-                numero:input.dataset.cuartonNumero,
-
-                naveId:Number(input.dataset.naveId),
-
-                naveNombre:input.dataset.naveNombre,
-
-                cantidad:cantidad
-
-            });
-
-        }
-
-    });
-
-    if(!seleccionados.length){
+    if(!cuartonId){
 
         alert(
-            "Selecciona al menos un cuartón."
+            "Selecciona un cuartón."
         );
 
         return;
     }
-
-    /* ============================================
-       LEER CANTIDADES ACTUALES
-    ============================================ */
-
-    const estados=[];
-
-    for(const item of seleccionados){
-
-        const {data,error} =
-            await clienteSupabase
-            .from("cuartones")
-            .select("cantidad_cerdos")
-            .eq("id",item.id)
-            .single();
-
-        if(error || !data){
-
-            alert(
-                "No se pudo consultar el cuartón C"+
-                item.numero
-            );
-
-            return;
-        }
-
-        const actual =
-            Number(data.cantidad_cerdos || 0);
-
-        if(item.cantidad>actual){
-
-            alert(
-                "❌ El cuartón C"+
-                item.numero+
-                " no tiene suficientes cerdos."
-            );
-
-            return;
-        }
-
-        estados.push({
-
-            ...item,
-
-            anterior:actual,
-
-            nuevo:actual-item.cantidad
-
-        });
-
-    }
-
-    /* ============================================
-       ACTUALIZAR
-    ============================================ */
-
-    const actualizados=[];
-
-    for(const item of estados){
-
-        const {error} =
-            await clienteSupabase
-            .from("cuartones")
-            .update({
-                cantidad_cerdos:item.nuevo
-            })
-            .eq("id",item.id);
-
-        if(error){
-
-            console.error(error);
-
-            for(const anterior of actualizados){
-
-                await clienteSupabase
-                .from("cuartones")
-                .update({
-                    cantidad_cerdos:anterior.anterior
-                })
-                .eq("id",anterior.id);
-
-            }
-
-            alert(
-                "❌ No se pudo completar la venta grupal."
-            );
-
-            return;
-        }
-
-        actualizados.push(item);
-
-    }
-
-    /* ============================================
-       REGISTRO EN HISTORIAL
-    ============================================ */
-
-    const {data:sessionData} =
-        await clienteSupabase.auth.getSession();
-
-    const usuario =
-        sessionData?.session?.user?.email || "";
-
-    const totalCantidad =
-        estados.reduce(
-            (sum,item)=>
-                sum+Number(item.cantidad),
-            0
-        );
-
-    const listaCuartones =
-        estados
-        .map(item=>"C"+item.numero)
-        .join(",");
-
-    const listaNaves =
-        [
-            ...new Set(
-                estados.map(
-                    item=>item.naveNombre
-                )
-            )
-        ]
-        .join(",");
-
-    const primerItem =
-        estados[0];
-
-    const {error:errorHistorial} =
-        await clienteSupabase
-        .from("movimientos_naves")
-        .insert({
-
-            fecha:new Date().toISOString(),
-
-            nave_id:primerItem.naveId,
-
-            cuarton_id:primerItem.id,
-
-            nave:primerItem.naveNombre,
-
-            cuarton:"C"+primerItem.numero,
-
-            cuartones:listaCuartones,
-
-            naves:listaNaves,
-
-            operacion:"Salida",
-
-            cantidad:totalCantidad,
-
-            peso_kg:peso,
-
-            usuario:usuario,
-
-            motivo:"Venta"
-
-        });
-
-    if(errorHistorial){
-
-        console.error(errorHistorial);
-
-        for(const item of estados){
-
-            await clienteSupabase
-            .from("cuartones")
-            .update({
-                cantidad_cerdos:item.anterior
-            })
-            .eq("id",item.id);
-
-        }
-
-        alert(
-            "❌ No se pudo registrar la venta en el historial."
-        );
-
-        return;
-    }
-
-    alert(
-        "✅ Venta grupal registrada correctamente."
-    );
-
-    cerrarPanel();
-
-    await cargarNaves();
-
-}
-
-
-/* ==================================================
-   MOSTRAR MUERTE
-================================================== */
-
-function mostrarMuerte(){
-
-    ocultarTodosLosPaneles();
-
-    document.getElementById(
-        "panelMuerte"
-    ).classList.remove("oculto");
-
-}
-
-
-/* ==================================================
-   MUERTE TOTAL
-================================================== */
-
-function mostrarMuerteTotal(){
-
-    ocultarTodosLosPaneles();
-
-    document.getElementById(
-        "panelMuerteTotal"
-    ).classList.remove("oculto");
-
-}
-
-
-/* ==================================================
-   MUERTE CON PESO
-================================================== */
-
-function mostrarMuerteVenta(){
-
-    ocultarTodosLosPaneles();
-
-    document.getElementById(
-        "panelMuerteVenta"
-    ).classList.remove("oculto");
-
-}
-
-
-/* ==================================================
-   PROCESAR MUERTE TOTAL
-================================================== */
-
-async function procesarMuerteTotal(){
-
-    const cantidad =
-        Number(
-            document.getElementById(
-                "cantidadMuerteTotal"
-            ).value
-        );
-
-    if(!cantidad || cantidad<=0){
-
-        alert("Introduce una cantidad válida.");
-
-        return;
-    }
-
-    const {data:cuartonActual,error:errorConsulta} =
-        await clienteSupabase
-        .from("cuartones")
-        .select("cantidad_cerdos")
-        .eq("id",cuartonSeleccionado.id)
-        .single();
-
-    if(errorConsulta || !cuartonActual){
-
-        alert(
-            "No se pudo consultar el cuartón."
-        );
-
-        return;
-    }
-
-    const actual =
-        Number(cuartonActual.cantidad_cerdos || 0);
-
-    if(cantidad>actual){
-
-        alert(
-            "❌ No hay suficientes cerdos."
-        );
-
-        return;
-    }
-
-    const nuevaCantidad =
-        actual-cantidad;
-
-    const {error:errorUpdate} =
-        await clienteSupabase
-        .from("cuartones")
-        .update({
-            cantidad_cerdos:nuevaCantidad
-        })
-        .eq("id",cuartonSeleccionado.id);
-
-    if(errorUpdate){
-
-        console.error(errorUpdate);
-
-        alert(
-            "❌ No se pudo actualizar el cuartón."
-        );
-
-        return;
-    }
-
-    const registrado =
-        await registrarMovimiento(
-            "Salida",
-            cantidad,
-            "Muerte total",
-            0
-        );
-
-    if(!registrado){
-
-        await clienteSupabase
-        .from("cuartones")
-        .update({
-            cantidad_cerdos:actual
-        })
-        .eq("id",cuartonSeleccionado.id);
-
-        return;
-    }
-
-    alert(
-        "✅ Muerte registrada correctamente."
-    );
-
-    cerrarPanel();
-
-    await cargarNaves();
-
-}
-
-
-/* ==================================================
-   PROCESAR MUERTE CON PESO
-================================================== */
-
-async function procesarMuerteVenta(){
-
-    const cantidad =
-        Number(
-            document.getElementById(
-                "cantidadMuerteVenta"
-            ).value
-        );
-
-    const peso =
-        Number(
-            document.getElementById(
-                "pesoMuerteVenta"
-            ).value
-        );
-
-    if(!cantidad || cantidad<=0){
-
-        alert("Introduce una cantidad válida.");
-
-        return;
-    }
-
-    if(!peso || peso<=0){
-
-        alert("Introduce el peso total.");
-
-        return;
-    }
-
-    const {data:cuartonActual,error:errorConsulta} =
-        await clienteSupabase
-        .from("cuartones")
-        .select("cantidad_cerdos")
-        .eq("id",cuartonSeleccionado.id)
-        .single();
-
-    if(errorConsulta || !cuartonActual){
-
-        alert(
-            "No se pudo consultar el cuartón."
-        );
-
-        return;
-    }
-
-    const actual =
-        Number(cuartonActual.cantidad_cerdos || 0);
-
-    if(cantidad>actual){
-
-        alert(
-            "❌ No hay suficientes cerdos."
-        );
-
-        return;
-    }
-
-    const nuevaCantidad =
-        actual-cantidad;
-
-    const {error:errorUpdate} =
-        await clienteSupabase
-        .from("cuartones")
-        .update({
-            cantidad_cerdos:nuevaCantidad
-        })
-        .eq("id",cuartonSeleccionado.id);
-
-    if(errorUpdate){
-
-        console.error(errorUpdate);
-
-        alert(
-            "❌ No se pudo actualizar el cuartón."
-        );
-
-        return;
-    }
-
-    const registrado =
-        await registrarMovimiento(
-            "Salida",
-            cantidad,
-            "Muerte de venta",
-            peso
-        );
-
-    if(!registrado){
-
-        await clienteSupabase
-        .from("cuartones")
-        .update({
-            cantidad_cerdos:actual
-        })
-        .eq("id",cuartonSeleccionado.id);
-
-        return;
-    }
-
-    alert(
-        "✅ Muerte con peso registrada correctamente."
-    );
-
-    cerrarPanel();
-
-    await cargarNaves();
-
-}
-
-
-/* ==================================================
-   MOSTRAR REAGRUPACIÓN
-================================================== */
-
-function mostrarReagrupeSalida(){
-
-    if(
-        !naveSeleccionada ||
-        !cuartonSeleccionado
-    ){
-
-        alert(
-            "Primero selecciona un cuartón."
-        );
-
-        return;
-    }
-
-    document.getElementById(
-        "origenReagrupeTexto"
-    ).innerText =
-
-        naveSeleccionada.nombre+
-        " - Cuartón "+
-        cuartonSeleccionado.numero+
-        " — "+
-        cuartonSeleccionado.cantidad+
-        " cerdos";
-
-    ocultarTodosLosPaneles();
-
-    document.getElementById(
-        "panelReagrupeSalida"
-    ).classList.remove("oculto");
-
-}
-
-
-/* ==================================================
-   PROCESAR REAGRUPACIÓN
-   IMPORTANTE:
-   NO SE REGISTRA EN movimientos_naves
-================================================== */
-
-async function procesarReagrupe(){
-
-    const cantidad =
-        Number(
-            document.getElementById(
-                "cantidadReagrupe"
-            ).value
-        );
-
-    const destinoId =
-        Number(
-            document.getElementById(
-                "cuartonDestinoSalida"
-            ).value
-        );
 
     if(!cantidad || cantidad<=0){
 
@@ -2085,182 +1446,1026 @@ async function procesarReagrupe(){
         return;
     }
 
-    if(!destinoId){
+    const cuarton=
+    todosLosCuartones.find(c=>
+        String(c.id)===String(cuartonId)
+    );
+
+    if(!cuarton){
 
         alert(
-            "Selecciona un cuartón destino."
+            "No se encontró el cuartón."
+        );
+
+        return;
+    }
+
+    const existente=
+    ventaGrupo.find(v=>
+        String(v.cuarton_id)===String(cuartonId)
+    );
+
+    const cantidadYaSeleccionada=
+    existente
+    ?
+    Number(existente.cantidad)
+    :
+    0;
+
+    if(
+        cantidadYaSeleccionada+
+        cantidad
+        >
+        Number(cuarton.cantidad_cerdos)
+    ){
+
+        alert(
+            "No puedes vender más cerdos de los que hay en ese cuartón."
+        );
+
+        return;
+    }
+
+    if(existente){
+
+        existente.cantidad=
+        cantidadYaSeleccionada+
+        cantidad;
+
+    }else{
+
+        ventaGrupo.push({
+
+            nave_id:cuarton.nave_id,
+
+            nave_nombre:cuarton.nave_nombre,
+
+            cuarton_id:cuarton.id,
+
+            cuarton_numero:cuarton.numero,
+
+            cantidad:cantidad
+
+        });
+
+    }
+
+    document.getElementById(
+        "cantidadGrupo"
+    ).value="";
+
+    actualizarResumenGrupo();
+}
+
+
+/* ==========================================
+   MOSTRAR RESUMEN GRUPO
+========================================== */
+
+function actualizarResumenGrupo(){
+
+    const contenedor=
+    document.getElementById(
+        "listaGrupo"
+    );
+
+    const resumen=
+    document.getElementById(
+        "resumenGrupoTexto"
+    );
+
+    if(ventaGrupo.length===0){
+
+        contenedor.innerHTML="";
+
+        resumen.innerHTML=
+        "No hay cuartones seleccionados.";
+
+        return;
+    }
+
+    let html="";
+
+    let total=0;
+
+    ventaGrupo.forEach((v,index)=>{
+
+        total+=Number(v.cantidad);
+
+        html+=`
+
+        <div class="seleccionGrupo">
+
+        <strong>
+        ${v.nave_nombre} — C${v.cuarton_numero}
+        </strong>
+
+        <br>
+
+        🐷 ${v.cantidad} cerdos
+
+        <button
+        class="botonQuitar"
+        onclick="quitarCuartonGrupo(${index})">
+
+        🗑️ Quitar
+
+        </button>
+
+        </div>
+
+        `;
+
+    });
+
+    contenedor.innerHTML=html;
+
+    resumen.innerHTML=
+
+    "🐷 Cerdos seleccionados: "
+    +
+    "<strong>"+total+"</strong>"
+    +
+    "<br><br>"
+    +
+    "📦 Cuartones: "
+    +
+    ventaGrupo.length;
+}
+
+
+/* ==========================================
+   QUITAR CUARTÓN
+========================================== */
+
+function quitarCuartonGrupo(index){
+
+    ventaGrupo.splice(index,1);
+
+    actualizarResumenGrupo();
+}
+
+
+/* ==========================================
+   PROCESAR VENTA INDIVIDUAL
+========================================== */
+
+async function procesarVenta(){
+
+    const cantidad=
+    Number(
+        document.getElementById(
+            "cantidadVenta"
+        ).value
+    );
+
+    const peso=
+    Number(
+        document.getElementById(
+            "pesoVenta"
+        ).value
+    );
+
+    if(!cantidad || cantidad<=0){
+
+        alert(
+            "Introduce una cantidad válida."
+        );
+
+        return;
+    }
+
+    const {data:actual,error:errorConsulta}=
+    await clienteSupabase
+    .from("cuartones")
+    .select("cantidad_cerdos")
+    .eq("id",cuartonSeleccionado.id)
+    .single();
+
+    if(errorConsulta){
+
+        alert(
+            "Error verificando el cuartón:\n\n"+
+            errorConsulta.message
         );
 
         return;
     }
 
     if(
-        Number(destinoId) ===
-        Number(cuartonSeleccionado.id)
+        cantidad>
+        Number(actual.cantidad_cerdos)
     ){
 
         alert(
-            "❌ El destino no puede ser el mismo cuartón de origen."
+            "No puedes sacar más cerdos de los que hay."
         );
 
         return;
     }
 
-    /* ============================================
-       CONSULTAR ORIGEN
-    ============================================ */
+    if(!peso || peso<=0){
 
-    const {
-        data:origenActual,
-        error:errorOrigen
-    } =
+        alert(
+            "Introduce el peso total en kg."
+        );
+
+        return;
+    }
+
+    const nuevaCantidad=
+    Number(actual.cantidad_cerdos)
+    -
+    cantidad;
+
+    const {error}=
+    await clienteSupabase
+    .from("cuartones")
+    .update({
+        cantidad_cerdos:nuevaCantidad
+    })
+    .eq("id",cuartonSeleccionado.id);
+
+    if(error){
+
+        alert(
+            "Error realizando la venta:\n\n"+
+            error.message
+        );
+
+        return;
+    }
+
+    await registrarMovimiento(
+        "Salida",
+        cantidad,
+        "Venta",
+        peso
+    );
+
+    alert(
+        "✅ Venta registrada correctamente.\n\n"+
+        "Cerdos: "+cantidad+
+        "\nPeso: "+peso.toFixed(2)+" kg"
+    );
+
+    cerrarPanel();
+
+    await cargarNaves();
+}
+
+
+/* ==========================================
+   PROCESAR VENTA GRUPO
+========================================== */
+
+async function procesarVentaGrupo(){
+
+    if(ventaGrupo.length===0){
+
+        alert(
+            "Selecciona al menos un cuartón."
+        );
+
+        return;
+    }
+
+    const peso=
+    Number(
+        document.getElementById(
+            "pesoGrupo"
+        ).value
+    );
+
+    if(!peso || peso<=0){
+
+        alert(
+            "Introduce el peso total de todos los cerdos vendidos."
+        );
+
+        return;
+    }
+
+    let cantidadTotal=0;
+
+    ventaGrupo.forEach(v=>{
+        cantidadTotal+=Number(v.cantidad);
+    });
+
+    const ids=
+    ventaGrupo.map(v=>v.cuarton_id);
+
+    const {data:cuartonesActuales,error:errorConsulta}=
+
+    await clienteSupabase
+    .from("cuartones")
+    .select("*")
+    .in("id",ids);
+
+    if(errorConsulta){
+
+        alert(
+            "Error verificando los cuartones:\n\n"+
+            errorConsulta.message
+        );
+
+        return;
+    }
+
+    for(const venta of ventaGrupo){
+
+        const actual=
+        cuartonesActuales.find(c=>
+            String(c.id)===
+            String(venta.cuarton_id)
+        );
+
+        if(!actual){
+
+            alert(
+                "No se encontró el cuartón C"+
+                venta.cuarton_numero
+            );
+
+            return;
+        }
+
+        if(
+            Number(venta.cantidad)>
+            Number(actual.cantidad_cerdos)
+        ){
+
+            alert(
+                "No hay suficientes cerdos en "+
+                venta.nave_nombre+
+                " - C"+
+                venta.cuarton_numero
+            );
+
+            return;
+        }
+
+    }
+
+    const actualizados=[];
+
+    for(const venta of ventaGrupo){
+
+        const actual=
+        cuartonesActuales.find(c=>
+            String(c.id)===
+            String(venta.cuarton_id)
+        );
+
+        const nuevaCantidad=
+        Number(actual.cantidad_cerdos)
+        -
+        Number(venta.cantidad);
+
+        const {error}=
+
         await clienteSupabase
         .from("cuartones")
-        .select("*")
-        .eq("id",cuartonSeleccionado.id)
-        .single();
+        .update({
+            cantidad_cerdos:nuevaCantidad
+        })
+        .eq("id",venta.cuarton_id);
 
-    if(errorOrigen || !origenActual){
+        if(error){
 
-        console.error(errorOrigen);
+            for(const anterior of actualizados){
+
+                await clienteSupabase
+                .from("cuartones")
+                .update({
+                    cantidad_cerdos:
+                    anterior.cantidad_original
+                })
+                .eq(
+                    "id",
+                    anterior.id
+                );
+
+            }
+
+            alert(
+                "❌ No se pudo completar la venta.\n\n"+
+                error.message
+            );
+
+            return;
+        }
+
+        actualizados.push({
+
+            id:venta.cuarton_id,
+
+            cantidad_original:
+            Number(actual.cantidad_cerdos)
+
+        });
+
+    }
+
+    const cuartonesTexto=
+    ventaGrupo
+    .map(v=>"C"+v.cuarton_numero)
+    .join(",");
+
+    const navesTexto=
+    ventaGrupo
+    .map(v=>"N"+v.nave_id)
+    .join(",");
+
+    const primerElemento=
+    ventaGrupo[0];
+
+    const {data:sesionData}=
+
+    await clienteSupabase
+    .auth
+    .getSession();
+
+    if(!sesionData.session){
+
+        window.location.href="login.html";
+
+        return;
+    }
+
+    const correoUsuario=
+    sesionData.session.user.email ||
+    "Sin correo";
+
+    const {error:errorHistorial}=
+
+    await clienteSupabase
+    .from("movimientos_naves")
+    .insert({
+
+        fecha:new Date().toISOString(),
+
+        nave_id:primerElemento.nave_id,
+
+        cuarton_id:primerElemento.cuarton_id,
+
+        nave:primerElemento.nave_nombre,
+
+        cuarton:primerElemento.cuarton_numero,
+
+        cuartones:cuartonesTexto,
+
+        naves:navesTexto,
+
+        operacion:"Salida",
+
+        cantidad:cantidadTotal,
+
+        peso_kg:peso,
+
+        usuario:correoUsuario,
+
+        motivo:"Venta"
+
+    });
+
+    if(errorHistorial){
+
+        for(const anterior of actualizados){
+
+            await clienteSupabase
+            .from("cuartones")
+            .update({
+                cantidad_cerdos:
+                anterior.cantidad_original
+            })
+            .eq(
+                "id",
+                anterior.id
+            );
+
+        }
 
         alert(
-            "❌ No se pudo consultar el cuartón de origen."
+            "❌ Los cerdos fueron restaurados porque ocurrió un error guardando el historial:\n\n"+
+            errorHistorial.message
         );
 
         return;
     }
 
-    /* ============================================
-       CONSULTAR DESTINO
-    ============================================ */
+    alert(
+        "✅ Venta por grupo registrada correctamente.\n\n"+
+        "Cerdos: "+cantidadTotal+
+        "\nPeso total: "+peso.toFixed(2)+" kg"+
+        "\n\n"+
+        "Cuartones: "+cuartonesTexto+
+        "\nNaves: "+navesTexto
+    );
 
-    const {
-        data:destinoActual,
-        error:errorDestino
-    } =
-        await clienteSupabase
-        .from("cuartones")
-        .select("*")
-        .eq("id",destinoId)
-        .single();
+    cerrarPanel();
 
-    if(errorDestino || !destinoActual){
+    await cargarNaves();
+}
 
-        console.error(errorDestino);
+
+/* ==========================================
+   MUERTE
+========================================== */
+
+function mostrarMuerte(){
+
+    ocultarTodosLosPaneles();
+
+    document
+    .getElementById("panelMuerte")
+    .classList
+    .remove("oculto");
+}
+
+
+/* ==========================================
+   MUERTE TOTAL
+========================================== */
+
+function mostrarMuerteTotal(){
+
+    ocultarTodosLosPaneles();
+
+    document
+    .getElementById("panelMuerteTotal")
+    .classList
+    .remove("oculto");
+}
+
+
+async function procesarMuerteTotal(){
+
+    const cantidad=
+    Number(
+        document.getElementById(
+            "cantidadMuerteTotal"
+        ).value
+    );
+
+    if(!cantidad || cantidad<=0){
 
         alert(
-            "❌ No se pudo consultar el cuartón destino."
+            "Introduce una cantidad válida."
         );
 
         return;
     }
 
-    const cantidadOrigen =
-        Number(
-            origenActual.cantidad_cerdos || 0
-        );
+    const {data:actual,error:errorConsulta}=
+    await clienteSupabase
+    .from("cuartones")
+    .select("cantidad_cerdos")
+    .eq("id",cuartonSeleccionado.id)
+    .single();
 
-    const cantidadDestino =
-        Number(
-            destinoActual.cantidad_cerdos || 0
-        );
-
-    if(cantidad>cantidadOrigen){
+    if(errorConsulta){
 
         alert(
-            "❌ El cuartón de origen no tiene suficientes cerdos."
+            "Error verificando el cuartón:\n\n"+
+            errorConsulta.message
         );
 
         return;
     }
 
-    const cantidadOrigenNueva =
-        cantidadOrigen-cantidad;
+    if(
+        cantidad>
+        Number(actual.cantidad_cerdos)
+    ){
 
-    const cantidadDestinoNueva =
-        cantidadDestino+cantidad;
+        alert(
+            "No puedes sacar más cerdos de los que hay."
+        );
 
-    /* ============================================
-       ACTUALIZAR ORIGEN
-    ============================================ */
+        return;
+    }
 
-    const {
-        error:errorUpdateOrigen
-    } =
+    const nuevaCantidad=
+    Number(actual.cantidad_cerdos)
+    -
+    cantidad;
+
+    const {error}=
+    await clienteSupabase
+    .from("cuartones")
+    .update({
+        cantidad_cerdos:nuevaCantidad
+    })
+    .eq("id",cuartonSeleccionado.id);
+
+    if(error){
+
+        alert(
+            "Error registrando muerte:\n\n"+
+            error.message
+        );
+
+        return;
+    }
+
+    await registrarMovimiento(
+        "Salida",
+        cantidad,
+        "Muerte total",
+        0
+    );
+
+    alert(
+        "✅ Muerte registrada correctamente."
+    );
+
+    cerrarPanel();
+
+    await cargarNaves();
+}
+
+
+/* ==========================================
+   MUERTE VENTA
+========================================== */
+
+function mostrarMuerteVenta(){
+
+    ocultarTodosLosPaneles();
+
+    document
+    .getElementById("panelMuerteVenta")
+    .classList
+    .remove("oculto");
+}
+
+
+async function procesarMuerteVenta(){
+
+    const cantidad=
+    Number(
+        document.getElementById(
+            "cantidadMuerteVenta"
+        ).value
+    );
+
+    const peso=
+    Number(
+        document.getElementById(
+            "pesoMuerteVenta"
+        ).value
+    );
+
+    if(!cantidad || cantidad<=0){
+
+        alert(
+            "Introduce una cantidad válida."
+        );
+
+        return;
+    }
+
+    const {data:actual,error:errorConsulta}=
+    await clienteSupabase
+    .from("cuartones")
+    .select("cantidad_cerdos")
+    .eq("id",cuartonSeleccionado.id)
+    .single();
+
+    if(errorConsulta){
+
+        alert(
+            "Error verificando el cuartón:\n\n"+
+            errorConsulta.message
+        );
+
+        return;
+    }
+
+    if(
+        cantidad>
+        Number(actual.cantidad_cerdos)
+    ){
+
+        alert(
+            "No puedes sacar más cerdos de los que hay."
+        );
+
+        return;
+    }
+
+    if(!peso || peso<=0){
+
+        alert(
+            "Introduce el peso total en kg."
+        );
+
+        return;
+    }
+
+    const nuevaCantidad=
+    Number(actual.cantidad_cerdos)
+    -
+    cantidad;
+
+    const {error}=
+    await clienteSupabase
+    .from("cuartones")
+    .update({
+        cantidad_cerdos:nuevaCantidad
+    })
+    .eq("id",cuartonSeleccionado.id);
+
+    if(error){
+
+        alert(
+            "Error registrando muerte de venta:\n\n"+
+            error.message
+        );
+
+        return;
+    }
+
+    await registrarMovimiento(
+        "Salida",
+        cantidad,
+        "Muerte de venta",
+        peso
+    );
+
+    alert(
+        "✅ Muerte de venta registrada.\n\n"+
+        "Cerdos: "+cantidad+
+        "\nPeso: "+peso.toFixed(2)+" kg"
+    );
+
+    cerrarPanel();
+
+    await cargarNaves();
+}
+
+
+/* ==========================================
+   REAGRUPACIÓN
+========================================== */
+
+function mostrarReagrupeSalida(){
+
+    /*
+       El cuartón que el usuario tocó
+       es automáticamente el ORIGEN.
+       No se vuelve a seleccionar.
+    */
+
+    document.getElementById(
+        "origenReagrupeTexto"
+    ).innerText=
+    naveSeleccionada.nombre+
+    " - Cuartón "+
+    cuartonSeleccionado.numero+
+    " — "+
+    cuartonSeleccionado.cantidad+
+    " cerdos";
+
+    ocultarTodosLosPaneles();
+
+    document
+    .getElementById("panelReagrupeSalida")
+    .classList
+    .remove("oculto");
+}
+
+
+async function procesarReagrupe(){
+
+    const cantidad=
+    Number(
+        document.getElementById(
+            "cantidadReagrupeSalida"
+        ).value
+    );
+
+    const destino=
+    document.getElementById(
+        "cuartonDestinoSalida"
+    ).value;
+
+    if(!cantidad || cantidad<=0){
+
+        alert(
+            "Introduce una cantidad válida."
+        );
+
+        return;
+    }
+
+    if(!destino){
+
+        alert(
+            "Selecciona el cuartón destino."
+        );
+
+        return;
+    }
+
+    if(
+        String(destino)===
+        String(cuartonSeleccionado.id)
+    ){
+
+        alert(
+            "El cuartón destino debe ser diferente."
+        );
+
+        return;
+    }
+
+
+    /*
+       Leer nuevamente origen y destino
+       directamente desde Supabase.
+    */
+
+    const ids=[
+        cuartonSeleccionado.id,
+        Number(destino)
+    ];
+
+    const {data:cuartones,error:errorConsulta}=
+
+    await clienteSupabase
+    .from("cuartones")
+    .select("id,cantidad_cerdos,nave_id,numero")
+    .in("id",ids);
+
+    if(errorConsulta){
+
+        alert(
+            "Error verificando los cuartones:\n\n"+
+            errorConsulta.message
+        );
+
+        return;
+    }
+
+    const origenActual=
+    cuartones.find(c=>
+        String(c.id)===
+        String(cuartonSeleccionado.id)
+    );
+
+    const destinoActual=
+    cuartones.find(c=>
+        String(c.id)===
+        String(destino)
+    );
+
+    if(!origenActual){
+
+        alert(
+            "No se encontró el cuartón de origen."
+        );
+
+        return;
+    }
+
+    if(!destinoActual){
+
+        alert(
+            "No se encontró el cuartón destino."
+        );
+
+        return;
+    }
+
+    if(
+        cantidad>
+        Number(origenActual.cantidad_cerdos || 0)
+    ){
+
+        alert(
+            "No puedes reagrupar más cerdos de los que hay en el cuartón de origen."
+        );
+
+        return;
+    }
+
+
+    /*
+       Calcular nuevas cantidades.
+    */
+
+    const cantidadOrigenAnterior=
+    Number(origenActual.cantidad_cerdos || 0);
+
+    const cantidadDestinoAnterior=
+    Number(destinoActual.cantidad_cerdos || 0);
+
+    const cantidadOrigenNueva=
+    cantidadOrigenAnterior-
+    cantidad;
+
+    const cantidadDestinoNueva=
+    cantidadDestinoAnterior+
+    cantidad;
+
+
+    /*
+       Actualizar ORIGEN.
+    */
+
+    const {error:errorOrigen}=
+    await clienteSupabase
+    .from("cuartones")
+    .update({
+        cantidad_cerdos:
+        cantidadOrigenNueva
+    })
+    .eq(
+        "id",
+        origenActual.id
+    );
+
+    if(errorOrigen){
+
+        alert(
+            "Error restando los cerdos del origen:\n\n"+
+            errorOrigen.message
+        );
+
+        return;
+    }
+
+
+    /*
+       Actualizar DESTINO.
+    */
+
+    const {error:errorDestino}=
+    await clienteSupabase
+    .from("cuartones")
+    .update({
+        cantidad_cerdos:
+        cantidadDestinoNueva
+    })
+    .eq(
+        "id",
+        destinoActual.id
+    );
+
+
+    /*
+       Si falla el destino,
+       restaurar el origen.
+    */
+
+    if(errorDestino){
+
         await clienteSupabase
         .from("cuartones")
         .update({
             cantidad_cerdos:
-                cantidadOrigenNueva
+            cantidadOrigenAnterior
         })
-        .eq("id",origenActual.id);
-
-    if(errorUpdateOrigen){
-
-        console.error(errorUpdateOrigen);
+        .eq(
+            "id",
+            origenActual.id
+        );
 
         alert(
-            "❌ No se pudo actualizar el cuartón de origen."
+            "❌ No se pudo completar el reagrupe.\n\n"+
+            "Los cerdos del origen fueron restaurados.\n\n"+
+            errorDestino.message
         );
 
         return;
     }
 
-    /* ============================================
-       ACTUALIZAR DESTINO
-    ============================================ */
 
-    const {
-        error:errorUpdateDestino
-    } =
-        await clienteSupabase
-        .from("cuartones")
-        .update({
-            cantidad_cerdos:
-                cantidadDestinoNueva
-        })
-        .eq("id",destinoActual.id);
-
-    if(errorUpdateDestino){
-
-        console.error(errorUpdateDestino);
-
-        /* Restaurar origen */
-
-        await clienteSupabase
-        .from("cuartones")
-        .update({
-            cantidad_cerdos:
-                cantidadOrigen
-        })
-        .eq("id",origenActual.id);
-
-        alert(
-            "❌ No se pudo actualizar el cuartón destino.\n\n"+
-            "La cantidad del origen fue restaurada."
-        );
-
-        return;
-    }
-
-    /* ============================================
+    /*
        IMPORTANTE:
-       NO INSERTAR EN movimientos_naves
        
-       La reagrupación es un movimiento interno
-       y no debe aparecer en el historial.
-    ============================================ */
+       NO SE INSERTA NADA EN
+       movimientos_naves.
 
-    const origenInfo =
-        todosLosCuartones.find(
-            c=>Number(c.id)===Number(origenActual.id)
-        );
+       El reagrupe es un movimiento interno
+       y NO debe aparecer en el historial.
+    */
 
-    const destinoInfo =
-        todosLosCuartones.find(
-            c=>Number(c.id)===Number(destinoActual.id)
-        );
+
+    const origenInfo=
+    todosLosCuartones.find(c=>
+        String(c.id)===
+        String(origenActual.id)
+    );
+
+    const destinoInfo=
+    todosLosCuartones.find(c=>
+        String(c.id)===
+        String(destinoActual.id)
+    );
+
 
     alert(
 
@@ -2295,18 +2500,24 @@ async function procesarReagrupe(){
 
     );
 
+
     cerrarPanel();
 
     await cargarNaves();
-
 }
 
 
-/* ==================================================
+/* ==========================================
    REGISTRAR MOVIMIENTO
-   Se utiliza para entradas, ventas y muertes.
-   NO se utiliza para reagrupación.
-================================================== */
+   ==========================================
+   
+   Esta función sigue registrando:
+   - Entradas
+   - Ventas
+   - Muertes
+   
+   NO se utiliza para reagrupe.
+========================================== */
 
 async function registrarMovimiento(
     operacion,
@@ -2315,66 +2526,69 @@ async function registrarMovimiento(
     peso
 ){
 
-    const {data:sessionData} =
-        await clienteSupabase.auth.getSession();
+    const {data:sesionData}=
+    await clienteSupabase
+    .auth
+    .getSession();
 
-    const usuario =
-        sessionData?.session?.user?.email || "";
+    if(!sesionData.session){
 
-    const {error} =
-        await clienteSupabase
-        .from("movimientos_naves")
-        .insert({
+        window.location.href="login.html";
 
-            fecha:new Date().toISOString(),
+        return;
+    }
 
-            nave_id:naveSeleccionada.id,
+    const correoUsuario=
+    sesionData.session.user.email ||
+    "Sin correo";
 
-            cuarton_id:cuartonSeleccionado.id,
+    const {error}=
+    await clienteSupabase
+    .from("movimientos_naves")
+    .insert({
 
-            nave:naveSeleccionada.nombre,
+        fecha:new Date().toISOString(),
 
-            cuarton:
-                "C"+
-                cuartonSeleccionado.numero,
+        nave_id:naveSeleccionada.id,
 
-            operacion:operacion,
+        cuarton_id:cuartonSeleccionado.id,
 
-            cantidad:Number(cantidad),
+        nave:naveSeleccionada.nombre,
 
-            peso_kg:Number(peso || 0),
+        cuarton:cuartonSeleccionado.numero,
 
-            usuario:usuario,
+        operacion:operacion,
 
-            motivo:motivo
+        cantidad:cantidad,
 
-        });
+        peso_kg:peso || 0,
+
+        usuario:correoUsuario,
+
+        motivo:motivo
+
+    });
 
     if(error){
 
-        console.error(error);
-
         alert(
-            "❌ No se pudo registrar el movimiento."
+            "Error registrando movimiento:\n\n"+
+            error.message
         );
 
-        return false;
     }
-
-    return true;
-
 }
 
 
-/* ==================================================
-   CERRAR PANEL
-================================================== */
+/* ==========================================
+   CERRAR
+========================================== */
 
 function cerrarPanel(){
 
     ocultarTodosLosPaneles();
 
-    const campos = [
+    const ids=[
 
         "cantidadAgregar",
         "cantidadVenta",
@@ -2382,15 +2596,16 @@ function cerrarPanel(){
         "cantidadMuerteTotal",
         "cantidadMuerteVenta",
         "pesoMuerteVenta",
-        "cantidadReagrupe",
-        "pesoVentaGrupo"
+        "cantidadReagrupeSalida",
+        "cantidadGrupo",
+        "pesoGrupo"
 
     ];
 
-    campos.forEach(id=>{
+    ids.forEach(id=>{
 
-        const elemento =
-            document.getElementById(id);
+        const elemento=
+        document.getElementById(id);
 
         if(elemento){
 
@@ -2405,17 +2620,16 @@ function cerrarPanel(){
     actualizarResumenGrupo();
 
     tipoEntradaSeleccionado=null;
-
 }
 
 
-/* ==================================================
+/* ==========================================
    OCULTAR PANELES
-================================================== */
+========================================== */
 
 function ocultarTodosLosPaneles(){
 
-    const paneles = [
+    const ids=[
 
         "panelCuarton",
         "panelEntrada",
@@ -2430,35 +2644,37 @@ function ocultarTodosLosPaneles(){
 
     ];
 
-    paneles.forEach(id=>{
+    ids.forEach(id=>{
 
-        const elemento =
-            document.getElementById(id);
+        const elemento=
+        document.getElementById(id);
 
         if(elemento){
 
-            elemento.classList.add("oculto");
+            elemento
+            .classList
+            .add("oculto");
 
         }
 
     });
-
 }
 
 
-/* ==================================================
+/* ==========================================
    INICIAR
-================================================== */
+========================================== */
 
 async function iniciar(){
 
-    const sesion =
-        await verificarSesion();
+    const ok=
+    await verificarSesion();
 
-    if(!sesion) return;
+    if(!ok){
+        return;
+    }
 
     await cargarNaves();
-
 }
 
 iniciar();
