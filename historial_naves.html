@@ -1,14 +1,5 @@
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>ElDesierto - Historial de Naves</title>
-
-<style>
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>ElDesierto - Historial de Naves</title><style>
 
 *{
     box-sizing:border-box;
@@ -61,6 +52,80 @@ h2{
     box-shadow:0 2px 0 #500000;
 }
 
+/* ==========================================
+   BOTONES DE HISTORIAL
+========================================== */
+
+.botonesHistorial{
+    width:95%;
+    max-width:850px;
+    margin:20px auto 30px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.botonHistorial{
+    padding:17px;
+    border:none;
+    border-radius:14px;
+    color:white;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+
+    background:
+    linear-gradient(145deg,#333,#101010);
+
+    border:1px solid #444;
+
+    box-shadow:
+    0 7px 0 #050505,
+    0 12px 20px rgba(0,0,0,.5);
+
+    transition:.2s;
+}
+
+.botonHistorial:hover{
+    border-color:#ff3030;
+    box-shadow:
+    0 7px 0 #050505,
+    0 0 18px rgba(255,0,0,.3);
+}
+
+.botonHistorial:active{
+    transform:translateY(5px);
+    box-shadow:0 2px 0 #050505;
+}
+
+.botonHistorial.activo{
+    background:
+    linear-gradient(145deg,#ff3838,#9d0000);
+
+    border-color:#ff5555;
+
+    box-shadow:
+    0 7px 0 #500000,
+    0 12px 25px rgba(255,0,0,.25);
+}
+
+/* ==========================================
+   SECCIONES
+========================================== */
+
+.seccionHistorial{
+    display:none;
+}
+
+.seccionHistorial.activa{
+    display:block;
+}
+
+
+/* ==========================================
+   ESTADÍSTICAS
+========================================== */
+
 .estadisticas{
     width:95%;
     max-width:1100px;
@@ -99,6 +164,11 @@ h2{
     color:#ff4040;
     text-shadow:0 0 10px rgba(255,0,0,.4);
 }
+
+
+/* ==========================================
+   FILTROS
+========================================== */
 
 .filtros{
     width:95%;
@@ -157,6 +227,11 @@ input:focus{
     transform:translateY(4px);
     box-shadow:0 1px 0 #480000;
 }
+
+
+/* ==========================================
+   TABLA
+========================================== */
 
 .caja{
     width:100%;
@@ -241,6 +316,50 @@ tbody tr:hover td{
     font-weight:bold;
 }
 
+
+/* ==========================================
+   DESTETE - PREPARADO
+========================================== */
+
+.destetePreparado{
+    width:95%;
+    max-width:1000px;
+    margin:30px auto;
+    padding:35px 25px;
+    border-radius:20px;
+
+    background:
+    linear-gradient(145deg,#202020,#080808);
+
+    border:1px solid #3a3a3a;
+
+    box-shadow:
+    10px 10px 25px #000,
+    -3px -3px 15px #252525;
+}
+
+.destetePreparado h2{
+    margin-top:0;
+    color:#ff4040;
+    text-shadow:0 0 8px rgba(255,0,0,.4);
+}
+
+.destetePreparado p{
+    color:#aaa;
+    font-size:16px;
+    line-height:1.6;
+}
+
+.desteteIcono{
+    font-size:60px;
+    margin:15px 0;
+}
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
 @media(max-width:850px){
 
     .estadisticas{
@@ -250,6 +369,15 @@ tbody tr:hover td{
     .contenedorFiltros{
         grid-template-columns:repeat(2,1fr);
     }
+
+}
+
+@media(max-width:600px){
+
+    .botonesHistorial{
+        grid-template-columns:1fr;
+    }
+
 }
 
 @media(max-width:500px){
@@ -269,110 +397,72 @@ tbody tr:hover td{
     .contenedorFiltros{
         grid-template-columns:1fr;
     }
+
 }
 
-</style>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-</head>
-
-<body>
-
-<h1>📜 Historial de Naves</h1>
-
-<button
+</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><h1>📜 Historial de Naves</h1><button
 class="boton"
 onclick="window.location.href='naves.html'">
 
 ⬅️ Volver a Naves
 
-</button>
+</button><!-- ==========================================
+     BOTONES DE HISTORIALES
+========================================== --><div class="botonesHistorial"><button
+id="botonHistorialCeba"
+class="botonHistorial activo"
+onclick="mostrarHistorialCeba()">
 
+🐷 Historial Ceba
 
-<div class="estadisticas">
+</button><button
+id="botonHistorialDestete"
+class="botonHistorial"
+onclick="mostrarHistorialDestete()">
 
-<div class="estadistica">
+🍼 Historial Destete
+
+</button></div><!-- ==========================================
+     HISTORIAL CEBA
+========================================== --><div
+id="seccionCeba"
+class="seccionHistorial activa"><div class="estadisticas"><div class="estadistica">
 <div class="icono">➕🐷</div>
 <div class="titulo">CERDOS INGRESADOS</div>
 <div class="numero" id="totalEntradas">0</div>
-</div>
-
-<div class="estadistica">
+</div><div class="estadistica">
 <div class="icono">💰</div>
 <div class="titulo">CERDOS VENDIDOS</div>
 <div class="numero" id="totalVentas">0</div>
-</div>
-
-<div class="estadistica">
+</div><div class="estadistica">
 <div class="icono">☠️</div>
 <div class="titulo">MUERTES</div>
 <div class="numero" id="totalMuertes">0</div>
-</div>
-
-<div class="estadistica">
+</div><div class="estadistica">
 <div class="icono">⚖️</div>
 <div class="titulo">MUERTES DE VENTA</div>
 <div class="numero" id="totalMuertesVenta">0</div>
-</div>
-
-<div class="estadistica">
+</div><div class="estadistica">
 <div class="icono">📊</div>
 <div class="titulo">MOVIMIENTOS</div>
 <div class="numero" id="totalMovimientos">0</div>
-</div>
-
-</div>
-
-
-<div class="filtros">
-
-<h2>🔎 Filtrar historial</h2>
-
-<div class="contenedorFiltros">
-
-<select id="filtroNave">
-
-<option value="">
+</div></div><div class="filtros"><h2>🔎 Filtrar historial de Ceba</h2><div class="contenedorFiltros"><select id="filtroNave"><option value="">
 🏠 Todas las naves
-</option>
-
-</select>
-
-
-<select id="filtroMotivo">
-
-<option value="">
+</option></select><select id="filtroMotivo"><option value="">
 📋 Todas las operaciones
-</option>
-
-<option value="Entrada Destete">
+</option><option value="Entrada Destete">
 🍼 Entrada Destete
-</option>
-
-<option value="Entrada Exterior">
+</option><option value="Entrada Exterior">
 🚚 Entrada Exterior
-</option>
-
-<option value="Venta">
+</option><option value="Venta">
 💰 Ventas
-</option>
-
-<option value="Muerte total">
+</option><option value="Muerte total">
 ☠️ Muerte total
-</option>
-
-<option value="Muerte de venta">
+</option><option value="Muerte de venta">
 ⚖️ Muerte de venta
-</option>
-
-</select>
-
-
-<input
+</option></select><input
 type="date"
 id="filtroFecha">
-
 
 <button
 class="botonFiltro"
@@ -380,32 +470,14 @@ onclick="aplicarFiltros()">
 
 🔎 Buscar
 
-</button>
-
-</div>
-
-
-<button
+</button></div><button
 class="botonFiltro"
 style="width:100%;margin-top:15px;"
 onclick="limpiarFiltros()">
 
 🔄 Limpiar filtros
 
-</button>
-
-</div>
-
-
-<div class="caja">
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>📅 Fecha</th>
+</button></div><div class="caja"><table><thead><tr><th>📅 Fecha</th>
 <th>🕒 Hora</th>
 <th>🏠 Naves</th>
 <th>🐷 Cuartones</th>
@@ -414,47 +486,99 @@ onclick="limpiarFiltros()">
 <th>⚖️ Peso kg</th>
 <th>📋 Motivo</th>
 <th>👤 Usuario</th>
-<th>⚙️ Acción</th>
+<th>⚙️ Acción</th></tr></thead><tbody id="tablaHistorial"><tr><td colspan="10" class="mensaje">⏳ Cargando historial...
 
-</tr>
-
-</thead>
-
-<tbody id="tablaHistorial">
-
-<tr>
-
-<td colspan="10" class="mensaje">
-
-⏳ Cargando historial...
-
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
-
-</div>
-
-
-<button
+</td></tr></tbody></table></div></div><!-- ==========================================
+     HISTORIAL DESTETE
+========================================== --><div
+id="seccionDestete"
+class="seccionHistorial"><div class="destetePreparado"><div class="desteteIcono">
+🍼🐷
+</div><h2>
+Historial del Destete
+</h2><p>
+Aquí se mostrará el historial correspondiente
+a las filas F1, F2 y F3 del área de Destete.
+</p><p>
+Se registrarán las entradas y salidas del Destete,
+mientras que los movimientos internos entre filas
+no aparecerán como registros de historial.
+</p><p>
+La conexión con la tabla de Supabase del Destete
+se realizará después de definir su estructura.
+</p></div></div><!-- ==========================================
+     VOLVER AL MENÚ
+========================================== --><button
 class="boton"
 onclick="window.location.href='menu.html'">
 
 ⬅️ Volver al menú
 
-</button>
-
-
-<script src="supabase.js"></script>
-
-<script>
+</button><script src="supabase.js"></script><script>
 
 let esAdministrador=false;
 
 let todosLosMovimientos=[];
+
+
+/* ==========================================
+   CAMBIAR A HISTORIAL CEBA
+========================================== */
+
+function mostrarHistorialCeba(){
+
+    document
+    .getElementById("seccionCeba")
+    .classList
+    .add("activa");
+
+    document
+    .getElementById("seccionDestete")
+    .classList
+    .remove("activa");
+
+
+    document
+    .getElementById("botonHistorialCeba")
+    .classList
+    .add("activo");
+
+    document
+    .getElementById("botonHistorialDestete")
+    .classList
+    .remove("activo");
+
+}
+
+
+/* ==========================================
+   CAMBIAR A HISTORIAL DESTETE
+========================================== */
+
+function mostrarHistorialDestete(){
+
+    document
+    .getElementById("seccionCeba")
+    .classList
+    .remove("activa");
+
+    document
+    .getElementById("seccionDestete")
+    .classList
+    .add("activa");
+
+
+    document
+    .getElementById("botonHistorialCeba")
+    .classList
+    .remove("activo");
+
+    document
+    .getElementById("botonHistorialDestete")
+    .classList
+    .add("activo");
+
+}
 
 
 /* ==========================================
@@ -478,6 +602,7 @@ async function verificarSesion(){
 
     const usuarioId=
     data.session.user.id;
+
 
     const {data:perfil,error:errorPerfil}=
 
@@ -515,7 +640,9 @@ async function verificarSesion(){
     ===
     "administrador";
 
+
     return true;
+
 }
 
 
@@ -539,8 +666,12 @@ async function cargarNavesFiltro(){
 
     }
 
+
     const select=
-    document.getElementById("filtroNave");
+    document.getElementById(
+        "filtroNave"
+    );
+
 
     data.forEach(nave=>{
 
@@ -558,7 +689,7 @@ async function cargarNavesFiltro(){
 
 
 /* ==========================================
-   CARGAR HISTORIAL
+   CARGAR HISTORIAL CEBA
 ========================================== */
 
 async function cargarHistorial(){
@@ -567,6 +698,7 @@ async function cargarHistorial(){
     document.getElementById(
         "tablaHistorial"
     );
+
 
     tabla.innerHTML=`
 
@@ -582,6 +714,7 @@ async function cargarHistorial(){
 
     `;
 
+
     const {data,error}=
     await clienteSupabase
     .from("movimientos_naves")
@@ -592,6 +725,7 @@ async function cargarHistorial(){
             ascending:false
         }
     );
+
 
     if(error){
 
@@ -617,11 +751,15 @@ async function cargarHistorial(){
 
     }
 
-    todosLosMovimientos=data || [];
+
+    todosLosMovimientos=
+    data || [];
+
 
     mostrarHistorial(
         todosLosMovimientos
     );
+
 }
 
 
@@ -636,9 +774,11 @@ function mostrarHistorial(movimientos){
         "tablaHistorial"
     );
 
+
     actualizarEstadisticas(
         movimientos
     );
+
 
     if(
         !movimientos ||
@@ -663,16 +803,20 @@ function mostrarHistorial(movimientos){
 
     }
 
+
     let html="";
+
 
     movimientos.forEach(m=>{
 
         const fechaCompleta=
         new Date(m.fecha);
 
+
         const fecha=
         fechaCompleta
         .toLocaleDateString("es-ES");
+
 
         const hora=
         fechaCompleta
@@ -717,6 +861,7 @@ function mostrarHistorial(movimientos){
                 "N"+m.nave_id
             );
 
+
             cuartonesMostrar=
             m.cuartones ||
             (
@@ -732,6 +877,7 @@ function mostrarHistorial(movimientos){
             navesMostrar=
             m.nave ||
             "N"+m.nave_id;
+
 
             cuartonesMostrar=
             m.cuarton
@@ -860,6 +1006,7 @@ function mostrarHistorial(movimientos){
 
 
     tabla.innerHTML=html;
+
 }
 
 
@@ -882,6 +1029,7 @@ function actualizarEstadisticas(movimientos){
 
         const cantidad=
         Number(m.cantidad || 0);
+
 
         const motivo=
         String(m.motivo || "")
@@ -926,22 +1074,27 @@ function actualizarEstadisticas(movimientos){
     .getElementById("totalEntradas")
     .innerText=entradas;
 
+
     document
     .getElementById("totalVentas")
     .innerText=ventas;
+
 
     document
     .getElementById("totalMuertes")
     .innerText=muertes;
 
+
     document
     .getElementById("totalMuertesVenta")
     .innerText=muertesVenta;
+
 
     document
     .getElementById("totalMovimientos")
     .innerText=
     movimientos.length;
+
 }
 
 
@@ -956,15 +1109,18 @@ function aplicarFiltros(){
         "filtroNave"
     ).value;
 
+
     const motivo=
     document.getElementById(
         "filtroMotivo"
     ).value;
 
+
     const fecha=
     document.getElementById(
         "filtroFecha"
     ).value;
+
 
     let resultado=
     [...todosLosMovimientos];
@@ -988,6 +1144,7 @@ function aplicarFiltros(){
                 String(m.naves)
                 .split(",");
 
+
                 return lista.some(n=>
 
                     String(n)
@@ -998,6 +1155,7 @@ function aplicarFiltros(){
                 );
 
             }
+
 
             return String(m.nave_id)
             ===
@@ -1031,6 +1189,7 @@ function aplicarFiltros(){
             const d=
             new Date(m.fecha);
 
+
             const local=
 
             d.getFullYear()
@@ -1047,6 +1206,7 @@ function aplicarFiltros(){
                 d.getDate()
             ).padStart(2,"0");
 
+
             return local===fecha;
 
         });
@@ -1055,6 +1215,7 @@ function aplicarFiltros(){
 
 
     mostrarHistorial(resultado);
+
 }
 
 
@@ -1068,17 +1229,21 @@ function limpiarFiltros(){
     .getElementById("filtroNave")
     .value="";
 
+
     document
     .getElementById("filtroMotivo")
     .value="";
+
 
     document
     .getElementById("filtroFecha")
     .value="";
 
+
     mostrarHistorial(
         todosLosMovimientos
     );
+
 }
 
 
@@ -1098,6 +1263,7 @@ async function eliminarMovimiento(id){
 
     }
 
+
     if(!confirm(
         "⚠️ ¿Seguro que deseas eliminar este registro?\n\n"+
         "Esta acción no se puede deshacer."
@@ -1107,11 +1273,13 @@ async function eliminarMovimiento(id){
 
     }
 
+
     const {error}=
     await clienteSupabase
     .from("movimientos_naves")
     .delete()
     .eq("id",id);
+
 
     if(error){
 
@@ -1124,11 +1292,14 @@ async function eliminarMovimiento(id){
 
     }
 
+
     alert(
         "✅ Registro eliminado correctamente."
     );
 
+
     await cargarHistorial();
+
 }
 
 
@@ -1141,21 +1312,21 @@ async function iniciar(){
     const ok=
     await verificarSesion();
 
+
     if(!ok){
 
         return;
 
     }
 
+
     await cargarNavesFiltro();
 
     await cargarHistorial();
+
 }
+
 
 iniciar();
 
-</script>
-
-</body>
-
-</html>
+</script></body></html>
