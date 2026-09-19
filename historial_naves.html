@@ -10,10 +10,6 @@
 
 <style>
 
-/* ==========================================
-   ESTILO GENERAL
-========================================== */
-
 *{
     box-sizing:border-box;
 }
@@ -27,15 +23,11 @@ body{
     color:white;
 
     margin:0;
+
     padding:20px;
 
     min-height:100vh;
 }
-
-
-/* ==========================================
-   TÍTULO
-========================================== */
 
 h1{
     text-align:center;
@@ -54,16 +46,12 @@ h2{
     color:#ff5555;
 }
 
-
-/* ==========================================
-   BOTONES
-========================================== */
-
 .boton{
 
     display:block;
 
     width:90%;
+
     max-width:500px;
 
     margin:15px auto;
@@ -96,24 +84,18 @@ h2{
     transition:.2s;
 }
 
-
 .boton:active{
 
     transform:translateY(5px);
 
     box-shadow:
     0 2px 0 #500000;
-
 }
-
-
-/* ==========================================
-   ESTADÍSTICAS
-========================================== */
 
 .estadisticas{
 
     width:95%;
+
     max-width:1100px;
 
     margin:25px auto;
@@ -124,9 +106,7 @@ h2{
     repeat(5,1fr);
 
     gap:15px;
-
 }
-
 
 .estadistica{
 
@@ -146,22 +126,16 @@ h2{
     border:1px solid #3b3b3b;
 
     box-shadow:
-
     8px 8px 18px #000,
-
     -3px -3px 10px #252525;
-
 }
-
 
 .estadistica .icono{
 
     font-size:30px;
 
     margin-bottom:8px;
-
 }
-
 
 .estadistica .titulo{
 
@@ -170,9 +144,7 @@ h2{
     color:#aaa;
 
     margin-bottom:8px;
-
 }
-
 
 .estadistica .numero{
 
@@ -184,17 +156,12 @@ h2{
 
     text-shadow:
     0 0 10px rgba(255,0,0,.4);
-
 }
-
-
-/* ==========================================
-   FILTROS
-========================================== */
 
 .filtros{
 
     width:95%;
+
     max-width:1100px;
 
     margin:25px auto;
@@ -214,18 +181,14 @@ h2{
 
     box-shadow:
     8px 8px 25px #000;
-
 }
-
 
 .filtros h2{
 
     text-align:center;
 
     margin-top:0;
-
 }
-
 
 .contenedorFiltros{
 
@@ -235,9 +198,7 @@ h2{
     repeat(4,1fr);
 
     gap:12px;
-
 }
-
 
 select,
 input{
@@ -257,9 +218,7 @@ input{
     font-size:15px;
 
     outline:none;
-
 }
-
 
 select:focus,
 input:focus{
@@ -268,9 +227,7 @@ input:focus{
 
     box-shadow:
     0 0 10px rgba(255,0,0,.3);
-
 }
-
 
 .botonFiltro{
 
@@ -295,9 +252,7 @@ input:focus{
 
     box-shadow:
     0 5px 0 #480000;
-
 }
-
 
 .botonFiltro:active{
 
@@ -305,18 +260,13 @@ input:focus{
 
     box-shadow:
     0 1px 0 #480000;
-
 }
-
-
-/* ==========================================
-   CAJA TABLA
-========================================== */
 
 .caja{
 
     width:100%;
-    max-width:1200px;
+
+    max-width:1300px;
 
     margin:25px auto;
 
@@ -334,32 +284,22 @@ input:focus{
     border:1px solid #3a3a3a;
 
     box-shadow:
-
     10px 10px 25px #000,
-
     -3px -3px 15px #252525;
 
     overflow-x:auto;
-
 }
-
-
-/* ==========================================
-   TABLA
-========================================== */
 
 table{
 
     width:100%;
 
-    min-width:900px;
+    min-width:1100px;
 
     border-collapse:separate;
 
     border-spacing:0 8px;
-
 }
-
 
 th{
 
@@ -373,9 +313,7 @@ th{
         #2a0000,
         #120000
     );
-
 }
-
 
 td{
 
@@ -391,34 +329,22 @@ td{
     );
 
     color:#eee;
-
 }
-
 
 td:first-child{
 
     border-radius:12px 0 0 12px;
-
 }
-
 
 td:last-child{
 
     border-radius:0 12px 12px 0;
-
 }
-
 
 tbody tr:hover td{
 
     background:#292929;
-
 }
-
-
-/* ==========================================
-   ELIMINAR
-========================================== */
 
 .eliminar{
 
@@ -443,9 +369,7 @@ tbody tr:hover td{
 
     box-shadow:
     0 4px 0 #480000;
-
 }
-
 
 .eliminar:active{
 
@@ -453,20 +377,12 @@ tbody tr:hover td{
 
     box-shadow:
     0 1px 0 #480000;
-
 }
-
 
 .sinPermiso{
 
     color:#777;
-
 }
-
-
-/* ==========================================
-   MENSAJE
-========================================== */
 
 .mensaje{
 
@@ -479,13 +395,7 @@ tbody tr:hover td{
     font-weight:bold;
 
     color:#ff5555;
-
 }
-
-
-/* ==========================================
-   RESPONSIVE
-========================================== */
 
 @media(max-width:850px){
 
@@ -493,18 +403,14 @@ tbody tr:hover td{
 
         grid-template-columns:
         repeat(2,1fr);
-
     }
 
     .contenedorFiltros{
 
         grid-template-columns:
         repeat(2,1fr);
-
     }
-
 }
-
 
 @media(max-width:500px){
 
@@ -519,19 +425,15 @@ tbody tr:hover td{
     .estadisticas{
 
         grid-template-columns:1fr;
-
     }
 
     .contenedorFiltros{
 
         grid-template-columns:1fr;
-
     }
-
 }
 
 </style>
-
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -539,7 +441,6 @@ tbody tr:hover td{
 
 
 <body>
-
 
 <h1>📜 Historial de Naves</h1>
 
@@ -553,120 +454,44 @@ onclick="window.location.href='naves.html'">
 </button>
 
 
-
-<!-- ==========================================
-     ESTADÍSTICAS
-========================================== -->
-
 <div class="estadisticas">
 
-
 <div class="estadistica">
-
 <div class="icono">➕🐷</div>
-
-<div class="titulo">
-CERDOS INGRESADOS
+<div class="titulo">CERDOS INGRESADOS</div>
+<div class="numero" id="totalEntradas">0</div>
 </div>
-
-<div
-class="numero"
-id="totalEntradas">
-
-0
-
-</div>
-
-</div>
-
 
 
 <div class="estadistica">
-
 <div class="icono">💰</div>
-
-<div class="titulo">
-CERDOS VENDIDOS
+<div class="titulo">CERDOS VENDIDOS</div>
+<div class="numero" id="totalVentas">0</div>
 </div>
-
-<div
-class="numero"
-id="totalVentas">
-
-0
-
-</div>
-
-</div>
-
 
 
 <div class="estadistica">
-
 <div class="icono">☠️</div>
-
-<div class="titulo">
-MUERTES
+<div class="titulo">MUERTES</div>
+<div class="numero" id="totalMuertes">0</div>
 </div>
-
-<div
-class="numero"
-id="totalMuertes">
-
-0
-
-</div>
-
-</div>
-
 
 
 <div class="estadistica">
-
-<div class="icono">➖🐷</div>
-
-<div class="titulo">
-OTRAS SALIDAS
+<div class="icono">⚖️</div>
+<div class="titulo">MUERTES DE VENTA</div>
+<div class="numero" id="totalMuertesVenta">0</div>
 </div>
-
-<div
-class="numero"
-id="totalSalidas">
-
-0
-
-</div>
-
-</div>
-
 
 
 <div class="estadistica">
-
 <div class="icono">📊</div>
-
-<div class="titulo">
-MOVIMIENTOS
-</div>
-
-<div
-class="numero"
-id="totalMovimientos">
-
-0
-
+<div class="titulo">MOVIMIENTOS</div>
+<div class="numero" id="totalMovimientos">0</div>
 </div>
 
 </div>
 
-
-</div>
-
-
-
-<!-- ==========================================
-     FILTROS
-========================================== -->
 
 <div class="filtros">
 
@@ -674,7 +499,6 @@ id="totalMovimientos">
 
 
 <div class="contenedorFiltros">
-
 
 <select id="filtroNave">
 
@@ -685,37 +509,38 @@ id="totalMovimientos">
 </select>
 
 
-
 <select id="filtroMotivo">
 
 <option value="">
 📋 Todas las operaciones
 </option>
 
-<option value="Entrada">
-➕ Entradas
+<option value="Entrada Destete">
+🍼 Entrada Destete
+</option>
+
+<option value="Entrada Exterior">
+🚚 Entrada Exterior
 </option>
 
 <option value="Venta">
 💰 Ventas
 </option>
 
-<option value="Muerte">
-☠️ Muertes
+<option value="Muerte total">
+☠️ Muerte total
 </option>
 
-<option value="Solo sacar">
-➖ Otras salidas
+<option value="Muerte de venta">
+⚖️ Muerte de venta
 </option>
 
 </select>
 
 
-
 <input
 type="date"
 id="filtroFecha">
-
 
 
 <button
@@ -725,7 +550,6 @@ onclick="aplicarFiltros()">
 🔎 Buscar
 
 </button>
-
 
 </div>
 
@@ -739,20 +563,12 @@ onclick="limpiarFiltros()">
 
 </button>
 
-
 </div>
 
 
-
-<!-- ==========================================
-     TABLA
-========================================== -->
-
 <div class="caja">
 
-
 <table>
-
 
 <thead>
 
@@ -764,6 +580,7 @@ onclick="limpiarFiltros()">
 <th>🐷 Cuartón</th>
 <th>📦 Operación</th>
 <th>🔢 Cantidad</th>
+<th>⚖️ Peso kg</th>
 <th>📋 Motivo</th>
 <th>👤 Usuario</th>
 <th>⚙️ Acción</th>
@@ -777,7 +594,7 @@ onclick="limpiarFiltros()">
 
 <tr>
 
-<td colspan="9" class="mensaje">
+<td colspan="10" class="mensaje">
 
 ⏳ Cargando historial...
 
@@ -787,12 +604,9 @@ onclick="limpiarFiltros()">
 
 </tbody>
 
-
 </table>
 
-
 </div>
-
 
 
 <button
@@ -804,12 +618,10 @@ onclick="window.location.href='menu.html'">
 </button>
 
 
-
 <script src="supabase.js"></script>
 
 
 <script>
-
 
 let esAdministrador=false;
 
@@ -817,14 +629,15 @@ let todosLosMovimientos=[];
 
 
 /* ==========================================
-   SESIÓN Y ROL
+   SESIÓN
 ========================================== */
 
 async function verificarSesion(){
 
-    const {data,error} =
+    const {data,error}=
     await clienteSupabase
-    .auth.getSession();
+    .auth
+    .getSession();
 
 
     if(error || !data.session){
@@ -836,11 +649,11 @@ async function verificarSesion(){
     }
 
 
-    const usuarioId =
+    const usuarioId=
     data.session.user.id;
 
 
-    const {data:perfil,error:errorPerfil} =
+    const {data:perfil,error:errorPerfil}=
 
     await clienteSupabase
 
@@ -876,14 +689,12 @@ async function verificarSesion(){
     }
 
 
-    const rol =
+    esAdministrador=
     String(perfil.rol || "")
     .trim()
-    .toLowerCase();
-
-
-    esAdministrador =
-    rol==="administrador";
+    .toLowerCase()
+    ===
+    "administrador";
 
 
     return true;
@@ -891,14 +702,13 @@ async function verificarSesion(){
 }
 
 
-
 /* ==========================================
-   CARGAR NAVES EN FILTRO
+   NAVES FILTRO
 ========================================== */
 
 async function cargarNavesFiltro(){
 
-    const {data,error} =
+    const {data,error}=
 
     await clienteSupabase
 
@@ -918,7 +728,7 @@ async function cargarNavesFiltro(){
     }
 
 
-    const select =
+    const select=
     document.getElementById("filtroNave");
 
 
@@ -939,22 +749,23 @@ async function cargarNavesFiltro(){
 }
 
 
-
 /* ==========================================
    CARGAR HISTORIAL
 ========================================== */
 
 async function cargarHistorial(){
 
-    const tabla =
-    document.getElementById("tablaHistorial");
+    const tabla=
+    document.getElementById(
+        "tablaHistorial"
+    );
 
 
     tabla.innerHTML=`
 
     <tr>
 
-    <td colspan="9" class="mensaje">
+    <td colspan="10" class="mensaje">
 
     ⏳ Cargando historial...
 
@@ -965,7 +776,7 @@ async function cargarHistorial(){
     `;
 
 
-    const {data,error} =
+    const {data,error}=
 
     await clienteSupabase
 
@@ -973,9 +784,12 @@ async function cargarHistorial(){
 
     .select("*")
 
-    .order("fecha",{
-        ascending:false
-    });
+    .order(
+        "fecha",
+        {
+            ascending:false
+        }
+    );
 
 
     if(error){
@@ -984,7 +798,7 @@ async function cargarHistorial(){
 
         <tr>
 
-        <td colspan="9" class="mensaje">
+        <td colspan="10" class="mensaje">
 
         ❌ Error cargando historial:
 
@@ -1003,27 +817,26 @@ async function cargarHistorial(){
     }
 
 
-    todosLosMovimientos =
-    data || [];
+    todosLosMovimientos=data || [];
 
 
     mostrarHistorial(
         todosLosMovimientos
     );
 
-
 }
 
 
-
 /* ==========================================
-   MOSTRAR HISTORIAL
+   MOSTRAR
 ========================================== */
 
 function mostrarHistorial(movimientos){
 
-    const tabla =
-    document.getElementById("tablaHistorial");
+    const tabla=
+    document.getElementById(
+        "tablaHistorial"
+    );
 
 
     actualizarEstadisticas(
@@ -1032,13 +845,13 @@ function mostrarHistorial(movimientos){
 
 
     if(!movimientos ||
-    movimientos.length===0){
+       movimientos.length===0){
 
         tabla.innerHTML=`
 
         <tr>
 
-        <td colspan="9" class="mensaje">
+        <td colspan="10" class="mensaje">
 
         📭 No hay movimientos para mostrar.
 
@@ -1056,21 +869,20 @@ function mostrarHistorial(movimientos){
     let html="";
 
 
-    movimientos.forEach(movimiento=>{
+    movimientos.forEach(m=>{
+
+        const fechaCompleta=
+        new Date(m.fecha);
 
 
-        const fechaCompleta =
-        new Date(movimiento.fecha);
+        const fecha=
+        fechaCompleta
+        .toLocaleDateString("es-ES");
 
 
-        const fecha =
-        fechaCompleta.toLocaleDateString(
-            "es-ES"
-        );
-
-
-        const hora =
-        fechaCompleta.toLocaleTimeString(
+        const hora=
+        fechaCompleta
+        .toLocaleTimeString(
             "es-ES",
             {
                 hour:"2-digit",
@@ -1079,35 +891,43 @@ function mostrarHistorial(movimientos){
         );
 
 
-        const nave =
-        movimiento.nave ||
-        "N" + movimiento.nave_id;
+        const nave=
+        m.nave ||
+        "N"+m.nave_id;
 
 
-        const botonEliminar =
+        const peso=
+        Number(m.peso_kg || 0);
+
+
+        const botonEliminar=
 
         esAdministrador
 
         ?
 
         `
+
         <button
         class="eliminar"
-        onclick="eliminarMovimiento(${movimiento.id})">
+        onclick="eliminarMovimiento(${m.id})">
 
         🗑️ Eliminar
 
         </button>
+
         `
 
         :
 
         `
+
         <span class="sinPermiso">
 
         🔒 Sin permiso
 
         </span>
+
         `;
 
 
@@ -1121,24 +941,46 @@ function mostrarHistorial(movimientos){
 
         <td>${nave}</td>
 
-        <td>🐷 C${movimiento.cuarton}</td>
+        <td>🐷 C${m.cuarton}</td>
 
         <td>
-        ${movimiento.operacion || ""}
+
+        ${m.operacion || ""}
+
         </td>
 
         <td>
+
         <strong>
-        ${movimiento.cantidad || 0}
+
+        ${m.cantidad || 0}
+
         </strong>
+
         </td>
 
         <td>
-        ${movimiento.motivo || ""}
+
+        ${
+            peso>0
+            ?
+            peso.toFixed(2)
+            :
+            "—"
+        }
+
         </td>
 
         <td>
-        ${movimiento.usuario || ""}
+
+        ${m.motivo || ""}
+
+        </td>
+
+        <td>
+
+        ${m.usuario || ""}
+
         </td>
 
         <td>
@@ -1159,7 +1001,6 @@ function mostrarHistorial(movimientos){
 }
 
 
-
 /* ==========================================
    ESTADÍSTICAS
 ========================================== */
@@ -1172,20 +1013,24 @@ function actualizarEstadisticas(movimientos){
 
     let muertes=0;
 
-    let salidas=0;
+    let muertesVenta=0;
 
 
     movimientos.forEach(m=>{
 
-
-        const cantidad =
+        const cantidad=
         Number(m.cantidad || 0);
 
 
-        /* ENTRADAS */
+        const motivo=
+        String(m.motivo || "")
+        .trim()
+        .toLowerCase();
+
 
         if(
-            m.operacion==="Entrada"
+            motivo==="entrada destete" ||
+            motivo==="entrada exterior"
         ){
 
             entradas+=cantidad;
@@ -1193,21 +1038,15 @@ function actualizarEstadisticas(movimientos){
         }
 
 
-        /* VENTAS */
-
-        if(
-            m.motivo==="Venta"
-        ){
+        if(motivo==="venta"){
 
             ventas+=cantidad;
 
         }
 
 
-        /* MUERTES */
-
         if(
-            m.motivo==="Muerte"
+            motivo==="muerte total"
         ){
 
             muertes+=cantidad;
@@ -1215,16 +1054,13 @@ function actualizarEstadisticas(movimientos){
         }
 
 
-        /* OTRAS SALIDAS */
-
         if(
-            m.motivo==="Solo sacar"
+            motivo==="muerte de venta"
         ){
 
-            salidas+=cantidad;
+            muertesVenta+=cantidad;
 
         }
-
 
     });
 
@@ -1245,48 +1081,53 @@ function actualizarEstadisticas(movimientos){
 
 
     document
-    .getElementById("totalSalidas")
-    .innerText=salidas;
+    .getElementById("totalMuertesVenta")
+    .innerText=muertesVenta;
 
 
     document
     .getElementById("totalMovimientos")
-    .innerText=movimientos.length;
+    .innerText=
+    movimientos.length;
 
 }
 
 
-
 /* ==========================================
-   APLICAR FILTROS
+   FILTROS
 ========================================== */
 
 function aplicarFiltros(){
 
-    const nave =
-    document.getElementById("filtroNave").value;
+    const nave=
+    document
+    .getElementById("filtroNave")
+    .value;
 
 
-    const motivo =
-    document.getElementById("filtroMotivo").value;
+    const motivo=
+    document
+    .getElementById("filtroMotivo")
+    .value;
 
 
-    const fecha =
-    document.getElementById("filtroFecha").value;
+    const fecha=
+    document
+    .getElementById("filtroFecha")
+    .value;
 
 
-    let resultado =
+    let resultado=
     [...todosLosMovimientos];
 
 
-    /* FILTRO NAVE */
-
     if(nave){
 
-        resultado =
+        resultado=
         resultado.filter(m=>
 
-            String(m.nave_id)===
+            String(m.nave_id)
+            ===
             String(nave)
 
         );
@@ -1294,68 +1135,48 @@ function aplicarFiltros(){
     }
 
 
-    /* FILTRO OPERACIÓN */
-
     if(motivo){
 
-        if(motivo==="Entrada"){
+        resultado=
+        resultado.filter(m=>
 
-            resultado =
-            resultado.filter(m=>
+            String(m.motivo || "")
+            .trim()
+            ===
+            motivo
 
-                m.operacion==="Entrada"
-
-            );
-
-        }else{
-
-            resultado =
-            resultado.filter(m=>
-
-                m.motivo===motivo
-
-            );
-
-        }
+        );
 
     }
 
 
-    /* FILTRO FECHA */
-
     if(fecha){
 
-        resultado =
+        resultado=
         resultado.filter(m=>{
 
-            const fechaMovimiento =
+            const d=
             new Date(m.fecha);
 
-            const fechaLocal =
 
-            fechaMovimiento
-            .getFullYear()
+            const local=
 
-            + "-"
-
+            d.getFullYear()
             +
-
-            String(
-                fechaMovimiento.getMonth()+1
-            )
-            .padStart(2,"0")
-
-            + "-"
-
+            "-"
             +
-
             String(
-                fechaMovimiento.getDate()
-            )
-            .padStart(2,"0");
+                d.getMonth()+1
+            ).padStart(2,"0")
+            +
+            "-"
+            +
+            String(
+                d.getDate()
+            ).padStart(2,"0");
 
 
-            return fechaLocal===fecha;
+            return local===fecha;
 
         });
 
@@ -1367,9 +1188,8 @@ function aplicarFiltros(){
 }
 
 
-
 /* ==========================================
-   LIMPIAR FILTROS
+   LIMPIAR
 ========================================== */
 
 function limpiarFiltros(){
@@ -1396,9 +1216,8 @@ function limpiarFiltros(){
 }
 
 
-
 /* ==========================================
-   ELIMINAR MOVIMIENTO
+   ELIMINAR
 ========================================== */
 
 async function eliminarMovimiento(id){
@@ -1414,18 +1233,10 @@ async function eliminarMovimiento(id){
     }
 
 
-    const confirmar=
-
-    confirm(
-
+    if(!confirm(
         "⚠️ ¿Seguro que deseas eliminar este registro?\n\n"+
-
         "Esta acción no se puede deshacer."
-
-    );
-
-
-    if(!confirmar){
+    )){
 
         return;
 
@@ -1446,11 +1257,8 @@ async function eliminarMovimiento(id){
     if(error){
 
         alert(
-
             "❌ Error eliminando el registro:\n\n"+
-
             error.message
-
         );
 
         return;
@@ -1468,18 +1276,17 @@ async function eliminarMovimiento(id){
 }
 
 
-
 /* ==========================================
    INICIAR
 ========================================== */
 
 async function iniciar(){
 
-    const sesionCorrecta =
+    const ok=
     await verificarSesion();
 
 
-    if(!sesionCorrecta){
+    if(!ok){
 
         return;
 
@@ -1488,7 +1295,6 @@ async function iniciar(){
 
     await cargarNavesFiltro();
 
-
     await cargarHistorial();
 
 }
@@ -1496,9 +1302,7 @@ async function iniciar(){
 
 iniciar();
 
-
 </script>
-
 
 </body>
 
