@@ -1,585 +1,747 @@
 <!DOCTYPE html>
-
 <html lang="es">
 
 <head>
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-<title>ElDesierto - Dashboard</title>
+<title>Dashboard - ElDesierto</title>
 
 
 <style>
 
-/* ==========================================
+/* ==================================================
    CONFIGURACIÓN GENERAL
-========================================== */
+================================================== */
 
 *{
     box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
-
 
 body{
 
     font-family:Arial,sans-serif;
 
-    background:
-    radial-gradient(
-        circle at top,
-        #1d1d1d,
-        #050505 65%
-    );
+    min-height:100vh;
+
+    padding:18px 12px;
 
     color:white;
 
-    margin:0;
-
-    padding:15px;
-
-    min-height:100vh;
-
+    background:
+    radial-gradient(
+        circle at top,
+        #3b0000 0%,
+        #140000 35%,
+        #000 75%
+    );
 }
 
 
-/* ==========================================
+/* ==================================================
+   CONTENEDOR
+================================================== */
+
+.contenedor{
+
+    width:100%;
+
+    max-width:1200px;
+
+    margin:auto;
+}
+
+
+/* ==================================================
    ENCABEZADO
-========================================== */
+================================================== */
 
 .encabezado{
 
     text-align:center;
 
-    margin:10px auto 25px;
-
+    margin-bottom:20px;
 }
-
 
 .logo{
 
-    font-size:52px;
+    font-size:48px;
+
+    margin-bottom:5px;
 
     filter:
-    drop-shadow(
-        0 0 12px
-        rgba(255,0,0,.4)
-    );
-
+    drop-shadow(0 0 8px red)
+    drop-shadow(0 0 18px #8b0000);
 }
 
+.marca{
 
-h1{
+    font-size:29px;
 
-    color:#ff3030;
+    font-weight:bold;
 
-    margin:8px 0;
-
-    font-size:30px;
+    color:#ff2020;
 
     text-shadow:
-    0 0 12px
-    rgba(255,0,0,.6);
-
+    0 0 8px #ff0000,
+    0 0 18px #8b0000;
 }
 
+.subtitulo{
+
+    color:#999;
+
+    font-size:14px;
+
+    margin-top:5px;
+}
+
+.titulo{
+
+    margin-top:20px;
+
+    font-size:27px;
+
+    font-weight:bold;
+}
 
 .fecha{
 
     color:#aaa;
 
+    margin-top:7px;
+
     font-size:14px;
-
 }
 
 
-/* ==========================================
-   BOTÓN
-========================================== */
+/* ==================================================
+   BOTÓN VOLVER
+================================================== */
 
-.boton{
+.boton-volver{
 
-    display:block;
+    display:inline-block;
 
-    width:95%;
+    margin-bottom:20px;
 
-    max-width:850px;
+    padding:13px 22px;
 
-    margin:15px auto;
-
-    padding:16px;
+    color:white;
 
     background:
     linear-gradient(
         145deg,
-        #ff3838,
-        #9d0000
+        #ff3030,
+        #a40000
     );
-
-    color:white;
 
     border:none;
 
-    border-radius:14px;
+    border-radius:12px;
 
-    font-size:17px;
+    font-size:15px;
 
     font-weight:bold;
 
     cursor:pointer;
 
     box-shadow:
+    0 5px 0 #650000,
+    0 8px 15px rgba(255,0,0,.35);
 
-    0 7px 0 #500000,
-
-    0 12px 25px
-    rgba(255,0,0,.18);
-
-    transition:.2s;
-
+    transition:.15s;
 }
 
+.boton-volver:active{
 
-.boton:active{
-
-    transform:translateY(5px);
+    transform:translateY(4px);
 
     box-shadow:
-    0 2px 0 #500000;
-
+    0 1px 0 #650000,
+    0 3px 8px rgba(255,0,0,.3);
 }
 
 
-/* ==========================================
-   CONTROLES DE VOZ
-========================================== */
+/* ==================================================
+   TARJETAS PRINCIPALES
+================================================== */
 
-.controlesVoz{
-
-    width:95%;
-
-    max-width:850px;
-
-    margin:15px auto 25px;
-
-}
-
-
-.botonVoz{
-
-    display:block;
-
-    width:100%;
-
-    padding:15px;
-
-    background:
-    linear-gradient(
-        145deg,
-        #ff3838,
-        #9d0000
-    );
-
-    color:white;
-
-    border:none;
-
-    border-radius:14px;
-
-    font-size:16px;
-
-    font-weight:bold;
-
-    cursor:pointer;
-
-    box-shadow:
-
-    0 7px 0 #500000,
-
-    0 12px 25px
-    rgba(255,0,0,.18);
-
-    transition:.2s;
-
-}
-
-
-.botonVoz:active{
-
-    transform:translateY(5px);
-
-    box-shadow:
-    0 2px 0 #500000;
-
-}
-
-
-.botonesSecundarios{
+.resumen{
 
     display:grid;
 
     grid-template-columns:
-    repeat(3,1fr);
+    repeat(4,1fr);
 
-    gap:10px;
+    gap:14px;
 
-    margin-top:12px;
-
+    margin-bottom:20px;
 }
 
+.tarjeta{
 
-.botonSecundario{
+    position:relative;
 
-    padding:12px 8px;
+    padding:18px 14px;
+
+    min-height:125px;
 
     background:
     linear-gradient(
         145deg,
-        #292929,
-        #111111
+        rgba(40,40,40,.96),
+        rgba(8,8,8,.98)
     );
 
-    color:white;
+    border:1px solid #470000;
 
-    border:1px solid #444;
+    border-radius:18px;
 
-    border-radius:12px;
+    box-shadow:
 
-    font-size:14px;
+    inset 0 1px 0
+    rgba(255,255,255,.08),
 
-    font-weight:bold;
+    0 10px 25px
+    rgba(0,0,0,.65),
 
+    0 0 15px
+    rgba(200,0,0,.10);
 }
 
+.tarjeta-icono{
 
-.botonSecundario:disabled{
+    font-size:30px;
 
-    opacity:.35;
-
+    margin-bottom:8px;
 }
 
+.tarjeta-titulo{
 
-.estadoVoz{
-
-    text-align:center;
-
-    color:#999;
+    color:#aaa;
 
     font-size:13px;
 
-    margin-top:10px;
-
+    margin-bottom:6px;
 }
 
+.tarjeta-valor{
 
-/* ==========================================
-   SECCIONES
-========================================== */
+    color:#ff3030;
 
-.seccion{
-
-    width:95%;
-
-    max-width:850px;
-
-    margin:25px auto;
-
-}
-
-
-.tituloSeccion{
-
-    color:#ff4b4b;
-
-    font-size:21px;
+    font-size:25px;
 
     font-weight:bold;
 
-    margin:10px 5px 15px;
-
     text-shadow:
-    0 0 8px
-    rgba(255,0,0,.4);
+    0 0 8px rgba(255,0,0,.4);
+}
 
+.tarjeta-unidad{
+
+    color:#777;
+
+    font-size:12px;
+
+    margin-left:3px;
 }
 
 
-/* ==========================================
-   TARJETAS PRINCIPALES
-========================================== */
+/* ==================================================
+   SECCIÓN NAVES
+================================================== */
 
-.gridPrincipal{
+.titulo-seccion{
+
+    font-size:20px;
+
+    font-weight:bold;
+
+    margin-bottom:12px;
+
+    color:#fff;
+}
+
+.naves-resumen{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(4,1fr);
+
+    gap:14px;
+
+    margin-bottom:20px;
+}
+
+.tarjeta-nave{
+
+    background:
+    linear-gradient(
+        145deg,
+        #242424,
+        #090909
+    );
+
+    border:1px solid #450000;
+
+    border-radius:16px;
+
+    padding:16px;
+
+    box-shadow:
+    inset 0 1px 0
+    rgba(255,255,255,.07),
+
+    0 8px 20px
+    rgba(0,0,0,.6);
+}
+
+.nave-icono{
+
+    font-size:26px;
+}
+
+.nave-nombre{
+
+    margin-top:6px;
+
+    font-weight:bold;
+
+    color:#ddd;
+}
+
+.nave-valor{
+
+    margin-top:8px;
+
+    color:#ff3030;
+
+    font-size:22px;
+
+    font-weight:bold;
+}
+
+
+/* ==================================================
+   CONTENEDORES DE INFORMACIÓN
+================================================== */
+
+.grid{
 
     display:grid;
 
     grid-template-columns:
     repeat(2,1fr);
 
-    gap:14px;
+    gap:18px;
 
+    margin-bottom:20px;
 }
 
+.panel{
 
-.tarjeta{
+    background:
+    linear-gradient(
+        145deg,
+        rgba(35,35,35,.96),
+        rgba(8,8,8,.98)
+    );
 
-    padding:18px;
+    border:1px solid #450000;
 
     border-radius:18px;
 
-    background:
-    linear-gradient(
-        145deg,
-        #202020,
-        #080808
-    );
-
-    border:
-    1px solid #3a3a3a;
+    padding:16px;
 
     box-shadow:
 
-    7px 7px 18px #000,
+    inset 0 1px 0
+    rgba(255,255,255,.08),
 
-    -2px -2px 8px #252525,
+    0 12px 30px
+    rgba(0,0,0,.7),
 
-    inset
-    0 0 12px
-    rgba(255,0,0,.04);
+    0 0 18px
+    rgba(180,0,0,.12);
 
-    text-align:center;
+    overflow:hidden;
+}
 
+.panel h2{
+
+    font-size:18px;
+
+    margin-bottom:14px;
+
+    color:#fff;
 }
 
 
-.icono{
+/* ==================================================
+   TABLAS
+================================================== */
 
-    font-size:28px;
-
-    margin-bottom:8px;
-
-}
-
-
-.nombre{
-
-    color:#aaa;
-
-    font-size:13px;
-
-}
-
-
-.numero{
-
-    color:white;
-
-    font-size:25px;
-
-    font-weight:bold;
-
-    margin-top:7px;
-
-}
-
-
-.rojo{
-
-    color:#ff5555;
-
-}
-
-
-/* ==========================================
-   TARJETA GRANDE
-========================================== */
-
-.tarjetaGrande{
+.tabla-contenedor{
 
     width:100%;
 
-    padding:20px;
+    overflow-x:auto;
+}
 
-    border-radius:20px;
+table{
+
+    width:100%;
+
+    border-collapse:separate;
+
+    border-spacing:0;
+
+    min-width:450px;
+}
+
+th{
+
+    padding:12px 9px;
 
     background:
     linear-gradient(
         145deg,
-        #202020,
-        #080808
+        #e00000,
+        #850000
     );
 
-    border:
-    1px solid #3a3a3a;
+    font-size:13px;
 
-    box-shadow:
+    border-bottom:2px solid #ff3333;
+}
 
-    8px 8px 20px #000,
+th:first-child{
 
-    -2px -2px 8px #252525;
+    border-radius:9px 0 0 0;
+}
 
+th:last-child{
+
+    border-radius:0 9px 0 0;
+}
+
+td{
+
+    padding:11px 9px;
+
+    text-align:center;
+
+    color:#ddd;
+
+    background:#111;
+
+    border-bottom:1px solid #292929;
+
+    font-size:13px;
+}
+
+tr:nth-child(even) td{
+
+    background:#181818;
+}
+
+tr:hover td{
+
+    background:#260000;
+}
+
+.cantidad{
+
+    color:#ff3030;
+
+    font-weight:bold;
 }
 
 
-/* ==========================================
-   RESUMEN DE PRODUCTOS
-========================================== */
+/* ==================================================
+   ACTIVIDAD
+================================================== */
 
-.producto{
+.actividad{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:9px;
+
+    max-height:480px;
+
+    overflow-y:auto;
+}
+
+.actividad-item{
+
+    padding:12px;
+
+    border-radius:12px;
+
+    background:
+    linear-gradient(
+        145deg,
+        #1d1d1d,
+        #0b0b0b
+    );
+
+    border:1px solid #2b0000;
+
+    box-shadow:
+    inset 0 1px 0
+    rgba(255,255,255,.04);
+}
+
+.actividad-cabecera{
 
     display:flex;
 
     justify-content:space-between;
 
-    align-items:center;
+    gap:10px;
 
-    padding:13px;
-
-    margin:9px 0;
-
-    border-radius:12px;
-
-    background:
-    linear-gradient(
-        145deg,
-        #292929,
-        #101010
-    );
-
-    border-left:
-    4px solid #d60000;
-
+    margin-bottom:5px;
 }
 
+.actividad-tipo{
 
-.productoNombre{
+    color:#ff3030;
 
     font-weight:bold;
 
+    font-size:13px;
 }
 
+.actividad-fecha{
 
-.productoDatos{
+    color:#777;
 
-    text-align:right;
+    font-size:11px;
+}
+
+.actividad-detalle{
+
+    color:#ddd;
 
     font-size:13px;
 
-    color:#bbb;
-
+    line-height:1.4;
 }
 
 
-/* ==========================================
-   ACTIVIDAD
-========================================== */
+/* ==================================================
+   VOZ
+================================================== */
 
-.actividad{
+.voz{
 
-    padding:14px;
+    margin-bottom:20px;
 
-    margin:10px 0;
-
-    border-radius:12px;
+    padding:17px;
 
     background:
     linear-gradient(
         145deg,
-        #252525,
-        #0d0d0d
+        #241010,
+        #090909
     );
 
-    border-left:
-    4px solid #e00000;
+    border:1px solid #560000;
 
+    border-radius:18px;
+
+    box-shadow:
+
+    inset 0 1px 0
+    rgba(255,255,255,.07),
+
+    0 10px 25px
+    rgba(0,0,0,.65);
 }
 
+.voz-titulo{
 
-.actividadTitulo{
+    font-size:17px;
 
     font-weight:bold;
+
+    margin-bottom:12px;
+}
+
+.acciones-voz{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:9px;
+}
+
+.boton-voz{
+
+    border:none;
+
+    border-radius:11px;
+
+    padding:11px 15px;
 
     color:white;
 
+    font-weight:bold;
+
+    cursor:pointer;
+
+    background:
+    linear-gradient(
+        145deg,
+        #e00000,
+        #850000
+    );
+
+    box-shadow:
+    0 4px 0 #580000,
+    0 6px 12px rgba(255,0,0,.25);
+}
+
+.boton-voz:active{
+
+    transform:translateY(3px);
+
+    box-shadow:
+    0 1px 0 #580000;
 }
 
 
-.actividadDetalle{
+/* ==================================================
+   ESTADOS
+================================================== */
 
-    color:#aaa;
-
-    font-size:13px;
-
-    margin-top:5px;
-
-}
-
-
-.sinDatos{
-
-    color:#999;
+.vacio{
 
     text-align:center;
 
     padding:20px;
 
+    color:#777;
 }
-
-
-/* ==========================================
-   CARGANDO
-========================================== */
 
 .cargando{
 
+    color:#888;
+
     text-align:center;
 
-    color:#ff5555;
-
-    padding:20px;
-
+    padding:15px;
 }
 
 
-/* ==========================================
+/* ==================================================
    RESPONSIVE
-========================================== */
+================================================== */
 
-@media(max-width:500px){
+@media(max-width:900px){
+
+    .resumen{
+
+        grid-template-columns:
+        repeat(2,1fr);
+    }
+
+    .naves-resumen{
+
+        grid-template-columns:
+        repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:650px){
 
     body{
 
-        padding:10px;
-
+        padding:15px 9px;
     }
 
+    .logo{
 
-    h1{
-
-        font-size:27px;
-
+        font-size:42px;
     }
 
+    .marca{
+
+        font-size:24px;
+    }
+
+    .titulo{
+
+        font-size:22px;
+    }
+
+    .resumen{
+
+        grid-template-columns:1fr 1fr;
+
+        gap:10px;
+    }
 
     .tarjeta{
 
-        padding:15px 10px;
+        min-height:115px;
 
+        padding:14px 11px;
     }
 
+    .tarjeta-valor{
 
-    .numero{
-
-        font-size:22px;
-
+        font-size:21px;
     }
 
+    .naves-resumen{
 
-    .botonesSecundarios{
+        grid-template-columns:1fr 1fr;
+
+        gap:10px;
+    }
+
+    .grid{
 
         grid-template-columns:1fr;
+    }
 
+    .acciones-voz{
+
+        flex-direction:column;
+    }
+
+    .boton-voz{
+
+        width:100%;
+    }
+
+}
+
+@media(max-width:390px){
+
+    .resumen{
+
+        grid-template-columns:1fr;
+    }
+
+    .naves-resumen{
+
+        grid-template-columns:1fr;
     }
 
 }
@@ -595,87 +757,271 @@ h1{
 <body>
 
 
-<!-- ==========================================
+<div class="contenedor">
+
+
+<!-- ==================================================
      ENCABEZADO
-========================================== -->
+================================================== -->
 
 <div class="encabezado">
 
     <div class="logo">
-        📊
+        🐷
     </div>
 
+    <div class="marca">
+        ElDesierto
+    </div>
 
-    <h1>
-        Dashboard
-    </h1>
+    <div class="subtitulo">
+        Sistema de control y gestión
+    </div>
 
+    <div class="titulo">
+        📊 Dashboard
+    </div>
 
     <div
         class="fecha"
-        id="fechaHoy">
-
-        Cargando fecha...
-
+        id="fechaActual">
     </div>
 
 </div>
 
 
-<button
-class="boton"
-onclick="window.location.href='menu.html'">
+<!-- ==================================================
+     VOLVER
+================================================== -->
 
-    ⬅️ Volver al menú
+<button
+    class="boton-volver"
+    onclick="window.location.href='menu.html'">
+
+    ⬅ Volver al menú
 
 </button>
 
 
-<!-- ==========================================
+<!-- ==================================================
+     RESUMEN PRINCIPAL
+================================================== -->
+
+<div class="resumen">
+
+
+    <div class="tarjeta">
+
+        <div class="tarjeta-icono">
+            📥
+        </div>
+
+        <div class="tarjeta-titulo">
+            Entradas hoy
+        </div>
+
+        <div class="tarjeta-valor">
+            <span id="entradasHoy">0</span>
+            <span class="tarjeta-unidad">kg</span>
+        </div>
+
+    </div>
+
+
+    <div class="tarjeta">
+
+        <div class="tarjeta-icono">
+            📤
+        </div>
+
+        <div class="tarjeta-titulo">
+            Salidas hoy
+        </div>
+
+        <div class="tarjeta-valor">
+            <span id="salidasHoy">0</span>
+            <span class="tarjeta-unidad">kg</span>
+        </div>
+
+    </div>
+
+
+    <div class="tarjeta">
+
+        <div class="tarjeta-icono">
+            🏭
+        </div>
+
+        <div class="tarjeta-titulo">
+            Fabricado hoy
+        </div>
+
+        <div class="tarjeta-valor">
+            <span id="fabricadoHoy">0</span>
+            <span class="tarjeta-unidad">kg</span>
+        </div>
+
+    </div>
+
+
+    <div class="tarjeta">
+
+        <div class="tarjeta-icono">
+            🐷
+        </div>
+
+        <div class="tarjeta-titulo">
+            Cerdos actuales
+        </div>
+
+        <div class="tarjeta-valor">
+            <span id="cerdosActuales">0</span>
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<!-- ==================================================
+     RESUMEN DE NAVES
+================================================== -->
+
+<div class="titulo-seccion">
+    🐖 Movimiento de cerdos hoy
+</div>
+
+
+<div class="naves-resumen">
+
+
+    <div class="tarjeta-nave">
+
+        <div class="nave-icono">
+            ➕
+        </div>
+
+        <div class="nave-nombre">
+            Agregados
+        </div>
+
+        <div
+            class="nave-valor"
+            id="agregadosHoy">
+
+            0
+
+        </div>
+
+    </div>
+
+
+    <div class="tarjeta-nave">
+
+        <div class="nave-icono">
+            💰
+        </div>
+
+        <div class="nave-nombre">
+            Vendidos
+        </div>
+
+        <div
+            class="nave-valor"
+            id="vendidosHoy">
+
+            0
+
+        </div>
+
+    </div>
+
+
+    <div class="tarjeta-nave">
+
+        <div class="nave-icono">
+            ⚰️
+        </div>
+
+        <div class="nave-nombre">
+            Muertes
+        </div>
+
+        <div
+            class="nave-valor"
+            id="muertesHoy">
+
+            0
+
+        </div>
+
+    </div>
+
+
+    <div class="tarjeta-nave">
+
+        <div class="nave-icono">
+            ➡️
+        </div>
+
+        <div class="nave-nombre">
+            Otras salidas
+        </div>
+
+        <div
+            class="nave-valor"
+            id="otrasSalidasHoy">
+
+            0
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<!-- ==================================================
      VOZ
-========================================== -->
+================================================== -->
 
-<div class="controlesVoz">
+<div class="voz">
 
-    <button
-    class="botonVoz"
-    id="btnEscuchar"
-    onclick="leerDashboard()">
+    <div class="voz-titulo">
+        🔊 Resumen del día por voz
+    </div>
 
-        🔊 Escuchar resumen
-
-    </button>
-
-
-    <div class="botonesSecundarios">
+    <div class="acciones-voz">
 
         <button
-        class="botonSecundario"
-        id="btnPausar"
-        onclick="pausarVoz()"
-        disabled>
+            class="boton-voz"
+            onclick="escucharResumen()">
 
-            ⏸️ Pausar
+            🔊 Escuchar resumen
 
         </button>
 
+        <button
+            class="boton-voz"
+            onclick="pausarVoz()">
+
+            ⏸ Pausar
+
+        </button>
 
         <button
-        class="botonSecundario"
-        id="btnContinuar"
-        onclick="continuarVoz()"
-        disabled>
+            class="boton-voz"
+            onclick="continuarVoz()">
 
             ▶️ Continuar
 
         </button>
 
-
         <button
-        class="botonSecundario"
-        id="btnDetener"
-        onclick="detenerVoz()"
-        disabled>
+            class="boton-voz"
+            onclick="detenerVoz()">
 
             ⏹️ Detener
 
@@ -683,144 +1029,208 @@ onclick="window.location.href='menu.html'">
 
     </div>
 
+</div>
+
+
+<!-- ==================================================
+     MERCANCÍA + PRODUCCIÓN
+================================================== -->
+
+<div class="grid">
+
+
+    <!-- MERCANCÍA -->
+
+    <div class="panel">
+
+        <h2>
+            📦 Mercancía por producto
+        </h2>
+
+        <div class="tabla-contenedor">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Producto
+                        </th>
+
+                        <th>
+                            Entradas
+                        </th>
+
+                        <th>
+                            Salidas
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody
+                    id="tablaMercancia">
+
+                    <tr>
+
+                        <td
+                            colspan="3"
+                            class="cargando">
+
+                            Cargando...
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- PRODUCCIÓN -->
+
+    <div class="panel">
+
+        <h2>
+            🏭 Producción por producto
+        </h2>
+
+        <div class="tabla-contenedor">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Producto
+                        </th>
+
+                        <th>
+                            Cantidad
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody
+                    id="tablaProduccion">
+
+                    <tr>
+
+                        <td
+                            colspan="2"
+                            class="cargando">
+
+                            Cargando...
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<!-- ==================================================
+     ÚLTIMAS FABRICACIONES
+================================================== -->
+
+<div class="panel">
+
+    <h2>
+        🏭 Últimas fabricaciones
+    </h2>
+
+    <div class="tabla-contenedor">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Fecha
+                    </th>
+
+                    <th>
+                        Producto
+                    </th>
+
+                    <th>
+                        Cantidad
+                    </th>
+
+                    <th>
+                        Usuario
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody
+                id="tablaFabricaciones">
+
+                <tr>
+
+                    <td
+                        colspan="4"
+                        class="cargando">
+
+                        Cargando...
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<br>
+
+
+<!-- ==================================================
+     ACTIVIDAD RECIENTE
+================================================== -->
+
+<div class="panel">
+
+    <h2>
+        🕐 Actividad reciente
+    </h2>
 
     <div
-    class="estadoVoz"
-    id="estadoVoz">
+        class="actividad"
+        id="actividadReciente">
 
-        Pulsa "Escuchar resumen" para oír el Dashboard.
-
-    </div>
-
-</div>
-
-
-<!-- ==========================================
-     RESUMEN GENERAL
-========================================== -->
-
-<div class="seccion">
-
-    <div class="tituloSeccion">
-
-        📊 Resumen de hoy
-
-    </div>
-
-
-    <div class="gridPrincipal">
-
-
-        <div class="tarjeta">
-
-            <div class="icono">
-                ➕
-            </div>
-
-            <div class="nombre">
-                ENTRADAS HOY
-            </div>
-
-            <div
-            class="numero"
-            id="entradasHoy">
-
-                0 kg
-
-            </div>
-
-        </div>
-
-
-        <div class="tarjeta">
-
-            <div class="icono">
-                ➖
-            </div>
-
-            <div class="nombre">
-                SALIDAS HOY
-            </div>
-
-            <div
-            class="numero"
-            id="salidasHoy">
-
-                0 kg
-
-            </div>
-
-        </div>
-
-
-        <div class="tarjeta">
-
-            <div class="icono">
-                🏭
-            </div>
-
-            <div class="nombre">
-                FABRICADO HOY
-            </div>
-
-            <div
-            class="numero"
-            id="fabricadoHoy">
-
-                0 kg
-
-            </div>
-
-        </div>
-
-
-        <div class="tarjeta">
-
-            <div class="icono">
-                🐷
-            </div>
-
-            <div class="nombre">
-                CERDOS ACTUALES
-            </div>
-
-            <div
-            class="numero"
-            id="cerdosActuales">
-
-                0
-
-            </div>
-
-        </div>
-
-
-    </div>
-
-</div>
-
-
-<!-- ==========================================
-     MERCANCÍA
-========================================== -->
-
-<div class="seccion">
-
-    <div class="tituloSeccion">
-
-        📦 Mercancía de hoy
-
-    </div>
-
-
-    <div class="tarjetaGrande">
-
-        <div
-        id="resumenProductos"
-        class="cargando">
-
-            Cargando movimientos...
-
+        <div class="cargando">
+            Cargando...
         </div>
 
     </div>
@@ -828,178 +1238,12 @@ onclick="window.location.href='menu.html'">
 </div>
 
 
-<!-- ==========================================
-     FABRICACIÓN
-========================================== -->
-
-<div class="seccion">
-
-    <div class="tituloSeccion">
-
-        🏭 Producción de hoy
-
-    </div>
-
-
-    <div class="tarjetaGrande">
-
-        <div
-        id="resumenFabricacion"
-        class="cargando">
-
-            Cargando fabricación...
-
-        </div>
-
-    </div>
-
 </div>
 
 
-<!-- ==========================================
-     NAVES
-========================================== -->
-
-<div class="seccion">
-
-    <div class="tituloSeccion">
-
-        🐷 Naves — Resumen de hoy
-
-    </div>
-
-
-    <div class="gridPrincipal">
-
-
-        <div class="tarjeta">
-
-            <div class="icono">
-                ➕🐷
-            </div>
-
-            <div class="nombre">
-                AGREGADOS
-            </div>
-
-            <div
-            class="numero"
-            id="cerdosAgregados">
-
-                0
-
-            </div>
-
-        </div>
-
-
-        <div class="tarjeta">
-
-            <div class="icono">
-                💰
-            </div>
-
-            <div class="nombre">
-                VENDIDOS
-            </div>
-
-            <div
-            class="numero"
-            id="cerdosVendidos">
-
-                0
-
-            </div>
-
-        </div>
-
-
-        <div class="tarjeta">
-
-            <div class="icono">
-                ☠️
-            </div>
-
-            <div class="nombre">
-                MUERTES
-            </div>
-
-            <div
-            class="numero rojo"
-            id="cerdosMuertos">
-
-                0
-
-            </div>
-
-        </div>
-
-
-        <div class="tarjeta">
-
-            <div class="icono">
-                ➖🐷
-            </div>
-
-            <div class="nombre">
-                OTRAS SALIDAS
-            </div>
-
-            <div
-            class="numero"
-            id="otrasSalidas">
-
-                0
-
-            </div>
-
-        </div>
-
-
-    </div>
-
-</div>
-
-
-<!-- ==========================================
-     ACTIVIDAD RECIENTE
-========================================== -->
-
-<div class="seccion">
-
-    <div class="tituloSeccion">
-
-        🕒 Última actividad de hoy
-
-    </div>
-
-
-    <div class="tarjetaGrande">
-
-        <div
-        id="actividadReciente"
-        class="cargando">
-
-            Cargando actividad...
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<div style="
-text-align:center;
-color:#666;
-font-size:12px;
-margin:30px 0 15px;
-">
-
-    ElDesierto • Dashboard diario
-
-</div>
-
+<!-- ==================================================
+     SUPABASE
+================================================== -->
 
 <script src="supabase.js"></script>
 
@@ -1007,126 +1251,169 @@ margin:30px 0 15px;
 <script>
 
 
-/* ==========================================
-   VARIABLES DEL DÍA
-========================================== */
+/* ==================================================
+   VARIABLES
+================================================== */
 
-const ahora = new Date();
+let actividadesVoz = "";
 
-
-const inicioHoy = new Date(
-
-    ahora.getFullYear(),
-
-    ahora.getMonth(),
-
-    ahora.getDate(),
-
-    0,0,0
-
-);
+let textoVozActual = "";
 
 
-const finHoy = new Date(
+/* ==================================================
+   FECHA DE HOY
+================================================== */
 
-    ahora.getFullYear(),
+function obtenerInicioHoy(){
 
-    ahora.getMonth(),
+    const ahora = new Date();
 
-    ahora.getDate()+1,
-
-    0,0,0
-
-);
-
-
-/* ==========================================
-   VARIABLE DASHBOARD
-========================================== */
-
-let dashboardCargado = false;
-
-let vozActual = null;
-
-
-/* ==========================================
-   NORMALIZAR FECHA
-========================================== */
-
-function fechaBonita(){
-
-    const opciones = {
-
-        weekday:"long",
-
-        day:"numeric",
-
-        month:"long",
-
-        year:"numeric"
-
-    };
-
-
-    return ahora
-    .toLocaleDateString(
-        "es-ES",
-        opciones
+    return new Date(
+        ahora.getFullYear(),
+        ahora.getMonth(),
+        ahora.getDate(),
+        0,0,0,0
     );
 
 }
 
 
-/* ==========================================
-   VERIFICAR SESIÓN
-========================================== */
+function obtenerFinHoy(){
 
-async function verificarSesion(){
+    const inicio = obtenerInicioHoy();
 
-    const {data,error} =
+    const fin = new Date(inicio);
 
+    fin.setDate(
+        fin.getDate()+1
+    );
+
+    return fin;
+
+}
+
+
+function formatoFecha(fecha){
+
+    const d = new Date(fecha);
+
+    return d.toLocaleDateString(
+        "es-ES",
+        {
+            day:"2-digit",
+            month:"2-digit",
+            year:"numeric"
+        }
+    );
+
+}
+
+
+function formatoHora(fecha){
+
+    const d = new Date(fecha);
+
+    return d.toLocaleTimeString(
+        "es-ES",
+        {
+            hour:"2-digit",
+            minute:"2-digit"
+        }
+    );
+
+}
+
+
+/* ==================================================
+   FECHA MOSTRADA
+================================================== */
+
+function mostrarFecha(){
+
+    const ahora = new Date();
+
+    document.getElementById(
+        "fechaActual"
+    ).textContent =
+        ahora.toLocaleDateString(
+            "es-ES",
+            {
+                weekday:"long",
+                day:"numeric",
+                month:"long",
+                year:"numeric"
+            }
+        );
+
+}
+
+
+/* ==================================================
+   SESIÓN
+================================================== */
+
+async function comprobarSesion(){
+
+    const {
+        data,
+        error
+    } =
     await clienteSupabase
     .auth
     .getSession();
 
 
-    if(error || !data.session){
+    if(
+        error ||
+        !data ||
+        !data.session
+    ){
 
         window.location.href =
-        "login.html";
+            "login.html";
 
         return false;
 
     }
-
 
     return true;
 
 }
 
 
-/* ==========================================
-   CARGAR MOVIMIENTOS
-========================================== */
+/* ==================================================
+   MOVIMIENTOS DE MERCANCÍA
+================================================== */
 
 async function cargarMovimientos(){
 
-    const {data,error} =
+    const inicio =
+        obtenerInicioHoy();
 
+    const fin =
+        obtenerFinHoy();
+
+
+    const {
+        data,
+        error
+    } =
     await clienteSupabase
 
     .from("movimientos")
 
-    .select("*")
+    .select(
+        "Fecha, Producto, Tipo, Cantidad, Usuario"
+    )
 
     .gte(
         "Fecha",
-        inicioHoy.toISOString()
+        inicio.toISOString()
     )
 
     .lt(
         "Fecha",
-        finHoy.toISOString()
+        fin.toISOString()
     )
 
     .order(
@@ -1139,9 +1426,9 @@ async function cargarMovimientos(){
 
     if(error){
 
-        console.log(
+        console.error(
             "Error movimientos:",
-            error.message
+            error
         );
 
         return [];
@@ -1154,40 +1441,255 @@ async function cargarMovimientos(){
 }
 
 
-/* ==========================================
+/* ==================================================
    RESUMEN DE MERCANCÍA
-========================================== */
+================================================== */
 
-async function cargarMercancia(){
+async function cargarResumenMercancia(){
 
     const movimientos =
-    await cargarMovimientos();
+        await cargarMovimientos();
 
 
-    let totalEntradas = 0;
+    let entradas = 0;
 
-    let totalSalidas = 0;
+    let salidas = 0;
 
-
-    let productos = {};
-
-
-    movimientos.forEach(m => {
+    let fabricado = 0;
 
 
-        const tipo =
-        String(m.Tipo || "")
-        .trim()
-        .toLowerCase();
+    const productos = {};
 
+
+    movimientos.forEach(m=>{
 
         const cantidad =
-        Number(m.Cantidad || 0);
+            Number(m.Cantidad) || 0;
+
+        const tipo =
+            String(
+                m.Tipo || ""
+            ).toLowerCase();
 
 
         if(
-            tipo !== "entrada" &&
-            tipo !== "salida"
+            tipo.includes("entrada")
+        ){
+
+            entradas += cantidad;
+
+        }
+
+
+        else if(
+            tipo.includes("salida")
+        ){
+
+            salidas += cantidad;
+
+        }
+
+
+        else if(
+            tipo.includes("fabric")
+        ){
+
+            fabricado += cantidad;
+
+        }
+
+
+        const nombre =
+            m.Producto ||
+            "Sin producto";
+
+
+        if(!productos[nombre]){
+
+            productos[nombre] = {
+                entradas:0,
+                salidas:0
+            };
+
+        }
+
+
+        if(
+            tipo.includes("entrada")
+        ){
+
+            productos[nombre]
+                .entradas += cantidad;
+
+        }
+
+
+        if(
+            tipo.includes("salida")
+        ){
+
+            productos[nombre]
+                .salidas += cantidad;
+
+        }
+
+    });
+
+
+    document.getElementById(
+        "entradasHoy"
+    ).textContent =
+        entradas;
+
+
+    document.getElementById(
+        "salidasHoy"
+    ).textContent =
+        salidas;
+
+
+    document.getElementById(
+        "fabricadoHoy"
+    ).textContent =
+        fabricado;
+
+
+    /* TABLA MERCANCÍA */
+
+    const tabla =
+        document.getElementById(
+            "tablaMercancia"
+        );
+
+
+    tabla.innerHTML = "";
+
+
+    const nombres =
+        Object.keys(productos);
+
+
+    if(nombres.length===0){
+
+        tabla.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="3"
+                    class="vacio">
+
+                    No hay movimientos de mercancía hoy.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    nombres.forEach(nombre=>{
+
+        const p =
+            productos[nombre];
+
+
+        tabla.innerHTML += `
+
+            <tr>
+
+                <td>
+                    ${nombre}
+                </td>
+
+                <td class="cantidad">
+                    ${p.entradas}
+                </td>
+
+                <td class="cantidad">
+                    ${p.salidas}
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+}
+
+
+/* ==================================================
+   PRODUCCIÓN
+================================================== */
+
+async function cargarProduccion(){
+
+    const inicio =
+        obtenerInicioHoy();
+
+    const fin =
+        obtenerFinHoy();
+
+
+    const {
+        data,
+        error
+    } =
+    await clienteSupabase
+
+    .from("movimientos")
+
+    .select(
+        "Fecha, Producto, Tipo, Cantidad, Usuario"
+    )
+
+    .gte(
+        "Fecha",
+        inicio.toISOString()
+    )
+
+    .lt(
+        "Fecha",
+        fin.toISOString()
+    )
+
+    .order(
+        "Fecha",
+        {
+            ascending:false
+        }
+    );
+
+
+    if(error){
+
+        console.error(
+            error
+        );
+
+        return;
+
+    }
+
+
+    const produccion = {};
+
+
+    (data || []).forEach(m=>{
+
+        const tipo =
+            String(
+                m.Tipo || ""
+            ).toLowerCase();
+
+
+        if(
+            !tipo.includes("fabric")
         ){
 
             return;
@@ -1196,264 +1698,388 @@ async function cargarMercancia(){
 
 
         const nombre =
-        m.Producto || "Sin nombre";
-
-
-        if(!productos[nombre]){
-
-            productos[nombre] = {
-
-                entrada:0,
-
-                salida:0
-
-            };
-
-        }
-
-
-        if(tipo === "entrada"){
-
-            totalEntradas += cantidad;
-
-            productos[nombre].entrada +=
-            cantidad;
-
-        }
-
-
-        if(tipo === "salida"){
-
-            totalSalidas += cantidad;
-
-            productos[nombre].salida +=
-            cantidad;
-
-        }
-
-
-    });
-
-
-    document
-    .getElementById("entradasHoy")
-    .innerText =
-    totalEntradas.toFixed(2) + " kg";
-
-
-    document
-    .getElementById("salidasHoy")
-    .innerText =
-    totalSalidas.toFixed(2) + " kg";
-
-
-    const contenedor =
-    document.getElementById(
-        "resumenProductos"
-    );
-
-
-    const nombres =
-    Object.keys(productos);
-
-
-    if(nombres.length === 0){
-
-        contenedor.innerHTML =
-
-        `<div class="sinDatos">
-
-        No hay entradas ni salidas
-        registradas hoy.
-
-        </div>`;
-
-        return;
-
-    }
-
-
-    let html = "";
-
-
-    nombres.forEach(nombre => {
-
-
-        const p =
-        productos[nombre];
-
-
-        html += `
-
-        <div class="producto">
-
-        <div class="productoNombre">
-
-        📦 ${nombre}
-
-        </div>
-
-
-        <div class="productoDatos">
-
-        ➕ ${p.entrada.toFixed(2)} kg
-
-        <br>
-
-        ➖ ${p.salida.toFixed(2)} kg
-
-        </div>
-
-        </div>
-
-        `;
-
-    });
-
-
-    contenedor.innerHTML =
-    html;
-
-}
-
-
-/* ==========================================
-   FABRICACIÓN DE HOY
-========================================== */
-
-async function cargarFabricacion(){
-
-    const movimientos =
-    await cargarMovimientos();
-
-
-    const fabricaciones =
-    movimientos.filter(m =>
-
-        String(m.Tipo || "")
-        .trim()
-        .toLowerCase()
-        === "fabricación"
-
-        ||
-
-        String(m.Tipo || "")
-        .trim()
-        .toLowerCase()
-        === "fabricacion"
-
-    );
-
-
-    let total = 0;
-
-
-    let productos = {};
-
-
-    fabricaciones.forEach(m => {
+            m.Producto ||
+            "Sin producto";
 
 
         const cantidad =
-        Number(m.Cantidad || 0);
+            Number(m.Cantidad) || 0;
 
 
-        const nombre =
-        m.Producto ||
-        "Producto elaborado";
+        if(
+            !produccion[nombre]
+        ){
 
-
-        total += cantidad;
-
-
-        if(!productos[nombre]){
-
-            productos[nombre] = 0;
+            produccion[nombre] = 0;
 
         }
 
 
-        productos[nombre] +=
-        cantidad;
+        produccion[nombre] +=
+            cantidad;
 
     });
 
 
-    document
-    .getElementById("fabricadoHoy")
-    .innerText =
-    total.toFixed(2) + " kg";
+    const tabla =
+        document.getElementById(
+            "tablaProduccion"
+        );
 
 
-    const contenedor =
-    document.getElementById(
-        "resumenFabricacion"
-    );
+    tabla.innerHTML = "";
 
 
     const nombres =
-    Object.keys(productos);
+        Object.keys(produccion);
 
 
-    if(nombres.length === 0){
+    if(nombres.length===0){
 
-        contenedor.innerHTML =
+        tabla.innerHTML = `
 
-        `<div class="sinDatos">
+            <tr>
 
-        No hay fabricación registrada hoy.
+                <td
+                    colspan="2"
+                    class="vacio">
 
-        </div>`;
+                    No hay producción hoy.
+
+                </td>
+
+            </tr>
+
+        `;
 
         return;
 
     }
 
 
-    let html = "";
+    nombres.forEach(nombre=>{
 
+        tabla.innerHTML += `
 
-    nombres.forEach(nombre => {
+            <tr>
 
-        html += `
+                <td>
+                    ${nombre}
+                </td>
 
-        <div class="producto">
+                <td class="cantidad">
+                    ${produccion[nombre]} kg
+                </td>
 
-        <div class="productoNombre">
-
-        🏭 ${nombre}
-
-        </div>
-
-
-        <div class="productoDatos">
-
-        ${productos[nombre]
-        .toFixed(2)} kg
-
-        </div>
-
-        </div>
+            </tr>
 
         `;
 
     });
 
+}
 
-    contenedor.innerHTML =
-    html;
+
+/* ==================================================
+   ÚLTIMAS FABRICACIONES
+================================================== */
+
+async function cargarFabricaciones(){
+
+    const inicio =
+        obtenerInicioHoy();
+
+    const fin =
+        obtenerFinHoy();
+
+
+    const {
+        data,
+        error
+    } =
+    await clienteSupabase
+
+    .from("movimientos")
+
+    .select(
+        "Fecha, Producto, Tipo, Cantidad, Usuario"
+    )
+
+    .gte(
+        "Fecha",
+        inicio.toISOString()
+    )
+
+    .lt(
+        "Fecha",
+        fin.toISOString()
+    )
+
+    .order(
+        "Fecha",
+        {
+            ascending:false
+        }
+    );
+
+
+    if(error){
+
+        console.error(error);
+
+        return;
+
+    }
+
+
+    const fabricaciones =
+        (data || [])
+        .filter(m=>
+            String(
+                m.Tipo || ""
+            )
+            .toLowerCase()
+            .includes("fabric")
+        )
+        .slice(0,10);
+
+
+    const tabla =
+        document.getElementById(
+            "tablaFabricaciones"
+        );
+
+
+    tabla.innerHTML = "";
+
+
+    if(
+        fabricaciones.length===0
+    ){
+
+        tabla.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="4"
+                    class="vacio">
+
+                    No hay fabricaciones hoy.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    fabricaciones.forEach(m=>{
+
+        tabla.innerHTML += `
+
+            <tr>
+
+                <td>
+                    ${formatoHora(m.Fecha)}
+                </td>
+
+                <td>
+                    ${m.Producto || "-"}
+                </td>
+
+                <td class="cantidad">
+                    ${m.Cantidad || 0} kg
+                </td>
+
+                <td>
+                    ${m.Usuario || "-"}
+                </td>
+
+            </tr>
+
+        `;
+
+    });
 
 }
 
 
-/* ==========================================
-   TOTAL ACTUAL DE CERDOS
-========================================== */
+/* ==================================================
+   NAVES
+================================================== */
 
-async function cargarTotalCerdos(){
+async function cargarNaves(){
 
-    const {data,error} =
+    const inicio =
+        obtenerInicioHoy();
 
+    const fin =
+        obtenerFinHoy();
+
+
+    const {
+        data,
+        error
+    } =
+    await clienteSupabase
+
+    .from("movimientos_naves")
+
+    .select("*")
+
+    .gte(
+        "fecha",
+        inicio.toISOString()
+    )
+
+    .lt(
+        "fecha",
+        fin.toISOString()
+    );
+
+
+    if(error){
+
+        console.error(
+            "Error movimientos naves:",
+            error
+        );
+
+    }
+
+
+    let agregados = 0;
+
+    let vendidos = 0;
+
+    let muertes = 0;
+
+    let otras = 0;
+
+
+    (data || []).forEach(m=>{
+
+        const cantidad =
+            Number(
+                m.cantidad ||
+                m.Cantidad ||
+                0
+            );
+
+
+        const operacion =
+            String(
+                m.operacion ||
+                m.Operacion ||
+                ""
+            ).toLowerCase();
+
+
+        const motivo =
+            String(
+                m.motivo ||
+                m.Motivo ||
+                ""
+            ).toLowerCase();
+
+
+        if(
+            operacion.includes("agreg")
+            ||
+            operacion.includes("entrada")
+            ||
+            operacion.includes("añad")
+        ){
+
+            agregados += cantidad;
+
+        }
+
+
+        else if(
+            motivo.includes("venta")
+            ||
+            operacion.includes("venta")
+        ){
+
+            vendidos += cantidad;
+
+        }
+
+
+        else if(
+            motivo.includes("muerte")
+            ||
+            motivo.includes("muert")
+        ){
+
+            muertes += cantidad;
+
+        }
+
+
+        else if(
+            operacion.includes("sal")
+            ||
+            operacion.includes("retir")
+        ){
+
+            otras += cantidad;
+
+        }
+
+    });
+
+
+    document.getElementById(
+        "agregadosHoy"
+    ).textContent =
+        agregados;
+
+
+    document.getElementById(
+        "vendidosHoy"
+    ).textContent =
+        vendidos;
+
+
+    document.getElementById(
+        "muertesHoy"
+    ).textContent =
+        muertes;
+
+
+    document.getElementById(
+        "otrasSalidasHoy"
+    ).textContent =
+        otras;
+
+
+    return {
+        agregados,
+        vendidos,
+        muertes,
+        otras
+    };
+
+}
+
+
+/* ==================================================
+   CERDOS ACTUALES
+================================================== */
+
+async function cargarCerdos(){
+
+    const {
+        data,
+        error
+    } =
     await clienteSupabase
 
     .from("cuartones")
@@ -1463,11 +2089,12 @@ async function cargarTotalCerdos(){
 
     if(error){
 
-        console.log(
-            error.message
+        console.error(
+            "Error cuartones:",
+            error
         );
 
-        return;
+        return 0;
 
     }
 
@@ -1475,31 +2102,48 @@ async function cargarTotalCerdos(){
     let total = 0;
 
 
-    data.forEach(c => {
+    (data || []).forEach(c=>{
 
         total +=
-        Number(
-            c.cantidad_cerdos || 0
-        );
+            Number(
+                c.cantidad_cerdos || 0
+            );
 
     });
 
 
-    document
-    .getElementById("cerdosActuales")
-    .innerText = total;
+    document.getElementById(
+        "cerdosActuales"
+    ).textContent =
+        total;
+
+
+    return total;
 
 }
 
 
-/* ==========================================
-   RESUMEN NAVES HOY
-========================================== */
+/* ==================================================
+   ACTIVIDAD RECIENTE
+================================================== */
 
-async function cargarNavesHoy(){
+async function cargarActividad(){
 
-    const {data,error} =
+    const inicio =
+        obtenerInicioHoy();
 
+    const fin =
+        obtenerFinHoy();
+
+
+    const movimientos =
+        await cargarMovimientos();
+
+
+    const {
+        data:naves,
+        error
+    } =
     await clienteSupabase
 
     .from("movimientos_naves")
@@ -1508,1017 +2152,412 @@ async function cargarNavesHoy(){
 
     .gte(
         "fecha",
-        inicioHoy.toISOString()
+        inicio.toISOString()
     )
 
     .lt(
         "fecha",
-        finHoy.toISOString()
+        fin.toISOString()
+    )
+
+    .order(
+        "fecha",
+        {
+            ascending:false
+        }
     );
 
 
     if(error){
 
-        console.log(
-            "Error naves:",
-            error.message
-        );
-
-        return;
+        console.error(error);
 
     }
 
 
-    let agregados = 0;
-
-    let vendidos = 0;
-
-    let muertos = 0;
-
-    let otras = 0;
+    const actividades = [];
 
 
-    (data || [])
-    .forEach(m => {
+    (movimientos || []).forEach(m=>{
 
-
-        const cantidad =
-        Number(m.cantidad || 0);
-
-
-        const motivo =
-        String(m.motivo || "")
-        .trim()
-        .toLowerCase();
-
-
-        const operacion =
-        String(m.operacion || "")
-        .trim()
-        .toLowerCase();
-
-
-        if(
-            operacion === "entrada"
-        ){
-
-            agregados += cantidad;
-
-            return;
-
-        }
-
-
-        if(
-            motivo === "venta"
-        ){
-
-            vendidos += cantidad;
-
-            return;
-
-        }
-
-
-        if(
-            motivo === "muerte"
-        ){
-
-            muertos += cantidad;
-
-            return;
-
-        }
-
-
-        if(
-            operacion === "salida"
-        ){
-
-            otras += cantidad;
-
-        }
-
-
-    });
-
-
-    document
-    .getElementById("cerdosAgregados")
-    .innerText = agregados;
-
-
-    document
-    .getElementById("cerdosVendidos")
-    .innerText = vendidos;
-
-
-    document
-    .getElementById("cerdosMuertos")
-    .innerText = muertos;
-
-
-    document
-    .getElementById("otrasSalidas")
-    .innerText = otras;
-
-}
-
-
-/* ==========================================
-   ACTIVIDAD RECIENTE
-========================================== */
-
-async function cargarActividad(){
-
-    const movimientos =
-    await cargarMovimientos();
-
-
-    const {data:navesData,error} =
-
-    await clienteSupabase
-
-    .from("movimientos_naves")
-
-    .select("*")
-
-    .gte(
-        "fecha",
-        inicioHoy.toISOString()
-    )
-
-    .lt(
-        "fecha",
-        finHoy.toISOString()
-    );
-
-
-    let actividad = [];
-
-
-    movimientos.forEach(m => {
-
-        actividad.push({
+        actividades.push({
 
             fecha:m.Fecha,
 
-            titulo:
-            `${m.Tipo || "Movimiento"} — ${m.Producto || ""}`,
+            tipo:
+                "📦 " +
+                (m.Tipo || "Movimiento"),
 
             detalle:
-            `${m.Cantidad || 0} kg`
+                (m.Producto || "Producto")
+                +
+                " — "
+                +
+                (m.Cantidad || 0)
+                +
+                " kg"
 
         });
 
     });
 
 
-    if(!error){
+    (naves || []).forEach(m=>{
 
-        (navesData || [])
-        .forEach(m => {
+        actividades.push({
 
-            actividad.push({
+            fecha:
+                m.fecha,
 
-                fecha:m.fecha,
+            tipo:
+                "🐷 " +
+                (
+                    m.operacion ||
+                    m.Operacion ||
+                    "Movimiento de nave"
+                ),
 
-                titulo:
-                `🐷 ${m.motivo || m.operacion}`,
-
-                detalle:
-
-                `${m.nave || "Nave"} • ` +
-
-                `Cuartón ${m.cuarton} • ` +
-
-                `${m.cantidad} cerdos`
-
-            });
+            detalle:
+                "Nave "
+                +
+                (
+                    m.nave ||
+                    m.Nave ||
+                    "-"
+                )
+                +
+                " — "
+                +
+                (
+                    m.cantidad ||
+                    m.Cantidad ||
+                    0
+                )
+                +
+                " cerdos"
 
         });
 
-    }
+    });
 
 
-    actividad.sort(
-
-        (a,b) =>
-
-        new Date(b.fecha) -
-
-        new Date(a.fecha)
-
+    actividades.sort(
+        (a,b)=>
+            new Date(b.fecha)
+            -
+            new Date(a.fecha)
     );
 
 
-    actividad =
-    actividad.slice(0,10);
+    const ultimas =
+        actividades.slice(0,10);
 
 
     const contenedor =
-    document.getElementById(
-        "actividadReciente"
-    );
+        document.getElementById(
+            "actividadReciente"
+        );
 
 
-    if(actividad.length === 0){
+    contenedor.innerHTML = "";
 
-        contenedor.innerHTML =
 
-        `<div class="sinDatos">
+    if(ultimas.length===0){
 
-        No hay actividad registrada hoy.
+        contenedor.innerHTML = `
 
-        </div>`;
+            <div class="vacio">
 
-        return;
+                No hay actividad registrada hoy.
+
+            </div>
+
+        `;
 
     }
 
 
-    let html = "";
+    ultimas.forEach(a=>{
 
+        contenedor.innerHTML += `
 
-    actividad.forEach(a => {
+            <div class="actividad-item">
 
+                <div class="actividad-cabecera">
 
-        const fecha =
-        new Date(a.fecha);
+                    <span class="actividad-tipo">
 
+                        ${a.tipo}
 
-        const hora =
-        fecha.toLocaleTimeString(
-            "es-ES",
-            {
+                    </span>
 
-                hour:"2-digit",
+                    <span class="actividad-fecha">
 
-                minute:"2-digit"
+                        ${formatoHora(a.fecha)}
 
-            }
-        );
+                    </span>
 
+                </div>
 
-        html += `
+                <div class="actividad-detalle">
 
-        <div class="actividad">
+                    ${a.detalle}
 
-        <div class="actividadTitulo">
+                </div>
 
-        ${a.titulo}
-
-        </div>
-
-
-        <div class="actividadDetalle">
-
-        ${a.detalle}
-
-        • ${hora}
-
-        </div>
-
-        </div>
+            </div>
 
         `;
 
     });
 
 
-    contenedor.innerHTML =
-    html;
+    actividadesVoz =
+        ultimas.map(a=>
+            a.tipo
+            +
+            ". "
+            +
+            a.detalle
+        ).join(" ");
 
 }
 
 
-/* ==========================================
-   COMPROBAR MOTOR DE VOZ
-========================================== */
+/* ==================================================
+   RESUMEN POR VOZ
+================================================== */
 
-function motorVozDisponible(){
-
-    return (
-
-        typeof window !== "undefined" &&
-
-        typeof window.speechSynthesis !==
-        "undefined" &&
-
-        typeof window.SpeechSynthesisUtterance !==
-        "undefined"
-
-    );
-
-}
-
-
-/* ==========================================
-   BUSCAR VOZ EN ESPAÑOL
-========================================== */
-
-function seleccionarVoz(){
-
-    if(!motorVozDisponible()){
-
-        return null;
-
-    }
-
-
-    const voces =
-    window.speechSynthesis
-    .getVoices();
-
-
-    if(
-        !voces ||
-        voces.length === 0
-    ){
-
-        return null;
-
-    }
-
-
-    let voz =
-    voces.find(v =>
-
-        v.lang &&
-        /^es[-_]/i.test(v.lang)
-
-    );
-
-
-    if(!voz){
-
-        voz =
-        voces.find(v =>
-            v.default
-        );
-
-    }
-
-
-    return voz || null;
-
-}
-
-
-/* ==========================================
-   CREAR RESUMEN PARA VOZ
-========================================== */
-
-function crearResumenVoz(){
-
-    const fecha =
-    document
-    .getElementById("fechaHoy")
-    .innerText
-    .trim();
-
+function crearTextoVoz(){
 
     const entradas =
-    document
-    .getElementById("entradasHoy")
-    .innerText
-    .trim();
-
+        document.getElementById(
+            "entradasHoy"
+        ).textContent;
 
     const salidas =
-    document
-    .getElementById("salidasHoy")
-    .innerText
-    .trim();
-
+        document.getElementById(
+            "salidasHoy"
+        ).textContent;
 
     const fabricado =
-    document
-    .getElementById("fabricadoHoy")
-    .innerText
-    .trim();
-
+        document.getElementById(
+            "fabricadoHoy"
+        ).textContent;
 
     const cerdos =
-    document
-    .getElementById("cerdosActuales")
-    .innerText
-    .trim();
-
+        document.getElementById(
+            "cerdosActuales"
+        ).textContent;
 
     const agregados =
-    document
-    .getElementById("cerdosAgregados")
-    .innerText
-    .trim();
-
+        document.getElementById(
+            "agregadosHoy"
+        ).textContent;
 
     const vendidos =
-    document
-    .getElementById("cerdosVendidos")
-    .innerText
-    .trim();
+        document.getElementById(
+            "vendidosHoy"
+        ).textContent;
 
-
-    const muertos =
-    document
-    .getElementById("cerdosMuertos")
-    .innerText
-    .trim();
-
+    const muertes =
+        document.getElementById(
+            "muertesHoy"
+        ).textContent;
 
     const otras =
-    document
-    .getElementById("otrasSalidas")
-    .innerText
-    .trim();
+        document.getElementById(
+            "otrasSalidasHoy"
+        ).textContent;
 
 
-    let texto = "";
+    textoVozActual =
+        "Resumen del día de ElDesierto. "
+        +
+        "Entradas de mercancía: "
+        +
+        entradas
+        +
+        " kilogramos. "
+        +
+        "Salidas de mercancía: "
+        +
+        salidas
+        +
+        " kilogramos. "
+        +
+        "Fabricado hoy: "
+        +
+        fabricado
+        +
+        " kilogramos. "
+        +
+        "Cerdos actuales: "
+        +
+        cerdos
+        +
+        ". "
+        +
+        "Cerdos agregados hoy: "
+        +
+        agregados
+        +
+        ". "
+        +
+        "Cerdos vendidos: "
+        +
+        vendidos
+        +
+        ". "
+        +
+        "Muertes: "
+        +
+        muertes
+        +
+        ". "
+        +
+        "Otras salidas: "
+        +
+        otras
+        +
+        ". ";
 
 
-    texto +=
-    "Resumen del Dashboard de ElDesierto. ";
+    if(actividadesVoz){
 
-
-    texto +=
-    fecha + ". ";
-
-
-    texto +=
-    "Entradas de mercancía de hoy: " +
-    entradas + ". ";
-
-
-    texto +=
-    "Salidas de mercancía de hoy: " +
-    salidas + ". ";
-
-
-    texto +=
-    "Fabricación de hoy: " +
-    fabricado + ". ";
-
-
-    texto +=
-    "Actualmente hay " +
-    cerdos +
-    " cerdos en las naves. ";
-
-
-    texto +=
-    "Hoy fueron agregados " +
-    agregados +
-    " cerdos. ";
-
-
-    texto +=
-    "Cerdos vendidos hoy: " +
-    vendidos + ". ";
-
-
-    texto +=
-    "Muertes registradas hoy: " +
-    muertos + ". ";
-
-
-    texto +=
-    "Otras salidas: " +
-    otras + ". ";
-
-
-    /* ==========================================
-       PRODUCTOS
-    ========================================== */
-
-    const productos =
-    document.querySelectorAll(
-        "#resumenProductos .producto"
-    );
-
-
-    if(productos.length > 0){
-
-        texto +=
-        "Mercancía de hoy. ";
-
-
-        productos.forEach(producto => {
-
-
-            const nombre =
-            producto.querySelector(
-                ".productoNombre"
-            );
-
-
-            const datos =
-            producto.querySelector(
-                ".productoDatos"
-            );
-
-
-            if(
-                nombre &&
-                datos
-            ){
-
-                texto +=
-
-                nombre.innerText
-                .replace("📦","")
-                .trim() +
-
-                ". ";
-
-
-                texto +=
-
-                datos.innerText
-                .replace(/\n/g,". ") +
-
-                ". ";
-
-            }
-
-        });
+        textoVozActual +=
+            "Actividad reciente. "
+            +
+            actividadesVoz;
 
     }
 
 
-    /* ==========================================
-       FABRICACIÓN
-    ========================================== */
-
-    const fabricaciones =
-    document.querySelectorAll(
-        "#resumenFabricacion .producto"
-    );
-
-
-    if(
-        fabricaciones.length > 0
-    ){
-
-        texto +=
-        "Producción de hoy. ";
-
-
-        fabricaciones.forEach(producto => {
-
-
-            const nombre =
-            producto.querySelector(
-                ".productoNombre"
-            );
-
-
-            const datos =
-            producto.querySelector(
-                ".productoDatos"
-            );
-
-
-            if(
-                nombre &&
-                datos
-            ){
-
-                texto +=
-
-                nombre.innerText
-                .replace("🏭","")
-                .trim() +
-
-                ". ";
-
-
-                texto +=
-                datos.innerText +
-                ". ";
-
-            }
-
-        });
-
-    }
-
-
-    /* ==========================================
-       ACTIVIDAD
-    ========================================== */
-
-    const actividades =
-    document.querySelectorAll(
-        "#actividadReciente .actividad"
-    );
-
-
-    if(
-        actividades.length > 0
-    ){
-
-        texto +=
-        "Última actividad de hoy. ";
-
-
-        actividades.forEach(actividad => {
-
-
-            const titulo =
-            actividad.querySelector(
-                ".actividadTitulo"
-            );
-
-
-            const detalle =
-            actividad.querySelector(
-                ".actividadDetalle"
-            );
-
-
-            if(titulo){
-
-                texto +=
-                titulo.innerText +
-                ". ";
-
-            }
-
-
-            if(detalle){
-
-                texto +=
-                detalle.innerText +
-                ". ";
-
-            }
-
-        });
-
-    }
-
-
-    texto +=
-    "Fin del resumen.";
-
-
-    return texto;
+    return textoVozActual;
 
 }
 
 
-/* ==========================================
-   LEER DASHBOARD
-========================================== */
+/* ==================================================
+   ESCUCHAR
+================================================== */
 
-function leerDashboard(){
+function escucharResumen(){
 
-    if(!motorVozDisponible()){
+    if(
+        !("speechSynthesis" in window)
+    ){
 
-        document
-        .getElementById("estadoVoz")
-        .innerText =
-
-        "❌ La lectura por voz no está disponible en este navegador. Prueba abrir ElDesierto en Google Chrome.";
-
-        return;
-
-    }
-
-
-    if(!dashboardCargado){
-
-        document
-        .getElementById("estadoVoz")
-        .innerText =
-
-        "⏳ Espera a que termine de cargar el Dashboard.";
+        alert(
+            "Este dispositivo no admite lectura por voz."
+        );
 
         return;
 
     }
 
 
-    const synth =
-    window.speechSynthesis;
-
-
-    synth.cancel();
+    window.speechSynthesis.cancel();
 
 
     const texto =
-    crearResumenVoz();
-
-
-    const utterance =
-    new window.SpeechSynthesisUtterance(
-        texto
-    );
-
-
-    vozActual =
-    utterance;
-
-
-    utterance.lang =
-    "es-ES";
-
-
-    utterance.rate =
-    0.95;
-
-
-    utterance.pitch =
-    1;
-
-
-    utterance.volume =
-    1;
+        crearTextoVoz();
 
 
     const voz =
-    seleccionarVoz();
-
-
-    if(voz){
-
-        utterance.voice =
-        voz;
-
-    }
-
-
-    utterance.onstart =
-    function(){
-
-        document
-        .getElementById("estadoVoz")
-        .innerText =
-        "🔊 Leyendo el resumen del Dashboard...";
-
-
-        document
-        .getElementById("btnPausar")
-        .disabled =
-        false;
-
-
-        document
-        .getElementById("btnContinuar")
-        .disabled =
-        true;
-
-
-        document
-        .getElementById("btnDetener")
-        .disabled =
-        false;
-
-    };
-
-
-    utterance.onend =
-    function(){
-
-        document
-        .getElementById("estadoVoz")
-        .innerText =
-        "✅ Resumen terminado.";
-
-
-        document
-        .getElementById("btnPausar")
-        .disabled =
-        true;
-
-
-        document
-        .getElementById("btnContinuar")
-        .disabled =
-        true;
-
-
-        document
-        .getElementById("btnDetener")
-        .disabled =
-        true;
-
-    };
-
-
-    utterance.onerror =
-    function(event){
-
-        console.log(
-            "Error de voz:",
-            event
+        new SpeechSynthesisUtterance(
+            texto
         );
 
 
-        document
-        .getElementById("estadoVoz")
-        .innerText =
+    voz.lang =
+        "es-ES";
 
-        "❌ No se pudo reproducir la voz. Comprueba que la síntesis de voz esté disponible.";
+    voz.rate =
+        0.95;
 
-        document
-        .getElementById("btnPausar")
-        .disabled =
-        true;
+    voz.pitch =
+        1;
 
-
-        document
-        .getElementById("btnContinuar")
-        .disabled =
-        true;
+    voz.volume =
+        1;
 
 
-        document
-        .getElementById("btnDetener")
-        .disabled =
-        true;
-
-    };
-
-
-    synth.speak(
-        utterance
+    window.speechSynthesis.speak(
+        voz
     );
 
 }
 
 
-/* ==========================================
-   PAUSAR VOZ
-========================================== */
+/* ==================================================
+   PAUSAR
+================================================== */
 
 function pausarVoz(){
 
-    if(!motorVozDisponible()){
-
-        return;
-
-    }
-
-
-    const synth =
-    window.speechSynthesis;
-
-
     if(
-        synth.speaking &&
-        !synth.paused
+        "speechSynthesis"
+        in window
     ){
 
-        synth.pause();
-
-
-        document
-        .getElementById("estadoVoz")
-        .innerText =
-        "⏸️ Lectura pausada.";
-
-
-        document
-        .getElementById("btnPausar")
-        .disabled =
-        true;
-
-
-        document
-        .getElementById("btnContinuar")
-        .disabled =
-        false;
+        window.speechSynthesis.pause();
 
     }
 
 }
 
 
-/* ==========================================
-   CONTINUAR VOZ
-========================================== */
+/* ==================================================
+   CONTINUAR
+================================================== */
 
 function continuarVoz(){
 
-    if(!motorVozDisponible()){
+    if(
+        "speechSynthesis"
+        in window
+    ){
 
-        return;
-
-    }
-
-
-    const synth =
-    window.speechSynthesis;
-
-
-    if(synth.paused){
-
-        synth.resume();
-
-
-        document
-        .getElementById("estadoVoz")
-        .innerText =
-        "🔊 Continuando lectura...";
-
-
-        document
-        .getElementById("btnPausar")
-        .disabled =
-        false;
-
-
-        document
-        .getElementById("btnContinuar")
-        .disabled =
-        true;
+        window.speechSynthesis.resume();
 
     }
 
 }
 
 
-/* ==========================================
-   DETENER VOZ
-========================================== */
+/* ==================================================
+   DETENER
+================================================== */
 
 function detenerVoz(){
 
     if(
-        motorVozDisponible()
+        "speechSynthesis"
+        in window
     ){
 
         window.speechSynthesis.cancel();
 
     }
 
-
-    document
-    .getElementById("estadoVoz")
-    .innerText =
-    "⏹️ Lectura detenida.";
-
-
-    document
-    .getElementById("btnPausar")
-    .disabled =
-    true;
-
-
-    document
-    .getElementById("btnContinuar")
-    .disabled =
-    true;
-
-
-    document
-    .getElementById("btnDetener")
-    .disabled =
-    true;
-
 }
 
 
-/* ==========================================
-   CARGAR VOCES CUANDO ESTÉN DISPONIBLES
-========================================== */
-
-if(
-    motorVozDisponible()
-){
-
-    window.speechSynthesis.onvoiceschanged =
-    function(){
-
-        seleccionarVoz();
-
-    };
-
-}
-
-
-/* ==========================================
+/* ==================================================
    INICIAR DASHBOARD
-========================================== */
+================================================== */
 
 async function iniciarDashboard(){
 
-
-    document
-    .getElementById("fechaHoy")
-    .innerText =
-
-    "📅 " +
-    fechaBonita();
+    mostrarFecha();
 
 
-    const sesionCorrecta =
-    await verificarSesion();
+    const sesion =
+        await comprobarSesion();
 
 
-    if(!sesionCorrecta){
+    if(!sesion){
 
         return;
 
@@ -2527,37 +2566,26 @@ async function iniciarDashboard(){
 
     await Promise.all([
 
-        cargarMercancia(),
+        cargarResumenMercancia(),
 
-        cargarFabricacion(),
+        cargarProduccion(),
 
-        cargarTotalCerdos(),
+        cargarFabricaciones(),
 
-        cargarNavesHoy(),
+        cargarNaves(),
+
+        cargarCerdos(),
 
         cargarActividad()
 
     ]);
 
-
-    dashboardCargado =
-    true;
-
-
-    if(
-        !motorVozDisponible()
-    ){
-
-        document
-        .getElementById("estadoVoz")
-        .innerText =
-
-        "⚠️ Dashboard cargado. Este navegador no ofrece lectura por voz. Prueba abrirlo en Google Chrome.";
-
-    }
-
 }
 
+
+/* ==================================================
+   EJECUTAR
+================================================== */
 
 iniciarDashboard();
 
