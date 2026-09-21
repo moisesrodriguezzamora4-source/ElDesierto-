@@ -372,6 +372,77 @@ textarea:focus{
 
 
 /* =====================================================
+   DISTRIBUCIÓN
+===================================================== */
+
+.distribucion-receta{
+
+    margin-top:15px;
+
+    padding:14px;
+
+    border-radius:12px;
+
+    background:#0b0b0b;
+
+    border:1px solid #292929;
+
+}
+
+.distribucion-titulo{
+
+    color:#ff5555;
+
+    font-weight:bold;
+
+    margin-bottom:10px;
+
+}
+
+.opciones-distribucion{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:8px;
+
+}
+
+.opcion-distribucion{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:11px;
+
+    border-radius:9px;
+
+    background:#111;
+
+    border:1px solid #333;
+
+    color:#ddd;
+
+    cursor:pointer;
+
+}
+
+.opcion-distribucion input{
+
+    width:auto;
+
+    margin:0;
+
+    accent-color:#e51b23;
+
+}
+
+
+/* =====================================================
    LISTA DE MATERIAS PRIMAS
 ===================================================== */
 
@@ -461,6 +532,12 @@ textarea:focus{
         padding:15px;
     }
 
+    .opciones-distribucion{
+
+        grid-template-columns:1fr;
+
+    }
+
 }
 
 </style>
@@ -536,6 +613,72 @@ placeholder="Cantidad resultado (kg)">
 <textarea
 id="descripcion"
 placeholder="Descripción de la receta"></textarea>
+
+
+<!-- =====================================================
+     DISTRIBUCIÓN DE LA RECETA
+===================================================== -->
+
+<div class="distribucion-receta">
+
+    <div class="distribucion-titulo">
+
+        📍 Distribución de recetas
+
+    </div>
+
+    <div class="opciones-distribucion">
+
+        <label class="opcion-distribucion">
+
+            <input
+            type="checkbox"
+            name="destinoReceta"
+            value="Maternidad">
+
+            🍼 Maternidad
+
+        </label>
+
+
+        <label class="opcion-distribucion">
+
+            <input
+            type="checkbox"
+            name="destinoReceta"
+            value="Destete">
+
+            🐷 Destete
+
+        </label>
+
+
+        <label class="opcion-distribucion">
+
+            <input
+            type="checkbox"
+            name="destinoReceta"
+            value="Ceba">
+
+            🐖 Ceba
+
+        </label>
+
+
+        <label class="opcion-distribucion">
+
+            <input
+            type="checkbox"
+            name="destinoReceta"
+            value="Exterior">
+
+            🌎 Exterior
+
+        </label>
+
+    </div>
+
+</div>
 
 
 <button
@@ -746,6 +889,32 @@ Sin materias primas agregadas.
 }
 
 
+/* =====================================================
+   DESTINOS
+===================================================== */
+
+let destinos = [];
+
+try{
+
+    destinos =
+    Array.isArray(receta.distribucion_destinos)
+    ? receta.distribucion_destinos
+    : [];
+
+}catch(e){
+
+    destinos=[];
+
+}
+
+
+let textoDestinos =
+destinos.length > 0
+? destinos.join(" · ")
+: "Sin distribución definida";
+
+
 html += `
 
 <div class="tarjeta tarjeta-receta">
@@ -772,6 +941,15 @@ ${receta.producto_resultado}
 <strong>⚖️ Cantidad:</strong>
 
 ${receta.cantidad_resultado} kg
+
+</div>
+
+
+<div class="info">
+
+<strong>📍 Destinos:</strong>
+
+${textoDestinos}
 
 </div>
 
@@ -863,6 +1041,25 @@ document
 
 
 /* =====================================================
+   OBTENER DESTINOS SELECCIONADOS
+===================================================== */
+
+function obtenerDestinosSeleccionados(){
+
+    return Array.from(
+
+        document.querySelectorAll(
+            'input[name="destinoReceta"]:checked'
+        )
+
+    ).map(
+        input => input.value
+    );
+
+}
+
+
+/* =====================================================
    GUARDAR RECETA
 ===================================================== */
 
@@ -886,6 +1083,10 @@ document.getElementById("cantidad")
 let descripcion=
 document.getElementById("descripcion")
 .value.trim();
+
+
+let destinos =
+obtenerDestinosSeleccionados();
 
 
 if(!nombre || !producto || !cantidad){
@@ -924,7 +1125,9 @@ descripcion:descripcion,
 
 usuario:"admin",
 
-fecha:new Date().toISOString()
+fecha:new Date().toISOString(),
+
+distribucion_destinos:destinos
 
 })
 
@@ -1048,6 +1251,18 @@ nombre
 
 producto
 
++
+
+"\n\n📍 Destinos: "
+
++
+
+(
+    destinos.length > 0
+    ? destinos.join(", ")
+    : "Sin distribución definida"
+)
+
 );
 
 
@@ -1071,6 +1286,15 @@ document
 document
 .getElementById("descripcion")
 .value="";
+
+
+document
+.querySelectorAll(
+    'input[name="destinoReceta"]'
+)
+.forEach(
+    input => input.checked=false
+);
 
 
 ocultarFormulario();
@@ -1152,6 +1376,76 @@ data.descripcion || ""
 if(descripcion===null)return;
 
 
+/* =====================================
+   DESTINOS
+===================================== */
+
+let destinosActuales = "";
+
+if(Array.isArray(data.distribucion_destinos)){
+
+    destinosActuales =
+    data.distribucion_destinos.join(", ");
+
+}
+
+let destinosTexto =
+
+prompt(
+
+"Destinos de distribución.\n\n" +
+
+"Opciones: Maternidad, Destete, Ceba, Exterior\n\n" +
+
+"Escribe los destinos separados por coma.\n" +
+
+"Ejemplo: Destete, Ceba\n\n" +
+
+"Deja vacío si no tendrá distribución.",
+
+destinosActuales
+
+);
+
+
+if(destinosTexto===null)return;
+
+
+let destinos =
+
+destinosTexto
+.split(",")
+.map(d=>d.trim())
+.filter(Boolean);
+
+
+/* =====================================
+   VALIDAR DESTINOS
+===================================== */
+
+const destinosPermitidos = [
+
+    "Maternidad",
+    "Destete",
+    "Ceba",
+    "Exterior"
+
+];
+
+
+destinos = destinos.filter(
+
+    destino =>
+
+    destinosPermitidos.includes(destino)
+
+);
+
+
+/* =====================================
+   ACTUALIZAR
+===================================== */
+
 const {
 error:errorUpdate
 }=
@@ -1168,7 +1462,9 @@ producto_resultado:producto,
 
 cantidad_resultado:cantidad,
 
-descripcion:descripcion
+descripcion:descripcion,
+
+distribucion_destinos:destinos
 
 })
 
