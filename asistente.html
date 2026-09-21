@@ -1,284 +1,395 @@
 <!DOCTYPE html>
+<html lang="es">
+
 <head>
 
 <meta charset="UTF-8">
 
 <meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+      content="width=device-width, initial-scale=1.0">
 
-<title>ElDesierto - Asistente IA</title>
+<title>Asistente - ElDesierto</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
 
 <style>
 
+/* ==================================================
+   CONFIGURACIÓN GENERAL
+================================================== */
+
 *{
     box-sizing:border-box;
     margin:0;
     padding:0;
-    -webkit-tap-highlight-color:transparent;
 }
 
 body{
-    min-height:100vh;
     font-family:Arial,sans-serif;
-    background:
-    radial-gradient(circle at top,#3b1111 0%,#171717 40%,#050505 100%);
+    min-height:100vh;
     color:white;
+    background:
+        radial-gradient(
+            circle at top,
+            #3b1111 0%,
+            #171717 45%,
+            #050505 100%
+        );
     padding:20px;
 }
 
 .contenedor{
+    width:100%;
     max-width:700px;
     margin:auto;
 }
 
-.cabecera{
+/* ==================================================
+   ENCABEZADO
+================================================== */
+
+header{
     text-align:center;
-    padding:15px 0 25px;
+    margin-bottom:20px;
 }
 
 .logo{
-    font-size:55px;
+    font-size:58px;
     margin-bottom:5px;
 }
 
-.titulo{
-    font-size:30px;
-    font-weight:bold;
+h1{
     color:#ff3030;
-    text-shadow:0 3px 8px rgba(255,0,0,.35);
+    font-size:32px;
+    text-shadow:
+        0 0 10px rgba(255,0,0,.35);
 }
 
 .subtitulo{
-    color:#aaa;
+    color:#bbb;
     margin-top:7px;
-    font-size:14px;
+    font-size:15px;
 }
 
+/* ==================================================
+   BOTÓN VOLVER
+================================================== */
+
 .volver{
+    display:block;
     width:100%;
-    border:0;
-    border-radius:15px;
-    padding:15px;
-    margin-bottom:20px;
-    background:linear-gradient(#ff3030,#b40000);
+    text-align:center;
+    text-decoration:none;
     color:white;
-    font-size:16px;
     font-weight:bold;
+    padding:13px;
+    margin-bottom:18px;
+    border-radius:12px;
+    background:linear-gradient(
+        145deg,
+        #ff3030,
+        #8f0000
+    );
     box-shadow:
-    0 5px 0 #650000,
-    0 8px 18px rgba(0,0,0,.5);
+        0 6px 0 #500000,
+        0 10px 18px rgba(0,0,0,.45);
 }
 
 .volver:active{
     transform:translateY(4px);
-    box-shadow:0 1px 0 #650000;
+    box-shadow:
+        0 2px 0 #500000,
+        0 5px 10px rgba(0,0,0,.45);
 }
 
+/* ==================================================
+   PANEL
+================================================== */
+
 .panel{
-    background:rgba(25,25,25,.95);
-    border:1px solid #333;
-    border-radius:22px;
+    background:rgba(15,15,15,.94);
+    border:1px solid #3a3a3a;
+    border-radius:18px;
     padding:20px;
-    box-shadow:0 15px 40px rgba(0,0,0,.5);
+    box-shadow:
+        0 12px 30px rgba(0,0,0,.6),
+        inset 0 0 25px rgba(255,0,0,.04);
 }
+
+/* ==================================================
+   ESTADO
+================================================== */
 
 .estado{
     text-align:center;
     color:#aaa;
-    font-size:14px;
     margin-bottom:15px;
-    min-height:20px;
 }
 
+/* ==================================================
+   MICRÓFONO
+================================================== */
+
 .mic{
-    width:125px;
-    height:125px;
+    width:130px;
+    height:130px;
     margin:15px auto 20px;
     border-radius:50%;
-    border:0;
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:55px;
+    font-size:58px;
     cursor:pointer;
-    background:linear-gradient(145deg,#ff3434,#9d0000);
+    background:
+        radial-gradient(
+            circle,
+            #ff3030 0%,
+            #a00000 45%,
+            #250000 100%
+        );
     box-shadow:
-    0 8px 0 #5c0000,
-    0 12px 25px rgba(0,0,0,.6);
+        0 0 25px rgba(255,0,0,.35),
+        0 10px 0 #4c0000,
+        0 18px 30px rgba(0,0,0,.65);
+    transition:.2s;
 }
 
 .mic:active{
     transform:translateY(5px);
-    box-shadow:0 3px 0 #5c0000;
+    box-shadow:
+        0 0 15px rgba(255,0,0,.3),
+        0 4px 0 #4c0000;
 }
 
 .mic.escuchando{
-    animation:pulsar 1s infinite;
+    animation:pulso 1s infinite;
 }
 
-@keyframes pulsar{
+@keyframes pulso{
 
     0%{
-        transform:scale(1);
+        box-shadow:
+            0 0 20px rgba(255,0,0,.4),
+            0 10px 0 #4c0000,
+            0 18px 30px rgba(0,0,0,.65);
     }
 
     50%{
-        transform:scale(1.08);
+        box-shadow:
+            0 0 55px rgba(255,0,0,.9),
+            0 10px 0 #4c0000,
+            0 18px 30px rgba(0,0,0,.65);
     }
 
     100%{
-        transform:scale(1);
+        box-shadow:
+            0 0 20px rgba(255,0,0,.4),
+            0 10px 0 #4c0000,
+            0 18px 30px rgba(0,0,0,.65);
     }
 
 }
 
-.ayuda{
-    text-align:center;
-    color:#999;
-    font-size:13px;
-    margin-bottom:20px;
-}
+/* ==================================================
+   ENTRADA
+================================================== */
 
 .entrada{
     display:flex;
-    gap:8px;
+    gap:10px;
+    margin-top:10px;
 }
 
 .entrada input{
     flex:1;
-    padding:15px;
-    border-radius:12px;
+    padding:14px;
+    border-radius:10px;
     border:1px solid #444;
-    outline:none;
     background:#111;
     color:white;
+    outline:none;
     font-size:15px;
 }
 
-.entrada button{
-    border:0;
-    border-radius:12px;
-    padding:0 18px;
-    background:#d71919;
-    color:white;
-    font-size:20px;
+.entrada input:focus{
+    border-color:#ff3030;
 }
+
+.botonEscuchar{
+    border:none;
+    border-radius:10px;
+    padding:14px 18px;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    background:linear-gradient(
+        145deg,
+        #ff3030,
+        #900000
+    );
+    box-shadow:0 4px 0 #4d0000;
+}
+
+.botonEscuchar:active{
+    transform:translateY(3px);
+    box-shadow:0 1px 0 #4d0000;
+}
+
+/* ==================================================
+   RESPUESTA
+================================================== */
 
 .respuesta{
-    margin-top:20px;
-    background:#111;
+    min-height:70px;
+    margin-top:18px;
+    padding:16px;
+    border-radius:12px;
+    background:#0a0a0a;
     border:1px solid #333;
-    border-radius:15px;
-    padding:18px;
+    line-height:1.5;
+    color:#eee;
 }
 
-.etiqueta{
-    color:#ff3434;
+.respuesta strong{
+    color:#ff3030;
+}
+
+/* ==================================================
+   EJEMPLOS
+================================================== */
+
+.tituloEjemplos{
+    color:#ff3030;
+    font-weight:bold;
+    margin:22px 0 10px;
+}
+
+.ejemplos{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+.ejemplo{
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #333;
+    background:#111;
+    color:#ddd;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.ejemplo:hover{
+    border-color:#ff3030;
+    background:#191919;
+}
+
+.ejemplo:active{
+    transform:scale(.98);
+}
+
+/* ==================================================
+   ESTADO DE CUADRAR EL DÍA
+================================================== */
+
+.cuadrar{
+    display:none;
+    margin-top:20px;
+    padding:16px;
+    border-radius:14px;
+    border:1px solid #5b0000;
+    background:
+        linear-gradient(
+            145deg,
+            #1b0909,
+            #0b0b0b
+        );
+}
+
+.cuadrar.activo{
+    display:block;
+}
+
+.cuadrarTitulo{
+    color:#ff3030;
+    font-size:20px;
     font-weight:bold;
     margin-bottom:10px;
 }
 
-#respuestaTexto{
-    color:#eee;
-    line-height:1.6;
-    white-space:pre-line;
-}
-
-/* =====================================================
-   BOTÓN ESCUCHAR
-===================================================== */
-
-.botonEscuchar{
-
-    width:100%;
-    margin-top:15px;
-
-    padding:14px;
-
-    border:1px solid #5a1a1a;
-
-    border-radius:12px;
-
-    background:linear-gradient(
-        145deg,
-        #292929,
-        #151515
-    );
-
-    color:white;
-
-    font-size:16px;
-
-    font-weight:bold;
-
-    cursor:pointer;
-
-}
-
-.botonEscuchar:active{
-
-    transform:scale(.98);
-
-    background:#333;
-
-}
-
-.botonEscuchar.reproduciendo{
-
-    background:#641414;
-
-}
-
-.ejemplos{
-    margin-top:20px;
-}
-
-.ejemplos h3{
+.cuadrarPregunta{
     color:#ddd;
-    font-size:15px;
+    line-height:1.5;
     margin-bottom:12px;
 }
 
-.ejemplo{
-    display:block;
-    width:100%;
-    text-align:left;
-    padding:12px;
-    margin-bottom:8px;
-    border-radius:10px;
-    border:1px solid #333;
-    background:#181818;
-    color:#ccc;
+.cuadrarPasos{
+    color:#999;
+    font-size:13px;
+    line-height:1.7;
 }
 
-.ejemplo:active{
-    background:#292929;
+/* ==================================================
+   RESULTADOS DE CONSULTA
+================================================== */
+
+.dato{
+    padding:10px 0;
+    border-bottom:1px solid #292929;
 }
 
-.cargando{
-    color:#ffb0b0 !important;
+.dato:last-child{
+    border-bottom:none;
 }
 
-.error{
-    color:#ff5c5c !important;
+.datoTitulo{
+    color:#ff3030;
+    font-weight:bold;
 }
 
-.exito{
-    color:#8cff9b !important;
+.lista{
+    margin-top:8px;
+    padding-left:18px;
 }
 
-#textoEscuchado{
-    margin-top:15px;
-    padding:12px;
-    border-radius:10px;
-    background:#181818;
-    border:1px solid #333;
-    color:#bbb;
-    font-size:14px;
-    display:none;
+.lista li{
+    margin:6px 0;
+}
+
+/* ==================================================
+   RESPONSIVE
+================================================== */
+
+@media(max-width:600px){
+
+    body{
+        padding:12px;
+    }
+
+    h1{
+        font-size:28px;
+    }
+
+    .entrada{
+        flex-direction:column;
+    }
+
+    .botonEscuchar{
+        width:100%;
+    }
+
+    .ejemplos{
+        grid-template-columns:1fr;
+    }
+
+    .mic{
+        width:115px;
+        height:115px;
+        font-size:50px;
+    }
+
 }
 
 </style>
@@ -289,151 +400,181 @@ body{
 
 <div class="contenedor">
 
-<header class="cabecera">
+<header>
 
     <div class="logo">🎙️</div>
 
-    <div class="titulo">
-        Asistente IA
-    </div>
+    <h1>Desierto</h1>
 
     <div class="subtitulo">
-        Consulta los datos de ElDesierto por voz
+        Asistente inteligente de ElDesierto
     </div>
 
 </header>
 
 
-<button
-class="volver"
-onclick="window.location.href='menu.html'">
-
-⬅️ Volver al menú
-
-</button>
+<a href="menu.html" class="volver">
+    ⬅ Volver al menú
+</a>
 
 
 <div class="panel">
 
-<div id="estado" class="estado">
-    Preparado para ayudarte
-</div>
+    <div class="estado" id="estado">
+        Listo para ayudarte
+    </div>
 
 
-<button
-id="botonMic"
-class="mic"
-onclick="iniciarEscucha()">
-
-🎙️
-
-</button>
-
-
-<div class="ayuda">
-
-Pulsa el micrófono y habla después del aviso del teléfono.
-
-</div>
+    <div
+        class="mic"
+        id="microfono"
+        onclick="iniciarEscucha()"
+    >
+        🎙️
+    </div>
 
 
-<div id="textoEscuchado">
-    🎧 Escuchando: <span id="textoVoz"></span>
-</div>
+    <div class="entrada">
+
+        <input
+            type="text"
+            id="entradaTexto"
+            placeholder="Escribe o pregúntame algo..."
+            autocomplete="off"
+        >
+
+        <button
+            class="botonEscuchar"
+            onclick="enviarTexto()"
+        >
+            Preguntar
+        </button>
+
+    </div>
 
 
-<div class="entrada">
-
-<input
-id="pregunta"
-type="text"
-placeholder="Ej: ¿Cuánto maíz queda?"
-autocomplete="off">
-
-<button onclick="procesarDesdeTexto()">
-➤
-</button>
-
-</div>
+    <div
+        class="respuesta"
+        id="respuesta"
+    >
+        Hola, soy Desierto. ¿En qué puedo ayudarte?
+    </div>
 
 
-<div class="respuesta">
+    <div
+        class="cuadrar"
+        id="panelCuadrar"
+    >
 
-<div class="etiqueta">
-🤖 ElDesierto
-</div>
+        <div class="cuadrarTitulo">
+            📋 Cuadrando el día
+        </div>
 
-<div id="respuestaTexto">
-Esperando tu pregunta...
-</div>
+        <div
+            class="cuadrarPregunta"
+            id="preguntaCuadrar"
+        ></div>
 
-<button
-id="botonEscuchar"
-class="botonEscuchar"
-onclick="escucharRespuesta()">
+        <div
+            class="cuadrarPasos"
+            id="pasosCuadrar"
+        ></div>
 
-🔊 Escuchar respuesta
-
-</button>
-
-</div>
+    </div>
 
 
-<div class="ejemplos">
+    <div class="tituloEjemplos">
+        Puedes preguntarme:
+    </div>
 
-<h3>Preguntas que puedes hacer</h3>
 
-<button class="ejemplo"
-onclick="usarEjemplo('¿Cuánto maíz queda?')">
-🌽 ¿Cuánto maíz queda?
-</button>
+    <div class="ejemplos">
 
-<button class="ejemplo"
-onclick="usarEjemplo('¿Cuánto pienso hay?')">
-🐷 ¿Cuánto pienso hay?
-</button>
+        <div
+            class="ejemplo"
+            onclick="usarEjemplo('¿Cuánto maíz queda?')"
+        >
+            🌽 ¿Cuánto maíz queda?
+        </div>
 
-<button class="ejemplo"
-onclick="usarEjemplo('¿Cuántos cerdos hay en total?')">
-🐖 ¿Cuántos cerdos hay en total?
-</button>
+        <div
+            class="ejemplo"
+            onclick="usarEjemplo('¿Cuánto pienso hay?')"
+        >
+            🐷 ¿Cuánto pienso hay?
+        </div>
 
-<button class="ejemplo"
-onclick="usarEjemplo('¿Cuánto cemento queda?')">
-🧱 ¿Cuánto cemento queda?
-</button>
+        <div
+            class="ejemplo"
+            onclick="usarEjemplo('¿Cuántos cerdos hay en total?')"
+        >
+            🐖 ¿Cuántos cerdos hay?
+        </div>
 
-<button class="ejemplo"
-onclick="usarEjemplo('¿Cuánto entró hoy?')">
-📥 ¿Cuánto entró hoy?
-</button>
+        <div
+            class="ejemplo"
+            onclick="usarEjemplo('¿Cuánto cemento queda?')"
+        >
+            🧱 ¿Cuánto cemento queda?
+        </div>
 
-<button class="ejemplo"
-onclick="usarEjemplo('¿Cuánto salió hoy?')">
-📤 ¿Cuánto salió hoy?
-</button>
+        <div
+            class="ejemplo"
+            onclick="usarEjemplo('¿Cuánto entró hoy?')"
+        >
+            📥 ¿Cuánto entró hoy?
+        </div>
 
-<button class="ejemplo"
-onclick="usarEjemplo('¿Qué productos hay?')">
-📦 ¿Qué productos hay?
-</button>
+        <div
+            class="ejemplo"
+            onclick="usarEjemplo('¿Cuánto salió hoy?')"
+        >
+            📤 ¿Cuánto salió hoy?
+        </div>
 
-<button class="ejemplo"
-onclick="usarEjemplo('¿Qué materiales de construcción hay?')">
-🧱 ¿Qué materiales de construcción hay?
-</button>
+        <div
+            class="ejemplo"
+            onclick="usarEjemplo('¿Qué productos hay?')"
+        >
+            📦 ¿Qué productos hay?
+        </div>
 
-<button class="ejemplo"
-onclick="usarEjemplo('¿Qué recetas hay?')">
-🍲 ¿Qué recetas hay?
-</button>
+        <div
+            class="ejemplo"
+            onclick="usarEjemplo('¿Qué materiales de construcción hay?')"
+        >
+            🧱 ¿Qué materiales hay?
+        </div>
 
-<button class="ejemplo"
-onclick="usarEjemplo('¿Cuáles fueron las últimas salidas?')">
-📋 ¿Cuáles fueron las últimas salidas?
-</button>
+        <div
+            class="ejemplo"
+            onclick="usarEjemplo('¿Qué recetas hay?')"
+        >
+            📖 ¿Qué recetas hay?
+        </div>
 
-</div>
+        <div
+            class="ejemplo"
+            onclick="usarEjemplo('¿Con qué opciones puedes ayudarme?')"
+        >
+            🤖 ¿Qué puedes hacer?
+        </div>
+
+        <div
+            class="ejemplo"
+            onclick="usarEjemplo('Toda la información del día de hoy')"
+        >
+            📊 Toda la información de hoy
+        </div>
+
+        <div
+            class="ejemplo"
+            onclick="usarEjemplo('Vamos a cuadrar el día')"
+        >
+            📋 Cuadrar el día
+        </div>
+
+    </div>
 
 </div>
 
@@ -442,496 +583,384 @@ onclick="usarEjemplo('¿Cuáles fueron las últimas salidas?')">
 
 <script>
 
-/* =====================================================
+/* ==================================================
    VARIABLES
-===================================================== */
+================================================== */
 
 let reconocimiento = null;
-
 let escuchando = false;
-
 let ultimaRespuesta = "";
 
-
-/* =====================================================
-   ELEMENTOS
-===================================================== */
+let estadoCuadrar = null;
 
 const estado =
-document.getElementById("estado");
+    document.getElementById("estado");
 
-const pregunta =
-document.getElementById("pregunta");
+const microfono =
+    document.getElementById("microfono");
 
-const botonMic =
-document.getElementById("botonMic");
+const entradaTexto =
+    document.getElementById("entradaTexto");
 
-const textoEscuchado =
-document.getElementById("textoEscuchado");
+const respuesta =
+    document.getElementById("respuesta");
 
-const textoVoz =
-document.getElementById("textoVoz");
+const panelCuadrar =
+    document.getElementById("panelCuadrar");
 
-const respuestaTexto =
-document.getElementById("respuestaTexto");
+const preguntaCuadrar =
+    document.getElementById("preguntaCuadrar");
 
-const botonEscuchar =
-document.getElementById("botonEscuchar");
+const pasosCuadrar =
+    document.getElementById("pasosCuadrar");
 
 
-/* =====================================================
-   NORMALIZAR
-===================================================== */
+/* ==================================================
+   NORMALIZAR TEXTO
+================================================== */
 
 function normalizar(texto){
 
-    return texto
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g,"")
-    .trim();
+    return String(texto || "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g,"")
+        .replace(/[¿?¡!.,;:()[\]{}"']/g," ")
+        .replace(/\s+/g," ")
+        .trim();
 
 }
 
 
-/* =====================================================
-   LIMPIAR TEXTO PARA AUDIO
-===================================================== */
+/* ==================================================
+   NÚMEROS
+================================================== */
+
+function formatearNumero(numero){
+
+    const n = Number(numero);
+
+    if(!Number.isFinite(n)){
+        return "0";
+    }
+
+    return n.toLocaleString(
+        "es-ES",
+        {
+            maximumFractionDigits:2
+        }
+    );
+
+}
+
+
+/* ==================================================
+   VOZ
+================================================== */
 
 function limpiarTextoParaVoz(texto){
 
-    let limpio = String(texto || "");
-
-
-    /*
-       Eliminamos emojis y algunos símbolos
-       que pueden provocar problemas
-       en ciertos motores TTS de Android.
-    */
-
-    limpio = limpio.replace(
-        /[\u{1F300}-\u{1FAFF}]/gu,
-        ""
-    );
-
-    limpio = limpio.replace(
-        /[\u{2600}-\u{27BF}]/gu,
-        ""
-    );
-
-
-    limpio = limpio.replace(
-        /[•▪️▫️➡️⬅️➜➤]/gu,
-        ""
-    );
-
-
-    /*
-       Limpiar espacios repetidos
-    */
-
-    limpio = limpio.replace(
-        /\s+/g,
-        " "
-    );
-
-
-    return limpio.trim();
-
-}
-
-
-/* =====================================================
-   DIVIDIR TEXTO PARA AUDIO
-===================================================== */
-
-function dividirTextoVoz(texto){
-
-    const maximo = 160;
-
-    const partes = [];
-
-    let restante =
-    texto.trim();
-
-
-    while(restante.length > maximo){
-
-        let corte =
-        restante.lastIndexOf(
-            " ",
-            maximo
-        );
-
-
-        if(corte < 60){
-
-            corte = maximo;
-
-        }
-
-
-        partes.push(
-            restante
-            .slice(0,corte)
-            .trim()
-        );
-
-
-        restante =
-        restante
-        .slice(corte)
+    return String(texto || "")
+        .replace(/<[^>]*>/g," ")
+        .replace(/\*\*/g,"")
+        .replace(/[*_#]/g,"")
+        .replace(/\s+/g," ")
         .trim();
 
-    }
-
-
-    if(restante){
-
-        partes.push(restante);
-
-    }
-
-
-    return partes;
-
 }
 
-
-/* =====================================================
-   DETENER AUDIO
-===================================================== */
 
 function detenerAudio(){
 
-    if("speechSynthesis" in window){
+    try{
 
-        window.speechSynthesis.cancel();
+        if("speechSynthesis" in window){
+            window.speechSynthesis.cancel();
+        }
 
-    }
-
-
-    botonEscuchar.innerText =
-    "🔊 Escuchar respuesta";
-
-    botonEscuchar.classList.remove(
-        "reproduciendo"
-    );
+    }catch(error){}
 
 }
 
 
-/* =====================================================
-   ESCUCHAR RESPUESTA
-===================================================== */
+function dividirTextoVoz(texto){
 
-function escucharRespuesta(){
+    const limpio =
+        limpiarTextoParaVoz(texto);
 
-    if(!ultimaRespuesta){
-        estado.innerText =
-        "⚠️ No hay ninguna respuesta para escuchar.";
+    if(!limpio){
+        return [];
+    }
+
+    return limpio
+        .split(/(?<=[.!?])\s+/)
+        .filter(Boolean);
+
+}
+
+
+function escucharRespuesta(texto){
+
+    detenerAudio();
+
+    if(!("speechSynthesis" in window)){
         return;
     }
 
-    const synth = window.speechSynthesis;
+    const partes =
+        dividirTextoVoz(texto);
 
-    const mensaje =
-        new SpeechSynthesisUtterance(ultimaRespuesta);
+    if(!partes.length){
+        return;
+    }
 
-    mensaje.lang = "es-US";
-    mensaje.rate = 0.9;
-    mensaje.pitch = 1;
-    mensaje.volume = 1;
+    let indice = 0;
 
-    mensaje.onstart = function(){
+    function hablarSiguiente(){
 
-        botonEscuchar.classList.add("reproduciendo");
+        if(indice >= partes.length){
+            return;
+        }
 
-        estado.innerText =
-        "🔊 Reproduciendo respuesta...";
+        const mensaje =
+            new SpeechSynthesisUtterance(
+                partes[indice]
+            );
 
-    };
+        mensaje.lang = "es-ES";
+        mensaje.rate = 0.9;
+        mensaje.pitch = 1;
+        mensaje.volume = 1;
 
-    mensaje.onend = function(){
+        mensaje.onend = function(){
+            indice++;
+            hablarSiguiente();
+        };
 
-        botonEscuchar.classList.remove("reproduciendo");
+        mensaje.onerror = function(){
+            indice++;
+            hablarSiguiente();
+        };
 
-        estado.innerText =
-        "✅ Respuesta reproducida.";
+        window.speechSynthesis.speak(mensaje);
 
-    };
+    }
 
-    mensaje.onerror = function(event){
-
-        botonEscuchar.classList.remove("reproduciendo");
-
-        console.error(
-            "ERROR TTS:",
-            event.error,
-            event
-        );
-
-        estado.innerText =
-        "❌ Error de voz: " +
-        event.error;
-
-    };
-
-    synth.cancel();
-    synth.resume();
-
-    setTimeout(function(){
-
-        synth.speak(mensaje);
-
-    },300);
+    hablarSiguiente();
 
 }
 
 
-/* =====================================================
+/* ==================================================
+   MOSTRAR RESPUESTA
+================================================== */
+
+function mostrarRespuesta(texto, hablar=true){
+
+    ultimaRespuesta = texto;
+
+    respuesta.innerHTML =
+        texto;
+
+    if(hablar){
+        escucharRespuesta(texto);
+    }
+
+}
+
+
+/* ==================================================
    SESIÓN
-===================================================== */
+================================================== */
 
 async function verificarSesion(){
 
-    const {data,error} =
-    await clienteSupabase.auth.getSession();
+    try{
 
-    if(error){
+        const {
+            data,
+            error
+        } =
+        await clienteSupabase
+            .auth
+            .getSession();
+
+        if(error){
+            console.error(error);
+            return false;
+        }
+
+        if(!data.session){
+
+            window.location.href =
+                "login.html";
+
+            return false;
+        }
+
+        return true;
+
+    }catch(error){
 
         console.error(error);
-
-        return;
-
-    }
-
-    if(!data.session){
-
-        window.location.href="login.html";
-
-    }
-
-}
-
-
-/* =====================================================
-   PREPARAR RECONOCIMIENTO
-===================================================== */
-
-function prepararReconocimiento(){
-
-    const API =
-    window.SpeechRecognition ||
-    window.webkitSpeechRecognition;
-
-
-    if(!API){
-
-        estado.innerText =
-        "⚠️ El navegador no admite reconocimiento de voz.";
-
-        botonMic.disabled=true;
-
-        botonMic.style.opacity="0.5";
-
         return false;
 
     }
 
-
-    reconocimiento = new API();
-
-
-    reconocimiento.lang="es-ES";
-
-    reconocimiento.continuous=false;
-
-    reconocimiento.interimResults=true;
-
-    reconocimiento.maxAlternatives=1;
+}
 
 
-    reconocimiento.onstart=function(){
+/* ==================================================
+   RECONOCIMIENTO DE VOZ
+================================================== */
 
-        escuchando=true;
+function prepararReconocimiento(){
 
-        botonMic.classList.add("escuchando");
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
 
-        botonMic.innerText="🔴";
+    if(!SpeechRecognition){
 
-        estado.innerText=
-        "🎙️ Escuchando... habla ahora";
+        estado.textContent =
+            "El reconocimiento de voz no está disponible. Puedes escribir.";
 
-        textoEscuchado.style.display="block";
+        return;
 
-        textoVoz.innerText="";
+    }
+
+    reconocimiento =
+        new SpeechRecognition();
+
+    reconocimiento.lang = "es-ES";
+
+    reconocimiento.continuous = false;
+
+    reconocimiento.interimResults = true;
+
+    reconocimiento.maxAlternatives = 1;
+
+
+    reconocimiento.onstart = function(){
+
+        escuchando = true;
+
+        microfono.classList.add(
+            "escuchando"
+        );
+
+        estado.textContent =
+            "Escuchando...";
 
     };
 
 
-    reconocimiento.onresult=function(event){
+    reconocimiento.onresult = function(event){
 
-        let textoFinal="";
-
-        let textoTemporal="";
-
+        let textoFinal = "";
 
         for(
-            let i=event.resultIndex;
-            i<event.results.length;
+            let i = event.resultIndex;
+            i < event.results.length;
             i++
         ){
 
             const texto =
-            event.results[i][0].transcript;
-
+                event.results[i][0].transcript;
 
             if(event.results[i].isFinal){
-
                 textoFinal += texto;
-
-            }else{
-
-                textoTemporal += texto;
-
             }
 
         }
 
+        if(textoFinal.trim()){
 
-        const mostrado =
-        textoFinal || textoTemporal;
+            entradaTexto.value =
+                textoFinal.trim();
 
-
-        textoVoz.innerText=mostrado;
-
-
-        if(textoFinal){
-
-            pregunta.value=
-            textoFinal.trim();
-
-            estado.innerText=
-            "✅ Pregunta recibida";
-
-            setTimeout(function(){
-
-                procesarPregunta(
-                    textoFinal.trim()
-                );
-
-            },300);
+            procesarPregunta(
+                textoFinal.trim()
+            );
 
         }
 
     };
 
 
-    reconocimiento.onerror=function(event){
+    reconocimiento.onerror = function(event){
 
         console.error(
-            "Error de reconocimiento:",
+            "Error reconocimiento:",
             event.error
         );
 
+        if(event.error === "not-allowed"){
 
-        escuchando=false;
+            estado.textContent =
+                "Debes permitir el uso del micrófono.";
 
-        botonMic.classList.remove("escuchando");
+        }else if(event.error === "no-speech"){
 
-        botonMic.innerText="🎙️";
+            estado.textContent =
+                "No escuché nada. Puedes intentarlo otra vez.";
 
+        }else if(event.error === "audio-capture"){
 
-        if(event.error==="not-allowed"){
+            estado.textContent =
+                "No se encontró el micrófono.";
 
-            estado.innerText=
-            "❌ Permiso de micrófono denegado.";
+        }else{
 
-            respuestaTexto.className="error";
-
-            respuestaTexto.innerText=
-            "Activa el permiso del micrófono para este sitio en Chrome.";
-
-        }
-
-        else if(event.error==="no-speech"){
-
-            estado.innerText=
-            "⚠️ No detecté voz. Acércate al teléfono y vuelve a intentarlo.";
-
-        }
-
-        else if(event.error==="audio-capture"){
-
-            estado.innerText=
-            "❌ No se encontró el micrófono.";
-
-        }
-
-        else if(event.error==="network"){
-
-            estado.innerText=
-            "❌ Error de conexión del reconocimiento de voz.";
-
-        }
-
-        else{
-
-            estado.innerText=
-            "⚠️ Error de voz: "+event.error;
+            estado.textContent =
+                "No pude escuchar. Puedes escribir la pregunta.";
 
         }
 
     };
 
 
-    reconocimiento.onend=function(){
+    reconocimiento.onend = function(){
 
-        escuchando=false;
+        escuchando = false;
 
-        botonMic.classList.remove("escuchando");
+        microfono.classList.remove(
+            "escuchando"
+        );
 
-        botonMic.innerText="🎙️";
+        if(
+            estado.textContent ===
+            "Escuchando..."
+        ){
+
+            estado.textContent =
+                "Listo para ayudarte";
+
+        }
 
     };
-
-
-    return true;
 
 }
 
-
-/* =====================================================
-   INICIAR ESCUCHA
-===================================================== */
 
 function iniciarEscucha(){
 
     if(!reconocimiento){
 
-        const preparado =
-        prepararReconocimiento();
+        mostrarRespuesta(
+            "El reconocimiento de voz no está disponible en este dispositivo. Puedes escribir la pregunta.",
+            false
+        );
 
-        if(!preparado)
-            return;
-
+        return;
     }
-
 
     if(escuchando){
 
         reconocimiento.stop();
 
         return;
-
     }
-
-
-    textoVoz.innerText="";
-
-    textoEscuchado.style.display="block";
-
 
     try{
 
@@ -941,174 +970,2456 @@ function iniciarEscucha(){
 
         console.error(error);
 
-        reconocimiento=null;
+    }
 
-        prepararReconocimiento();
+}
 
-        try{
 
-            reconocimiento.start();
+/* ==================================================
+   TEXTO
+================================================== */
 
-        }catch(e){
+function enviarTexto(){
 
-            estado.innerText=
-            "❌ No se pudo iniciar el micrófono.";
+    const texto =
+        entradaTexto.value.trim();
+
+    if(!texto){
+        return;
+    }
+
+    procesarPregunta(texto);
+
+}
+
+
+entradaTexto.addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key === "Enter"){
+
+            event.preventDefault();
+
+            enviarTexto();
+
+        }
+
+    }
+);
+
+
+function usarEjemplo(texto){
+
+    entradaTexto.value = texto;
+
+    procesarPregunta(texto);
+
+}
+
+
+/* ==================================================
+   RANGO DE FECHAS
+================================================== */
+
+function inicioFinHoy(){
+
+    const ahora = new Date();
+
+    const inicio =
+        new Date(
+            ahora.getFullYear(),
+            ahora.getMonth(),
+            ahora.getDate(),
+            0,0,0,0
+        );
+
+    const fin =
+        new Date(
+            ahora.getFullYear(),
+            ahora.getMonth(),
+            ahora.getDate(),
+            23,59,59,999
+        );
+
+    return {
+        inicio,
+        fin
+    };
+
+}
+
+
+function rangoMesActual(){
+
+    const ahora = new Date();
+
+    return {
+        inicio:
+            new Date(
+                ahora.getFullYear(),
+                ahora.getMonth(),
+                1,
+                0,0,0,0
+            ),
+
+        fin:
+            new Date(
+                ahora.getFullYear(),
+                ahora.getMonth()+1,
+                0,
+                23,59,59,999
+            )
+    };
+
+}
+
+
+function fechaISO(fecha){
+
+    return fecha.toISOString();
+
+}
+
+
+/* ==================================================
+   DETECTAR FECHA
+================================================== */
+
+function obtenerRangoFecha(texto){
+
+    const t =
+        normalizar(texto);
+
+    const ahora = new Date();
+
+
+    if(
+        t.includes("hoy") ||
+        t.includes("dia de hoy")
+    ){
+
+        return inicioFinHoy();
+
+    }
+
+
+    if(t.includes("ayer")){
+
+        const inicio =
+            new Date(
+                ahora.getFullYear(),
+                ahora.getMonth(),
+                ahora.getDate()-1,
+                0,0,0,0
+            );
+
+        const fin =
+            new Date(
+                ahora.getFullYear(),
+                ahora.getMonth(),
+                ahora.getDate()-1,
+                23,59,59,999
+            );
+
+        return {
+            inicio,
+            fin
+        };
+
+    }
+
+
+    if(
+        t.includes("este mes") ||
+        t.includes("mes actual")
+    ){
+
+        return rangoMesActual();
+
+    }
+
+
+    const meses = {
+        enero:0,
+        febrero:1,
+        marzo:2,
+        abril:3,
+        mayo:4,
+        junio:5,
+        julio:6,
+        agosto:7,
+        septiembre:8,
+        setiembre:8,
+        octubre:9,
+        noviembre:10,
+        diciembre:11
+    };
+
+
+    for(const nombre in meses){
+
+        if(t.includes(nombre)){
+
+            let año =
+                ahora.getFullYear();
+
+            const match =
+                t.match(
+                    new RegExp(
+                        nombre +
+                        "\\s+(\\d{4})"
+                    )
+                );
+
+            if(match){
+                año =
+                    Number(match[1]);
+            }
+
+            return {
+
+                inicio:
+                    new Date(
+                        año,
+                        meses[nombre],
+                        1,
+                        0,0,0,0
+                    ),
+
+                fin:
+                    new Date(
+                        año,
+                        meses[nombre]+1,
+                        0,
+                        23,59,59,999
+                    )
+
+            };
 
         }
 
     }
 
-}
+
+    const match =
+        t.match(
+            /(\d{1,2})[\/\-](\d{1,2})(?:[\/\-](\d{4}))?/
+        );
 
 
-/* =====================================================
-   EJEMPLOS
-===================================================== */
+    if(match){
 
-function usarEjemplo(texto){
+        const dia =
+            Number(match[1]);
 
-    pregunta.value=texto;
+        const mes =
+            Number(match[2])-1;
 
-    procesarPregunta(texto);
+        const año =
+            match[3]
+            ? Number(match[3])
+            : ahora.getFullYear();
 
-}
+        return {
 
+            inicio:
+                new Date(
+                    año,
+                    mes,
+                    dia,
+                    0,0,0,0
+                ),
 
-/* =====================================================
-   TEXTO
-===================================================== */
+            fin:
+                new Date(
+                    año,
+                    mes,
+                    dia,
+                    23,59,59,999
+                )
 
-function procesarDesdeTexto(){
-
-    const texto =
-    pregunta.value.trim();
-
-    if(!texto)
-        return;
-
-    procesarPregunta(texto);
-
-}
-
-
-pregunta.addEventListener(
-"keydown",
-function(event){
-
-    if(event.key==="Enter"){
-
-        procesarDesdeTexto();
+        };
 
     }
 
-});
+
+    return null;
+
+}
 
 
-/* =====================================================
+/* ==================================================
    PRODUCTOS
-===================================================== */
+================================================== */
 
 async function obtenerProductos(){
 
-    const {data,error} =
+    const {
+        data,
+        error
+    } =
     await clienteSupabase
-    .from("productos")
-    .select("Identificación,Nombre,Unidad,Cantidad")
-    .order("Nombre");
+        .from("productos")
+        .select(
+            '"Identificación","Nombre","Unidad","Cantidad"'
+        )
+        .order(
+            '"Nombre"',
+            {
+                ascending:true
+            }
+        );
 
 
-    if(error)
-        throw error;
+    if(error){
 
+        console.error(
+            "Error productos:",
+            error
+        );
+
+        return [];
+
+    }
 
     return data || [];
 
 }
 
 
-/* =====================================================
-   MATERIALES CONSTRUCCIÓN
-===================================================== */
+/* ==================================================
+   MATERIALES
+================================================== */
 
 async function obtenerMaterialesConstruccion(){
 
-    const {data,error} =
+    const {
+        data,
+        error
+    } =
     await clienteSupabase
-    .from("materiales_construccion")
-    .select("id,Nombre,Unidad,Cantidad")
-    .order("Nombre");
+        .from("materiales_construccion")
+        .select(
+            "id,Nombre,Unidad,Cantidad"
+        )
+        .order(
+            "Nombre",
+            {
+                ascending:true
+            }
+        );
 
 
-    if(error)
-        throw error;
+    if(error){
 
+        console.error(
+            "Error materiales:",
+            error
+        );
+
+        return [];
+
+    }
 
     return data || [];
 
 }
 
 
-/* =====================================================
-   BUSCAR PRODUCTO
-===================================================== */
+/* ==================================================
+   PRODUCTO POR NOMBRE
+================================================== */
 
-function buscarProducto(texto,productos){
+function equivalenciasProducto(texto){
 
-    const q=normalizar(texto);
+    const t =
+        normalizar(texto);
 
+    const mapa = {
 
-    let producto =
-    productos.find(p => {
+        maiz:[
+            "maiz",
+            "maz"
+        ],
 
-        const nombre =
-        normalizar(p.Nombre || "");
+        soya:[
+            "soya",
+            "soja"
+        ],
 
-        return nombre &&
-        q.includes(nombre);
+        cebada:[
+            "cebada"
+        ],
 
-    });
+        salvado:[
+            "salvado"
+        ],
 
+        sal:[
+            "sal"
+        ],
 
-    if(producto)
-        return producto;
+        calcio:[
+            "calcio"
+        ],
 
+        premezcla:[
+            "premezcla"
+        ],
 
-    const equivalencias={
+        vitamina:[
+            "vitamina",
+            "vitaminas"
+        ],
 
-        "maiz":"maiz",
-        "maz":"maiz",
-        "soya":"soya",
-        "soja":"soya",
-        "cebada":"cebada",
-        "salvado":"salvado",
-        "sal":"sal",
-        "calcio":"calcio",
-        "premezcla":"premezcla",
-        "miel":"miel",
-        "palmiche":"palmiche",
-        "chicharo":"chicharo",
-        "pienso":"pienso"
+        miel:[
+            "miel"
+        ],
+
+        palmiche:[
+            "palmiche"
+        ],
+
+        chicharo:[
+            "chicharo",
+            "chicharos"
+        ],
+
+        pienso:[
+            "pienso"
+        ],
+
+        harina:[
+            "harina"
+        ]
 
     };
 
 
-    for(const palabra in equivalencias){
+    for(const clave in mapa){
 
-        if(q.includes(palabra)){
+        if(mapa[clave].includes(t)){
+            return clave;
+        }
 
-            const objetivo =
-            equivalencias[palabra];
+    }
+
+    return t;
+
+}
 
 
-            producto =
-            productos.find(p =>
-                normalizar(p.Nombre || "")
-                .includes(objetivo)
+function buscarProducto(productos,nombre){
+
+    const buscado =
+        equivalenciasProducto(nombre);
+
+
+    return productos.find(
+        p =>
+            equivalenciasProducto(
+                p.Nombre
+            ) === buscado
+    );
+
+}
+
+
+/* ==================================================
+   MATERIAL POR NOMBRE
+================================================== */
+
+function buscarMaterial(materiales,nombre){
+
+    const buscado =
+        normalizar(nombre);
+
+    return materiales.find(
+        m =>
+            normalizar(m.Nombre)
+                .includes(buscado) ||
+            buscado.includes(
+                normalizar(m.Nombre)
+            )
+    );
+
+}
+
+
+/* ==================================================
+   MOVIMIENTOS POR FECHA
+================================================== */
+
+async function obtenerMovimientosRango(rango){
+
+    if(!rango){
+        return [];
+    }
+
+    const {
+        data,
+        error
+    } =
+    await clienteSupabase
+        .from("movimientos")
+        .select(
+            "Fecha,Producto,Tipo,Cantidad,Usuario,Observación,Numero_operacion"
+        )
+        .gte(
+            "Fecha",
+            fechaISO(rango.inicio)
+        )
+        .lte(
+            "Fecha",
+            fechaISO(rango.fin)
+        )
+        .order(
+            "Fecha",
+            {
+                ascending:false
+            }
+        );
+
+
+    if(error){
+
+        console.error(
+            "Error movimientos:",
+            error
+        );
+
+        return [];
+
+    }
+
+    return data || [];
+
+}
+
+
+/* ==================================================
+   MOVIMIENTOS DE NAVES
+================================================== */
+
+async function obtenerMovimientosNavesRango(rango){
+
+    if(!rango){
+        return [];
+    }
+
+    const {
+        data,
+        error
+    } =
+    await clienteSupabase
+        .from("movimientos_naves")
+        .select("*")
+        .gte(
+            "fecha",
+            fechaISO(rango.inicio)
+        )
+        .lte(
+            "fecha",
+            fechaISO(rango.fin)
+        )
+        .order(
+            "fecha",
+            {
+                ascending:false
+            }
+        );
+
+
+    if(error){
+
+        console.error(
+            "Error movimientos naves:",
+            error
+        );
+
+        return [];
+
+    }
+
+    return data || [];
+
+}
+
+
+/* ==================================================
+   MOVIMIENTOS DESTETE
+================================================== */
+
+async function obtenerMovimientosDesteteRango(rango){
+
+    if(!rango){
+        return [];
+    }
+
+    const {
+        data,
+        error
+    } =
+    await clienteSupabase
+        .from("movimientos_destete")
+        .select("*")
+        .gte(
+            "fecha",
+            fechaISO(rango.inicio)
+        )
+        .lte(
+            "fecha",
+            fechaISO(rango.fin)
+        )
+        .order(
+            "fecha",
+            {
+                ascending:false
+            }
+        );
+
+
+    if(error){
+
+        console.error(
+            "Error movimientos destete:",
+            error
+        );
+
+        return [];
+
+    }
+
+    return data || [];
+
+}
+
+
+/* ==================================================
+   DISTRIBUCIONES
+================================================== */
+
+async function obtenerDistribucionesRango(rango){
+
+    if(!rango){
+        return [];
+    }
+
+    const {
+        data,
+        error
+    } =
+    await clienteSupabase
+        .from("movimientos_distribucion")
+        .select(
+            "id,fecha,distribucion,cantidad,usuario"
+        )
+        .gte(
+            "fecha",
+            fechaISO(rango.inicio)
+        )
+        .lte(
+            "fecha",
+            fechaISO(rango.fin)
+        )
+        .order(
+            "fecha",
+            {
+                ascending:false
+            }
+        );
+
+
+    if(error){
+
+        console.error(
+            "Error distribución:",
+            error
+        );
+
+        return [];
+
+    }
+
+    return data || [];
+
+}
+
+
+/* ==================================================
+   PRODUCTOS ELABORADOS
+================================================== */
+
+async function obtenerProductosElaborados(){
+
+    const {
+        data,
+        error
+    } =
+    await clienteSupabase
+        .from("productos_elaborados")
+        .select(
+            "id,Nombre,Unidad,Cantidad"
+        )
+        .order(
+            "Nombre",
+            {
+                ascending:true
+            }
+        );
+
+
+    if(error){
+
+        console.error(
+            "Error productos elaborados:",
+            error
+        );
+
+        return [];
+
+    }
+
+    return data || [];
+
+}
+
+
+/* ==================================================
+   RECETAS
+================================================== */
+
+async function obtenerRecetas(){
+
+    const {
+        data,
+        error
+    } =
+    await clienteSupabase
+        .from("recetas")
+        .select(
+            "id,nombre,producto_resultado,cantidad_resultado,descripcion,usuario,fecha"
+        )
+        .order(
+            "nombre",
+            {
+                ascending:true
+            }
+        );
+
+
+    if(error){
+
+        console.error(
+            "Error recetas:",
+            error
+        );
+
+        return [];
+
+    }
+
+    return data || [];
+
+}
+
+
+/* ==================================================
+   CERDOS
+================================================== */
+
+async function obtenerCerdos(){
+
+    const {
+        data,
+        error
+    } =
+    await clienteSupabase
+        .from("cuartones")
+        .select(
+            "id,nave_id,numero,cantidad_cerdos"
+        );
+
+
+    if(error){
+
+        console.error(
+            "Error cuartones:",
+            error
+        );
+
+        return [];
+
+    }
+
+    return data || [];
+
+}
+
+
+/* ==================================================
+   NAVES
+================================================== */
+
+async function obtenerNaves(){
+
+    const {
+        data,
+        error
+    } =
+    await clienteSupabase
+        .from("naves")
+        .select(
+            "id,nombre"
+        )
+        .order(
+            "id",
+            {
+                ascending:true
+            }
+        );
+
+
+    if(error){
+
+        console.error(
+            "Error naves:",
+            error
+        );
+
+        return [];
+
+    }
+
+    return data || [];
+
+}
+
+
+/* ==================================================
+   USUARIO ACTUAL
+================================================== */
+
+async function obtenerUsuario(){
+
+    try{
+
+        const {
+            data
+        } =
+        await clienteSupabase
+            .auth
+            .getSession();
+
+        if(
+            data &&
+            data.session &&
+            data.session.user
+        ){
+
+            return (
+                data.session.user.email ||
+                data.session.user.id
+            );
+
+        }
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+    return "Asistente Desierto";
+
+}
+
+
+/* ==================================================
+   CONSULTAR PRODUCTO
+================================================== */
+
+async function consultarProducto(nombre){
+
+    const productos =
+        await obtenerProductos();
+
+    const producto =
+        buscarProducto(
+            productos,
+            nombre
+        );
+
+
+    if(!producto){
+
+        return "No hay datos registrados.";
+
+    }
+
+
+    return (
+        `<strong>${producto.Nombre}</strong>: ` +
+        `${formatearNumero(producto.Cantidad)} ` +
+        `${producto.Unidad || ""}.`
+    );
+
+}
+
+
+/* ==================================================
+   LISTA DE PRODUCTOS
+================================================== */
+
+async function consultarListaProductos(){
+
+    const productos =
+        await obtenerProductos();
+
+
+    if(!productos.length){
+
+        return "No hay datos registrados.";
+
+    }
+
+
+    let html =
+        "<strong>Productos registrados:</strong><ul class='lista'>";
+
+
+    productos.forEach(p => {
+
+        html +=
+            `<li>${p.Nombre}: ` +
+            `${formatearNumero(p.Cantidad)} ` +
+            `${p.Unidad || ""}</li>`;
+
+    });
+
+
+    html += "</ul>";
+
+    return html;
+
+}
+
+
+/* ==================================================
+   LISTA MATERIALES
+================================================== */
+
+async function consultarListaMateriales(){
+
+    const materiales =
+        await obtenerMaterialesConstruccion();
+
+
+    if(!materiales.length){
+
+        return "No hay datos registrados.";
+
+    }
+
+
+    let html =
+        "<strong>Materiales de construcción:</strong><ul class='lista'>";
+
+
+    materiales.forEach(m => {
+
+        html +=
+            `<li>${m.Nombre}: ` +
+            `${formatearNumero(m.Cantidad)} ` +
+            `${m.Unidad || ""}</li>`;
+
+    });
+
+
+    html += "</ul>";
+
+    return html;
+
+}
+
+
+/* ==================================================
+   RECETAS
+================================================== */
+
+async function consultarRecetas(){
+
+    const recetas =
+        await obtenerRecetas();
+
+
+    if(!recetas.length){
+
+        return "No hay datos registrados.";
+
+    }
+
+
+    let html =
+        "<strong>Recetas registradas:</strong><ul class='lista'>";
+
+
+    recetas.forEach(r => {
+
+        html +=
+            `<li><strong>${r.nombre}</strong>` +
+            ` → ${r.producto_resultado || ""}` +
+            ` (${formatearNumero(r.cantidad_resultado)} kg)</li>`;
+
+    });
+
+
+    html += "</ul>";
+
+    return html;
+
+}
+
+
+/* ==================================================
+   CERDOS TOTAL
+================================================== */
+
+async function consultarCerdosTotal(){
+
+    const cuartones =
+        await obtenerCerdos();
+
+    const naves =
+        await obtenerNaves();
+
+
+    if(!cuartones.length){
+
+        return "No hay datos registrados.";
+
+    }
+
+
+    let total = 0;
+
+    cuartones.forEach(c => {
+
+        total +=
+            Number(c.cantidad_cerdos) || 0;
+
+    });
+
+
+    let html =
+        `<strong>Total de cerdos: ` +
+        `${formatearNumero(total)}</strong>`;
+
+
+    for(const nave of naves){
+
+        const deNave =
+            cuartones.filter(
+                c =>
+                    Number(c.nave_id) ===
+                    Number(nave.id)
+            );
+
+        const cantidad =
+            deNave.reduce(
+                (s,c) =>
+                    s +
+                    (Number(c.cantidad_cerdos)||0),
+                0
+            );
+
+        html +=
+            `<div class="dato">` +
+            `<span class="datoTitulo">${nave.nombre}</span>: ` +
+            `${formatearNumero(cantidad)} cerdos` +
+            `</div>`;
+
+    }
+
+
+    return html;
+
+}
+
+
+/* ==================================================
+   DESTETE
+================================================== */
+
+async function consultarDestete(){
+
+    const {
+        data,
+        error
+    } =
+    await clienteSupabase
+        .from("destete_filas")
+        .select(
+            "id,fila,cantidad_cerdos"
+        )
+        .order(
+            "id",
+            {
+                ascending:true
+            }
+        );
+
+
+    if(error){
+
+        console.error(error);
+
+        return "No hay datos registrados.";
+
+    }
+
+
+    if(!data || !data.length){
+
+        return "No hay datos registrados.";
+
+    }
+
+
+    const total =
+        data.reduce(
+            (s,f) =>
+                s +
+                (Number(f.cantidad_cerdos)||0),
+            0
+        );
+
+
+    let html =
+        `<strong>Total Destete: ${formatearNumero(total)} cerdos</strong>`;
+
+
+    data.forEach(f => {
+
+        html +=
+            `<div class="dato">` +
+            `<span class="datoTitulo">${f.fila}</span>: ` +
+            `${formatearNumero(f.cantidad_cerdos)} cerdos` +
+            `</div>`;
+
+    });
+
+
+    return html;
+
+}
+
+
+/* ==================================================
+   PRODUCTOS ELABORADOS
+================================================== */
+
+async function consultarProductosElaborados(){
+
+    const data =
+        await obtenerProductosElaborados();
+
+
+    if(!data.length){
+
+        return "No hay datos registrados.";
+
+    }
+
+
+    let html =
+        "<strong>Productos elaborados:</strong><ul class='lista'>";
+
+
+    data.forEach(p => {
+
+        html +=
+            `<li>${p.Nombre}: ` +
+            `${formatearNumero(p.Cantidad)} ` +
+            `${p.Unidad || ""}</li>`;
+
+    });
+
+
+    html += "</ul>";
+
+    return html;
+
+}
+
+
+/* ==================================================
+   ENTRADAS Y SALIDAS
+================================================== */
+
+function esEntrada(m){
+
+    const tipo =
+        normalizar(m.Tipo);
+
+    return (
+        tipo.includes("entrada") ||
+        tipo.includes("fabricacion")
+    );
+
+}
+
+
+function esSalida(m){
+
+    const tipo =
+        normalizar(m.Tipo);
+
+    return (
+        tipo.includes("salida") ||
+        tipo.includes("venta") ||
+        tipo.includes("consumo")
+    );
+
+}
+
+
+async function consultarMovimientosAlimento(rango){
+
+    const movimientos =
+        await obtenerMovimientosRango(
+            rango
+        );
+
+
+    if(!movimientos.length){
+
+        return {
+            entradas:0,
+            salidas:0,
+            movimientos:[]
+        };
+
+    }
+
+
+    let entradas = 0;
+    let salidas = 0;
+
+
+    movimientos.forEach(m => {
+
+        const cantidad =
+            Number(m.Cantidad) || 0;
+
+
+        if(esEntrada(m)){
+            entradas += cantidad;
+        }
+
+        if(esSalida(m)){
+            salidas += cantidad;
+        }
+
+    });
+
+
+    return {
+        entradas,
+        salidas,
+        movimientos
+    };
+
+}
+
+
+/* ==================================================
+   INFORMACIÓN COMPLETA DEL DÍA
+================================================== */
+
+async function consultarTodaInformacion(rango){
+
+    const [
+        productos,
+        elaborados,
+        materiales,
+        recetas,
+        cerdos,
+        movimientos,
+        movimientosNaves,
+        movimientosDestete,
+        distribuciones
+    ] =
+    await Promise.all([
+
+        obtenerProductos(),
+
+        obtenerProductosElaborados(),
+
+        obtenerMaterialesConstruccion(),
+
+        obtenerRecetas(),
+
+        obtenerCerdos(),
+
+        obtenerMovimientosRango(rango),
+
+        obtenerMovimientosNavesRango(rango),
+
+        obtenerMovimientosDesteteRango(rango),
+
+        obtenerDistribucionesRango(rango)
+
+    ]);
+
+
+    let totalCerdos =
+        cerdos.reduce(
+            (s,c) =>
+                s +
+                (Number(c.cantidad_cerdos)||0),
+            0
+        );
+
+
+    let entradas = 0;
+    let salidas = 0;
+    let fabricaciones = 0;
+
+
+    movimientos.forEach(m => {
+
+        const cantidad =
+            Number(m.Cantidad)||0;
+
+        const tipo =
+            normalizar(m.Tipo);
+
+
+        if(
+            tipo.includes("fabricacion")
+        ){
+
+            fabricaciones += cantidad;
+
+        }
+
+
+        if(esEntrada(m)){
+            entradas += cantidad;
+        }
+
+
+        if(esSalida(m)){
+            salidas += cantidad;
+        }
+
+    });
+
+
+    let ventas = 0;
+    let muertes = 0;
+
+
+    movimientosNaves.forEach(m => {
+
+        const op =
+            normalizar(
+                m.operacion
             );
 
 
-            if(producto)
-                return producto;
+        const cantidad =
+            Number(m.cantidad)||0;
+
+
+        if(op.includes("venta")){
+            ventas += cantidad;
+        }
+
+
+        if(op.includes("muerte")){
+            muertes += cantidad;
+        }
+
+    });
+
+
+    let desteteEntradas = 0;
+    let desteteSalidas = 0;
+    let desteteMuertes = 0;
+
+
+    movimientosDestete.forEach(m => {
+
+        const op =
+            normalizar(
+                m.operacion
+            );
+
+        const cantidad =
+            Number(m.cantidad)||0;
+
+
+        if(op === "entrada"){
+            desteteEntradas += cantidad;
+        }
+
+
+        if(op.includes("salida")){
+            desteteSalidas += cantidad;
+        }
+
+
+        if(op.includes("muerte")){
+            desteteMuertes += cantidad;
+        }
+
+    });
+
+
+    let distribucionTotal =
+        distribuciones.reduce(
+            (s,d) =>
+                s +
+                (Number(d.cantidad)||0),
+            0
+        );
+
+
+    let html =
+        "<strong>Resumen del período:</strong>";
+
+
+    html +=
+        `<div class="dato">` +
+        `📥 Entradas de alimento: ` +
+        `${formatearNumero(entradas)}</div>`;
+
+
+    html +=
+        `<div class="dato">` +
+        `📤 Salidas de alimento: ` +
+        `${formatearNumero(salidas)}</div>`;
+
+
+    html +=
+        `<div class="dato">` +
+        `🏭 Fabricación: ` +
+        `${formatearNumero(fabricaciones)} kg</div>`;
+
+
+    html +=
+        `<div class="dato">` +
+        `🐖 Cerdos registrados: ` +
+        `${formatearNumero(totalCerdos)}</div>`;
+
+
+    html +=
+        `<div class="dato">` +
+        `💰 Ventas: ` +
+        `${formatearNumero(ventas)} cerdos</div>`;
+
+
+    html +=
+        `<div class="dato">` +
+        `☠️ Muertes: ` +
+        `${formatearNumero(muertes)} cerdos</div>`;
+
+
+    html +=
+        `<div class="dato">` +
+        `🍼 Entradas Destete: ` +
+        `${formatearNumero(desteteEntradas)}</div>`;
+
+
+    html +=
+        `<div class="dato">` +
+        `🍼 Salidas Destete: ` +
+        `${formatearNumero(desteteSalidas)}</div>`;
+
+
+    html +=
+        `<div class="dato">` +
+        `☠️ Muertes Destete: ` +
+        `${formatearNumero(desteteMuertes)}</div>`;
+
+
+    html +=
+        `<div class="dato">` +
+        `📦 Distribución: ` +
+        `${formatearNumero(distribucionTotal)} kg</div>`;
+
+
+    html +=
+        `<div class="dato">` +
+        `📊 Movimientos registrados: ` +
+        `${formatearNumero(` +
+        movimientos.length +
+        movimientosNaves.length +
+        movimientosDestete.length +
+        distribuciones.length
+        )}</div>`;
+
+
+    return html;
+
+}
+
+
+/* ==================================================
+   ÚLTIMAS SALIDAS
+================================================== */
+
+async function consultarUltimasSalidas(){
+
+    const rango = {
+        inicio:
+            new Date(
+                2000,0,1
+            ),
+
+        fin:
+            new Date()
+    };
+
+
+    const movimientos =
+        await obtenerMovimientosRango(
+            rango
+        );
+
+
+    const salidas =
+        movimientos
+            .filter(esSalida)
+            .slice(0,10);
+
+
+    if(!salidas.length){
+
+        return "No hay datos registrados.";
+
+    }
+
+
+    let html =
+        "<strong>Últimas salidas:</strong><ul class='lista'>";
+
+
+    salidas.forEach(m => {
+
+        const fecha =
+            new Date(m.Fecha)
+                .toLocaleString(
+                    "es-ES"
+                );
+
+        html +=
+            `<li>${fecha} — ` +
+            `${m.Producto || ""} — ` +
+            `${formatearNumero(m.Cantidad)} — ` +
+            `${m.Tipo || ""}</li>`;
+
+    });
+
+
+    html += "</ul>";
+
+    return html;
+
+}
+
+
+/* ==================================================
+   AYUDA
+================================================== */
+
+function obtenerAyuda(){
+
+    return `
+    <strong>Soy Desierto, el asistente de ElDesierto.</strong>
+
+    <div class="dato">
+        📦 <span class="datoTitulo">Inventario:</span>
+        puedo consultar materias primas, productos elaborados
+        y materiales de construcción.
+    </div>
+
+    <div class="dato">
+        🐷 <span class="datoTitulo">Cerdos:</span>
+        puedo consultar los cerdos, naves, cuartones y Destete.
+    </div>
+
+    <div class="dato">
+        📊 <span class="datoTitulo">Movimientos:</span>
+        puedo consultar entradas, salidas, ventas, muertes,
+        fabricaciones y distribuciones.
+    </div>
+
+    <div class="dato">
+        📖 <span class="datoTitulo">Recetas:</span>
+        puedo consultar las recetas registradas.
+    </div>
+
+    <div class="dato">
+        📅 <span class="datoTitulo">Fechas:</span>
+        puedes preguntarme por hoy, ayer, un día específico
+        o un mes.
+    </div>
+
+    <div class="dato">
+        📋 <span class="datoTitulo">Resumen:</span>
+        puedes decir "toda la información de hoy".
+    </div>
+
+    <div class="dato">
+        🤖 <span class="datoTitulo">Cuadrar el día:</span>
+        di "vamos a cuadrar el día" y te iré preguntando
+        cada operación.
+    </div>
+
+    <div class="dato">
+        🗣️ También puedes preguntarme normalmente por
+        cualquier información registrada en ElDesierto.
+    </div>
+    `;
+
+}
+
+
+/* ==================================================
+   INICIAR CUADRAR EL DÍA
+================================================== */
+
+function iniciarCuadrarDia(){
+
+    estadoCuadrar = {
+        activo:true,
+        paso:0,
+        datos:{
+            entradas:null,
+            salidas:null,
+            muertes:null,
+            ventas:null,
+            fabricacion:null,
+            distribucion:null
+        }
+    };
+
+
+    panelCuadrar.classList.add(
+        "activo"
+    );
+
+
+    actualizarPreguntaCuadrar();
+
+}
+
+
+/* ==================================================
+   PREGUNTAS CUADRAR
+================================================== */
+
+function actualizarPreguntaCuadrar(){
+
+    if(!estadoCuadrar){
+        return;
+    }
+
+
+    const paso =
+        estadoCuadrar.paso;
+
+
+    const preguntas = [
+
+        "¿Qué alimento entró hoy? Puedes decir el producto y la cantidad. Si no entró ninguno, di «Ninguna».",
+
+        "¿Qué alimento salió hoy? Puedes decir el producto y la cantidad. Si no salió ninguno, di «Ninguna».",
+
+        "¿Hubo muertes hoy? Si las hubo, dime la cantidad y dónde ocurrieron. Si no hubo, di «Ninguna».",
+
+        "¿Hubo ventas hoy? Si las hubo, dime la cantidad y dónde. Si no hubo, di «Ninguna».",
+
+        "¿Hubo fabricación hoy? Si la hubo, dime la cantidad fabricada y la receta. Si no hubo, di «Ninguna».",
+
+        "¿Hubo distribución hoy? Si la hubo, dime la cantidad y el destino. Si no hubo, di «Ninguna»."
+
+    ];
+
+
+    const pasos = [
+        "1. Entrada de alimento",
+        "2. Salida de alimento",
+        "3. Muertes",
+        "4. Ventas",
+        "5. Fabricación",
+        "6. Distribución"
+    ];
+
+
+    if(paso >= preguntas.length){
+
+        finalizarCuadrarDia();
+
+        return;
+
+    }
+
+
+    preguntaCuadrar.textContent =
+        preguntas[paso];
+
+    pasosCuadrar.textContent =
+        pasos.join("  •  ");
+
+    mostrarRespuesta(
+        preguntas[paso],
+        true
+    );
+
+}
+
+
+/* ==================================================
+   PROCESAR RESPUESTA DE CUADRAR
+================================================== */
+
+async function procesarRespuestaCuadrar(texto){
+
+    if(!estadoCuadrar){
+        return false;
+    }
+
+
+    const t =
+        normalizar(texto);
+
+
+    if(
+        t === "ninguna" ||
+        t.includes("ninguna") ||
+        t === "ninguno" ||
+        t.includes("nada") ||
+        t.includes("no hubo") ||
+        t.includes("no hay")
+    ){
+
+        estadoCuadrar.datos[
+            obtenerNombrePaso(
+                estadoCuadrar.paso
+            )
+        ] = null;
+
+        estadoCuadrar.paso++;
+
+        actualizarPreguntaCuadrar();
+
+        return true;
+
+    }
+
+
+    const nombre =
+        obtenerNombrePaso(
+            estadoCuadrar.paso
+        );
+
+
+    estadoCuadrar.datos[nombre] =
+        texto;
+
+
+    /*
+       IMPORTANTE:
+       Primero se guarda la respuesta.
+       La operación real solo se ejecuta cuando
+       se disponga de los datos necesarios.
+    */
+
+
+    estadoCuadrar.paso++;
+
+    actualizarPreguntaCuadrar();
+
+    return true;
+
+}
+
+
+function obtenerNombrePaso(paso){
+
+    const nombres = [
+
+        "entradas",
+
+        "salidas",
+
+        "muertes",
+
+        "ventas",
+
+        "fabricacion",
+
+        "distribucion"
+
+    ];
+
+    return nombres[paso];
+
+}
+
+
+/* ==================================================
+   FINALIZAR CUADRAR
+================================================== */
+
+async function finalizarCuadrarDia(){
+
+    const datos =
+        estadoCuadrar.datos;
+
+
+    panelCuadrar.classList.remove(
+        "activo"
+    );
+
+
+    let html =
+        "<strong>📋 Cuadrado del día</strong>";
+
+
+    html +=
+        `<div class="dato">📥 Entrada: ` +
+        `${datos.entradas || "Ninguna"}</div>`;
+
+
+    html +=
+        `<div class="dato">📤 Salida: ` +
+        `${datos.salidas || "Ninguna"}</div>`;
+
+
+    html +=
+        `<div class="dato">☠️ Muertes: ` +
+        `${datos.muertes || "Ninguna"}</div>`;
+
+
+    html +=
+        `<div class="dato">💰 Ventas: ` +
+        `${datos.ventas || "Ninguna"}</div>`;
+
+
+    html +=
+        `<div class="dato">🏭 Fabricación: ` +
+        `${datos.fabricacion || "Ninguna"}</div>`;
+
+
+    html +=
+        `<div class="dato">📦 Distribución: ` +
+        `${datos.distribucion || "Ninguna"}</div>`;
+
+
+    html +=
+        `<div class="dato">` +
+        `Las respuestas quedan disponibles para ` +
+        `continuar con las operaciones necesarias.` +
+        `</div>`;
+
+
+    estadoCuadrar = null;
+
+    mostrarRespuesta(
+        html,
+        true
+    );
+
+}
+
+
+/* ==================================================
+   INSERTAR MOVIMIENTO DE INVENTARIO
+================================================== */
+
+async function registrarMovimientoInventario(
+    producto,
+    tipo,
+    cantidad,
+    observacion=""
+){
+
+    const usuario =
+        await obtenerUsuario();
+
+
+    const numero =
+        "ASIST-" +
+        Date.now();
+
+
+    const {
+        error
+    } =
+    await clienteSupabase
+        .from("movimientos")
+        .insert({
+
+            Fecha:
+                new Date().toISOString(),
+
+            Producto:
+                producto,
+
+            Tipo:
+                tipo,
+
+            Cantidad:
+                cantidad,
+
+            Usuario:
+                usuario,
+
+            Observación:
+                observacion,
+
+            Numero_operacion:
+                numero
+
+        });
+
+
+    if(error){
+
+        console.error(error);
+
+        return false;
+
+    }
+
+
+    return true;
+
+}
+
+
+/* ==================================================
+   AGREGAR INVENTARIO
+================================================== */
+
+async function ejecutarEntradaProducto(
+    nombre,
+    cantidad
+){
+
+    const productos =
+        await obtenerProductos();
+
+
+    const producto =
+        buscarProducto(
+            productos,
+            nombre
+        );
+
+
+    if(!producto){
+
+        mostrarRespuesta(
+            "No hay datos registrados para ese producto.",
+            true
+        );
+
+        return;
+
+    }
+
+
+    const cantidadNumerica =
+        Number(cantidad);
+
+
+    if(
+        !Number.isFinite(cantidadNumerica) ||
+        cantidadNumerica <= 0
+    ){
+
+        mostrarRespuesta(
+            "La cantidad indicada no es válida.",
+            true
+        );
+
+        return;
+
+    }
+
+
+    const nuevaCantidad =
+        Number(producto.Cantidad || 0) +
+        cantidadNumerica;
+
+
+    const {
+        error
+    } =
+    await clienteSupabase
+        .from("productos")
+        .update({
+            Cantidad:
+                nuevaCantidad
+        })
+        .eq(
+            '"Identificación"',
+            producto["Identificación"]
+        );
+
+
+    if(error){
+
+        console.error(error);
+
+        mostrarRespuesta(
+            "No pude registrar la entrada.",
+            true
+        );
+
+        return;
+
+    }
+
+
+    const movimiento =
+        await registrarMovimientoInventario(
+            producto.Nombre,
+            "Entrada",
+            cantidadNumerica,
+            "Entrada realizada por Desierto"
+        );
+
+
+    if(!movimiento){
+
+        /*
+           Intento de rollback si el historial
+           no pudo registrarse.
+        */
+
+        await clienteSupabase
+            .from("productos")
+            .update({
+                Cantidad:
+                    Number(producto.Cantidad || 0)
+            })
+            .eq(
+                '"Identificación"',
+                producto["Identificación"]
+            );
+
+
+        mostrarRespuesta(
+            "No pude completar la operación porque no se pudo registrar el movimiento.",
+            true
+        );
+
+        return;
+
+    }
+
+
+    mostrarRespuesta(
+        `Entrada registrada: <strong>${formatearNumero(cantidadNumerica)} ${producto.Unidad || ""}</strong> de ${producto.Nombre}.`,
+        true
+    );
+
+}
+
+
+/* ==================================================
+   SALIDA DE INVENTARIO
+================================================== */
+
+async function ejecutarSalidaProducto(
+    nombre,
+    cantidad
+){
+
+    const productos =
+        await obtenerProductos();
+
+
+    const producto =
+        buscarProducto(
+            productos,
+            nombre
+        );
+
+
+    if(!producto){
+
+        mostrarRespuesta(
+            "No hay datos registrados para ese producto.",
+            true
+        );
+
+        return;
+
+    }
+
+
+    const cantidadNumerica =
+        Number(cantidad);
+
+
+    const disponible =
+        Number(producto.Cantidad || 0);
+
+
+    if(
+        !Number.isFinite(cantidadNumerica) ||
+        cantidadNumerica <= 0
+    ){
+
+        mostrarRespuesta(
+            "La cantidad indicada no es válida.",
+            true
+        );
+
+        return;
+
+    }
+
+
+    if(cantidadNumerica > disponible){
+
+        mostrarRespuesta(
+            `No hay suficiente ${producto.Nombre}. Hay ${formatearNumero(disponible)} ${producto.Unidad || ""} disponibles.`,
+            true
+        );
+
+        return;
+
+    }
+
+
+    const nuevaCantidad =
+        disponible -
+        cantidadNumerica;
+
+
+    const {
+        error
+    } =
+    await clienteSupabase
+        .from("productos")
+        .update({
+            Cantidad:
+                nuevaCantidad
+        })
+        .eq(
+            '"Identificación"',
+            producto["Identificación"]
+        );
+
+
+    if(error){
+
+        console.error(error);
+
+        mostrarRespuesta(
+            "No pude registrar la salida.",
+            true
+        );
+
+        return;
+
+    }
+
+
+    const movimiento =
+        await registrarMovimientoInventario(
+            producto.Nombre,
+            "Salida",
+            cantidadNumerica,
+            "Salida realizada por Desierto"
+        );
+
+
+    if(!movimiento){
+
+        await clienteSupabase
+            .from("productos")
+            .update({
+                Cantidad:
+                    disponible
+            })
+            .eq(
+                '"Identificación"',
+                producto["Identificación"]
+            );
+
+
+        mostrarRespuesta(
+            "No pude completar la operación porque no se pudo registrar el movimiento.",
+            true
+        );
+
+        return;
+
+    }
+
+
+    mostrarRespuesta(
+        `Salida registrada: <strong>${formatearNumero(cantidadNumerica)} ${producto.Unidad || ""}</strong> de ${producto.Nombre}. Quedan ${formatearNumero(nuevaCantidad)}.`,
+        true
+    );
+
+}
+
+
+/* ==================================================
+   DISTRIBUCIÓN DE PRODUCTOS ELABORADOS
+================================================== */
+
+async function ejecutarDistribucion(
+    nombre,
+    cantidad,
+    destino
+){
+
+    const productos =
+        await obtenerProductosElaborados();
+
+
+    const producto =
+        productos.find(
+            p =>
+                normalizar(p.Nombre) ===
+                normalizar(nombre)
+        );
+
+
+    if(!producto){
+
+        mostrarRespuesta(
+            "No hay datos registrados para ese producto elaborado.",
+            true
+        );
+
+        return;
+
+    }
+
+
+    const cantidadNumerica =
+        Number(cantidad);
+
+
+    const disponible =
+        Number(producto.Cantidad || 0);
+
+
+    if(
+        !Number.isFinite(cantidadNumerica) ||
+        cantidadNumerica <= 0
+    ){
+
+        mostrarRespuesta(
+            "La cantidad indicada no es válida.",
+            true
+        );
+
+        return;
+
+    }
+
+
+    if(cantidadNumerica > disponible){
+
+        mostrarRespuesta(
+            `No hay suficiente producto elaborado. Hay ${formatearNumero(disponible)} disponible.`,
+            true
+        );
+
+        return;
+
+    }
+
+
+    const nuevaCantidad =
+        disponible -
+        cantidadNumerica;
+
+
+    const {
+        error:updateError
+    } =
+    await clienteSupabase
+        .from("productos_elaborados")
+        .update({
+            Cantidad:
+                nuevaCantidad
+        })
+        .eq(
+            "id",
+            producto.id
+        );
+
+
+    if(updateError){
+
+        console.error(updateError);
+
+        mostrarRespuesta(
+            "No pude realizar la distribución.",
+            true
+        );
+
+        return;
+
+    }
+
+
+    const usuario =
+        await obtenerUsuario();
+
+
+    const {
+        error:historialError
+    } =
+    await clienteSupabase
+        .from("movimientos_distribucion")
+        .insert({
+
+            fecha:
+                new Date().toISOString(),
+
+            distribucion:
+                destino,
+
+            cantidad:
+                cantidadNumerica,
+
+            usuario:
+                usuario
+
+        });
+
+
+    if(historialError){
+
+        console.error(historialError);
+
+
+        await clienteSupabase
+            .from("productos_elaborados")
+            .update({
+                Cantidad:
+                    disponible
+            })
+            .eq(
+                "id",
+                producto.id
+            );
+
+
+        mostrarRespuesta(
+            "No pude completar la distribución porque no se pudo registrar el historial.",
+            true
+        );
+
+        return;
+
+    }
+
+
+    mostrarRespuesta(
+        `Distribución registrada: <strong>${formatearNumero(cantidadNumerica)} ${producto.Unidad || ""}</strong> de ${producto.Nombre} para <strong>${destino}</strong>.`,
+        true
+    );
+
+}
+
+
+/* ==================================================
+   DETECTAR PRODUCTO Y CANTIDAD
+================================================== */
+
+function extraerCantidad(texto){
+
+    const match =
+        normalizar(texto)
+            .match(
+                /(\d+(?:[.,]\d+)?)/
+            );
+
+
+    if(!match){
+        return null;
+    }
+
+
+    return Number(
+        match[1].replace(",",".")
+    );
+
+}
+
+
+function extraerProductoDeTexto(
+    texto,
+    productos
+){
+
+    const t =
+        normalizar(texto);
+
+
+    for(const producto of productos){
+
+        const nombre =
+            normalizar(
+                producto.Nombre
+            );
+
+
+        if(
+            t.includes(nombre)
+        ){
+
+            return producto;
+
+        }
+
+    }
+
+
+    const conocidos = [
+        "maiz",
+        "soya",
+        "soja",
+        "cebada",
+        "salvado",
+        "sal",
+        "calcio",
+        "premezcla",
+        "vitamina",
+        "miel",
+        "palmiche",
+        "chicharo",
+        "pienso",
+        "harina"
+    ];
+
+
+    for(const nombre of conocidos){
+
+        if(t.includes(nombre)){
+
+            return buscarProducto(
+                productos,
+                nombre
+            );
 
         }
 
@@ -1120,712 +3431,805 @@ function buscarProducto(texto,productos){
 }
 
 
-/* =====================================================
-   BUSCAR MATERIAL
-===================================================== */
+/* ==================================================
+   PROCESAR ACCIONES SENCILLAS
+================================================== */
 
-function buscarMaterial(texto,materiales){
+async function intentarProcesarAccion(texto){
 
-    const q=normalizar(texto);
+    const t =
+        normalizar(texto);
 
-
-    return materiales.find(m => {
-
-        const nombre =
-        normalizar(m.Nombre || "");
-
-        return nombre &&
-        q.includes(nombre);
-
-    }) || null;
-
-}
-
-
-/* =====================================================
-   HOY
-===================================================== */
-
-function inicioFinHoy(){
-
-    const ahora=new Date();
-
-
-    const inicio=new Date(
-        ahora.getFullYear(),
-        ahora.getMonth(),
-        ahora.getDate()
-    );
-
-
-    const fin=new Date(
-        ahora.getFullYear(),
-        ahora.getMonth(),
-        ahora.getDate()+1
-    );
-
-
-    return {
-        inicio:inicio.toISOString(),
-        fin:fin.toISOString()
-    };
-
-}
-
-
-/* =====================================================
-   MOVIMIENTOS HOY
-===================================================== */
-
-async function obtenerMovimientosHoy(){
-
-    const fechas=inicioFinHoy();
-
-
-    const {data,error} =
-    await clienteSupabase
-    .from("movimientos")
-    .select("*")
-    .gte("Fecha",fechas.inicio)
-    .lt("Fecha",fechas.fin)
-    .order("Fecha",{ascending:false});
-
-
-    if(error)
-        throw error;
-
-
-    return data || [];
-
-}
-
-
-/* =====================================================
-   ENTRADAS HOY
-===================================================== */
-
-async function consultarEntradasHoy(){
-
-    const movimientos =
-    await obtenerMovimientosHoy();
-
-
-    const entradas =
-    movimientos.filter(m =>
-        normalizar(m.Tipo || "")
-        .includes("entrada")
-    );
-
-
-    if(!entradas.length){
-
-        return "No hay entradas de mercancía registradas hoy.";
-
-    }
-
-
-    let total=0;
-
-
-    entradas.forEach(m=>{
-
-        total +=
-        Number(m.Cantidad)||0;
-
-    });
-
-
-    return `Hoy se registraron ${entradas.length} entradas de mercancía, por un total de ${formatearNumero(total)} unidades de cantidad registrada.`;
-
-}
-
-
-/* =====================================================
-   SALIDAS HOY
-===================================================== */
-
-async function consultarSalidasHoy(){
-
-    const movimientos =
-    await obtenerMovimientosHoy();
-
-
-    const salidas =
-    movimientos.filter(m =>
-        normalizar(m.Tipo || "")
-        .includes("salida")
-    );
-
-
-    if(!salidas.length){
-
-        return "No hay salidas de mercancía registradas hoy.";
-
-    }
-
-
-    let total=0;
-
-
-    salidas.forEach(m=>{
-
-        total +=
-        Number(m.Cantidad)||0;
-
-    });
-
-
-    return `Hoy se registraron ${salidas.length} salidas de mercancía, por un total de ${formatearNumero(total)} unidades de cantidad registrada.`;
-
-}
-
-
-/* =====================================================
-   CERDOS
-===================================================== */
-
-async function consultarCerdos(){
-
-    const {data,error} =
-    await clienteSupabase
-    .from("cuartones")
-    .select("cantidad_cerdos");
-
-
-    if(error)
-        throw error;
-
-
-    let total=0;
-
-
-    (data||[]).forEach(c=>{
-
-        total +=
-        Number(c.cantidad_cerdos)||0;
-
-    });
-
-
-    return `Actualmente hay ${formatearNumero(total)} cerdos registrados en ElDesierto.`;
-
-}
-
-
-/* =====================================================
-   ÚLTIMAS SALIDAS
-===================================================== */
-
-async function consultarUltimasSalidas(){
-
-    const {data,error} =
-    await clienteSupabase
-    .from("movimientos")
-    .select("*")
-    .order("Fecha",{ascending:false})
-    .limit(50);
-
-
-    if(error)
-        throw error;
-
-
-    const salidas =
-    (data||[]).filter(m =>
-        normalizar(m.Tipo||"")
-        .includes("salida")
-    );
-
-
-    if(!salidas.length)
-        return "No hay salidas registradas.";
-
-
-    let texto =
-    "Las últimas salidas registradas son:\n\n";
-
-
-    salidas.slice(0,5).forEach((m,i)=>{
-
-        texto +=
-        `${i+1}. ${m.Producto||"Producto"} — ${formatearNumero(Number(m.Cantidad)||0)}\n`;
-
-    });
-
-
-    return texto;
-
-}
-
-
-/* =====================================================
-   ÚLTIMOS MOVIMIENTOS
-===================================================== */
-
-async function consultarUltimosMovimientos(){
-
-    const {data,error} =
-    await clienteSupabase
-    .from("movimientos")
-    .select("*")
-    .order("Fecha",{ascending:false})
-    .limit(5);
-
-
-    if(error)
-        throw error;
-
-
-    if(!data||!data.length)
-        return "No hay movimientos registrados.";
-
-
-    let texto=
-    "Los últimos movimientos son:\n\n";
-
-
-    data.forEach((m,i)=>{
-
-        texto +=
-        `${i+1}. ${m.Tipo||"Movimiento"} — ${m.Producto||""} — ${formatearNumero(Number(m.Cantidad)||0)}\n`;
-
-    });
-
-
-    return texto;
-
-}
-
-
-/* =====================================================
-   LISTA PRODUCTOS
-===================================================== */
-
-async function consultarListaProductos(){
 
     const productos =
-    await obtenerProductos();
-
-
-    if(!productos.length)
-        return "No hay productos registrados.";
-
-
-    let texto=
-    "Los productos registrados son:\n\n";
-
-
-    productos.forEach((p,i)=>{
-
-        texto +=
-        `${i+1}. ${p.Nombre}: ${formatearNumero(Number(p.Cantidad)||0)} ${p.Unidad||""}\n`;
-
-    });
-
-
-    return texto;
-
-}
-
-
-/* =====================================================
-   LISTA MATERIALES
-===================================================== */
-
-async function consultarListaMateriales(){
-
-    const materiales =
-    await obtenerMaterialesConstruccion();
-
-
-    if(!materiales.length)
-        return "No hay materiales de construcción registrados.";
-
-
-    let texto=
-    "Los materiales de construcción registrados son:\n\n";
-
-
-    materiales.forEach((m,i)=>{
-
-        texto +=
-        `${i+1}. ${m.Nombre}: ${formatearNumero(Number(m.Cantidad)||0)} ${m.Unidad||""}\n`;
-
-    });
-
-
-    return texto;
-
-}
-
-
-/* =====================================================
-   RECETAS
-===================================================== */
-
-async function consultarRecetas(){
-
-    const {data,error} =
-    await clienteSupabase
-    .from("recetas")
-    .select("nombre,producto_resultado,cantidad_resultado")
-    .order("nombre");
-
-
-    if(error)
-        throw error;
-
-
-    if(!data||!data.length)
-        return "No hay recetas registradas.";
-
-
-    let texto=
-    "Las recetas registradas son:\n\n";
-
-
-    data.forEach((r,i)=>{
-
-        texto +=
-        `${i+1}. ${r.nombre}`;
-
-
-        if(r.producto_resultado){
-
-            texto +=
-            ` → ${r.producto_resultado}`;
-
-        }
-
-
-        if(r.cantidad_resultado){
-
-            texto +=
-            ` (${r.cantidad_resultado})`;
-
-        }
-
-
-        texto+="\n";
-
-    });
-
-
-    return texto;
-
-}
-
-
-/* =====================================================
-   FORMATO
-===================================================== */
-
-function formatearNumero(numero){
-
-    return new Intl.NumberFormat(
-        "es-ES",
-        {
-            maximumFractionDigits:2
-        }
-    ).format(numero);
-
-}
-
-
-/* =====================================================
-   PROCESAR PREGUNTA
-===================================================== */
-
-async function procesarPregunta(texto){
-
-    if(!texto)
-        return;
-
-
-    respuestaTexto.className="cargando";
-
-    respuestaTexto.innerText=
-    "🔎 Buscando en ElDesierto...";
-
-
-    estado.innerText=
-    "Consultando los datos...";
-
-
-    try{
-
-        const q=normalizar(texto);
-
-
-        const productos =
         await obtenerProductos();
 
 
-        const materiales =
-        await obtenerMaterialesConstruccion();
+    /*
+       ENTRADA
+    */
+
+    if(
+        t.includes("registrar entrada") ||
+        t.includes("entra ") ||
+        t.includes("entraron") ||
+        t.includes("entro ")
+    ){
+
+        const producto =
+            extraerProductoDeTexto(
+                texto,
+                productos
+            );
+
+        const cantidad =
+            extraerCantidad(texto);
+
+
+        if(
+            producto &&
+            cantidad !== null
+        ){
+
+            await ejecutarEntradaProducto(
+                producto.Nombre,
+                cantidad
+            );
+
+            return true;
+
+        }
+
+    }
+
+
+    /*
+       SALIDA
+    */
+
+    if(
+        t.includes("registrar salida") ||
+        t.includes("sacar ") ||
+        t.includes("saca ") ||
+        t.includes("salieron")
+    ){
+
+        const producto =
+            extraerProductoDeTexto(
+                texto,
+                productos
+            );
+
+        const cantidad =
+            extraerCantidad(texto);
+
+
+        if(
+            producto &&
+            cantidad !== null
+        ){
+
+            await ejecutarSalidaProducto(
+                producto.Nombre,
+                cantidad
+            );
+
+            return true;
+
+        }
+
+    }
+
+
+    /*
+       DISTRIBUCIÓN
+    */
+
+    if(
+        t.includes("distribuir") ||
+        t.includes("distribucion")
+    ){
+
+        const elaborados =
+            await obtenerProductosElaborados();
 
 
         const producto =
-        buscarProducto(q,productos);
-
-
-        const material =
-        buscarMaterial(q,materiales);
-
-
-        /* MATERIALES */
-
-        if(material && (
-
-            q.includes("material") ||
-            q.includes("construccion") ||
-            q.includes("cemento") ||
-            q.includes("bloque") ||
-            q.includes("tubo") ||
-            q.includes("tabla") ||
-            q.includes("cinc") ||
-            q.includes("fibra") ||
-            q.includes("arena") ||
-            q.includes("gravilla") ||
-            q.includes("piedra")
-
-        )){
-
-            mostrarRespuesta(
-                `Hay ${formatearNumero(Number(material.Cantidad)||0)} ${material.Unidad||""} de ${material.Nombre} disponibles en materiales de construcción.`
+            elaborados.find(
+                p =>
+                    t.includes(
+                        normalizar(p.Nombre)
+                    )
             );
 
-            return;
 
-        }
+        const cantidad =
+            extraerCantidad(texto);
 
 
-        /* LISTA MATERIALES */
+        const destinos = [
+            {
+                nombre:"Destete",
+                clave:"destete"
+            },
+            {
+                nombre:"Maternidad",
+                clave:"maternidad"
+            },
+            {
+                nombre:"Cría",
+                clave:"cria"
+            },
+            {
+                nombre:"Ceba",
+                clave:"ceba"
+            }
+        ];
+
+
+        const destino =
+            destinos.find(
+                d =>
+                    t.includes(d.clave)
+            );
+
 
         if(
-
-            q.includes("materiales de construccion") ||
-            q.includes("materiales construccion")
-
+            producto &&
+            cantidad !== null &&
+            destino
         ){
 
-            mostrarRespuesta(
-                await consultarListaMateriales()
+            await ejecutarDistribucion(
+                producto.Nombre,
+                cantidad,
+                destino.nombre
             );
 
-            return;
+            return true;
 
         }
-
-
-        /* CERDOS */
-
-        if(
-
-            q.includes("cerdos") ||
-            q.includes("puercos") ||
-            q.includes("cochinos")
-
-        ){
-
-            mostrarRespuesta(
-                await consultarCerdos()
-            );
-
-            return;
-
-        }
-
-
-        /* ENTRADAS */
-
-        if(
-
-            q.includes("entrada hoy") ||
-            q.includes("entradas hoy") ||
-            q.includes("entro hoy") ||
-            q.includes("entraron hoy") ||
-            q.includes("cuanto entro")
-
-        ){
-
-            mostrarRespuesta(
-                await consultarEntradasHoy()
-            );
-
-            return;
-
-        }
-
-
-        /* SALIDAS */
-
-        if(
-
-            q.includes("salida hoy") ||
-            q.includes("salidas hoy") ||
-            q.includes("salio hoy") ||
-            q.includes("salieron hoy") ||
-            q.includes("cuanto salio")
-
-        ){
-
-            mostrarRespuesta(
-                await consultarSalidasHoy()
-            );
-
-            return;
-
-        }
-
-
-        /* ÚLTIMAS SALIDAS */
-
-        if(
-
-            q.includes("ultimas salidas") ||
-            q.includes("ultimas salida")
-
-        ){
-
-            mostrarRespuesta(
-                await consultarUltimasSalidas()
-            );
-
-            return;
-
-        }
-
-
-        /* ÚLTIMOS MOVIMIENTOS */
-
-        if(
-
-            q.includes("ultimos movimientos") ||
-            q.includes("ultimo movimiento")
-
-        ){
-
-            mostrarRespuesta(
-                await consultarUltimosMovimientos()
-            );
-
-            return;
-
-        }
-
-
-        /* LISTA PRODUCTOS */
-
-        if(
-
-            q.includes("que productos hay") ||
-            q.includes("productos hay") ||
-            q.includes("lista de productos")
-
-        ){
-
-            mostrarRespuesta(
-                await consultarListaProductos()
-            );
-
-            return;
-
-        }
-
-
-        /* RECETAS */
-
-        if(
-
-            q.includes("que recetas hay") ||
-            q.includes("recetas hay") ||
-            q.includes("lista de recetas")
-
-        ){
-
-            mostrarRespuesta(
-                await consultarRecetas()
-            );
-
-            return;
-
-        }
-
-
-        /* PRODUCTO */
-
-        if(producto){
-
-            mostrarRespuesta(
-                `Hay ${formatearNumero(Number(producto.Cantidad)||0)} ${producto.Unidad||""} de ${producto.Nombre} disponibles en el inventario.`
-            );
-
-            return;
-
-        }
-
-
-        /* NO ENTENDIDO */
-
-        const respuesta =
-        "No encontré esa información registrada en ElDesierto.";
-
-        mostrarRespuesta(respuesta);
 
     }
 
-    catch(error){
 
-        console.error(error);
-
-        respuestaTexto.className="error";
-
-        respuestaTexto.innerText=
-        "❌ No pude consultar los datos de ElDesierto.";
-
-        estado.innerText=
-        "Error de conexión con Supabase";
-
-    }
+    return false;
 
 }
 
 
-/* =====================================================
-   MOSTRAR
-===================================================== */
+/* ==================================================
+   PROCESAR PREGUNTA PRINCIPAL
+================================================== */
 
-function mostrarRespuesta(texto){
+async function procesarPregunta(texto){
 
-    respuestaTexto.className="exito";
+    if(!texto){
+        return;
+    }
 
-    respuestaTexto.innerText=texto;
 
-    ultimaRespuesta=texto;
+    texto =
+        String(texto).trim();
 
-    botonEscuchar.innerText =
-    "🔊 Escuchar respuesta";
 
-    botonEscuchar.classList.remove(
-        "reproduciendo"
+    const t =
+        normalizar(texto);
+
+
+    estado.textContent =
+        "Consultando ElDesierto...";
+
+
+    /*
+       CUADRAR EL DÍA
+    */
+
+    if(
+        estadoCuadrar &&
+        estadoCuadrar.activo
+    ){
+
+        await procesarRespuestaCuadrar(
+            texto
+        );
+
+        estado.textContent =
+            "Listo para ayudarte";
+
+        return;
+
+    }
+
+
+    if(
+        t.includes("vamos a cuadrar el dia") ||
+        t.includes("vamos a cuadrar") ||
+        t === "cuadrar el dia" ||
+        t === "cuadrar dia"
+    ){
+
+        iniciarCuadrarDia();
+
+        estado.textContent =
+            "Cuadrando el día...";
+
+        return;
+
+    }
+
+
+    /*
+       SALUDO
+    */
+
+    if(
+        t === "hola" ||
+        t.startsWith("hola ") ||
+        t.includes("buenos dias") ||
+        t.includes("buenas tardes") ||
+        t.includes("buenas noches")
+    ){
+
+        mostrarRespuesta(
+            "Hola, soy Desierto. ¿En qué puedo ayudarte?",
+            true
+        );
+
+        estado.textContent =
+            "Listo para ayudarte";
+
+        return;
+
+    }
+
+
+    /*
+       IDENTIDAD
+    */
+
+    if(
+        t.includes("como te llamas") ||
+        t.includes("quien eres") ||
+        t.includes("tu nombre")
+    ){
+
+        mostrarRespuesta(
+            "Soy Desierto, el asistente de ElDesierto. Estoy aquí para ayudarte a consultar y gestionar la información registrada.",
+            true
+        );
+
+        estado.textContent =
+            "Listo para ayudarte";
+
+        return;
+
+    }
+
+
+    /*
+       AYUDA
+    */
+
+    if(
+        t.includes("con que opciones") ||
+        t.includes("que puedes hacer") ||
+        t.includes("que opciones tienes") ||
+        t.includes("ayuda") ||
+        t === "opciones"
+    ){
+
+        mostrarRespuesta(
+            obtenerAyuda(),
+            true
+        );
+
+        estado.textContent =
+            "Listo para ayudarte";
+
+        return;
+
+    }
+
+
+    /*
+       ACCIONES
+    */
+
+    const accion =
+        await intentarProcesarAccion(
+            texto
+        );
+
+
+    if(accion){
+
+        estado.textContent =
+            "Operación completada";
+
+        return;
+
+    }
+
+
+    /*
+       TODA LA INFORMACIÓN
+    */
+
+    if(
+        t.includes("toda la informacion") ||
+        t.includes("informacion completa") ||
+        t.includes("resumen del dia") ||
+        t.includes("todo lo de hoy") ||
+        t.includes("todo lo de hoy")
+    ){
+
+        let rango =
+            obtenerRangoFecha(texto);
+
+
+        if(!rango){
+
+            rango =
+                inicioFinHoy();
+
+        }
+
+
+        const resultado =
+            await consultarTodaInformacion(
+                rango
+            );
+
+
+        mostrarRespuesta(
+            resultado,
+            true
+        );
+
+        estado.textContent =
+            "Consulta completada";
+
+        return;
+
+    }
+
+
+    /*
+       DESTETE
+    */
+
+    if(
+        t.includes("destete") &&
+        (
+            t.includes("cuanto") ||
+            t.includes("cuantos") ||
+            t.includes("informacion") ||
+            t.includes("hay")
+        )
+    ){
+
+        const resultado =
+            await consultarDestete();
+
+
+        mostrarRespuesta(
+            resultado,
+            true
+        );
+
+        estado.textContent =
+            "Consulta completada";
+
+        return;
+
+    }
+
+
+    /*
+       PRODUCTOS ELABORADOS
+    */
+
+    if(
+        t.includes("productos elaborados") ||
+        t.includes("pienso elaborado") ||
+        t.includes("productos fabricados")
+    ){
+
+        const resultado =
+            await consultarProductosElaborados();
+
+
+        mostrarRespuesta(
+            resultado,
+            true
+        );
+
+        estado.textContent =
+            "Consulta completada";
+
+        return;
+
+    }
+
+
+    /*
+       MATERIALES
+    */
+
+    if(
+        t.includes("materiales de construccion") ||
+        t.includes("materiales construccion") ||
+        t.includes("material de construccion")
+    ){
+
+        if(
+            t.includes("cuanto") ||
+            t.includes("cuantos") ||
+            t.includes("hay")
+        ){
+
+            const materiales =
+                await obtenerMaterialesConstruccion();
+
+
+            let encontrado = null;
+
+
+            for(const m of materiales){
+
+                if(
+                    t.includes(
+                        normalizar(m.Nombre)
+                    )
+                ){
+
+                    encontrado = m;
+                    break;
+
+                }
+
+            }
+
+
+            if(encontrado){
+
+                mostrarRespuesta(
+                    `<strong>${encontrado.Nombre}</strong>: ${formatearNumero(encontrado.Cantidad)} ${encontrado.Unidad || ""}.`,
+                    true
+                );
+
+            }else{
+
+                mostrarRespuesta(
+                    await consultarListaMateriales(),
+                    true
+                );
+
+            }
+
+        }else{
+
+            mostrarRespuesta(
+                await consultarListaMateriales(),
+                true
+            );
+
+        }
+
+
+        estado.textContent =
+            "Consulta completada";
+
+        return;
+
+    }
+
+
+    /*
+       CERDOS
+    */
+
+    if(
+        t.includes("cerdos") &&
+        (
+            t.includes("cuantos") ||
+            t.includes("total") ||
+            t.includes("hay")
+        )
+    ){
+
+        const resultado =
+            await consultarCerdosTotal();
+
+
+        mostrarRespuesta(
+            resultado,
+            true
+        );
+
+        estado.textContent =
+            "Consulta completada";
+
+        return;
+
+    }
+
+
+    /*
+       RECETAS
+    */
+
+    if(
+        t.includes("recetas") ||
+        t.includes("receta")
+    ){
+
+        mostrarRespuesta(
+            await consultarRecetas(),
+            true
+        );
+
+        estado.textContent =
+            "Consulta completada";
+
+        return;
+
+    }
+
+
+    /*
+       ÚLTIMAS SALIDAS
+    */
+
+    if(
+        t.includes("ultimas salidas") ||
+        t.includes("ultimos movimientos")
+    ){
+
+        mostrarRespuesta(
+            await consultarUltimasSalidas(),
+            true
+        );
+
+        estado.textContent =
+            "Consulta completada";
+
+        return;
+
+    }
+
+
+    /*
+       ENTRADAS / SALIDAS POR FECHA
+    */
+
+    if(
+        t.includes("entro") ||
+        t.includes("entradas") ||
+        t.includes("entrada")
+    ){
+
+        const rango =
+            obtenerRangoFecha(texto) ||
+            inicioFinHoy();
+
+
+        const datos =
+            await consultarMovimientosAlimento(
+                rango
+            );
+
+
+        if(
+            datos.movimientos.length === 0
+        ){
+
+            mostrarRespuesta(
+                "No hay datos registrados.",
+                true
+            );
+
+        }else{
+
+            mostrarRespuesta(
+                `Las entradas registradas en el período suman <strong>${formatearNumero(datos.entradas)}</strong>.`,
+                true
+            );
+
+        }
+
+
+        estado.textContent =
+            "Consulta completada";
+
+        return;
+
+    }
+
+
+    if(
+        t.includes("salio") ||
+        t.includes("salidas") ||
+        t.includes("salida")
+    ){
+
+        const rango =
+            obtenerRangoFecha(texto) ||
+            inicioFinHoy();
+
+
+        const datos =
+            await consultarMovimientosAlimento(
+                rango
+            );
+
+
+        if(
+            datos.movimientos.length === 0
+        ){
+
+            mostrarRespuesta(
+                "No hay datos registrados.",
+                true
+            );
+
+        }else{
+
+            mostrarRespuesta(
+                `Las salidas registradas en el período suman <strong>${formatearNumero(datos.salidas)}</strong>.`,
+                true
+            );
+
+        }
+
+
+        estado.textContent =
+            "Consulta completada";
+
+        return;
+
+    }
+
+
+    /*
+       PRODUCTO ESPECÍFICO
+    */
+
+    const productos =
+        await obtenerProductos();
+
+
+    const producto =
+        extraerProductoDeTexto(
+            texto,
+            productos
+        );
+
+
+    if(
+        producto &&
+        (
+            t.includes("cuanto") ||
+            t.includes("cuanta") ||
+            t.includes("queda") ||
+            t.includes("hay") ||
+            t.includes("cantidad")
+        )
+    ){
+
+        mostrarRespuesta(
+            `<strong>${producto.Nombre}</strong>: ${formatearNumero(producto.Cantidad)} ${producto.Unidad || ""}.`,
+            true
+        );
+
+        estado.textContent =
+            "Consulta completada";
+
+        return;
+
+    }
+
+
+    /*
+       LISTA DE PRODUCTOS
+    */
+
+    if(
+        t.includes("que productos hay") ||
+        t.includes("productos hay") ||
+        t.includes("lista de productos") ||
+        t === "productos"
+    ){
+
+        mostrarRespuesta(
+            await consultarListaProductos(),
+            true
+        );
+
+        estado.textContent =
+            "Consulta completada";
+
+        return;
+
+    }
+
+
+    /*
+       FECHA GENERAL
+    */
+
+    const rango =
+        obtenerRangoFecha(texto);
+
+
+    if(
+        rango &&
+        (
+            t.includes("informacion") ||
+            t.includes("movimientos") ||
+            t.includes("que paso") ||
+            t.includes("datos")
+        )
+    ){
+
+        mostrarRespuesta(
+            await consultarTodaInformacion(
+                rango
+            ),
+            true
+        );
+
+        estado.textContent =
+            "Consulta completada";
+
+        return;
+
+    }
+
+
+    /*
+       NO ENTENDIDO
+    */
+
+    mostrarRespuesta(
+        "Puedes repetir la pregunta.",
+        true
     );
 
-    estado.innerText=
-    "✅ Consulta completada";
+
+    estado.textContent =
+        "Listo para ayudarte";
 
 }
 
 
-/* =====================================================
+/* ==================================================
    INICIO
-===================================================== */
+================================================== */
 
 async function iniciar(){
 
-    await verificarSesion();
+    const sesion =
+        await verificarSesion();
+
+
+    if(!sesion){
+        return;
+    }
+
 
     prepararReconocimiento();
+
+
+    estado.textContent =
+        "Listo para ayudarte";
+
+
+    mostrarRespuesta(
+        "Hola, soy Desierto. ¿En qué puedo ayudarte?",
+        false
+    );
 
 }
 
@@ -1836,4 +4240,4 @@ iniciar();
 
 </body>
 
-</html>
+    </html>
