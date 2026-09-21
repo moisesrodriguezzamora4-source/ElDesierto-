@@ -187,7 +187,7 @@ table{
 
     width:100%;
 
-    min-width:650px;
+    min-width:800px;
 
     border-collapse:separate;
 
@@ -313,6 +313,50 @@ td:nth-child(3){
 
 
 /* ================================
+   BOTÓN ELIMINAR
+================================ */
+
+.boton-eliminar{
+
+    padding:9px 12px;
+
+    border:none;
+
+    border-radius:9px;
+
+    color:white;
+
+    font-size:14px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    background:
+    linear-gradient(
+        145deg,
+        #ff3030,
+        #8b0000
+    );
+
+    box-shadow:
+    0 4px 0 #500000,
+    0 6px 12px rgba(255,0,0,.25);
+
+    transition:.15s;
+}
+
+.boton-eliminar:active{
+
+    transform:translateY(3px);
+
+    box-shadow:
+    0 1px 0 #500000;
+
+}
+
+
+/* ================================
    MENÚ DE CONSUMO
 ================================ */
 
@@ -389,6 +433,96 @@ td:nth-child(3){
 
 
 /* ================================
+   MENÚ DESTINOS
+================================ */
+
+.menu-destinos{
+
+    margin-top:10px;
+
+    padding:12px;
+
+    border-radius:12px;
+
+    background:
+    linear-gradient(
+        145deg,
+        #1f1f1f,
+        #070707
+    );
+
+    border:1px solid #ff2020;
+
+    box-shadow:
+    inset 0 0 10px #000,
+    0 0 12px rgba(255,0,0,.15);
+
+}
+
+.titulo-destinos{
+
+    text-align:center;
+
+    color:#ff3030;
+
+    font-size:14px;
+
+    font-weight:bold;
+
+    margin-bottom:8px;
+
+}
+
+
+/* ================================
+   BOTONES DESTINO
+================================ */
+
+.boton-destino{
+
+    display:block;
+
+    width:100%;
+
+    margin:7px 0;
+
+    padding:11px;
+
+    border:none;
+
+    border-radius:9px;
+
+    color:white;
+
+    font-size:14px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    background:
+    linear-gradient(
+        145deg,
+        #9d0000,
+        #4d0000
+    );
+
+    box-shadow:
+    0 4px 0 #300000;
+
+}
+
+.boton-destino:active{
+
+    transform:translateY(3px);
+
+    box-shadow:
+    0 1px 0 #300000;
+
+}
+
+
+/* ================================
    TABLA VACÍA
 ================================ */
 
@@ -434,7 +568,8 @@ td:nth-child(3){
         font-size:14px;
     }
 
-    .boton-consumir{
+    .boton-consumir,
+    .boton-eliminar{
         font-size:13px;
         padding:8px 10px;
     }
@@ -525,6 +660,10 @@ td:nth-child(3){
                         Consumo
                     </th>
 
+                    <th>
+                        Acción
+                    </th>
+
                 </tr>
 
             </thead>
@@ -550,23 +689,30 @@ td:nth-child(3){
 <script>
 
 /* ==========================================
-   CARGAR PRODUCTOS
+   VARIABLE DE SESIÓN
 ========================================== */
 
-async function cargarElaborados(){
+let usuarioActual = "";
 
-    const {data,error}=await clienteSupabase
 
-    .from("productos_elaborados")
+/* ==========================================
+   OBTENER USUARIO
+========================================== */
 
-    .select("id, Nombre, Unidad, Cantidad");
+async function obtenerUsuario(){
+
+    const {
+        data,
+        error
+    } =
+        await clienteSupabase.auth.getSession();
 
 
     if(error){
 
-        alert(
-            "Error cargando productos elaborados: "
-            + error.message
+        console.error(
+            "Error obteniendo sesión:",
+            error
         );
 
         return;
@@ -574,7 +720,58 @@ async function cargarElaborados(){
     }
 
 
-    const tabla=
+    if(!data.session){
+
+        window.location.href="login.html";
+
+        return;
+
+    }
+
+
+    usuarioActual =
+        data.session.user.email
+        ||
+        data.session.user.id
+        ||
+        "Usuario";
+
+}
+
+
+/* ==========================================
+   CARGAR PRODUCTOS
+========================================== */
+
+async function cargarElaborados(){
+
+    const {
+        data,
+        error
+    } =
+        await clienteSupabase
+
+        .from("productos_elaborados")
+
+        .select(
+            "id, Nombre, Unidad, Cantidad"
+        );
+
+
+    if(error){
+
+        alert(
+            "Error cargando productos elaborados: "
+            +
+            error.message
+        );
+
+        return;
+
+    }
+
+
+    const tabla =
         document.getElementById(
             "tablaElaborados"
         );
@@ -590,7 +787,7 @@ async function cargarElaborados(){
             <tr>
 
                 <td
-                    colspan="4"
+                    colspan="5"
                     class="vacio">
 
                     No hay productos elaborados registrados.
@@ -613,15 +810,15 @@ async function cargarElaborados(){
             <tr>
 
                 <td>
-                    ${producto.Nombre}
+                    ${producto.Nombre || ""}
                 </td>
 
                 <td>
-                    ${producto.Unidad}
+                    ${producto.Unidad || ""}
                 </td>
 
                 <td>
-                    ${producto.Cantidad}
+                    ${producto.Cantidad ?? 0}
                 </td>
 
                 <td>
@@ -641,7 +838,7 @@ async function cargarElaborados(){
 
                         <button
                             class="boton-opcion"
-                            onclick="consumirTodo(${producto.id}, '${producto.Nombre}')">
+                            onclick="prepararConsumo(${producto.id}, '${String(producto.Nombre || "").replace(/'/g,"\\\\'")}', ${Number(producto.Cantidad)})">
 
                             🍽️ Consumir todo
 
@@ -649,7 +846,7 @@ async function cargarElaborados(){
 
                         <button
                             class="boton-opcion"
-                            onclick="consumirCantidad(${producto.id}, '${producto.Nombre}', ${Number(producto.Cantidad)})">
+                            onclick="prepararCantidad(${producto.id}, '${String(producto.Nombre || "").replace(/'/g,"\\\\'")}', ${Number(producto.Cantidad)})">
 
                             ⚖️ Consumir cantidad específica
 
@@ -664,6 +861,69 @@ async function cargarElaborados(){
                         </button>
 
                     </div>
+
+                    <div
+                        id="destinos-${producto.id}"
+                        class="menu-destinos"
+                        style="display:none;">
+
+                        <div class="titulo-destinos">
+                            Selecciona el destino
+                        </div>
+
+                        <button
+                            class="boton-destino"
+                            onclick="ejecutarConsumo(${producto.id}, 'Destete')">
+
+                            🍼 Destete
+
+                        </button>
+
+                        <button
+                            class="boton-destino"
+                            onclick="ejecutarConsumo(${producto.id}, 'Maternidad')">
+
+                            🏠 Maternidad
+
+                        </button>
+
+                        <button
+                            class="boton-destino"
+                            onclick="ejecutarConsumo(${producto.id}, 'Cría')">
+
+                            🐷 Cría
+
+                        </button>
+
+                        <button
+                            class="boton-destino"
+                            onclick="ejecutarConsumo(${producto.id}, 'Ceba')">
+
+                            🐖 Ceba
+
+                        </button>
+
+                        <button
+                            class="boton-opcion"
+                            onclick="cancelarDestino(${producto.id})">
+
+                            ❌ Cancelar
+
+                        </button>
+
+                    </div>
+
+                </td>
+
+                <td>
+
+                    <button
+                        class="boton-eliminar"
+                        onclick="eliminarProductoElaborado(${producto.id}, '${String(producto.Nombre || "").replace(/'/g,"\\\\'")}')">
+
+                        🗑️ Eliminar
+
+                    </button>
 
                 </td>
 
@@ -682,14 +942,26 @@ async function cargarElaborados(){
 
 function mostrarMenuConsumo(id){
 
-    const menu=
+    const menu =
         document.getElementById(
             "menu-"+id
         );
 
+    const destinos =
+        document.getElementById(
+            "destinos-"+id
+        );
+
+
     if(menu){
 
         menu.style.display="block";
+
+    }
+
+    if(destinos){
+
+        destinos.style.display="none";
 
     }
 
@@ -702,10 +974,16 @@ function mostrarMenuConsumo(id){
 
 function cerrarMenuConsumo(id){
 
-    const menu=
+    const menu =
         document.getElementById(
             "menu-"+id
         );
+
+    const destinos =
+        document.getElementById(
+            "destinos-"+id
+        );
+
 
     if(menu){
 
@@ -713,75 +991,20 @@ function cerrarMenuConsumo(id){
 
     }
 
-}
+    if(destinos){
 
-
-/* ==========================================
-   CONSUMIR TODO
-========================================== */
-
-async function consumirTodo(id,nombre){
-
-    const confirmar=
-        confirm(
-            "¿Deseas consumir TODO el producto:\n\n"
-            +
-            nombre
-            +
-            "?\n\nLa cantidad quedará en 0 kg."
-        );
-
-
-    if(!confirmar){
-
-        return;
+        destinos.style.display="none";
 
     }
-
-
-    const {error}=
-
-        await clienteSupabase
-
-        .from("productos_elaborados")
-
-        .update({
-
-            Cantidad:0
-
-        })
-
-        .eq("id",id);
-
-
-    if(error){
-
-        alert(
-            "❌ Error consumiendo el producto:\n\n"
-            +
-            error.message
-        );
-
-        return;
-
-    }
-
-
-    alert(
-        "✅ Producto consumido completamente."
-    );
-
-
-    cargarElaborados();
 
 }
 
 
 /* ==========================================
-   CONSUMIR CANTIDAD ESPECÍFICA
+   PREPARAR CONSUMO TOTAL
 ========================================== */
 
-async function consumirCantidad(
+function prepararConsumo(
     id,
     nombre,
     cantidadDisponible
@@ -798,7 +1021,63 @@ async function consumirCantidad(
     }
 
 
-    const cantidad=
+    const menu =
+        document.getElementById(
+            "menu-"+id
+        );
+
+    const destinos =
+        document.getElementById(
+            "destinos-"+id
+        );
+
+
+    if(menu){
+
+        menu.style.display="none";
+
+    }
+
+    if(destinos){
+
+        destinos.dataset.cantidad =
+            String(cantidadDisponible);
+
+        destinos.dataset.tipo =
+            "todo";
+
+        destinos.dataset.nombre =
+            nombre;
+
+        destinos.style.display="block";
+
+    }
+
+}
+
+
+/* ==========================================
+   PREPARAR CANTIDAD ESPECÍFICA
+========================================== */
+
+function prepararCantidad(
+    id,
+    nombre,
+    cantidadDisponible
+){
+
+    if(cantidadDisponible<=0){
+
+        alert(
+            "⚠️ Este producto no tiene cantidad disponible."
+        );
+
+        return;
+
+    }
+
+
+    const cantidad =
         prompt(
             "¿Cuántos kg de "
             +
@@ -821,7 +1100,7 @@ async function consumirCantidad(
     }
 
 
-    const cantidadConsumir=
+    const cantidadConsumir =
         Number(cantidad);
 
 
@@ -861,13 +1140,225 @@ async function consumirCantidad(
     }
 
 
-    const nuevaCantidad=
-        cantidadDisponible-
-        cantidadConsumir;
+    const menu =
+        document.getElementById(
+            "menu-"+id
+        );
+
+    const destinos =
+        document.getElementById(
+            "destinos-"+id
+        );
 
 
-    const {error}=
+    if(menu){
 
+        menu.style.display="none";
+
+    }
+
+    if(destinos){
+
+        destinos.dataset.cantidad =
+            String(cantidadConsumir);
+
+        destinos.dataset.tipo =
+            "cantidad";
+
+        destinos.dataset.nombre =
+            nombre;
+
+        destinos.style.display="block";
+
+    }
+
+}
+
+
+/* ==========================================
+   CANCELAR DESTINO
+========================================== */
+
+function cancelarDestino(id){
+
+    const destinos =
+        document.getElementById(
+            "destinos-"+id
+        );
+
+    if(destinos){
+
+        destinos.style.display="none";
+
+        delete destinos.dataset.cantidad;
+        delete destinos.dataset.tipo;
+        delete destinos.dataset.nombre;
+
+    }
+
+}
+
+
+/* ==========================================
+   EJECUTAR CONSUMO
+========================================== */
+
+async function ejecutarConsumo(
+    id,
+    destino
+){
+
+    const destinos =
+        document.getElementById(
+            "destinos-"+id
+        );
+
+
+    if(!destinos){
+
+        return;
+
+    }
+
+
+    const cantidad =
+        Number(
+            destinos.dataset.cantidad
+        );
+
+
+    const nombre =
+        destinos.dataset.nombre
+        ||
+        "Producto elaborado";
+
+
+    if(
+        !Number.isFinite(cantidad)
+        ||
+        cantidad<=0
+    ){
+
+        alert(
+            "❌ No se encontró una cantidad válida para consumir."
+        );
+
+        return;
+
+    }
+
+
+    const confirmar =
+        confirm(
+            "¿Confirmas la distribución?\n\n"
+            +
+            "Producto: "
+            +
+            nombre
+            +
+            "\nCantidad: "
+            +
+            cantidad
+            +
+            " kg"
+            +
+            "\nDestino: "
+            +
+            destino
+        );
+
+
+    if(!confirmar){
+
+        return;
+
+    }
+
+
+    /* ======================================
+       OBTENER CANTIDAD ACTUAL
+    ====================================== */
+
+    const {
+        data:producto,
+        error:errorProducto
+    } =
+        await clienteSupabase
+
+        .from("productos_elaborados")
+
+        .select(
+            "id, Nombre, Cantidad"
+        )
+
+        .eq(
+            "id",
+            id
+        )
+
+        .maybeSingle();
+
+
+    if(errorProducto){
+
+        alert(
+            "❌ Error consultando el producto:\n\n"
+            +
+            errorProducto.message
+        );
+
+        return;
+
+    }
+
+
+    if(!producto){
+
+        alert(
+            "❌ El producto ya no existe."
+        );
+
+        await cargarElaborados();
+
+        return;
+
+    }
+
+
+    const cantidadDisponible =
+        Number(producto.Cantidad || 0);
+
+
+    if(cantidad>cantidadDisponible){
+
+        alert(
+            "❌ La cantidad disponible cambió.\n\n"
+            +
+            "Disponible actualmente: "
+            +
+            cantidadDisponible
+            +
+            " kg"
+        );
+
+        await cargarElaborados();
+
+        return;
+
+    }
+
+
+    const nuevaCantidad =
+        cantidadDisponible-cantidad;
+
+
+    /* ======================================
+       ACTUALIZAR INVENTARIO
+    ====================================== */
+
+    const {
+        error:errorActualizacion
+    } =
         await clienteSupabase
 
         .from("productos_elaborados")
@@ -878,13 +1369,163 @@ async function consumirCantidad(
 
         })
 
-        .eq("id",id);
+        .eq(
+            "id",
+            id
+        );
+
+
+    if(errorActualizacion){
+
+        alert(
+            "❌ Error actualizando el producto:\n\n"
+            +
+            errorActualizacion.message
+        );
+
+        return;
+
+    }
+
+
+    /* ======================================
+       REGISTRAR DISTRIBUCIÓN
+    ====================================== */
+
+    const {
+        error:errorRegistro
+    } =
+        await clienteSupabase
+
+        .from("movimientos_distribucion")
+
+        .insert({
+
+            distribucion:destino,
+
+            cantidad:cantidad,
+
+            usuario:usuarioActual
+
+        });
+
+
+    if(errorRegistro){
+
+        /*
+         * Si no se pudo registrar el historial,
+         * intentamos revertir el descuento para
+         * no dejar el inventario incorrecto.
+         */
+
+        await clienteSupabase
+
+        .from("productos_elaborados")
+
+        .update({
+
+            Cantidad:cantidadDisponible
+
+        })
+
+        .eq(
+            "id",
+            id
+        );
+
+
+        alert(
+            "❌ No se pudo registrar la distribución.\n\n"
+            +
+            errorRegistro.message
+        );
+
+        return;
+
+    }
+
+
+    alert(
+        "✅ Distribución realizada correctamente.\n\n"
+        +
+        "Producto: "
+        +
+        producto.Nombre
+        +
+        "\nCantidad: "
+        +
+        cantidad
+        +
+        " kg"
+        +
+        "\nDestino: "
+        +
+        destino
+        +
+        "\nDisponible: "
+        +
+        nuevaCantidad
+        +
+        " kg"
+    );
+
+
+    cancelarDestino(id);
+
+    await cargarElaborados();
+
+}
+
+
+/* ==========================================
+   ELIMINAR PRODUCTO ELABORADO
+========================================== */
+
+async function eliminarProductoElaborado(
+    id,
+    nombre
+){
+
+    const confirmar =
+        confirm(
+            "⚠️ ¿Estás seguro de que deseas eliminar este producto elaborado?\n\n"
+            +
+            "Producto: "
+            +
+            nombre
+            +
+            "\n\n"
+            +
+            "Esto eliminará el registro de Productos elaborados."
+        );
+
+
+    if(!confirmar){
+
+        return;
+
+    }
+
+
+    const {
+        error
+    } =
+        await clienteSupabase
+
+        .from("productos_elaborados")
+
+        .delete()
+
+        .eq(
+            "id",
+            id
+        );
 
 
     if(error){
 
         alert(
-            "❌ Error actualizando el producto:\n\n"
+            "❌ Error eliminando el producto elaborado:\n\n"
             +
             error.message
         );
@@ -895,27 +1536,11 @@ async function consumirCantidad(
 
 
     alert(
-        "✅ Consumo realizado correctamente.\n\n"
-        +
-        "Producto: "
-        +
-        nombre
-        +
-        "\nConsumido: "
-        +
-        cantidadConsumir
-        +
-        " kg"
-        +
-        "\nDisponible: "
-        +
-        nuevaCantidad
-        +
-        " kg"
+        "✅ Producto elaborado eliminado correctamente."
     );
 
 
-    cargarElaborados();
+    await cargarElaborados();
 
 }
 
@@ -924,7 +1549,16 @@ async function consumirCantidad(
    INICIAR
 ========================================== */
 
-cargarElaborados();
+async function iniciar(){
+
+    await obtenerUsuario();
+
+    await cargarElaborados();
+
+}
+
+
+iniciar();
 
 </script>
 
