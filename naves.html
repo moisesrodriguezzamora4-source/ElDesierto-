@@ -462,6 +462,76 @@ select:focus{
 
 
 /* ==================================================
+   DATOS DE CUARTONES DEL DESTETE
+================================================== */
+
+.datosCuartonesDestete{
+    width:100%;
+    max-width:700px;
+    margin:20px auto 0;
+    padding:18px;
+
+    border-radius:18px;
+
+    background:
+    linear-gradient(145deg,#1d1d1d,#080808);
+
+    border:1px solid #3a3a3a;
+
+    box-shadow:
+    8px 8px 20px #000,
+    inset 0 0 12px rgba(255,0,0,.04);
+}
+
+.datosCuartonesDestete h3{
+    margin-top:0;
+    color:#ff5555;
+    text-shadow:0 0 7px rgba(255,0,0,.4);
+}
+
+.tablaCuartonesDestete{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0 8px;
+}
+
+.tablaCuartonesDestete th{
+    padding:12px 8px;
+    color:#ff5555;
+    background:#100000;
+    border-bottom:1px solid #750000;
+    font-size:13px;
+}
+
+.tablaCuartonesDestete td{
+    padding:13px 8px;
+    background:
+    linear-gradient(145deg,#292929,#101010);
+    border-top:1px solid #333;
+    border-bottom:1px solid #111;
+    font-weight:bold;
+}
+
+.tablaCuartonesDestete td:first-child{
+    color:#ff5555;
+}
+
+.tablaCuartonesDestete td:last-child{
+    color:#ff9999;
+}
+
+.tablaCuartonesDestete td:first-child{
+    border-left:1px solid #333;
+    border-radius:10px 0 0 10px;
+}
+
+.tablaCuartonesDestete td:last-child{
+    border-right:1px solid #333;
+    border-radius:0 10px 10px 0;
+}
+
+
+/* ==================================================
    PANEL DESTETE
 ================================================== */
 
@@ -517,6 +587,15 @@ select:focus{
 
     .filaDestete{
         min-height:100px;
+    }
+
+    .tablaCuartonesDestete{
+        font-size:13px;
+    }
+
+    .tablaCuartonesDestete th,
+    .tablaCuartonesDestete td{
+        padding:10px 5px;
     }
 
 }
@@ -973,9 +1052,21 @@ class="infoFilaDestete">
 
 </button>
 
+<button onclick="mostrarMuerteDestete()">
+
+☠️ Sacar cerdos por muerte
+
+</button>
+
 <button onclick="mostrarReagrupeDestete()">
 
 🔄 Sacar cerdos para otra fila
+
+</button>
+
+<button onclick="mostrarAgregarDatosDestete()">
+
+📊 Agregar Datos
 
 </button>
 
@@ -1048,6 +1139,90 @@ placeholder="Cantidad de cerdos">
 <button onclick="procesarSalidaCebaDestete()">
 
 Confirmar salida para Ceba
+
+</button>
+
+<button onclick="cerrarPanel()">
+
+Cancelar
+
+</button>
+
+</div>
+
+
+<!-- ==================================================
+     MUERTE DESTETE
+================================================== -->
+
+<div id="panelMuerteDestete" class="panel oculto">
+
+<h2>
+
+☠️ Salida por muerte
+
+</h2>
+
+<div
+id="infoMuerteDestete"
+class="infoFilaDestete">
+
+</div>
+
+<input
+type="number"
+id="cantidadMuerteDestete"
+min="1"
+placeholder="Cantidad de cerdos muertos">
+
+<button onclick="procesarMuerteDestete()">
+
+Confirmar muerte
+
+</button>
+
+<button onclick="cerrarPanel()">
+
+Cancelar
+
+</button>
+
+</div>
+
+
+<!-- ==================================================
+     AGREGAR DATOS DESTETE
+================================================== -->
+
+<div id="panelAgregarDatosDestete" class="panel oculto">
+
+<h2 id="tituloAgregarDatosDestete">
+
+📊 Agregar Datos
+
+</h2>
+
+<div
+id="infoAgregarDatosDestete"
+class="infoFilaDestete">
+
+</div>
+
+<input
+type="number"
+id="cantidadCuartonesDestete"
+min="0"
+placeholder="Cantidad de cuartones">
+
+<input
+type="number"
+id="cantidadCuartonesVaciosDestete"
+min="0"
+placeholder="Cantidad de cuartones vacíos">
+
+<button onclick="procesarAgregarDatosDestete()">
+
+💾 Guardar datos
 
 </button>
 
@@ -1361,10 +1536,6 @@ async function cargarNaves(){
 
     `;
 
-
-    /* ==================================================
-       RESUMEN DE HOY
-    ================================================== */
 
     const ahora=new Date();
 
@@ -3433,28 +3604,29 @@ async function cargarDestete(){
     filasDestete=data || [];
 
 
-    /*
-       Si todavía no existen las tres filas,
-       intentamos crearlas.
-    */
-
     if(filasDestete.length===0){
 
         const nuevasFilas=[
 
             {
                 fila:"F1",
-                cantidad_cerdos:0
+                cantidad_cerdos:0,
+                cuartones:0,
+                cuartones_vacios:0
             },
 
             {
                 fila:"F2",
-                cantidad_cerdos:0
+                cantidad_cerdos:0,
+                cuartones:0,
+                cuartones_vacios:0
             },
 
             {
                 fila:"F3",
-                cantidad_cerdos:0
+                cantidad_cerdos:0,
+                cuartones:0,
+                cuartones_vacios:0
             }
 
         ];
@@ -3552,6 +3724,82 @@ async function cargarDestete(){
     🐷
 
     </div>
+
+    </div>
+
+
+    <!-- ============================================
+         DATOS DE CUARTONES
+    ============================================= -->
+
+    <div class="datosCuartonesDestete">
+
+    <h3>
+    📊 Datos de cuartones
+    </h3>
+
+    <table class="tablaCuartonesDestete">
+
+    <thead>
+
+    <tr>
+
+    <th>Fila</th>
+
+    <th>Cuartones</th>
+
+    <th>Cuartones vacíos</th>
+
+    </tr>
+
+    </thead>
+
+    <tbody>
+
+    `;
+
+
+    filasDestete.forEach(fila=>{
+
+        const cuartones=
+        Number(
+            fila.cuartones || 0
+        );
+
+        const vacios=
+        Number(
+            fila.cuartones_vacios || 0
+        );
+
+
+        html+=`
+
+        <tr>
+
+        <td>
+        ${fila.fila}
+        </td>
+
+        <td>
+        ${cuartones}
+        </td>
+
+        <td>
+        ${vacios}
+        </td>
+
+        </tr>
+
+        `;
+
+    });
+
+
+    html+=`
+
+    </tbody>
+
+    </table>
 
     </div>
 
@@ -3876,11 +4124,6 @@ async function procesarSalidaCebaDestete(){
     }
 
 
-    /*
-       ESTA salida SÍ se registra
-       en el historial del Destete.
-    */
-
     await registrarMovimientoDestete(
 
         actual.fila,
@@ -3899,6 +4142,339 @@ async function procesarSalidaCebaDestete(){
         actual.fila+
         "\nCerdos: "+
         cantidad
+
+    );
+
+
+    cerrarPanel();
+
+    await cargarDestete();
+
+}
+
+
+/* ==================================================
+   MUERTE DESTETE
+================================================== */
+
+function mostrarMuerteDestete(){
+
+    const cantidad=
+    Number(
+        filaDesteteSeleccionada.cantidad_cerdos || 0
+    );
+
+
+    document.getElementById(
+        "infoMuerteDestete"
+    ).innerText=
+
+    "☠️ "+
+    filaDesteteSeleccionada.fila+
+    " — "+
+    cantidad+
+    " cerdos actuales";
+
+
+    ocultarTodosLosPaneles();
+
+
+    document
+    .getElementById(
+        "panelMuerteDestete"
+    )
+    .classList
+    .remove("oculto");
+
+}
+
+
+async function procesarMuerteDestete(){
+
+    const cantidad=
+    Number(
+        document.getElementById(
+            "cantidadMuerteDestete"
+        ).value
+    );
+
+
+    if(!cantidad || cantidad<=0){
+
+        alert(
+            "Introduce una cantidad válida."
+        );
+
+        return;
+
+    }
+
+
+    const actual=
+    await obtenerFilaDesteteActual(
+        filaDesteteSeleccionada.id
+    );
+
+
+    if(!actual){
+
+        return;
+
+    }
+
+
+    const cantidadActual=
+
+    Number(
+        actual.cantidad_cerdos || 0
+    );
+
+
+    if(cantidad>cantidadActual){
+
+        alert(
+            "No puedes sacar más cerdos de los que hay en la fila."
+        );
+
+        return;
+
+    }
+
+
+    const nuevaCantidad=
+
+    cantidadActual-
+    cantidad;
+
+
+    const {error}=
+
+    await clienteSupabase
+    .from("destete_filas")
+    .update({
+
+        cantidad_cerdos:
+        nuevaCantidad
+
+    })
+    .eq(
+        "id",
+        actual.id
+    );
+
+
+    if(error){
+
+        alert(
+            "Error registrando la muerte:\n\n"+
+            error.message
+        );
+
+        return;
+
+    }
+
+
+    await registrarMovimientoDestete(
+
+        actual.fila,
+
+        "Muerte",
+
+        cantidad
+
+    );
+
+
+    alert(
+
+        "✅ Muerte registrada correctamente.\n\n"+
+        "Fila: "+
+        actual.fila+
+        "\nCerdos muertos: "+
+        cantidad
+
+    );
+
+
+    cerrarPanel();
+
+    await cargarDestete();
+
+}
+
+
+/* ==================================================
+   AGREGAR DATOS DESTETE
+================================================== */
+
+function mostrarAgregarDatosDestete(){
+
+    const fila=
+    filaDesteteSeleccionada;
+
+
+    document.getElementById(
+        "tituloAgregarDatosDestete"
+    ).innerText=
+
+    "📊 Datos de "+
+    fila.fila;
+
+
+    document.getElementById(
+        "infoAgregarDatosDestete"
+    ).innerText=
+
+    "🍼 "+
+    fila.fila+
+    " — Introduce la cantidad de cuartones y cuartones vacíos.";
+
+
+    document.getElementById(
+        "cantidadCuartonesDestete"
+    ).value=
+
+    Number(
+        fila.cuartones || 0
+    );
+
+
+    document.getElementById(
+        "cantidadCuartonesVaciosDestete"
+    ).value=
+
+    Number(
+        fila.cuartones_vacios || 0
+    );
+
+
+    ocultarTodosLosPaneles();
+
+
+    document
+    .getElementById(
+        "panelAgregarDatosDestete"
+    )
+    .classList
+    .remove("oculto");
+
+}
+
+
+async function procesarAgregarDatosDestete(){
+
+    const cuartones=
+    Number(
+        document.getElementById(
+            "cantidadCuartonesDestete"
+        ).value
+    );
+
+
+    const cuartonesVacios=
+    Number(
+        document.getElementById(
+            "cantidadCuartonesVaciosDestete"
+        ).value
+    );
+
+
+    if(
+
+        Number.isNaN(cuartones) ||
+        cuartones<0
+
+    ){
+
+        alert(
+            "Introduce una cantidad válida de cuartones."
+        );
+
+        return;
+
+    }
+
+
+    if(
+
+        Number.isNaN(cuartonesVacios) ||
+        cuartonesVacios<0
+
+    ){
+
+        alert(
+            "Introduce una cantidad válida de cuartones vacíos."
+        );
+
+        return;
+
+    }
+
+
+    if(cuartonesVacios>cuartones){
+
+        alert(
+            "Los cuartones vacíos no pueden ser mayores que el total de cuartones."
+        );
+
+        return;
+
+    }
+
+
+    const actual=
+    await obtenerFilaDesteteActual(
+        filaDesteteSeleccionada.id
+    );
+
+
+    if(!actual){
+
+        return;
+
+    }
+
+
+    const {error}=
+
+    await clienteSupabase
+    .from("destete_filas")
+    .update({
+
+        cuartones:
+        cuartones,
+
+        cuartones_vacios:
+        cuartonesVacios
+
+    })
+    .eq(
+        "id",
+        actual.id
+    );
+
+
+    if(error){
+
+        alert(
+            "Error guardando los datos:\n\n"+
+            error.message
+        );
+
+        return;
+
+    }
+
+
+    alert(
+
+        "✅ Datos guardados correctamente.\n\n"+
+        actual.fila+
+        "\nCuartones: "+
+        cuartones+
+        "\nCuartones vacíos: "+
+        cuartonesVacios
 
     );
 
@@ -4115,10 +4691,6 @@ async function procesarReagrupeDestete(){
     cantidad;
 
 
-    /*
-       RESTAR ORIGEN
-    */
-
     const {error:errorOrigen}=
 
     await clienteSupabase
@@ -4147,10 +4719,6 @@ async function procesarReagrupeDestete(){
     }
 
 
-    /*
-       SUMAR DESTINO
-    */
-
     const {error:errorDestino}=
 
     await clienteSupabase
@@ -4166,11 +4734,6 @@ async function procesarReagrupeDestete(){
         destino.id
     );
 
-
-    /*
-       SI FALLA EL DESTINO,
-       RESTAURAMOS EL ORIGEN.
-    */
 
     if(errorDestino){
 
@@ -4199,14 +4762,6 @@ async function procesarReagrupeDestete(){
         return;
 
     }
-
-
-    /*
-       IMPORTANTE:
-       
-       EL REAGRUPAMIENTO ENTRE FILAS
-       NO SE REGISTRA EN EL HISTORIAL.
-    */
 
 
     alert(
@@ -4300,11 +4855,6 @@ async function registrarMovimientoDestete(
     "Sin correo";
 
 
-    /*
-       Esta tabla será utilizada posteriormente
-       desde historial.html.
-    */
-
     const {error}=
 
     await clienteSupabase
@@ -4366,7 +4916,10 @@ function cerrarPanel(){
 
         "cantidadAgregarDestete",
         "cantidadSalidaCebaDestete",
-        "cantidadReagrupeDestete"
+        "cantidadMuerteDestete",
+        "cantidadReagrupeDestete",
+        "cantidadCuartonesDestete",
+        "cantidadCuartonesVaciosDestete"
 
     ];
 
@@ -4417,6 +4970,8 @@ function ocultarTodosLosPaneles(){
         "panelFilaDestete",
         "panelAgregarDestete",
         "panelSalidaCebaDestete",
+        "panelMuerteDestete",
+        "panelAgregarDatosDestete",
         "panelReagrupeDestete"
 
     ];
