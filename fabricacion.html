@@ -286,6 +286,112 @@ h3{
 
 
 /* =====================================================
+   DISTRIBUCIÓN
+===================================================== */
+
+#panelDistribucion{
+
+    display:none;
+
+}
+
+.destino-distribucion{
+
+    margin-bottom:14px;
+
+    padding:14px;
+
+    border-radius:12px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #151515,
+            #080808
+        );
+
+    border:1px solid #333;
+
+    border-left:4px solid #e51b23;
+
+}
+
+.destino-titulo{
+
+    color:#ff5555;
+
+    font-weight:bold;
+
+    margin-bottom:10px;
+
+}
+
+.destino-fila{
+
+    display:flex;
+
+    gap:10px;
+
+    align-items:center;
+
+}
+
+.destino-fila input{
+
+    margin:0;
+
+    flex:1;
+
+}
+
+.boton-todo{
+
+    width:auto;
+
+    min-width:85px;
+
+    margin:0;
+
+    padding:13px;
+
+    font-size:14px;
+
+}
+
+.total-distribucion{
+
+    margin-top:15px;
+
+    padding:15px;
+
+    border-radius:12px;
+
+    background:#090909;
+
+    border:1px solid #444;
+
+    text-align:center;
+
+}
+
+.total-distribucion strong{
+
+    color:#ff5555;
+
+}
+
+.restante-distribucion{
+
+    margin-top:8px;
+
+    color:#aaa;
+
+    text-align:center;
+
+}
+
+
+/* =====================================================
    BOTONES
 ===================================================== */
 
@@ -394,6 +500,20 @@ h3{
 
     }
 
+    .destino-fila{
+
+        flex-direction:column;
+
+        align-items:stretch;
+
+    }
+
+    .boton-todo{
+
+        width:100%;
+
+    }
+
 }
 
 </style>
@@ -477,6 +597,48 @@ Seleccione una receta y la cantidad a fabricar.
 
 
 
+<!-- =====================================================
+     DISTRIBUCIÓN
+===================================================== -->
+
+<div
+id="panelDistribucion"
+class="tarjeta">
+
+<h3>📍 Distribución de la fabricación</h3>
+
+<div
+id="infoDistribucion"
+class="estado">
+
+</div>
+
+<div id="listaDistribucion"></div>
+
+<div class="total-distribucion">
+
+<strong>Distribuido:</strong>
+
+<span id="totalDistribuido">0</span>
+
+kg
+
+</div>
+
+<div class="restante-distribucion">
+
+<strong>Restante:</strong>
+
+<span id="restanteDistribucion">0</span>
+
+kg
+
+</div>
+
+</div>
+
+
+
 <!-- FABRICAR -->
 
 <button
@@ -508,6 +670,15 @@ onclick="window.location.href='menu.html'">
 
 
 /* =====================================================
+   VARIABLES
+===================================================== */
+
+let recetaSeleccionada = null;
+
+let distribucionActual = [];
+
+
+/* =====================================================
    NORMALIZAR NOMBRES
 ===================================================== */
 
@@ -519,10 +690,6 @@ function normalizar(nombre){
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g,"")
         .replace(/\s+/g," ");
-
-    /*
-       EQUIVALENCIAS DE NOMBRES
-    */
 
     const equivalencias = {
 
@@ -544,7 +711,6 @@ function normalizar(nombre){
 }
 
 
-
 /* =====================================================
    CARGAR RECETAS
 ===================================================== */
@@ -556,7 +722,9 @@ async function cargarRecetas(){
 
     .from("recetas")
 
-    .select("id,nombre")
+    .select(
+        "id,nombre,distribucion_destinos"
+    )
 
     .order("nombre");
 
@@ -594,6 +762,69 @@ async function cargarRecetas(){
 }
 
 
+/* =====================================================
+   OBTENER DESTINOS
+===================================================== */
+
+function obtenerDestinos(receta){
+
+    if(
+        receta &&
+        Array.isArray(receta.distribucion_destinos)
+    ){
+
+        return receta.distribucion_destinos;
+
+    }
+
+    return [];
+
+}
+
+
+/* =====================================================
+   CANTIDAD DISTRIBUIBLE
+===================================================== */
+
+function calcularCantidadDistribuible(cantidad){
+
+    /*
+       Por cada 1015 kg físicos:
+
+       1000 kg = alimento distribuible
+       10 kg   = calcio
+       5 kg    = sal
+
+       Por tanto:
+       distribuible = cantidad * 1000 / 1015
+    */
+
+    return cantidad * (1000 / 1015);
+
+}
+
+
+/* =====================================================
+   CALCULAR CANTIDAD DE CALCIO
+===================================================== */
+
+function calcularCalcio(cantidad){
+
+    return cantidad * (10 / 1015);
+
+}
+
+
+/* =====================================================
+   CALCULAR CANTIDAD DE SAL
+===================================================== */
+
+function calcularSal(cantidad){
+
+    return cantidad * (5 / 1015);
+
+}
+
 
 /* =====================================================
    CALCULAR RECETA
@@ -621,6 +852,8 @@ async function calcularReceta(){
         cantidadFabricar <= 0
     ){
 
+        recetaSeleccionada = null;
+
         document
         .getElementById("resumen")
         .innerHTML = `
@@ -632,6 +865,10 @@ async function calcularReceta(){
         </div>
 
         `;
+
+        document
+        .getElementById("panelDistribucion")
+        .style.display="none";
 
         return;
 
@@ -647,7 +884,7 @@ async function calcularReceta(){
 
     .from("recetas")
 
-    .select("cantidad_resultado")
+    .select("*")
 
     .eq("id",recetaId)
 
@@ -669,6 +906,9 @@ async function calcularReceta(){
         return;
 
     }
+
+
+    recetaSeleccionada = receta;
 
 
 
@@ -762,12 +1002,525 @@ async function calcularReceta(){
     });
 
 
+    /*
+       MOSTRAR CALCIO Y SAL COMO PARTE
+       DE LA FABRICACIÓN GENERAL
+    */
+
+    const calcio = calcularCalcio(cantidadFabricar);
+
+    const sal = calcularSal(cantidadFabricar);
+
+
+    html += `
+
+    <div class="materia-resumen">
+
+        <div class="nombre-materia">
+
+        🦴 Calcio
+
+        </div>
+
+        <div class="cantidad-materia">
+
+        ${calcio.toFixed(2)} kg
+
+        </div>
+
+    </div>
+
+
+    <div class="materia-resumen">
+
+        <div class="nombre-materia">
+
+        🧂 Sal
+
+        </div>
+
+        <div class="cantidad-materia">
+
+        ${sal.toFixed(2)} kg
+
+        </div>
+
+    </div>
+
+    `;
+
+
     document
     .getElementById("resumen")
     .innerHTML = html;
 
+
+    mostrarDistribucion(
+        receta,
+        cantidadFabricar
+    );
+
 }
 
+
+/* =====================================================
+   MOSTRAR DISTRIBUCIÓN
+===================================================== */
+
+function mostrarDistribucion(receta,cantidadFabricar){
+
+    const destinos =
+    obtenerDestinos(receta);
+
+
+    const panel =
+    document.getElementById(
+        "panelDistribucion"
+    );
+
+
+    const lista =
+    document.getElementById(
+        "listaDistribucion"
+    );
+
+
+    distribucionActual = [];
+
+
+    if(!destinos || destinos.length === 0){
+
+        panel.style.display="none";
+
+        return;
+
+    }
+
+
+    panel.style.display="block";
+
+
+    const distribuible =
+    calcularCantidadDistribuible(
+        cantidadFabricar
+    );
+
+
+    document
+    .getElementById("infoDistribucion")
+    .innerHTML =
+
+    "⚖️ Cantidad para distribuir: <strong>" +
+
+    distribuible.toFixed(2) +
+
+    " kg</strong>";
+
+
+    let html="";
+
+
+    destinos.forEach((destino,index)=>{
+
+        distribucionActual.push({
+
+            destino:destino,
+
+            cantidad:0
+
+        });
+
+
+        html += `
+
+        <div class="destino-distribucion">
+
+            <div class="destino-titulo">
+
+            📍 ${destino}
+
+            </div>
+
+            <div class="destino-fila">
+
+                <input
+
+                type="number"
+
+                min="0"
+
+                step="any"
+
+                id="cantidadDestino${index}"
+
+                placeholder="Cantidad para ${destino}"
+
+                oninput="actualizarDistribucion()">
+
+                <button
+
+                type="button"
+
+                class="boton boton-todo"
+
+                onclick="ponerTodo(${index})">
+
+                Todo
+
+                </button>
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+
+    lista.innerHTML=html;
+
+
+    actualizarDistribucion();
+
+}
+
+
+/* =====================================================
+   PONER TODO PARA UN DESTINO
+===================================================== */
+
+function ponerTodo(index){
+
+    if(!recetaSeleccionada){
+
+        return;
+
+    }
+
+
+    const cantidadFabricar =
+
+    Number(
+        document
+        .getElementById(
+            "cantidadFabricar"
+        )
+        .value
+    );
+
+
+    const distribuible =
+
+    calcularCantidadDistribuible(
+        cantidadFabricar
+    );
+
+
+    distribucionActual.forEach(
+        (item,i)=>{
+
+            const input =
+            document.getElementById(
+                "cantidadDestino"+i
+            );
+
+            if(!input)return;
+
+
+            if(i === index){
+
+                input.value =
+                distribuible.toFixed(2);
+
+            }else{
+
+                input.value="0";
+
+            }
+
+        }
+    );
+
+
+    actualizarDistribucion();
+
+}
+
+
+/* =====================================================
+   ACTUALIZAR DISTRIBUCIÓN
+===================================================== */
+
+function actualizarDistribucion(){
+
+    if(!recetaSeleccionada){
+
+        return;
+
+    }
+
+
+    const cantidadFabricar =
+
+    Number(
+        document
+        .getElementById(
+            "cantidadFabricar"
+        )
+        .value
+    );
+
+
+    const distribuible =
+
+    calcularCantidadDistribuible(
+        cantidadFabricar
+    );
+
+
+    let total=0;
+
+
+    distribucionActual.forEach(
+        (item,index)=>{
+
+            const input =
+            document.getElementById(
+                "cantidadDestino"+index
+            );
+
+
+            if(!input)return;
+
+
+            const cantidad =
+            Number(input.value) || 0;
+
+
+            item.cantidad =
+            cantidad;
+
+
+            total += cantidad;
+
+        }
+    );
+
+
+    const restante =
+    distribuible-total;
+
+
+    document
+    .getElementById("totalDistribuido")
+    .textContent =
+    total.toFixed(2);
+
+
+    document
+    .getElementById("restanteDistribucion")
+    .textContent =
+    restante.toFixed(2);
+
+
+    if(restante < 0){
+
+        document
+        .getElementById("restanteDistribucion")
+        .style.color="#ff3333";
+
+    }else{
+
+        document
+        .getElementById("restanteDistribucion")
+        .style.color="#aaa";
+
+    }
+
+}
+
+
+/* =====================================================
+   VALIDAR DISTRIBUCIÓN
+===================================================== */
+
+function validarDistribucion(){
+
+    if(
+        !recetaSeleccionada
+    ){
+
+        return {
+
+            correcta:true,
+
+            distribucion:[]
+
+        };
+
+    }
+
+
+    const destinos =
+    obtenerDestinos(
+        recetaSeleccionada
+    );
+
+
+    if(
+        !destinos ||
+        destinos.length === 0
+    ){
+
+        return {
+
+            correcta:true,
+
+            distribucion:[]
+
+        };
+
+    }
+
+
+    const cantidadFabricar =
+
+    Number(
+        document
+        .getElementById(
+            "cantidadFabricar"
+        )
+        .value
+    );
+
+
+    const distribuible =
+
+    calcularCantidadDistribuible(
+        cantidadFabricar
+    );
+
+
+    let total=0;
+
+    let distribucion=[];
+
+
+    distribucionActual.forEach(
+        item=>{
+
+            const cantidad =
+            Number(item.cantidad) || 0;
+
+
+            total += cantidad;
+
+
+            if(cantidad > 0){
+
+                distribucion.push({
+
+                    destino:item.destino,
+
+                    cantidad:cantidad
+
+                });
+
+            }
+
+        }
+    );
+
+
+    const diferencia =
+    distribuible-total;
+
+
+    /*
+       Se permite una diferencia mínima
+       por decimales de cálculo.
+    */
+
+    if(
+        Math.abs(diferencia) > 0.01
+    ){
+
+        return {
+
+            correcta:false,
+
+            distribucion:distribucion,
+
+            total:total,
+
+            distribuible:distribuible,
+
+            diferencia:diferencia
+
+        };
+
+    }
+
+
+    return {
+
+        correcta:true,
+
+        distribucion:distribucion,
+
+        total:total,
+
+        distribuible:distribuible
+
+    };
+
+}
+
+
+/* =====================================================
+   TEXTO PARA HISTORIAL
+===================================================== */
+
+function crearTextoDistribucion(distribucion){
+
+    if(
+        !distribucion ||
+        distribucion.length === 0
+    ){
+
+        return "";
+
+    }
+
+
+    return (
+
+        "Distribución - " +
+
+        distribucion
+
+        .map(item =>
+
+            item.destino +
+
+            " " +
+
+            Number(
+                item.cantidad
+            ).toFixed(2)
+
+            +
+
+            "kg"
+
+        )
+
+        .join(", ")
+
+    );
+
+}
 
 
 /* =====================================================
@@ -812,6 +1565,69 @@ async function fabricar(){
 
 
     /* ==========================================
+       VALIDAR DISTRIBUCIÓN ANTES DE FABRICAR
+    ========================================== */
+
+    const resultadoDistribucion =
+    validarDistribucion();
+
+
+    if(
+        !resultadoDistribucion.correcta
+    ){
+
+        alert(
+
+            "⚠️ La distribución no coincide con la cantidad distribuible.\n\n"
+
+            +
+
+            "Cantidad distribuible: "
+
+            +
+
+            resultadoDistribucion.distribuible.toFixed(2)
+
+            +
+
+            " kg\n\n"
+
+            +
+
+            "Distribuido: "
+
+            +
+
+            resultadoDistribucion.total.toFixed(2)
+
+            +
+
+            " kg\n\n"
+
+            +
+
+            "Faltan: "
+
+            +
+
+            resultadoDistribucion.diferencia.toFixed(2)
+
+            +
+
+            " kg"
+
+        );
+
+        return;
+
+    }
+
+
+    const distribucion =
+    resultadoDistribucion.distribucion;
+
+
+    /* ==========================================
        OBTENER RECETA
     ========================================== */
 
@@ -838,6 +1654,9 @@ async function fabricar(){
         return;
 
     }
+
+
+    recetaSeleccionada = receta;
 
 
 
@@ -960,10 +1779,6 @@ async function fabricar(){
         Number(materia.cantidad);
 
 
-        /*
-           BUSCAR EL PRODUCTO
-        */
-
         const producto =
 
         inventarioNormalizado[
@@ -1035,6 +1850,174 @@ async function fabricar(){
             cantidad:cantidadNecesaria
 
         });
+
+    }
+
+
+    /* ==========================================
+       AGREGAR CALCIO
+    ========================================== */
+
+    const cantidadCalcio =
+    calcularCalcio(
+        cantidadFabricar
+    );
+
+
+    const productoCalcio =
+
+    inventarioNormalizado[
+        normalizar("Calcio")
+    ];
+
+
+    if(!productoCalcio){
+
+        faltantes.push(
+
+            "❌ Calcio\nNo se encontró en el inventario."
+
+        );
+
+    }else{
+
+        const disponibleCalcio =
+
+        Number(
+            productoCalcio.Cantidad
+        ) || 0;
+
+
+        if(
+            disponibleCalcio <
+            cantidadCalcio
+        ){
+
+            faltantes.push(
+
+                "⚠️ Calcio"
+
+                +
+
+                "\nNecesita: "
+
+                +
+
+                cantidadCalcio.toFixed(2)
+
+                +
+
+                " kg"
+
+                +
+
+                "\nDisponible: "
+
+                +
+
+                disponibleCalcio.toFixed(2)
+
+                +
+
+                " kg"
+
+            );
+
+        }else{
+
+            operaciones.push({
+
+                producto:productoCalcio,
+
+                cantidad:cantidadCalcio
+
+            });
+
+        }
+
+    }
+
+
+    /* ==========================================
+       AGREGAR SAL
+    ========================================== */
+
+    const cantidadSal =
+    calcularSal(
+        cantidadFabricar
+    );
+
+
+    const productoSal =
+
+    inventarioNormalizado[
+        normalizar("Sal")
+    ];
+
+
+    if(!productoSal){
+
+        faltantes.push(
+
+            "❌ Sal\nNo se encontró en el inventario."
+
+        );
+
+    }else{
+
+        const disponibleSal =
+
+        Number(
+            productoSal.Cantidad
+        ) || 0;
+
+
+        if(
+            disponibleSal <
+            cantidadSal
+        ){
+
+            faltantes.push(
+
+                "⚠️ Sal"
+
+                +
+
+                "\nNecesita: "
+
+                +
+
+                cantidadSal.toFixed(2)
+
+                +
+
+                " kg"
+
+                +
+
+                "\nDisponible: "
+
+                +
+
+                disponibleSal.toFixed(2)
+
+                +
+
+                " kg"
+
+            );
+
+        }else{
+
+            operaciones.push({
+
+                producto:productoSal,
+
+                cantidad:cantidadSal
+
+            });
+
+        }
 
     }
 
@@ -1170,10 +2153,6 @@ async function fabricar(){
     }
 
 
-    /*
-       BUSCAR TAMBIÉN NORMALIZANDO EL NOMBRE
-    */
-
     const elaborado =
 
     productosElaborados.find(p =>
@@ -1300,6 +2279,17 @@ async function fabricar(){
 
 
     /* ==========================================
+       TEXTO DISTRIBUCIÓN
+    ========================================== */
+
+    const textoDistribucion =
+
+    crearTextoDistribucion(
+        distribucion
+    );
+
+
+    /* ==========================================
        REGISTRAR FABRICACIÓN
     ========================================== */
 
@@ -1333,6 +2323,10 @@ async function fabricar(){
         +
 
         receta.nombre,
+
+        "Distribución":
+
+        textoDistribucion,
 
         Numero_operacion:
 
@@ -1391,6 +2385,26 @@ async function fabricar(){
 
         " kg"
 
+        +
+
+        (
+
+            textoDistribucion
+
+            ?
+
+            "\n\n📍 "
+
+            +
+
+            textoDistribucion
+
+            :
+
+            ""
+
+        )
+
     );
 
 
@@ -1400,14 +2414,27 @@ async function fabricar(){
 
 
     document
+    .getElementById("recetaSelect")
+    .value = "";
+
+
+    document
     .getElementById("resumen")
     .innerHTML =
 
     `<div class="estado">
 
-    ✅ Fabricación realizada correctamente.
+    Seleccione una receta y la cantidad a fabricar.
 
     </div>`;
+
+
+    document
+    .getElementById("panelDistribucion")
+    .style.display="none";
+
+
+    recetaSeleccionada=null;
 
 }
 
