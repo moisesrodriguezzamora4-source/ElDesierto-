@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>ElDesierto - Recetas</title><style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>ElDesierto - Fabricación</title><style>
 
 /* =====================================================
    CONFIGURACIÓN GENERAL
@@ -22,8 +22,8 @@ body{
         radial-gradient(
             circle at top,
             #3b0000 0%,
-            #160000 35%,
-            #050505 75%,
+            #170000 35%,
+            #080808 70%,
             #000000 100%
         );
 
@@ -40,7 +40,8 @@ body{
 
 .contenedor{
 
-    max-width:900px;
+    width:100%;
+    max-width:800px;
 
     margin:auto;
 
@@ -61,17 +62,18 @@ body{
 
 .logo{
 
-    width:80px;
-    height:80px;
+    width:85px;
+    height:85px;
 
     margin:auto auto 12px;
 
     display:flex;
 
     align-items:center;
+
     justify-content:center;
 
-    font-size:42px;
+    font-size:45px;
 
     border-radius:50%;
 
@@ -85,12 +87,9 @@ body{
     border:2px solid #ff5555;
 
     box-shadow:
-
         0 6px 0 #4b0000,
-
-        0 12px 25px rgba(255,0,0,.3),
-
-        inset 0 2px 6px rgba(255,255,255,.25);
+        0 12px 30px rgba(255,0,0,.30),
+        inset 0 2px 6px rgba(255,255,255,.20);
 
 }
 
@@ -98,135 +97,21 @@ h1{
 
     color:#ff3333;
 
-    font-size:30px;
+    font-size:31px;
 
     text-shadow:
-
         0 0 10px #ff0000,
-
-        0 0 25px rgba(180,0,0,.5);
+        0 0 25px rgba(255,0,0,.40);
 
 }
 
 .subtitulo{
 
-    margin-top:7px;
+    margin-top:8px;
 
-    color:#aaa;
+    color:#999;
 
-}
-
-
-/* =====================================================
-   BOTONES
-===================================================== */
-
-.boton{
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    width:100%;
-
-    padding:15px;
-
-    margin:10px 0;
-
-    border:none;
-
-    border-radius:13px;
-
-    color:white;
-
-    font-size:16px;
-
-    font-weight:bold;
-
-    cursor:pointer;
-
-    background:
-        linear-gradient(
-            145deg,
-            #e51b23,
-            #850000
-        );
-
-    border:1px solid #ff4444;
-
-    box-shadow:
-
-        0 5px 0 #4a0000,
-
-        0 10px 18px rgba(0,0,0,.5),
-
-        inset 0 2px 5px rgba(255,255,255,.18);
-
-    transition:.15s;
-
-}
-
-.boton:active{
-
-    transform:translateY(4px);
-
-    box-shadow:
-
-        0 1px 0 #4a0000,
-
-        inset 0 2px 5px rgba(255,255,255,.15);
-
-}
-
-.boton-secundario{
-
-    background:
-        linear-gradient(
-            145deg,
-            #303030,
-            #101010
-        );
-
-    border-color:#555;
-
-    box-shadow:
-
-        0 5px 0 #000,
-
-        0 10px 18px rgba(0,0,0,.5),
-
-        inset 0 2px 5px rgba(255,255,255,.08);
-
-}
-
-.boton-editar{
-
-    background:
-        linear-gradient(
-            145deg,
-            #ff7a00,
-            #9a3900
-        );
-
-    border-color:#ff9a40;
-
-    box-shadow:
-
-        0 5px 0 #5c2100,
-
-        0 8px 15px rgba(0,0,0,.5);
-
-}
-
-.boton-eliminar{
-
-    background:
-        linear-gradient(
-            145deg,
-            #ff3333,
-            #850000
-        );
+    font-size:15px;
 
 }
 
@@ -241,95 +126,54 @@ h1{
 
     margin:15px auto;
 
-    padding:18px;
-
-    text-align:left;
+    padding:20px;
 
     border-radius:18px;
 
     background:
         linear-gradient(
             145deg,
-            #1c1c1c,
+            #202020,
             #090909
         );
 
-    border:1px solid #3f3f3f;
+    border:1px solid #3c3c3c;
 
     box-shadow:
-
         0 8px 0 #000,
-
-        0 15px 30px rgba(0,0,0,.65),
-
+        0 15px 35px rgba(0,0,0,.65),
         inset 0 1px 2px rgba(255,255,255,.08);
-
-}
-
-.tarjeta-receta{
-
-    border-left:4px solid #e51b23;
-
-}
-
-.nombre-receta{
-
-    font-size:21px;
-
-    color:#ff4444;
-
-    margin-bottom:15px;
-
-    text-shadow:
-        0 0 8px rgba(255,0,0,.3);
-
-}
-
-.info{
-
-    margin:8px 0;
-
-    color:#ccc;
-
-}
-
-.info strong{
-
-    color:white;
 
 }
 
 
 /* =====================================================
-   FORMULARIO
+   FORMULARIOS
 ===================================================== */
 
-#formulario{
+label{
 
-    display:none;
+    display:block;
 
-}
+    color:#ddd;
 
-h3{
+    font-weight:bold;
 
-    color:#ff4444;
-
-    text-align:center;
-
-    margin-bottom:15px;
+    margin:8px 0 8px;
 
 }
 
-input,
-textarea{
+
+select,
+input{
 
     width:100%;
 
-    padding:14px;
+    padding:15px;
 
-    margin:7px 0;
+    margin-bottom:18px;
 
-    border-radius:10px;
+    border-radius:11px;
 
     border:1px solid #444;
 
@@ -337,99 +181,178 @@ textarea{
 
     color:white;
 
-    font-size:15px;
+    font-size:16px;
 
     outline:none;
 
 }
 
-textarea{
 
-    min-height:90px;
-
-    resize:vertical;
-
-}
-
-input:focus,
-textarea:focus{
+select:focus,
+input:focus{
 
     border-color:#e51b23;
 
     box-shadow:
-        0 0 10px rgba(255,0,0,.25);
+        0 0 12px rgba(255,0,0,.30);
 
 }
 
 
 /* =====================================================
-   LISTA DE MATERIAS PRIMAS
+   TÍTULOS
 ===================================================== */
 
-.materias{
+h3{
 
-    margin-top:15px;
+    color:#ff4444;
 
-    padding:13px;
+    text-align:center;
 
-    border-radius:12px;
+    font-size:20px;
 
-    background:#0b0b0b;
-
-    border:1px solid #292929;
+    margin-bottom:18px;
 
 }
 
-.materias-titulo{
 
-    color:#ff5555;
+/* =====================================================
+   RESUMEN
+===================================================== */
 
-    margin-bottom:8px;
+#resumen{
+
+    min-height:80px;
+
+    color:#bbb;
+
+}
+
+.materia-resumen{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:15px;
+
+    padding:14px;
+
+    margin:10px 0;
+
+    border-radius:12px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #151515,
+            #080808
+        );
+
+    border:1px solid #333;
+
+    border-left:4px solid #e51b23;
+
+}
+
+.nombre-materia{
+
+    color:white;
 
     font-weight:bold;
 
 }
 
-.materia{
+.cantidad-materia{
 
-    padding:7px 0;
+    color:#ff5555;
 
-    border-bottom:1px solid #222;
+    font-weight:bold;
 
-    color:#ccc;
-
-}
-
-.materia:last-child{
-
-    border-bottom:none;
+    white-space:nowrap;
 
 }
 
 
 /* =====================================================
-   SEPARADOR
+   BOTONES
 ===================================================== */
 
-.titulo-seccion{
+.boton{
 
-    text-align:center;
+    width:100%;
 
-    margin:25px 0 15px;
+    padding:16px;
+
+    margin:15px 0;
+
+    border:none;
+
+    border-radius:14px;
 
     color:white;
 
-    font-size:22px;
+    font-size:17px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ef252d,
+            #820000
+        );
+
+    border:1px solid #ff5555;
+
+    box-shadow:
+        0 6px 0 #480000,
+        0 12px 22px rgba(0,0,0,.55),
+        inset 0 2px 5px rgba(255,255,255,.18);
+
+    transition:.15s;
 
 }
 
-.sin-recetas{
+.boton:active{
+
+    transform:translateY(5px);
+
+    box-shadow:
+        0 1px 0 #480000;
+
+}
+
+
+.boton-secundario{
+
+    background:
+        linear-gradient(
+            145deg,
+            #303030,
+            #111111
+        );
+
+    border-color:#555;
+
+    box-shadow:
+        0 6px 0 #050505,
+        0 12px 22px rgba(0,0,0,.55);
+
+}
+
+
+.estado{
 
     text-align:center;
 
     color:#888;
 
-    padding:30px;
+    padding:20px;
 
 }
 
@@ -445,75 +368,68 @@ textarea:focus{
     }
 
     h1{
-        font-size:27px;
+        font-size:28px;
     }
 
     .tarjeta{
         padding:15px;
     }
 
+    .materia-resumen{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:6px;
+
+    }
+
 }
 
-</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><div class="contenedor"><!-- =====================================================
-     ENCABEZADO
-===================================================== --><div class="encabezado"><div class="logo">🧪</div>
+</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><div class="contenedor"><div class="encabezado"><div class="logo">🏭</div>
 
-<h1>Recetas</h1>
+<h1>Fabricación</h1>
 
 <div class="subtitulo">
-    Gestión de recetas de producción
+
+    Producción y transformación de materias primas
+
 </div>
 
 </div><!-- =====================================================
-     NUEVA RECETA
+     SELECCIÓN
+===================================================== --><div class="tarjeta"><label>🧪 Seleccionar receta</label>
+
+<select
+id="recetaSelect"
+onchange="calcularReceta()">
+
+<option value="">
+Seleccione una receta
+</option></select><label>⚖️ Cantidad a fabricar (kg)</label>
+
+<input
+type="number"
+id="cantidadFabricar"
+placeholder="Ejemplo: 1015"
+min="0"
+step="any"
+oninput="calcularReceta()">
+
+</div><!-- =====================================================
+     RESUMEN
+===================================================== --><div class="tarjeta"><h3>🌽 Materias primas necesarias</h3><div id="resumen"><div class="estado">Seleccione una receta y la cantidad a fabricar.
+
+</div></div></div><!-- =====================================================
+     FABRICAR
 ===================================================== --><button
 class="boton"
-onclick="mostrarFormulario()">
+onclick="fabricar()">
 
-➕ Nueva receta
-
-</button><!-- =====================================================
-     FORMULARIO
-===================================================== --><div
-id="formulario"
-class="tarjeta"><h3>🧪 Crear nueva receta</h3><input
-id="nombre"
-placeholder="Nombre de la receta">
-
-<input
-id="producto"
-placeholder="Producto resultado">
-
-<input
-id="cantidad"
-type="number"
-placeholder="Cantidad resultado (kg)">
-
-<textarea
-id="descripcion"
-placeholder="Descripción de la receta"></textarea><button
-class="boton"
-onclick="guardarReceta()">
-
-💾 Guardar receta
+🏭 FABRICAR AHORA
 
 </button><button
-class="boton boton-secundario"
-onclick="ocultarFormulario()">
-
-✖ Cancelar
-
-</button></div><!-- =====================================================
-     LISTA
-===================================================== --><h2 class="titulo-seccion">
-    📋 Recetas creadas
-</h2><div id="listaRecetas"><div class="sin-recetas">
-    Cargando recetas...
-</div>
-
-</div><!-- =====================================================
-     VOLVER
-===================================================== --><button
 class="boton boton-secundario"
 onclick="window.location.href='menu.html'">
 
@@ -523,30 +439,65 @@ onclick="window.location.href='menu.html'">
 
 
 /* =====================================================
-   MOSTRAR / OCULTAR FORMULARIO
+   VARIABLES
 ===================================================== */
 
-function mostrarFormulario(){
-
-    document
-    .getElementById("formulario")
-    .style.display="block";
+let recetaSeleccionada = null;
 
 
-    document
-    .getElementById("formulario")
-    .scrollIntoView({
-        behavior:"smooth"
-    });
+/* =====================================================
+   NORMALIZAR NOMBRES
+===================================================== */
+
+function normalizar(nombre){
+
+    let texto = String(nombre || "")
+        .trim()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g,"")
+        .replace(/\s+/g," ");
+
+    const equivalencias = {
+
+        "soya":"soja",
+
+        "soy":"soja",
+
+        "maiz":"maiz",
+
+        "chicharo":"chicharo",
+
+        "pre mezcla":"premezcla"
+
+    };
+
+
+    return equivalencias[texto] || texto;
 
 }
 
 
-function ocultarFormulario(){
+/* =====================================================
+   COMPROBAR SI ES UN INGREDIENTE EXTRA
+===================================================== */
 
-    document
-    .getElementById("formulario")
-    .style.display="none";
+function esExtra(nombre){
+
+    const nombreNormalizado =
+        normalizar(nombre);
+
+    return (
+
+        nombreNormalizado === "calcio" ||
+
+        nombreNormalizado === "sal" ||
+
+        nombreNormalizado === "vitamina" ||
+
+        nombreNormalizado.includes("vitamina")
+
+    );
 
 }
 
@@ -557,667 +508,984 @@ function ocultarFormulario(){
 
 async function cargarRecetas(){
 
-const { data, error } = await clienteSupabase
+    const {data,error} =
+    await clienteSupabase
 
-.from("recetas")
+    .from("recetas")
 
-.select(`
-
-    *,
-
-    detalle_recetas(
-
-        materia_prima,
-
-        cantidad
-
+    .select(
+        "id,nombre"
     )
 
-`)
-
-.order("id");
+    .order("nombre");
 
 
-if(error){
+    if(error){
 
-document.getElementById("listaRecetas").innerHTML = `
+        alert(
+            "Error cargando recetas:\n\n" +
+            error.message
+        );
 
-<div class="sin-recetas">
+        return;
 
-❌ Error cargando recetas:
-
-<br><br>
-
-${error.message}
-
-</div>
-
-`;
-
-console.log(error);
-
-return;
-
-}
+    }
 
 
-if(!data || data.length === 0){
+    let html =
+    '<option value="">Seleccione una receta</option>';
 
-document.getElementById("listaRecetas").innerHTML = `
 
-<div class="sin-recetas">
+    data.forEach(r=>{
 
-📭 No hay recetas creadas todavía.
+        html +=
+        `<option value="${r.id}">
+        ${r.nombre}
+        </option>`;
 
-</div>
+    });
 
-`;
 
-return;
+    document
+    .getElementById("recetaSelect")
+    .innerHTML = html;
 
 }
 
 
-let html="";
+/* =====================================================
+   CALCULAR RECETA
+===================================================== */
+
+async function calcularReceta(){
+
+    const recetaId =
+    document
+    .getElementById("recetaSelect")
+    .value;
 
 
-data.forEach(receta=>{
+    const cantidadFabricar =
+    Number(
+        document
+        .getElementById("cantidadFabricar")
+        .value
+    );
 
 
-let materias = "";
+    if(
+        !recetaId ||
+        !cantidadFabricar ||
+        cantidadFabricar <= 0
+    ){
+
+        recetaSeleccionada = null;
+
+        document
+        .getElementById("resumen")
+        .innerHTML = `
+
+        <div class="estado">
+
+        Seleccione una receta y una cantidad válida.
+
+        </div>
+
+        `;
+
+        return;
+
+    }
 
 
-if(
-receta.detalle_recetas &&
-receta.detalle_recetas.length > 0
+    /* =================================================
+       OBTENER RECETA
+    ================================================= */
+
+    const {data:receta,error:errorReceta} =
+
+    await clienteSupabase
+
+    .from("recetas")
+
+    .select("*")
+
+    .eq("id",recetaId)
+
+    .single();
+
+
+    if(errorReceta){
+
+        document
+        .getElementById("resumen")
+        .innerHTML =
+
+        `<div class="estado">
+
+        ❌ ${errorReceta.message}
+
+        </div>`;
+
+        return;
+
+    }
+
+
+    recetaSeleccionada = receta;
+
+
+    /* =================================================
+       OBTENER MATERIAS
+    ================================================= */
+
+    const {data:detalle,error:errorDetalle} =
+
+    await clienteSupabase
+
+    .from("detalle_recetas")
+
+    .select("*")
+
+    .eq("receta_id",recetaId);
+
+
+    if(errorDetalle){
+
+        document
+        .getElementById("resumen")
+        .innerHTML =
+
+        `<div class="estado">
+
+        ❌ ${errorDetalle.message}
+
+        </div>`;
+
+        return;
+
+    }
+
+
+    if(!detalle || detalle.length === 0){
+
+        document
+        .getElementById("resumen")
+        .innerHTML =
+
+        `<div class="estado">
+
+        ⚠️ Esta receta no tiene materias primas.
+
+        </div>`;
+
+        return;
+
+    }
+
+
+    let html = "";
+
+
+    detalle.forEach(m=>{
+
+        const necesario =
+
+        (
+            cantidadFabricar /
+            Number(receta.cantidad_resultado)
+        )
+
+        *
+
+        Number(m.cantidad);
+
+
+        html += `
+
+        <div class="materia-resumen">
+
+        <div class="nombre-materia">
+
+        🌽 ${m.materia_prima}
+
+        </div>
+
+
+        <div class="cantidad-materia">
+
+        ${necesario.toFixed(2)} kg
+
+        </div>
+
+        </div>
+
+        `;
+
+    });
+
+
+    document
+    .getElementById("resumen")
+    .innerHTML = html;
+
+}
+
+
+/* =====================================================
+   CALCULAR CANTIDAD ÚTIL
+===================================================== */
+
+function calcularCantidadUtil(
+
+    cantidadFisica,
+
+    receta,
+
+    materias
+
 ){
 
-materias =
+    let extras = 0;
 
-receta.detalle_recetas
 
-.map(m => `
+    materias.forEach(materia=>{
 
-<div class="materia">
+        if(
+            esExtra(
+                materia.materia_prima
+            )
+        ){
 
-🥣 ${m.materia_prima}
+            const cantidadExtra =
 
-<span style="float:right;color:#ff5555">
+            (
+                cantidadFisica /
+                Number(receta.cantidad_resultado)
+            )
 
-${m.cantidad} kg
+            *
 
-</span>
+            Number(materia.cantidad);
 
-</div>
 
-`)
+            extras += cantidadExtra;
 
-.join("");
+        }
 
+    });
 
-}else{
 
-materias = `
+    const cantidadUtil =
 
-<div class="materia">
+    cantidadFisica - extras;
 
-Sin materias primas agregadas.
 
-</div>
+    return {
 
-`;
+        extras:extras,
 
-}
+        util:Math.max(
+            0,
+            cantidadUtil
+        )
 
-
-html += `
-
-<div class="tarjeta tarjeta-receta">
-
-
-<div class="nombre-receta">
-
-🧪 ${receta.nombre}
-
-</div>
-
-
-<div class="info">
-
-<strong>🏭 Producto:</strong>
-
-${receta.producto_resultado}
-
-</div>
-
-
-<div class="info">
-
-<strong>⚖️ Cantidad:</strong>
-
-${receta.cantidad_resultado} kg
-
-</div>
-
-
-${
-
-receta.descripcion
-
-?
-
-`
-
-<div class="info">
-
-<strong>📝 Descripción:</strong>
-
-${receta.descripcion}
-
-</div>
-
-`
-
-:
-
-""
-
-}
-
-
-<div class="materias">
-
-<div class="materias-titulo">
-
-🌽 Materias primas
-
-</div>
-
-${materias}
-
-</div>
-
-
-<button
-
-class="boton boton-secundario"
-
-onclick="window.location.href='detalle_receta.html?id=${receta.id}'">
-
-📋 Ver receta completa
-
-</button>
-
-
-<button
-
-class="boton boton-editar"
-
-onclick="editarReceta(${receta.id})">
-
-✏️ Editar receta
-
-</button>
-
-
-<button
-
-class="boton boton-eliminar"
-
-onclick="eliminarReceta(${receta.id})">
-
-🗑️ Eliminar receta
-
-</button>
-
-
-</div>
-
-`;
-
-});
-
-
-document
-.getElementById("listaRecetas")
-.innerHTML=html;
-
+    };
 
 }
 
 
 /* =====================================================
-   GUARDAR RECETA
+   FABRICAR
 ===================================================== */
 
-async function guardarReceta(){
+async function fabricar(){
 
-let nombre=
-document.getElementById("nombre")
-.value.trim();
 
+    const recetaId =
 
-let producto=
-document.getElementById("producto")
-.value.trim();
+    document
+    .getElementById("recetaSelect")
+    .value;
 
 
-let cantidad=
-document.getElementById("cantidad")
-.value;
+    const cantidadFabricar =
 
+    Number(
 
-let descripcion=
-document.getElementById("descripcion")
-.value.trim();
+        document
+        .getElementById("cantidadFabricar")
+        .value
 
+    );
 
-if(!nombre || !producto || !cantidad){
 
-alert(
-"⚠️ Completa los campos obligatorios."
-);
+    if(
+        !recetaId ||
+        !cantidadFabricar ||
+        cantidadFabricar <= 0
+    ){
 
-return;
+        alert(
+            "⚠️ Seleccione una receta y coloque una cantidad válida."
+        );
 
-}
+        return;
 
+    }
 
-/* =====================================
-   1. CREAR RECETA
-===================================== */
 
-const {
-data:recetaCreada,
-error:errorReceta
-}=
+    /* ==========================================
+       OBTENER RECETA
+    ========================================== */
 
-await clienteSupabase
+    const {data:receta,error:errorReceta} =
 
-.from("recetas")
+    await clienteSupabase
 
-.insert({
+    .from("recetas")
 
-nombre:nombre,
+    .select("*")
 
-producto_resultado:producto,
+    .eq("id",recetaId)
 
-cantidad_resultado:cantidad,
+    .single();
 
-descripcion:descripcion,
 
-usuario:"admin",
+    if(errorReceta){
 
-fecha:new Date().toISOString()
+        alert(
+            "❌ Error obteniendo la receta:\n\n" +
+            errorReceta.message
+        );
 
-})
+        return;
 
-.select()
+    }
 
-.single();
 
+    recetaSeleccionada = receta;
 
-if(errorReceta){
 
-alert(
-"❌ Error guardando receta:\n\n"
-+
-errorReceta.message
-);
+    /* ==========================================
+       OBTENER MATERIAS
+    ========================================== */
 
-return;
+    const {data:materias,error:errorMaterias} =
 
-}
+    await clienteSupabase
 
+    .from("detalle_recetas")
 
-/* =====================================
-   2. BUSCAR PRODUCTO ELABORADO
-===================================== */
+    .select("*")
 
-const {
-data:productoExistente,
-error:errorBusqueda
-}=
+    .eq("receta_id",recetaId);
 
-await clienteSupabase
 
-.from("productos_elaborados")
+    if(errorMaterias){
 
-.select(
-"id, Nombre, Unidad, Cantidad"
-)
+        alert(
+            "❌ Error obteniendo las materias primas:\n\n" +
+            errorMaterias.message
+        );
 
-.eq(
-"Nombre",
-producto
-)
+        return;
 
-.maybeSingle();
+    }
 
 
-if(errorBusqueda){
+    if(!materias || materias.length === 0){
 
-alert(
-"❌ Error comprobando producto elaborado:\n\n"
-+
-errorBusqueda.message
-);
+        alert(
+            "⚠️ Esta receta no tiene materias primas."
+        );
 
-return;
+        return;
 
-}
+    }
 
 
-/* =====================================
-   3. CREAR PRODUCTO SI NO EXISTE
-===================================== */
+    /* ==========================================
+       OBTENER INVENTARIO
+    ========================================== */
 
-if(!productoExistente){
+    const {data:productos,error:errorProductos} =
 
-const {
-error:errorProducto
-}=
+    await clienteSupabase
 
-await clienteSupabase
+    .from("productos")
 
-.from("productos_elaborados")
+    .select(
+        "Identificación, Nombre, Unidad, Cantidad"
+    );
 
-.insert({
 
-Nombre:producto,
+    if(errorProductos){
 
-Unidad:"kg",
+        alert(
+            "❌ Error leyendo el inventario:\n\n" +
+            errorProductos.message
+        );
 
-Cantidad:0
+        return;
 
-});
+    }
 
 
-if(errorProducto){
+    /* ==========================================
+       PREPARAR INVENTARIO NORMALIZADO
+    ========================================== */
 
-alert(
-"⚠️ La receta fue creada, pero ocurrió un problema creando el producto elaborado:\n\n"
-+
-errorProducto.message
-);
+    const inventarioNormalizado = {};
 
-return;
 
-}
+    productos.forEach(producto=>{
 
-}
+        const nombreNormalizado =
+        normalizar(producto.Nombre);
 
 
-/* =====================================
-   TERMINADO
-===================================== */
+        inventarioNormalizado[
+            nombreNormalizado
+        ] = producto;
 
-alert(
+    });
 
-"✅ Receta creada correctamente.\n\n"
 
-+
+    /* ==========================================
+       COMPROBAR DISPONIBILIDAD
+    ========================================== */
 
-"🧪 Receta: "
+    let operaciones = [];
 
-+
+    let faltantes = [];
 
-nombre
 
-+
+    for(const materia of materias){
 
-"\n🏭 Producto elaborado: "
 
-+
+        const nombreReceta =
 
-producto
+        normalizar(
+            materia.materia_prima
+        );
 
-);
 
+        const cantidadNecesaria =
 
-/* Limpiar formulario */
+        (
+            cantidadFabricar /
+            Number(receta.cantidad_resultado)
+        )
 
-document
-.getElementById("nombre")
-.value="";
+        *
 
+        Number(materia.cantidad);
 
-document
-.getElementById("producto")
-.value="";
 
+        const producto =
 
-document
-.getElementById("cantidad")
-.value="";
+        inventarioNormalizado[
+            nombreReceta
+        ];
 
 
-document
-.getElementById("descripcion")
-.value="";
+        if(!producto){
 
+            faltantes.push(
 
-ocultarFormulario();
+                "❌ " +
 
+                materia.materia_prima +
 
-cargarRecetas();
+                "\nNo se encontró en el inventario."
 
-}
+            );
 
+            continue;
 
-/* =====================================================
-   EDITAR RECETA
-===================================================== */
+        }
 
-async function editarReceta(id){
 
-const {
-data,
-error
-}=
+        const disponible =
 
-await clienteSupabase
+        Number(producto.Cantidad) || 0;
 
-.from("recetas")
 
-.select("*")
+        if(disponible < cantidadNecesaria){
 
-.eq("id",id)
+            faltantes.push(
 
-.single();
+                "⚠️ " +
 
+                producto.Nombre +
 
-if(error){
+                "\nNecesita: " +
 
-alert(error.message);
+                cantidadNecesaria.toFixed(2) +
 
-return;
+                " kg"
 
-}
+                +
 
+                "\nDisponible: " +
 
-let nombre=
-prompt(
-"Nombre de la receta:",
-data.nombre
-);
+                disponible.toFixed(2) +
 
+                " kg"
 
-if(nombre===null)return;
+            );
 
+            continue;
 
-let producto=
-prompt(
-"Producto resultado:",
-data.producto_resultado
-);
+        }
 
 
-if(producto===null)return;
+        operaciones.push({
 
+            producto:producto,
 
-let cantidad=
-prompt(
-"Cantidad (kg):",
-data.cantidad_resultado
-);
+            cantidad:cantidadNecesaria
 
+        });
 
-if(cantidad===null)return;
+    }
 
 
-let descripcion=
-prompt(
-"Descripción:",
-data.descripcion || ""
-);
+    /* ==========================================
+       SI FALTA ALGUNA MATERIA
+    ========================================== */
 
+    if(faltantes.length > 0){
 
-if(descripcion===null)return;
+        alert(
 
+            "🚫 NO SE PUEDE FABRICAR\n\n"
 
-/* =====================================
-   ACTUALIZAR
-===================================== */
+            +
 
-const {
-error:errorUpdate
-}=
+            faltantes.join("\n\n")
 
-await clienteSupabase
+        );
 
-.from("recetas")
+        return;
 
-.update({
+    }
 
-nombre:nombre,
 
-producto_resultado:producto,
+    /* ==========================================
+       CALCULAR CANTIDAD ÚTIL
+    ========================================== */
 
-cantidad_resultado:cantidad,
+    const resultadoUtil =
 
-descripcion:descripcion
+    calcularCantidadUtil(
 
-})
+        cantidadFabricar,
 
-.eq("id",id);
+        receta,
 
+        materias
 
-if(errorUpdate){
+    );
 
-alert(
-"❌ Error actualizando:\n\n"
-+
-errorUpdate.message
-);
 
-return;
+    const cantidadUtil =
 
-}
+    resultadoUtil.util;
 
 
-alert(
-"✅ Receta actualizada correctamente."
-);
+    const cantidadExtras =
 
+    resultadoUtil.extras;
 
-cargarRecetas();
 
-}
+    /* ==========================================
+       BUSCAR PRODUCTO ELABORADO
+    ========================================== */
 
+    const nombreResultado =
 
-/* =====================================================
-   ELIMINAR RECETA
-===================================================== */
+    String(
+        receta.producto_resultado
+    ).trim();
 
-async function eliminarReceta(id){
 
-let confirmar=
+    const {data:productosElaborados,error:errorElaborados} =
 
-confirm(
-"⚠️ ¿Deseas eliminar esta receta?\n\nEsta acción no se puede deshacer."
-);
+    await clienteSupabase
 
+    .from("productos_elaborados")
 
-if(!confirmar){
+    .select(
+        "id, Nombre, Unidad, Cantidad"
+    );
 
-return;
 
-}
+    if(errorElaborados){
 
+        alert(
 
-/* =====================================
-   ELIMINAR MATERIAS PRIMAS
-===================================== */
+            "❌ Error buscando productos elaborados:\n\n"
 
-const {
-error:errorDetalle
-}=
+            +
 
-await clienteSupabase
+            errorElaborados.message
 
-.from("detalle_recetas")
+        );
 
-.delete()
+        return;
 
-.eq(
-"receta_id",
-id
-);
+    }
 
 
-if(errorDetalle){
+    const elaborado =
 
-alert(
-"❌ Error eliminando materias primas:\n\n"
-+
-errorDetalle.message
-);
+    productosElaborados.find(p =>
 
-return;
+        normalizar(p.Nombre)
 
-}
+        ===
 
+        normalizar(nombreResultado)
 
-/* =====================================
-   ELIMINAR RECETA
-===================================== */
+    );
 
-const {
-error:errorReceta
-}=
 
-await clienteSupabase
+    if(!elaborado){
 
-.from("recetas")
+        alert(
 
-.delete()
+            "❌ No se encontró el producto elaborado:\n\n"
 
-.eq(
-"id",
-id
-);
+            +
 
+            nombreResultado
 
-if(errorReceta){
+            +
 
-alert(
-"❌ Error eliminando receta:\n\n"
-+
-errorReceta.message
-);
+            "\n\nCrea primero este producto en la receta."
 
-return;
+        );
 
-}
+        return;
 
+    }
 
-alert(
-"✅ Receta eliminada correctamente."
-);
 
+    /* ==========================================
+       OBTENER USUARIO
+    ========================================== */
 
-cargarRecetas();
+    const {data:sesionData} =
+
+    await clienteSupabase
+
+    .auth
+
+    .getSession();
+
+
+    let usuarioActual =
+
+    "Administrador";
+
+
+    if(
+        sesionData &&
+        sesionData.session
+    ){
+
+        usuarioActual =
+
+        sesionData
+        .session
+        .user
+        .email
+
+        ||
+
+        "Administrador";
+
+    }
+
+
+    /* ==========================================
+       DESCONTAR MATERIAS PRIMAS
+    ========================================== */
+
+    for(const operacion of operaciones){
+
+
+        const producto =
+        operacion.producto;
+
+
+        const nuevaCantidad =
+
+        Number(producto.Cantidad)
+
+        -
+
+        Number(operacion.cantidad);
+
+
+        const {error:errorUpdate} =
+
+        await clienteSupabase
+
+        .from("productos")
+
+        .update({
+
+            Cantidad:nuevaCantidad
+
+        })
+
+        .eq(
+
+            "Identificación",
+
+            producto.Identificación
+
+        );
+
+
+        if(errorUpdate){
+
+            alert(
+
+                "❌ Error actualizando "
+
+                +
+
+                producto.Nombre
+
+                +
+
+                ":\n\n"
+
+                +
+
+                errorUpdate.message
+
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    /* ==========================================
+       AUMENTAR SOLO CANTIDAD ÚTIL
+    ========================================== */
+
+    const nuevaProduccion =
+
+    Number(elaborado.Cantidad)
+
+    +
+
+    cantidadUtil;
+
+
+    const {error:errorProduccion} =
+
+    await clienteSupabase
+
+    .from("productos_elaborados")
+
+    .update({
+
+        Cantidad:nuevaProduccion
+
+    })
+
+    .eq(
+
+        "id",
+
+        elaborado.id
+
+    );
+
+
+    if(errorProduccion){
+
+        alert(
+
+            "❌ Error actualizando el producto elaborado:\n\n"
+
+            +
+
+            errorProduccion.message
+
+        );
+
+        return;
+
+    }
+
+
+    /* ==========================================
+       REGISTRAR FABRICACIÓN
+       SE GUARDA LA CANTIDAD FÍSICA
+    ========================================== */
+
+    const {error:errorMovimiento} =
+
+    await clienteSupabase
+
+    .from("movimientos")
+
+    .insert([{
+
+        Fecha:
+        new Date().toISOString(),
+
+        Producto:
+        nombreResultado,
+
+        Tipo:
+        "Fabricación",
+
+        Cantidad:
+        cantidadFabricar,
+
+        Usuario:
+        usuarioActual,
+
+        Observación:
+
+        "Receta: "
+
+        +
+
+        receta.nombre,
+
+        Numero_operacion:
+
+        "FAB-"
+
+        +
+
+        Date.now()
+
+    }]);
+
+
+    if(errorMovimiento){
+
+        alert(
+
+            "⚠️ La fabricación se realizó, pero hubo un problema registrando el historial:\n\n"
+
+            +
+
+            errorMovimiento.message
+
+        );
+
+        return;
+
+    }
+
+
+    /* ==========================================
+       ÉXITO
+    ========================================== */
+
+    alert(
+
+        "✅ FABRICACIÓN REALIZADA CORRECTAMENTE\n\n"
+
+        +
+
+        "🏭 Producto: "
+
+        +
+
+        nombreResultado
+
+        +
+
+        "\n\n⚖️ Cantidad física: "
+
+        +
+
+        cantidadFabricar
+
+        +
+
+        " kg"
+
+        +
+
+        "\n\n📦 Cantidad útil agregada: "
+
+        +
+
+        cantidadUtil.toFixed(2)
+
+        +
+
+        " kg"
+
+        +
+
+        (
+
+            cantidadExtras > 0
+
+            ?
+
+            "\n\n➖ Extras de la receta: "
+
+            +
+
+            cantidadExtras.toFixed(2)
+
+            +
+
+            " kg"
+
+            :
+
+            ""
+
+        )
+
+    );
+
+
+    /* ==========================================
+       LIMPIAR
+    ========================================== */
+
+    document
+    .getElementById("cantidadFabricar")
+    .value = "";
+
+
+    document
+    .getElementById("recetaSelect")
+    .value = "";
+
+
+    document
+    .getElementById("resumen")
+    .innerHTML =
+
+    `<div class="estado">
+
+    Seleccione una receta y la cantidad a fabricar.
+
+    </div>`;
+
+
+    recetaSeleccionada=null;
 
 }
 
@@ -1227,5 +1495,6 @@ cargarRecetas();
 ===================================================== */
 
 cargarRecetas();
+
 
 </script></body></html>
