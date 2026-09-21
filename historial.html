@@ -529,6 +529,10 @@ tr:hover td{
 <div class="opciones">
 
 
+    <!-- =================================================
+         HISTORIAL PRODUCTOS
+    ================================================== -->
+
     <div
         class="opcion"
         id="opcionProductos"
@@ -557,6 +561,10 @@ tr:hover td{
     </div>
 
 
+    <!-- =================================================
+         HISTORIAL CONSTRUCCIÓN
+    ================================================== -->
+
     <div
         class="opcion"
         id="opcionConstruccion"
@@ -574,6 +582,38 @@ tr:hover td{
 
             <p>
                 Consulta las entradas y salidas de materiales.
+            </p>
+
+        </div>
+
+        <div class="flecha">
+            ›
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         HISTORIAL DISTRIBUCIÓN
+    ================================================== -->
+
+    <div
+        class="opcion"
+        id="opcionDistribucion"
+        onclick="mostrarHistorial('distribucion')">
+
+        <div class="icono">
+            📊
+        </div>
+
+        <div class="texto">
+
+            <h2>
+                Historial de distribución
+            </h2>
+
+            <p>
+                Consulta las distribuciones realizadas a cada destino.
             </p>
 
         </div>
@@ -668,6 +708,44 @@ tr:hover td{
 
 
 <tbody id="tablaConstruccion">
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<!-- =====================================================
+     HISTORIAL DE DISTRIBUCIÓN
+===================================================== -->
+
+<div
+    class="caja oculto"
+    id="historialDistribucion">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Fecha</th>
+
+<th>Distribución</th>
+
+<th>Cantidad</th>
+
+<th>Usuario</th>
+
+<th>Acción</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="tablaDistribucion">
 
 </tbody>
 
@@ -795,6 +873,12 @@ function mostrarHistorial(tipo){
             "historialConstruccion"
         );
 
+    const historialDistribucion =
+        document.getElementById(
+            "historialDistribucion"
+        );
+
+
     const opcionProductos =
         document.getElementById(
             "opcionProductos"
@@ -805,14 +889,24 @@ function mostrarHistorial(tipo){
             "opcionConstruccion"
         );
 
+    const opcionDistribucion =
+        document.getElementById(
+            "opcionDistribucion"
+        );
+
 
     historialProductos.classList.add("oculto");
 
     historialConstruccion.classList.add("oculto");
 
+    historialDistribucion.classList.add("oculto");
+
+
     opcionProductos.classList.remove("activa");
 
     opcionConstruccion.classList.remove("activa");
+
+    opcionDistribucion.classList.remove("activa");
 
 
     if(tipo === "productos"){
@@ -833,6 +927,17 @@ function mostrarHistorial(tipo){
         opcionConstruccion.classList.add("activa");
 
         cargarHistorialConstruccion();
+
+    }
+
+
+    if(tipo === "distribucion"){
+
+        historialDistribucion.classList.remove("oculto");
+
+        opcionDistribucion.classList.add("activa");
+
+        cargarHistorialDistribucion();
 
     }
 
@@ -1153,6 +1258,182 @@ async function cargarHistorialConstruccion(){
 
 
 /* =====================================================
+   CARGAR HISTORIAL DE DISTRIBUCIÓN
+===================================================== */
+
+async function cargarHistorialDistribucion(){
+
+    const tabla =
+        document.getElementById(
+            "tablaDistribucion"
+        );
+
+
+    tabla.innerHTML = `
+
+    <tr>
+
+        <td
+            colspan="5"
+            class="vacio">
+
+            ⏳ Cargando historial de distribución...
+
+        </td>
+
+    </tr>
+
+    `;
+
+
+    const {
+        data,
+        error
+    } =
+        await clienteSupabase
+
+        .from("movimientos_distribucion")
+
+        .select(
+            "id, fecha, distribucion, cantidad, usuario"
+        )
+
+        .order(
+            "fecha",
+            {
+                ascending:false
+            }
+        );
+
+
+    if(error){
+
+        console.error(
+            "Error cargando historial de distribución:",
+            error
+        );
+
+
+        tabla.innerHTML = `
+
+        <tr>
+
+            <td
+                colspan="5"
+                class="vacio">
+
+                ❌ Error cargando el historial:
+                ${error.message}
+
+            </td>
+
+        </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    tabla.innerHTML = "";
+
+
+    if(!data || data.length === 0){
+
+        tabla.innerHTML = `
+
+        <tr>
+
+            <td
+                colspan="5"
+                class="vacio">
+
+                📭 No hay distribuciones registradas.
+
+            </td>
+
+        </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    data.forEach(
+        movimiento => {
+
+
+        let botonEliminar = "";
+
+
+        if(esAdministrador){
+
+            botonEliminar = `
+
+            <button
+
+                class="eliminar"
+
+                onclick="eliminarMovimientoDistribucion(${movimiento.id})">
+
+                🗑️ Eliminar
+
+            </button>
+
+            `;
+
+        }
+
+
+        const fecha =
+            movimiento.fecha
+            ?
+            new Date(
+                movimiento.fecha
+            ).toLocaleString(
+                "es-ES"
+            )
+            :
+            "";
+
+
+        tabla.innerHTML += `
+
+        <tr>
+
+            <td>
+                ${fecha}
+            </td>
+
+            <td>
+                ${movimiento.distribucion || ""}
+            </td>
+
+            <td>
+                ${movimiento.cantidad ?? 0}
+            </td>
+
+            <td>
+                ${movimiento.usuario || ""}
+            </td>
+
+            <td>
+                ${botonEliminar}
+            </td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+
+
+/* =====================================================
    ELIMINAR UN MOVIMIENTO
    DE MATERIAS PRIMAS / PRODUCTOS
 ===================================================== */
@@ -1323,6 +1604,97 @@ async function eliminarMovimientoConstruccion(
 
 
     await cargarHistorialConstruccion();
+
+}
+
+
+/* =====================================================
+   ELIMINAR MOVIMIENTO DE DISTRIBUCIÓN
+===================================================== */
+
+async function eliminarMovimientoDistribucion(
+    id
+){
+
+    if(!esAdministrador){
+
+        alert(
+            "No tienes permisos para eliminar registros."
+        );
+
+        return;
+
+    }
+
+
+    if(
+        id === null ||
+        id === undefined ||
+        id === ""
+    ){
+
+        alert(
+            "Este registro no tiene un identificador válido."
+        );
+
+        return;
+
+    }
+
+
+    const confirmar =
+        confirm(
+            "¿Estás seguro de que deseas eliminar esta distribución del historial?"
+        );
+
+
+    if(!confirmar){
+
+        return;
+
+    }
+
+
+    const {
+        error
+    } =
+        await clienteSupabase
+
+        .from(
+            "movimientos_distribucion"
+        )
+
+        .delete()
+
+        .eq(
+            "id",
+            id
+        );
+
+
+    if(error){
+
+        console.error(
+            "Error eliminando distribución:",
+            error
+        );
+
+        alert(
+            "Error al eliminar: "
+            + error.message
+        );
+
+        return;
+
+    }
+
+
+    alert(
+        "Distribución eliminada correctamente."
+    );
+
+
+    await cargarHistorialDistribucion();
 
 }
 
