@@ -1,14 +1,5 @@
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>ElDesierto - Recetas</title>
-
-<style>
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>ElDesierto - Recetas</title><style>
 
 /* =====================================================
    CONFIGURACIÓN GENERAL
@@ -372,77 +363,6 @@ textarea:focus{
 
 
 /* =====================================================
-   DISTRIBUCIÓN
-===================================================== */
-
-.distribucion-receta{
-
-    margin-top:15px;
-
-    padding:14px;
-
-    border-radius:12px;
-
-    background:#0b0b0b;
-
-    border:1px solid #292929;
-
-}
-
-.distribucion-titulo{
-
-    color:#ff5555;
-
-    font-weight:bold;
-
-    margin-bottom:10px;
-
-}
-
-.opciones-distribucion{
-
-    display:grid;
-
-    grid-template-columns:1fr 1fr;
-
-    gap:8px;
-
-}
-
-.opcion-distribucion{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:8px;
-
-    padding:11px;
-
-    border-radius:9px;
-
-    background:#111;
-
-    border:1px solid #333;
-
-    color:#ddd;
-
-    cursor:pointer;
-
-}
-
-.opcion-distribucion input{
-
-    width:auto;
-
-    margin:0;
-
-    accent-color:#e51b23;
-
-}
-
-
-/* =====================================================
    LISTA DE MATERIAS PRIMAS
 ===================================================== */
 
@@ -532,213 +452,74 @@ textarea:focus{
         padding:15px;
     }
 
-    .opciones-distribucion{
-
-        grid-template-columns:1fr;
-
-    }
-
 }
 
-</style>
-
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-</head>
-
-
-<body>
-
-
-<div class="contenedor">
-
-
-<!-- =====================================================
+</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><div class="contenedor"><!-- =====================================================
      ENCABEZADO
-===================================================== -->
+===================================================== --><div class="encabezado"><div class="logo">🧪</div>
 
-<div class="encabezado">
+<h1>Recetas</h1>
 
-    <div class="logo">🧪</div>
-
-    <h1>Recetas</h1>
-
-    <div class="subtitulo">
-        Gestión de recetas de producción
-    </div>
-
+<div class="subtitulo">
+    Gestión de recetas de producción
 </div>
 
-
-<!-- =====================================================
+</div><!-- =====================================================
      NUEVA RECETA
-===================================================== -->
-
-<button
+===================================================== --><button
 class="boton"
 onclick="mostrarFormulario()">
 
 ➕ Nueva receta
 
-</button>
-
-
-<!-- =====================================================
+</button><!-- =====================================================
      FORMULARIO
-===================================================== -->
-
-<div
+===================================================== --><div
 id="formulario"
-class="tarjeta">
-
-<h3>🧪 Crear nueva receta</h3>
-
-<input
+class="tarjeta"><h3>🧪 Crear nueva receta</h3><input
 id="nombre"
 placeholder="Nombre de la receta">
-
 
 <input
 id="producto"
 placeholder="Producto resultado">
-
 
 <input
 id="cantidad"
 type="number"
 placeholder="Cantidad resultado (kg)">
 
-
 <textarea
 id="descripcion"
-placeholder="Descripción de la receta"></textarea>
-
-
-<!-- =====================================================
-     DISTRIBUCIÓN DE LA RECETA
-===================================================== -->
-
-<div class="distribucion-receta">
-
-    <div class="distribucion-titulo">
-
-        📍 Distribución de recetas
-
-    </div>
-
-    <div class="opciones-distribucion">
-
-        <label class="opcion-distribucion">
-
-            <input
-            type="checkbox"
-            name="destinoReceta"
-            value="Maternidad">
-
-            🍼 Maternidad
-
-        </label>
-
-
-        <label class="opcion-distribucion">
-
-            <input
-            type="checkbox"
-            name="destinoReceta"
-            value="Destete">
-
-            🐷 Destete
-
-        </label>
-
-
-        <label class="opcion-distribucion">
-
-            <input
-            type="checkbox"
-            name="destinoReceta"
-            value="Ceba">
-
-            🐖 Ceba
-
-        </label>
-
-
-        <label class="opcion-distribucion">
-
-            <input
-            type="checkbox"
-            name="destinoReceta"
-            value="Exterior">
-
-            🌎 Exterior
-
-        </label>
-
-    </div>
-
-</div>
-
-
-<button
+placeholder="Descripción de la receta"></textarea><button
 class="boton"
 onclick="guardarReceta()">
 
 💾 Guardar receta
 
-</button>
-
-
-<button
+</button><button
 class="boton boton-secundario"
 onclick="ocultarFormulario()">
 
 ✖ Cancelar
 
-</button>
-
-</div>
-
-
-<!-- =====================================================
+</button></div><!-- =====================================================
      LISTA
-===================================================== -->
-
-<h2 class="titulo-seccion">
+===================================================== --><h2 class="titulo-seccion">
     📋 Recetas creadas
-</h2>
-
-
-<div id="listaRecetas">
-
-    <div class="sin-recetas">
-        Cargando recetas...
-    </div>
-
+</h2><div id="listaRecetas"><div class="sin-recetas">
+    Cargando recetas...
 </div>
 
-
-<!-- =====================================================
+</div><!-- =====================================================
      VOLVER
-===================================================== -->
-
-<button
+===================================================== --><button
 class="boton boton-secundario"
 onclick="window.location.href='menu.html'">
 
 ⬅️ Volver al menú
 
-</button>
-
-
-</div>
-
-
-<script src="supabase.js"></script>
-
-
-<script>
+</button></div><script src="supabase.js"></script><script>
 
 
 /* =====================================================
@@ -889,32 +670,6 @@ Sin materias primas agregadas.
 }
 
 
-/* =====================================================
-   DESTINOS
-===================================================== */
-
-let destinos = [];
-
-try{
-
-    destinos =
-    Array.isArray(receta.distribucion_destinos)
-    ? receta.distribucion_destinos
-    : [];
-
-}catch(e){
-
-    destinos=[];
-
-}
-
-
-let textoDestinos =
-destinos.length > 0
-? destinos.join(" · ")
-: "Sin distribución definida";
-
-
 html += `
 
 <div class="tarjeta tarjeta-receta">
@@ -941,15 +696,6 @@ ${receta.producto_resultado}
 <strong>⚖️ Cantidad:</strong>
 
 ${receta.cantidad_resultado} kg
-
-</div>
-
-
-<div class="info">
-
-<strong>📍 Destinos:</strong>
-
-${textoDestinos}
 
 </div>
 
@@ -1041,25 +787,6 @@ document
 
 
 /* =====================================================
-   OBTENER DESTINOS SELECCIONADOS
-===================================================== */
-
-function obtenerDestinosSeleccionados(){
-
-    return Array.from(
-
-        document.querySelectorAll(
-            'input[name="destinoReceta"]:checked'
-        )
-
-    ).map(
-        input => input.value
-    );
-
-}
-
-
-/* =====================================================
    GUARDAR RECETA
 ===================================================== */
 
@@ -1083,10 +810,6 @@ document.getElementById("cantidad")
 let descripcion=
 document.getElementById("descripcion")
 .value.trim();
-
-
-let destinos =
-obtenerDestinosSeleccionados();
 
 
 if(!nombre || !producto || !cantidad){
@@ -1125,9 +848,7 @@ descripcion:descripcion,
 
 usuario:"admin",
 
-fecha:new Date().toISOString(),
-
-distribucion_destinos:destinos
+fecha:new Date().toISOString()
 
 })
 
@@ -1251,18 +972,6 @@ nombre
 
 producto
 
-+
-
-"\n\n📍 Destinos: "
-
-+
-
-(
-    destinos.length > 0
-    ? destinos.join(", ")
-    : "Sin distribución definida"
-)
-
 );
 
 
@@ -1286,15 +995,6 @@ document
 document
 .getElementById("descripcion")
 .value="";
-
-
-document
-.querySelectorAll(
-    'input[name="destinoReceta"]'
-)
-.forEach(
-    input => input.checked=false
-);
 
 
 ocultarFormulario();
@@ -1377,72 +1077,6 @@ if(descripcion===null)return;
 
 
 /* =====================================
-   DESTINOS
-===================================== */
-
-let destinosActuales = "";
-
-if(Array.isArray(data.distribucion_destinos)){
-
-    destinosActuales =
-    data.distribucion_destinos.join(", ");
-
-}
-
-let destinosTexto =
-
-prompt(
-
-"Destinos de distribución.\n\n" +
-
-"Opciones: Maternidad, Destete, Ceba, Exterior\n\n" +
-
-"Escribe los destinos separados por coma.\n" +
-
-"Ejemplo: Destete, Ceba\n\n" +
-
-"Deja vacío si no tendrá distribución.",
-
-destinosActuales
-
-);
-
-
-if(destinosTexto===null)return;
-
-
-let destinos =
-
-destinosTexto
-.split(",")
-.map(d=>d.trim())
-.filter(Boolean);
-
-
-/* =====================================
-   VALIDAR DESTINOS
-===================================== */
-
-const destinosPermitidos = [
-
-    "Maternidad",
-    "Destete",
-    "Ceba",
-    "Exterior"
-
-];
-
-
-destinos = destinos.filter(
-
-    destino =>
-
-    destinosPermitidos.includes(destino)
-
-);
-
-
-/* =====================================
    ACTUALIZAR
 ===================================== */
 
@@ -1462,9 +1096,7 @@ producto_resultado:producto,
 
 cantidad_resultado:cantidad,
 
-descripcion:descripcion,
-
-distribucion_destinos:destinos
+descripcion:descripcion
 
 })
 
@@ -1596,9 +1228,4 @@ cargarRecetas();
 
 cargarRecetas();
 
-</script>
-
-
-</body>
-
-</html>
+</script></body></html>
