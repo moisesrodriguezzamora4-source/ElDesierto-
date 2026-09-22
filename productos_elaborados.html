@@ -4,492 +4,273 @@
 <head>
 
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Historial - ElDesierto</title>
+<title>Productos Elaborados - ElDesierto</title>
 
 <style>
 
-/* =====================================================
+/* ==================================================
    CONFIGURACIÓN GENERAL
-===================================================== */
+================================================== */
 
 *{
     box-sizing:border-box;
     margin:0;
     padding:0;
-    -webkit-tap-highlight-color:transparent;
-}
-
-html,
-body{
-    min-height:100%;
 }
 
 body{
-
     font-family:Arial,sans-serif;
-
-    background:
-    radial-gradient(
-        circle at top,
-        #3b0000 0%,
-        #160000 35%,
-        #050505 75%
-    );
-
+    min-height:100vh;
     color:white;
 
-    padding:18px;
-
+    background:
+        radial-gradient(circle at top,#1d1d1d,#050505 65%);
 }
 
 
-/* =====================================================
-   ENCABEZADO
-===================================================== */
-
-.encabezado{
-
-    text-align:center;
-
-    margin-bottom:18px;
-
-}
-
-.logo{
-
-    font-size:42px;
-
-    filter:
-    drop-shadow(0 0 8px #ff0000)
-    drop-shadow(0 0 18px #8b0000);
-
-}
-
-.marca{
-
-    font-size:28px;
-
-    font-weight:bold;
-
-    color:#ff2020;
-
-    text-shadow:
-    0 0 8px #ff0000,
-    0 0 18px #700000;
-
-}
-
-.subtitulo{
-
-    color:#999;
-
-    font-size:13px;
-
-    margin-top:4px;
-
-}
-
-
-/* =====================================================
-   TÍTULO
-===================================================== */
+/* ==================================================
+   TITULO
+================================================== */
 
 h1{
-
     text-align:center;
-
-    color:#ff2525;
-
-    font-size:25px;
-
-    margin:10px 0 20px;
-
+    margin:25px 0;
+    color:#ff3030;
+    font-size:32px;
     text-shadow:
-    0 0 8px #ff0000,
-    0 0 15px #700000;
-
+        0 0 10px rgba(255,0,0,.5),
+        0 4px 8px #000;
 }
 
 
-/* =====================================================
-   BOTÓN VOLVER
-===================================================== */
+/* ==================================================
+   BOTON REGRESAR
+================================================== */
 
-.btn-volver{
-
+.botonRegresar{
     display:block;
+    width:220px;
+    margin:0 auto 25px;
 
-    width:100%;
-
-    max-width:430px;
-
-    margin:0 auto 18px;
-
-    padding:13px;
+    padding:14px;
 
     text-align:center;
-
-    text-decoration:none;
-
-    color:#ddd;
-
-    font-weight:bold;
-
-    background:
-    linear-gradient(
-        145deg,
-        #292929,
-        #0d0d0d
-    );
-
-    border:1px solid #444;
-
-    border-radius:13px;
-
-    box-shadow:
-
-    0 5px 0 #050505,
-
-    0 8px 15px rgba(0,0,0,.7);
-
-}
-
-.btn-volver:active{
-
-    transform:translateY(4px);
-
-    box-shadow:
-    0 1px 0 #050505;
-
-}
-
-
-/* =====================================================
-   BOTONES DE SELECCIÓN
-===================================================== */
-
-.opciones{
-
-    width:100%;
-
-    max-width:700px;
-
-    margin:0 auto 20px;
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:12px;
-
-}
-
-.opcion{
-
-    width:100%;
-
-    padding:16px;
-
-    display:flex;
-
-    align-items:center;
-
-    gap:14px;
-
-    cursor:pointer;
 
     color:white;
-
-    background:
-    linear-gradient(
-        145deg,
-        #292929,
-        #0d0d0d
-    );
-
-    border:1px solid #550000;
-
-    border-radius:15px;
-
-    box-shadow:
-
-    0 5px 0 #050505,
-
-    0 8px 15px rgba(0,0,0,.7),
-
-    0 0 15px rgba(180,0,0,.12);
-
-    transition:.15s;
-
-}
-
-.opcion:active{
-
-    transform:translateY(4px);
-
-    box-shadow:
-    0 1px 0 #050505;
-
-}
-
-.opcion.activa{
-
-    border:1px solid #ff2020;
-
-    box-shadow:
-
-    0 5px 0 #520000,
-
-    0 8px 15px rgba(0,0,0,.7),
-
-    0 0 18px rgba(255,0,0,.18);
-
-}
-
-.opcion .icono{
-
-    font-size:30px;
-
-    width:42px;
-
-    text-align:center;
-
-}
-
-.opcion .texto{
-
-    flex:1;
-
-}
-
-.opcion h2{
-
-    font-size:17px;
-
-    margin-bottom:4px;
-
-    color:#ff2525;
-
-}
-
-.opcion p{
-
-    font-size:12px;
-
-    color:#999;
-
-}
-
-.opcion .flecha{
-
-    font-size:30px;
-
-    color:#ff2525;
-
-}
-
-
-/* =====================================================
-   CONTENEDOR DEL HISTORIAL
-===================================================== */
-
-.caja{
-
-    width:100%;
-
-    max-width:1100px;
-
-    margin:auto;
-
-    padding:12px;
-
-    background:
-    linear-gradient(
-        145deg,
-        #1b1b1b,
-        #080808
-    );
-
-    border:1px solid #550000;
-
-    border-radius:20px;
-
-    box-shadow:
-
-    0 15px 35px rgba(0,0,0,.8),
-
-    inset 0 1px 1px rgba(255,255,255,.07),
-
-    0 0 20px rgba(180,0,0,.15);
-
-    overflow-x:auto;
-
-}
-
-
-/* =====================================================
-   TABLA
-===================================================== */
-
-table{
-
-    width:100%;
-
-    min-width:850px;
-
-    border-collapse:separate;
-
-    border-spacing:0;
-
-    font-size:13px;
-
-    overflow:hidden;
+    text-decoration:none;
+    font-weight:bold;
+    font-size:16px;
 
     border-radius:12px;
 
+    background:linear-gradient(
+        145deg,
+        #ff3030,
+        #a80000
+    );
+
+    box-shadow:
+        0 5px 0 #650000,
+        0 10px 20px rgba(0,0,0,.7);
+
+    transition:.2s;
+}
+
+.botonRegresar:hover{
+    transform:translateY(-2px);
+}
+
+
+/* ==================================================
+   CONTENEDOR
+================================================== */
+
+.contenedor{
+    width:95%;
+    max-width:1100px;
+    margin:auto;
+}
+
+
+/* ==================================================
+   TABLA
+================================================== */
+
+.tablaContenedor{
+    width:100%;
+    overflow-x:auto;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(30,30,30,.95),
+            rgba(5,5,5,.98)
+        );
+
+    border-radius:16px;
+
+    padding:15px;
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,.8),
+        inset 0 1px 1px rgba(255,255,255,.05);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:700px;
 }
 
 th{
-
-    padding:12px 9px;
-
-    background:
-    linear-gradient(
-        145deg,
-        #e51b23,
-        #8d0000
-    );
-
+    background:#9d0000;
     color:white;
 
-    border-bottom:2px solid #500000;
+    padding:14px 10px;
 
-    text-shadow:
-    0 1px 2px #400000;
+    text-align:center;
 
+    font-size:15px;
 }
 
 td{
-
-    padding:11px 8px;
+    padding:12px 10px;
 
     text-align:center;
 
-    color:#ddd;
+    border-bottom:1px solid #333;
+
+    color:#eee;
+}
+
+tr:hover{
+    background:rgba(255,48,48,.08);
+}
+
+
+/* ==================================================
+   BOTONES
+================================================== */
+
+button{
+    border:none;
+    cursor:pointer;
+
+    color:white;
+    font-weight:bold;
+
+    border-radius:10px;
+
+    padding:10px 14px;
+
+    background:linear-gradient(
+        145deg,
+        #ff3030,
+        #a80000
+    );
+
+    box-shadow:
+        0 4px 0 #650000,
+        0 7px 15px rgba(0,0,0,.6);
+
+    transition:.2s;
+}
+
+button:hover{
+    transform:translateY(-2px);
+}
+
+button:active{
+    transform:translateY(2px);
+
+    box-shadow:
+        0 2px 0 #650000;
+}
+
+
+/* ==================================================
+   CONSUMO
+================================================== */
+
+.consumo{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    align-items:center;
+}
+
+.consumo input{
+    width:100px;
+
+    padding:8px;
+
+    border-radius:8px;
+
+    border:1px solid #555;
 
     background:#111;
 
-    border-bottom:1px solid #292929;
-
-}
-
-tr:nth-child(even) td{
-
-    background:#171717;
-
-}
-
-tr:hover td{
-
-    background:#210909;
-
-}
-
-
-/* =====================================================
-   BOTÓN ELIMINAR
-===================================================== */
-
-.eliminar{
-
-    background:
-    linear-gradient(
-        145deg,
-        #ff3030,
-        #9d0000
-    );
-
     color:white;
 
-    border:1px solid #650000;
-
-    padding:8px 11px;
-
-    border-radius:9px;
-
-    cursor:pointer;
-
-    font-weight:bold;
-
-    box-shadow:
-
-    0 4px 0 #520000,
-
-    0 6px 10px rgba(0,0,0,.6);
-
-    transition:.15s;
-
+    text-align:center;
 }
 
-.eliminar:active{
+.consumo select{
+    padding:8px;
 
-    transform:translateY(3px);
+    border-radius:8px;
 
-    box-shadow:
+    border:1px solid #555;
 
-    0 1px 0 #520000;
+    background:#111;
 
+    color:white;
 }
 
 
-/* =====================================================
-   MENSAJE VACÍO
-===================================================== */
+/* ==================================================
+   MENSAJES
+================================================== */
 
-.vacio{
-
-    padding:30px;
-
+.mensaje{
     text-align:center;
 
-    color:#777;
+    padding:25px;
 
+    color:#aaa;
+
+    font-size:17px;
+}
+
+.error{
+    color:#ff5555;
 }
 
 
-/* =====================================================
-   PIE
-===================================================== */
+/* ==================================================
+   RESPONSIVE
+================================================== */
 
-.pie{
+@media(max-width:700px){
 
-    text-align:center;
+    h1{
+        font-size:26px;
+    }
 
-    margin-top:18px;
+    .contenedor{
+        width:98%;
+    }
 
-    color:#555;
-
-    font-size:12px;
-
-}
-
-
-/* =====================================================
-   OCULTAR HISTORIAL
-===================================================== */
-
-.oculto{
-
-    display:none;
+    .tablaContenedor{
+        padding:8px;
+    }
 
 }
 
 </style>
-
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 </head>
 
@@ -497,1229 +278,515 @@ tr:hover td{
 <body>
 
 
-<div class="encabezado">
-
-    <div class="logo">🐷</div>
-
-    <div class="marca">ElDesierto</div>
-
-    <div class="subtitulo">
-        Sistema de gestión
-    </div>
-
-</div>
+<h1>🐷 Productos Elaborados</h1>
 
 
-<h1>📜 Historial de movimientos</h1>
-
-
-<a
-    href="menu.html"
-    class="btn-volver">
-
-    ⬅ Volver al menú
-
+<a href="inventario.html" class="botonRegresar">
+    ⬅️ Volver al Inventario
 </a>
 
 
-<!-- =====================================================
-     OPCIONES DE HISTORIAL
-===================================================== -->
+<div class="contenedor">
 
-<div class="opciones">
+    <div class="tablaContenedor">
 
+        <table>
 
-    <!-- =================================================
-         HISTORIAL PRODUCTOS
-    ================================================== -->
+            <thead>
 
-    <div
-        class="opcion"
-        id="opcionProductos"
-        onclick="mostrarHistorial('productos')">
+                <tr>
 
-        <div class="icono">
-            📦
-        </div>
+                    <th>Producto</th>
 
-        <div class="texto">
+                    <th>Unidad</th>
 
-            <h2>
-                Historial de materias primas y productos elaborados
-            </h2>
+                    <th>Cantidad</th>
 
-            <p>
-                Consulta las entradas y salidas registradas.
-            </p>
+                    <th>Consumo</th>
 
-        </div>
+                    <th>Acción</th>
 
-        <div class="flecha">
-            ›
-        </div>
+                </tr>
 
-    </div>
+            </thead>
 
+            <tbody id="tablaProductos">
 
-    <!-- =================================================
-         HISTORIAL CONSTRUCCIÓN
-    ================================================== -->
+                <tr>
 
-    <div
-        class="opcion"
-        id="opcionConstruccion"
-        onclick="mostrarHistorial('construccion')">
+                    <td colspan="5" class="mensaje">
+                        Cargando productos...
+                    </td>
 
-        <div class="icono">
-            🏗️
-        </div>
+                </tr>
 
-        <div class="texto">
+            </tbody>
 
-            <h2>
-                Historial de materiales de construcción
-            </h2>
-
-            <p>
-                Consulta las entradas y salidas de materiales.
-            </p>
-
-        </div>
-
-        <div class="flecha">
-            ›
-        </div>
+        </table>
 
     </div>
 
-
-    <!-- =================================================
-         HISTORIAL DISTRIBUCIÓN
-    ================================================== -->
-
-    <div
-        class="opcion"
-        id="opcionDistribucion"
-        onclick="mostrarHistorial('distribucion')">
-
-        <div class="icono">
-            📊
-        </div>
-
-        <div class="texto">
-
-            <h2>
-                Historial de distribución
-            </h2>
-
-            <p>
-                Consulta las distribuciones realizadas a cada destino.
-            </p>
-
-        </div>
-
-        <div class="flecha">
-            ›
-        </div>
-
-    </div>
-
-
 </div>
 
 
-<!-- =====================================================
-     HISTORIAL DE MATERIAS PRIMAS Y PRODUCTOS
-===================================================== -->
 
-<div
-    class="caja oculto"
-    id="historialProductos">
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>Fecha</th>
-
-<th>Producto</th>
-
-<th>Tipo</th>
-
-<th>Cantidad</th>
-
-<th>Usuario</th>
-
-<th>Observación</th>
-
-<th>Operación</th>
-
-<th>Acción</th>
-
-</tr>
-
-</thead>
-
-
-<tbody id="tablaHistorial">
-
-</tbody>
-
-</table>
-
-</div>
-
-
-<!-- =====================================================
-     HISTORIAL DE CONSTRUCCIÓN
-===================================================== -->
-
-<div
-    class="caja oculto"
-    id="historialConstruccion">
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>Fecha</th>
-
-<th>Material</th>
-
-<th>Tipo</th>
-
-<th>Cantidad</th>
-
-<th>Usuario</th>
-
-<th>Observación</th>
-
-<th>Operación</th>
-
-<th>Acción</th>
-
-</tr>
-
-</thead>
-
-
-<tbody id="tablaConstruccion">
-
-</tbody>
-
-</table>
-
-</div>
-
-
-<!-- =====================================================
-     HISTORIAL DE DISTRIBUCIÓN
-===================================================== -->
-
-<div
-    class="caja oculto"
-    id="historialDistribucion">
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>Fecha</th>
-
-<th>Comida</th>
-
-<th>Distribución</th>
-
-<th>Cantidad</th>
-
-<th>Usuario</th>
-
-<th>Acción</th>
-
-</tr>
-
-</thead>
-
-
-<tbody id="tablaDistribucion">
-
-</tbody>
-
-</table>
-
-</div>
-
-
-<div class="pie">
-
-    ElDesierto · Historial de movimientos
-
-</div>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script src="supabase.js"></script>
 
 
 <script>
 
-let esAdministrador = false;
+/* ==================================================
+   VARIABLES
+================================================== */
+
+let usuarioActual = "";
 
 
-/* =====================================================
-   VERIFICAR SESIÓN Y ROL
-===================================================== */
+
+/* ==================================================
+   VERIFICAR SESIÓN
+================================================== */
 
 async function verificarSesion(){
 
-    const { data } =
-        await clienteSupabase.auth.getSession();
-
-
-    if(!data.session){
-
-        window.location.href = "login.html";
-
-        return false;
-
-    }
-
-
-    const usuarioId =
-        data.session.user.id;
-
-
     const {
-        data: perfil,
-        error: errorPerfil
-    } =
-        await clienteSupabase
-
-        .from("perfiles")
-
-        .select("id, rol")
-
-        .eq("id", usuarioId)
-
-        .maybeSingle();
+        data:{
+            session
+        }
+    } = await clienteSupabase.auth.getSession();
 
 
-    if(errorPerfil){
+    if(!session){
 
-        console.error(
-            "Error obteniendo perfil:",
-            errorPerfil
-        );
-
-        alert(
-            "Error verificando el perfil: "
-            + errorPerfil.message
-        );
+        window.location.href="login.html";
 
         return false;
-
     }
 
 
-    if(!perfil){
-
-        alert(
-            "No se encontró el perfil del usuario."
-        );
-
-        return false;
-
-    }
-
-
-    const rol =
-        String(perfil.rol || "")
-        .trim()
-        .toLowerCase();
-
-
-    if(rol === "administrador"){
-
-        esAdministrador = true;
-
-    }else{
-
-        esAdministrador = false;
-
-    }
+    usuarioActual =
+        session.user.email ||
+        session.user.id ||
+        "";
 
 
     return true;
-
 }
 
 
-/* =====================================================
-   MOSTRAR HISTORIAL
-===================================================== */
 
-function mostrarHistorial(tipo){
+/* ==================================================
+   CARGAR PRODUCTOS
+================================================== */
 
-    const historialProductos =
-        document.getElementById(
-            "historialProductos"
-        );
+async function cargarProductos(){
 
-    const historialConstruccion =
-        document.getElementById(
-            "historialConstruccion"
-        );
-
-    const historialDistribucion =
-        document.getElementById(
-            "historialDistribucion"
-        );
+    const tabla =
+        document.getElementById("tablaProductos");
 
 
-    const opcionProductos =
-        document.getElementById(
-            "opcionProductos"
-        );
+    tabla.innerHTML = `
+        <tr>
+            <td colspan="5" class="mensaje">
+                Cargando productos...
+            </td>
+        </tr>
+    `;
 
-    const opcionConstruccion =
-        document.getElementById(
-            "opcionConstruccion"
-        );
-
-    const opcionDistribucion =
-        document.getElementById(
-            "opcionDistribucion"
-        );
-
-
-    historialProductos.classList.add("oculto");
-
-    historialConstruccion.classList.add("oculto");
-
-    historialDistribucion.classList.add("oculto");
-
-
-    opcionProductos.classList.remove("activa");
-
-    opcionConstruccion.classList.remove("activa");
-
-    opcionDistribucion.classList.remove("activa");
-
-
-    if(tipo === "productos"){
-
-        historialProductos.classList.remove("oculto");
-
-        opcionProductos.classList.add("activa");
-
-        cargarHistorial();
-
-    }
-
-
-    if(tipo === "construccion"){
-
-        historialConstruccion.classList.remove("oculto");
-
-        opcionConstruccion.classList.add("activa");
-
-        cargarHistorialConstruccion();
-
-    }
-
-
-    if(tipo === "distribucion"){
-
-        historialDistribucion.classList.remove("oculto");
-
-        opcionDistribucion.classList.add("activa");
-
-        cargarHistorialDistribucion();
-
-    }
-
-}
-
-
-/* =====================================================
-   CARGAR HISTORIAL DE MATERIAS PRIMAS
-   Y PRODUCTOS ELABORADOS
-===================================================== */
-
-async function cargarHistorial(){
 
     const {
         data,
         error
     } = await clienteSupabase
 
-    .from("movimientos")
+        .from("productos_elaborados")
 
-    .select(
-        "Fecha, Producto, Tipo, Cantidad, Usuario, Observación, Numero_operacion"
-    )
+        .select("*")
 
-    .order(
-        "Fecha",
-        { ascending:false }
-    );
+        .order("id",{ascending:true});
 
 
     if(error){
+
+        console.error(error);
+
+        tabla.innerHTML = `
+            <tr>
+                <td colspan="5" class="mensaje error">
+                    Error al cargar los productos elaborados.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+
+    if(!data || data.length === 0){
+
+        tabla.innerHTML = `
+            <tr>
+                <td colspan="5" class="mensaje">
+                    No hay productos elaborados registrados.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+
+    tabla.innerHTML = "";
+
+
+    data.forEach(producto => {
+
+        const fila =
+            document.createElement("tr");
+
+
+        fila.innerHTML = `
+
+            <td>
+                ${producto.Nombre || ""}
+            </td>
+
+            <td>
+                ${producto.Unidad || ""}
+            </td>
+
+            <td>
+                ${producto.Cantidad ?? 0}
+            </td>
+
+            <td>
+
+                <div class="consumo">
+
+                    <input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        id="cantidad_${producto.id}"
+                        placeholder="Cantidad"
+                    >
+
+                    <select id="destino_${producto.id}">
+
+                        <option value="">
+                            Seleccionar destino
+                        </option>
+
+                        <option value="Destete">
+                            Destete
+                        </option>
+
+                        <option value="Maternidad">
+                            Maternidad
+                        </option>
+
+                        <option value="Cría">
+                            Cría
+                        </option>
+
+                        <option value="Ceba">
+                            Ceba
+                        </option>
+
+                    </select>
+
+                    <button
+                        onclick="consumirProducto(${producto.id})"
+                    >
+                        Consumir
+                    </button>
+
+                </div>
+
+            </td>
+
+            <td>
+
+                <button
+                    onclick="eliminarProducto(${producto.id})"
+                >
+                    🗑️ Eliminar
+                </button>
+
+            </td>
+
+        `;
+
+
+        tabla.appendChild(fila);
+
+    });
+
+}
+
+
+
+/* ==================================================
+   CONSUMIR PRODUCTO
+================================================== */
+
+async function consumirProducto(id){
+
+    const input =
+        document.getElementById(
+            `cantidad_${id}`
+        );
+
+
+    const select =
+        document.getElementById(
+            `destino_${id}`
+        );
+
+
+    const cantidad =
+        parseFloat(input.value);
+
+
+    const destino =
+        select.value;
+
+
+    if(!cantidad || cantidad <= 0){
 
         alert(
-            "Error: "
-            + error.message
+            "Introduzca una cantidad válida."
         );
 
         return;
-
     }
 
 
-    const tabla =
-        document.getElementById(
-            "tablaHistorial"
+    if(!destino){
+
+        alert(
+            "Seleccione un destino."
         );
-
-
-    tabla.innerHTML = "";
-
-
-    if(!data || data.length === 0){
-
-        tabla.innerHTML = `
-
-        <tr>
-
-            <td
-                colspan="8"
-                class="vacio">
-
-                📭 No hay movimientos registrados.
-
-            </td>
-
-        </tr>
-
-        `;
 
         return;
-
     }
 
 
-    data.forEach(
-        movimiento => {
 
-
-        let botonEliminar = "";
-
-
-        if(esAdministrador){
-
-            botonEliminar = `
-
-            <button
-
-                class="eliminar"
-
-                onclick="eliminarMovimiento('${movimiento.Numero_operacion}')">
-
-                🗑️ Eliminar
-
-            </button>
-
-            `;
-
-        }
-
-
-        tabla.innerHTML += `
-
-        <tr>
-
-            <td>
-                ${movimiento.Fecha || ""}
-            </td>
-
-            <td>
-                ${movimiento.Producto || ""}
-            </td>
-
-            <td>
-                ${movimiento.Tipo || ""}
-            </td>
-
-            <td>
-                ${movimiento.Cantidad || ""}
-            </td>
-
-            <td>
-                ${movimiento.Usuario || ""}
-            </td>
-
-            <td>
-                ${movimiento.Observación || ""}
-            </td>
-
-            <td>
-                ${movimiento.Numero_operacion || ""}
-            </td>
-
-            <td>
-                ${botonEliminar}
-            </td>
-
-        </tr>
-
-        `;
-
-    });
-
-}
-
-
-/* =====================================================
-   CARGAR HISTORIAL DE MATERIALES
-   DE CONSTRUCCIÓN
-===================================================== */
-
-async function cargarHistorialConstruccion(){
-
-    const tabla =
-        document.getElementById(
-            "tablaConstruccion"
-        );
-
-
-    tabla.innerHTML = `
-
-    <tr>
-
-        <td
-            colspan="8"
-            class="vacio">
-
-            ⏳ Cargando historial...
-
-        </td>
-
-    </tr>
-
-    `;
-
+    /* ==============================================
+       OBTENER PRODUCTO
+    ============================================== */
 
     const {
-        data,
-        error
+        data:producto,
+        error:errorProducto
     } = await clienteSupabase
 
-    .from("movimientos_materiales_construccion")
+        .from("productos_elaborados")
 
-    .select(
-        "id, Fecha, Material, Tipo, Cantidad, Usuario, Observación, Numero_operacion"
-    )
+        .select("*")
 
-    .order(
-        "Fecha",
-        { ascending:false }
-    );
+        .eq("id",id)
+
+        .single();
 
 
-    if(error){
+    if(errorProducto || !producto){
 
-        console.error(
-            "Error cargando historial de construcción:",
-            error
+        console.error(errorProducto);
+
+        alert(
+            "No se pudo obtener el producto."
         );
 
-
-        tabla.innerHTML = `
-
-        <tr>
-
-            <td
-                colspan="8"
-                class="vacio">
-
-                ❌ Error cargando el historial:
-                ${error.message}
-
-            </td>
-
-        </tr>
-
-        `;
-
         return;
-
     }
 
 
-    tabla.innerHTML = "";
+
+    /* ==============================================
+       COMPROBAR EXISTENCIA
+    ============================================== */
+
+    const cantidadDisponible =
+        Number(producto.Cantidad || 0);
 
 
-    if(!data || data.length === 0){
+    if(cantidad > cantidadDisponible){
 
-        tabla.innerHTML = `
-
-        <tr>
-
-            <td
-                colspan="8"
-                class="vacio">
-
-                📭 No hay movimientos de materiales de construcción.
-
-            </td>
-
-        </tr>
-
-        `;
+        alert(
+            "La cantidad a consumir es mayor que la cantidad disponible."
+        );
 
         return;
-
     }
 
 
-    data.forEach(
-        movimiento => {
+
+    /* ==============================================
+       NUEVA CANTIDAD
+    ============================================== */
+
+    const nuevaCantidad =
+        cantidadDisponible - cantidad;
 
 
-        let botonEliminar = "";
 
-
-        if(esAdministrador){
-
-            botonEliminar = `
-
-            <button
-
-                class="eliminar"
-
-                onclick="eliminarMovimientoConstruccion(${movimiento.id})">
-
-                🗑️ Eliminar
-
-            </button>
-
-            `;
-
-        }
-
-
-        tabla.innerHTML += `
-
-        <tr>
-
-            <td>
-                ${movimiento.Fecha || ""}
-            </td>
-
-            <td>
-                ${movimiento.Material || ""}
-            </td>
-
-            <td>
-                ${movimiento.Tipo || ""}
-            </td>
-
-            <td>
-                ${movimiento.Cantidad || ""}
-            </td>
-
-            <td>
-                ${movimiento.Usuario || ""}
-            </td>
-
-            <td>
-                ${movimiento.Observación || ""}
-            </td>
-
-            <td>
-                ${movimiento.Numero_operacion || ""}
-            </td>
-
-            <td>
-                ${botonEliminar}
-            </td>
-
-        </tr>
-
-        `;
-
-    });
-
-}
-
-
-/* =====================================================
-   CARGAR HISTORIAL DE DISTRIBUCIÓN
-===================================================== */
-
-async function cargarHistorialDistribucion(){
-
-    const tabla =
-        document.getElementById(
-            "tablaDistribucion"
-        );
-
-
-    tabla.innerHTML = `
-
-    <tr>
-
-        <td
-            colspan="6"
-            class="vacio">
-
-            ⏳ Cargando historial de distribución...
-
-        </td>
-
-    </tr>
-
-    `;
-
+    /* ==============================================
+       ACTUALIZAR PRODUCTO
+    ============================================== */
 
     const {
-        data,
-        error
-    } =
-        await clienteSupabase
+        error:errorUpdate
+    } = await clienteSupabase
+
+        .from("productos_elaborados")
+
+        .update({
+            Cantidad:nuevaCantidad
+        })
+
+        .eq("id",id);
+
+
+    if(errorUpdate){
+
+        console.error(errorUpdate);
+
+        alert(
+            "Error al actualizar el producto."
+        );
+
+        return;
+    }
+
+
+
+    /* ==============================================
+       REGISTRAR DISTRIBUCIÓN
+       
+       MODIFICACIÓN:
+       Se guarda también el nombre del producto
+       en la columna "comida".
+    ============================================== */
+
+    const {
+        error:errorMovimiento
+    } = await clienteSupabase
 
         .from("movimientos_distribucion")
 
-        .select(
-            "id, fecha, comida, distribucion, cantidad, usuario"
-        )
+        .insert({
 
-        .order(
-            "fecha",
-            {
-                ascending:false
-            }
-        );
+            distribucion:destino,
 
+            comida:producto.Nombre,
 
-    if(error){
+            cantidad:cantidad,
 
-        console.error(
-            "Error cargando historial de distribución:",
-            error
-        );
+            usuario:usuarioActual
+
+        });
 
 
-        tabla.innerHTML = `
+    if(errorMovimiento){
 
-        <tr>
-
-            <td
-                colspan="6"
-                class="vacio">
-
-                ❌ Error cargando el historial:
-                ${error.message}
-
-            </td>
-
-        </tr>
-
-        `;
-
-        return;
-
-    }
-
-
-    tabla.innerHTML = "";
-
-
-    if(!data || data.length === 0){
-
-        tabla.innerHTML = `
-
-        <tr>
-
-            <td
-                colspan="6"
-                class="vacio">
-
-                📭 No hay distribuciones registradas.
-
-            </td>
-
-        </tr>
-
-        `;
-
-        return;
-
-    }
-
-
-    data.forEach(
-        movimiento => {
-
-
-        let botonEliminar = "";
-
-
-        if(esAdministrador){
-
-            botonEliminar = `
-
-            <button
-
-                class="eliminar"
-
-                onclick="eliminarMovimientoDistribucion(${movimiento.id})">
-
-                🗑️ Eliminar
-
-            </button>
-
-            `;
-
-        }
-
-
-        const fecha =
-            movimiento.fecha
-            ?
-            new Date(
-                movimiento.fecha
-            ).toLocaleString(
-                "es-ES"
-            )
-            :
-            "";
-
-
-        tabla.innerHTML += `
-
-        <tr>
-
-            <td>
-                ${fecha}
-            </td>
-
-            <td>
-                ${movimiento.comida || ""}
-            </td>
-
-            <td>
-                ${movimiento.distribucion || ""}
-            </td>
-
-            <td>
-                ${movimiento.cantidad ?? 0}
-            </td>
-
-            <td>
-                ${movimiento.usuario || ""}
-            </td>
-
-            <td>
-                ${botonEliminar}
-            </td>
-
-        </tr>
-
-        `;
-
-    });
-
-}
-
-
-/* =====================================================
-   ELIMINAR UN MOVIMIENTO
-   DE MATERIAS PRIMAS / PRODUCTOS
-===================================================== */
-
-async function eliminarMovimiento(
-    numeroOperacion
-){
-
-    if(!esAdministrador){
+        console.error(errorMovimiento);
 
         alert(
-            "No tienes permisos para eliminar registros."
+            "El producto se actualizó, pero ocurrió un error al registrar la distribución."
         );
+
+        cargarProductos();
 
         return;
-
     }
 
-
-    if(
-        numeroOperacion === null ||
-        numeroOperacion === undefined ||
-        numeroOperacion === "" ||
-        numeroOperacion === "null"
-    ){
-
-        alert(
-            "Este registro no tiene un número de operación válido."
-        );
-
-        return;
-
-    }
-
-
-    const confirmar =
-        confirm(
-            "¿Estás seguro de que deseas eliminar este registro del historial?"
-        );
-
-
-    if(!confirmar){
-
-        return;
-
-    }
-
-
-    const { error } =
-        await clienteSupabase
-
-        .from("movimientos")
-
-        .delete()
-
-        .eq(
-            "Numero_operacion",
-            numeroOperacion
-        );
-
-
-    if(error){
-
-        alert(
-            "Error al eliminar: "
-            + error.message
-        );
-
-        return;
-
-    }
 
 
     alert(
-        "Registro eliminado correctamente."
+        "Distribución registrada correctamente."
     );
 
 
-    await cargarHistorial();
+    cargarProductos();
 
 }
 
 
-/* =====================================================
-   ELIMINAR MOVIMIENTO DE CONSTRUCCIÓN
-===================================================== */
 
-async function eliminarMovimientoConstruccion(
-    id
-){
+/* ==================================================
+   ELIMINAR PRODUCTO
+================================================== */
 
-    if(!esAdministrador){
-
-        alert(
-            "No tienes permisos para eliminar registros."
-        );
-
-        return;
-
-    }
-
-
-    if(
-        id === null ||
-        id === undefined ||
-        id === ""
-    ){
-
-        alert(
-            "Este registro no tiene un identificador válido."
-        );
-
-        return;
-
-    }
-
+async function eliminarProducto(id){
 
     const confirmar =
         confirm(
-            "¿Estás seguro de que deseas eliminar este movimiento de materiales de construcción?"
+            "¿Está seguro de eliminar este producto elaborado?"
         );
 
 
     if(!confirmar){
 
         return;
-
     }
+
 
 
     const {
         error
-    } =
-        await clienteSupabase
+    } = await clienteSupabase
 
-        .from(
-            "movimientos_materiales_construccion"
-        )
+        .from("productos_elaborados")
 
         .delete()
 
-        .eq(
-            "id",
-            id
-        );
+        .eq("id",id);
 
 
     if(error){
 
-        console.error(
-            "Error eliminando movimiento:",
-            error
-        );
+        console.error(error);
 
         alert(
-            "Error al eliminar: "
-            + error.message
+            "Error al eliminar el producto."
         );
 
         return;
-
     }
 
 
     alert(
-        "Movimiento eliminado correctamente."
+        "Producto eliminado correctamente."
     );
 
 
-    await cargarHistorialConstruccion();
+    cargarProductos();
 
 }
 
 
-/* =====================================================
-   ELIMINAR MOVIMIENTO DE DISTRIBUCIÓN
-===================================================== */
 
-async function eliminarMovimientoDistribucion(
-    id
-){
-
-    if(!esAdministrador){
-
-        alert(
-            "No tienes permisos para eliminar registros."
-        );
-
-        return;
-
-    }
-
-
-    if(
-        id === null ||
-        id === undefined ||
-        id === ""
-    ){
-
-        alert(
-            "Este registro no tiene un identificador válido."
-        );
-
-        return;
-
-    }
-
-
-    const confirmar =
-        confirm(
-            "¿Estás seguro de que deseas eliminar esta distribución del historial?"
-        );
-
-
-    if(!confirmar){
-
-        return;
-
-    }
-
-
-    const {
-        error
-    } =
-        await clienteSupabase
-
-        .from(
-            "movimientos_distribucion"
-        )
-
-        .delete()
-
-        .eq(
-            "id",
-            id
-        );
-
-
-    if(error){
-
-        console.error(
-            "Error eliminando distribución:",
-            error
-        );
-
-        alert(
-            "Error al eliminar: "
-            + error.message
-        );
-
-        return;
-
-    }
-
-
-    alert(
-        "Distribución eliminada correctamente."
-    );
-
-
-    await cargarHistorialDistribucion();
-
-}
-
-
-/* =====================================================
+/* ==================================================
    INICIAR
-===================================================== */
+================================================== */
 
 async function iniciar(){
 
-    const sesionValida =
+    const sesion =
         await verificarSesion();
 
 
-    if(!sesionValida){
+    if(!sesion){
 
         return;
-
     }
+
+
+    cargarProductos();
 
 }
 
