@@ -822,18 +822,19 @@ function calcularCantidadUtil(cantidadFisica,detalle,receta){
        Estos componentes forman parte de la cantidad física
        pero no son producto elaborado útil.
 
-       NO se agregan manualmente.
-       Solamente se detectan si realmente existen
-       dentro de detalle_recetas.
+       Se reconocen variantes de nombre.
     */
 
     const componentesNoUtiles = [
 
         "calcio",
-
         "sal",
-
-        "vitamina"
+        "vitamina",
+        "vitaminas",
+        "premezcla",
+        "premezcla vitaminica",
+        "premezcla mineral",
+        "minerales"
 
     ];
 
@@ -847,9 +848,37 @@ function calcularCantidadUtil(cantidadFisica,detalle,receta){
         );
 
 
-        if(
+        /*
+           También se detectan nombres que contienen
+           estas palabras, por ejemplo:
+
+           "sal común"
+           "vitaminas"
+           "premezcla vitamínica"
+        */
+
+        const esExtra =
+
             componentesNoUtiles.includes(nombre)
-        ){
+
+            ||
+
+            nombre.includes("calcio")
+
+            ||
+
+            nombre.includes("sal")
+
+            ||
+
+            nombre.includes("vitamina")
+
+            ||
+
+            nombre.includes("premezcla");
+
+
+        if(esExtra){
 
             const cantidad =
 
@@ -870,7 +899,18 @@ function calcularCantidadUtil(cantidadFisica,detalle,receta){
     });
 
 
-    return cantidadFisica - extras;
+    const cantidadUtil =
+
+        cantidadFisica - extras;
+
+
+    /*
+       Evita pequeños errores de coma flotante.
+    */
+
+    return Number(
+        cantidadUtil.toFixed(2)
+    );
 
 }
 
