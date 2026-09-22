@@ -678,7 +678,14 @@ function detenerAudio(){
             window.speechSynthesis.cancel();
         }
 
-    }catch(error){}
+    }catch(error){
+
+        console.error(
+            "Error deteniendo audio:",
+            error
+        );
+
+    }
 
 }
 
@@ -733,20 +740,436 @@ function escucharRespuesta(texto){
         mensaje.volume = 1;
 
         mensaje.onend = function(){
+
             indice++;
-            hablarSiguiente();
+
+            setTimeout(
+                hablarSiguiente,
+                80
+            );
+
         };
 
-        mensaje.onerror = function(){
+        mensaje.onerror = function(error){
+
+            console.error(
+                "Error síntesis de voz:",
+                error
+            );
+
             indice++;
-            hablarSiguiente();
+
+            setTimeout(
+                hablarSiguiente,
+                80
+            );
+
         };
 
-        window.speechSynthesis.speak(mensaje);
+        window.speechSynthesis.speak(
+            mensaje
+        );
 
     }
 
     hablarSiguiente();
+
+}
+
+
+/* ==================================================
+   RECONOCIMIENTO DE VOZ
+================================================== */
+
+function crearReconocimiento(){
+
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+
+    if(!SpeechRecognition){
+
+        reconocimiento = null;
+
+        estado.textContent =
+            "⚠️ Este navegador no permite reconocimiento de voz.";
+
+        mostrarRespuesta(
+            "El reconocimiento de voz no está disponible en este navegador. Puedes escribir la pregunta.",
+            false
+        );
+
+        return false;
+
+    }
+
+
+    try{
+
+        reconocimiento =
+            new SpeechRecognition();
+
+        reconocimiento.lang =
+            "es-ES";
+
+        reconocimiento.continuous =
+            false;
+
+        reconocimiento.interimResults =
+            false;
+
+        reconocimiento.maxAlternatives =
+            1;
+
+
+        reconocimiento.onstart =
+            function(){
+
+                escuchando = true;
+
+                microfono.classList.add(
+                    "escuchando"
+                );
+
+                microfono.textContent =
+                    "🔴";
+
+                estado.textContent =
+                    "🎤 Escuchando...";
+
+            };
+
+
+        reconocimiento.onresult =
+            function(event){
+
+                let textoFinal = "";
+
+                for(
+                    let i = event.resultIndex;
+                    i < event.results.length;
+                    i++
+                ){
+
+                    const resultado =
+                        event.results[i];
+
+                    if(
+                        resultado &&
+                        resultado[0]
+                    ){
+
+                        textoFinal +=
+                            resultado[0]
+                                .transcript;
+
+                    }
+
+                }
+
+
+                textoFinal =
+                    textoFinal.trim();
+
+
+                if(textoFinal){
+
+                    entradaTexto.value =
+                        textoFinal;
+
+
+                    estado.textContent =
+                        "Procesando: " +
+                        textoFinal;
+
+
+                    procesarPregunta(
+                        textoFinal
+                    );
+
+                }else{
+
+                    estado.textContent =
+                        "No escuché nada. Inténtalo nuevamente.";
+
+                }
+
+            };
+
+
+        reconocimiento.onerror =
+            function(event){
+
+                console.error(
+                    "Error de reconocimiento:",
+                    event.error,
+                    event.message || ""
+                );
+
+
+                escuchando = false;
+
+                microfono.classList.remove(
+                    "escuchando"
+                );
+
+                microfono.textContent =
+                    "🎙️";
+
+
+                switch(event.error){
+
+                    case "not-allowed":
+
+                    case "permission-denied":
+
+                        estado.textContent =
+                            "🎤 Permiso de micrófono bloqueado.";
+
+                        mostrarRespuesta(
+                            "El micrófono está bloqueado para esta página. Permite el acceso al micrófono en Chrome y vuelve a tocar el botón.",
+                            false
+                        );
+
+                        break;
+
+
+                    case "audio-capture":
+
+                        estado.textContent =
+                            "🎤 No se encontró el micrófono.";
+
+                        mostrarRespuesta(
+                            "No pude acceder al micrófono del dispositivo.",
+                            false
+                        );
+
+                        break;
+
+
+                    case "no-speech":
+
+                        estado.textContent =
+                            "No escuché nada.";
+
+                        mostrarRespuesta(
+                            "No detecté ninguna voz. Acércate al micrófono y vuelve a intentarlo.",
+                            false
+                        );
+
+                        break;
+
+
+                    case "network":
+
+                        estado.textContent =
+                            "Error de conexión del reconocimiento.";
+
+                        mostrarRespuesta(
+                            "El reconocimiento de voz necesita conexión a Internet. Comprueba tu conexión y vuelve a intentarlo.",
+                            false
+                        );
+
+                        break;
+
+
+                    case "aborted":
+
+                        estado.textContent =
+                            "Escucha cancelada.";
+
+                        break;
+
+
+                    default:
+
+                        estado.textContent =
+                            "No pude activar el micrófono.";
+
+                        mostrarRespuesta(
+                            "No pude iniciar el reconocimiento de voz. Comprueba el permiso del micrófono e inténtalo nuevamente.",
+                            false
+                        );
+
+                }
+
+            };
+
+
+        reconocimiento.onend =
+            function(){
+
+                escuchando = false;
+
+                microfono.classList.remove(
+                    "escuchando"
+                );
+
+                microfono.textContent =
+                    "🎙️";
+
+
+                if(
+                    estado.textContent ===
+                    "🎤 Escuchando..."
+                ){
+
+                    estado.textContent =
+                        "Listo para ayudarte";
+
+                }
+
+            };
+
+
+        return true;
+
+    }catch(error){
+
+        console.error(
+            "No se pudo crear reconocimiento:",
+            error
+        );
+
+        reconocimiento = null;
+
+        estado.textContent =
+            "No se pudo activar el micrófono.";
+
+        return false;
+
+    }
+
+}
+
+
+/* ==================================================
+   INICIAR ESCUCHA
+================================================== */
+
+function iniciarEscucha(){
+
+    /*
+       Creamos un reconocimiento nuevo
+       cada vez que se pulsa el micrófono.
+    */
+
+    if(escuchando){
+
+        try{
+
+            if(reconocimiento){
+                reconocimiento.stop();
+            }
+
+        }catch(error){
+
+            console.error(error);
+
+        }
+
+        return;
+
+    }
+
+
+    /*
+       Comprobar compatibilidad
+    */
+
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+
+    if(!SpeechRecognition){
+
+        estado.textContent =
+            "⚠️ Reconocimiento no disponible.";
+
+        mostrarRespuesta(
+            "Tu navegador no permite reconocimiento de voz. Puedes escribir la pregunta.",
+            false
+        );
+
+        return;
+
+    }
+
+
+    /*
+       Crear reconocimiento nuevo
+    */
+
+    const creado =
+        crearReconocimiento();
+
+
+    if(!creado){
+        return;
+    }
+
+
+    /*
+       Iniciar directamente después
+       del toque del usuario.
+    */
+
+    try{
+
+        reconocimiento.start();
+
+    }catch(error){
+
+        console.error(
+            "Error al iniciar micrófono:",
+            error
+        );
+
+
+        /*
+           Algunos navegadores pueden lanzar
+           InvalidStateError si todavía existe
+           una sesión anterior.
+        */
+
+        try{
+
+            reconocimiento.abort();
+
+        }catch(e){}
+
+
+        setTimeout(
+            function(){
+
+                try{
+
+                    reconocimiento.start();
+
+                }catch(error2){
+
+                    console.error(
+                        "Segundo intento:",
+                        error2
+                    );
+
+                    estado.textContent =
+                        "No pude iniciar el micrófono.";
+
+                    mostrarRespuesta(
+                        "No pude iniciar el micrófono. Revisa que Chrome tenga permiso para usarlo.",
+                        false
+                    );
+
+                }
+
+            },
+            300
+        );
+
+    }
 
 }
 
