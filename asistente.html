@@ -412,18 +412,15 @@ h1{
 
 </header>
 
-
 <a href="menu.html" class="volver">
     ⬅ Volver al menú
 </a>
-
 
 <div class="panel">
 
     <div class="estado" id="estado">
         Listo para ayudarte
     </div>
-
 
     <div
         class="mic"
@@ -432,7 +429,6 @@ h1{
     >
         🎙️
     </div>
-
 
     <div class="entrada">
 
@@ -452,14 +448,12 @@ h1{
 
     </div>
 
-
     <div
         class="respuesta"
         id="respuesta"
     >
         Hola, soy Desierto. ¿En qué puedo ayudarte?
     </div>
-
 
     <div
         class="cuadrar"
@@ -482,11 +476,9 @@ h1{
 
     </div>
 
-
     <div class="tituloEjemplos">
         Puedes preguntarme:
     </div>
-
 
     <div class="ejemplos">
 
@@ -556,7 +548,6 @@ h1{
 
 </div>
 
-
 <script>
 
 /* ==================================================
@@ -567,6 +558,9 @@ let reconocimiento = null;
 let escuchando = false;
 let ultimaRespuesta = "";
 let estadoCuadrar = null;
+
+let vocesDisponibles = [];
+let audioDesbloqueado = false;
 
 const estado =
     document.getElementById("estado");
@@ -630,63 +624,8 @@ function formatearNumero(numero){
 
 
 /* ==================================================
-   VOZ
+   VOZ - COMPATIBILIDAD ANDROID
 ================================================== */
-
-function limpiarTextoParaVoz(texto){
-
-    return String(texto || "")
-        .replace(/<[^>]*>/g," ")
-        .replace(/\*\*/g,"")
-        .replace(/[*_#]/g,"")
-        .replace(/\s+/g," ")
-        .trim();
-
-}
-
-
-function detenerAudio(){
-
-    try{
-
-        if("speechSynthesis" in window){
-            window.speechSynthesis.cancel();
-        }
-
-    }catch(error){
-
-        console.error(
-            "Error deteniendo audio:",
-            error
-        );
-
-    }
-
-}
-
-
-function dividirTextoVoz(texto){
-
-    const limpio =
-        limpiarTextoParaVoz(texto);
-
-    if(!limpio){
-        return [];
-    }
-
-    return limpio
-        .split(/(?<=[.!?])\s+/)
-        .filter(Boolean);
-
-}
-
-
-/* ==================================================
-   CARGAR VOCES DISPONIBLES
-================================================== */
-
-let vocesDisponibles = [];
-
 
 function cargarVoces(){
 
@@ -694,13 +633,24 @@ function cargarVoces(){
         return;
     }
 
-    vocesDisponibles =
-        window.speechSynthesis.getVoices();
+    try{
 
-    console.log(
-        "🔊 Voces disponibles:",
-        vocesDisponibles
-    );
+        vocesDisponibles =
+            window.speechSynthesis.getVoices();
+
+        console.log(
+            "🔊 Voces disponibles:",
+            vocesDisponibles
+        );
+
+    }catch(error){
+
+        console.error(
+            "Error cargando voces:",
+            error
+        );
+
+    }
 
 }
 
@@ -720,10 +670,121 @@ if("speechSynthesis" in window){
 
 
 /* ==================================================
+   ACTIVAR AUDIO DESDE UNA INTERACCIÓN DEL USUARIO
+================================================== */
+
+function activarAudioDesdeUsuario(){
+
+    if(!("speechSynthesis" in window)){
+        return;
+    }
+
+    try{
+
+        window.speechSynthesis.resume();
+
+        /*
+         * No reproducimos sonido artificial.
+         * Solamente despertamos el motor de voz.
+         */
+
+        audioDesbloqueado = true;
+
+        cargarVoces();
+
+        console.log(
+            "🔊 Motor de voz activado."
+        );
+
+    }catch(error){
+
+        console.error(
+            "Error activando voz:",
+            error
+        );
+
+    }
+
+}
+
+
+/* ==================================================
+   LIMPIAR TEXTO PARA VOZ
+================================================== */
+
+function limpiarTextoParaVoz(texto){
+
+    return String(texto || "")
+        .replace(/<[^>]*>/g," ")
+        .replace(/&nbsp;/gi," ")
+        .replace(/&amp;/gi,"y")
+        .replace(/&lt;/gi,"menos")
+        .replace(/&gt;/gi,"mayor")
+        .replace(/\*\*/g,"")
+        .replace(/[*_#]/g,"")
+        .replace(/\s+/g," ")
+        .trim();
+
+}
+
+
+/* ==================================================
+   DETENER AUDIO
+================================================== */
+
+function detenerAudio(){
+
+    try{
+
+        if("speechSynthesis" in window){
+
+            window.speechSynthesis.cancel();
+
+            window.speechSynthesis.resume();
+
+        }
+
+    }catch(error){
+
+        console.error(
+            "Error deteniendo audio:",
+            error
+        );
+
+    }
+
+}
+
+
+/* ==================================================
+   DIVIDIR TEXTO PARA VOZ
+================================================== */
+
+function dividirTextoVoz(texto){
+
+    const limpio =
+        limpiarTextoParaVoz(texto);
+
+    if(!limpio){
+        return [];
+    }
+
+    return limpio
+        .split(/(?<=[.!?])\s+/)
+        .filter(Boolean);
+
+}
+
+
+/* ==================================================
    BUSCAR VOZ ESPAÑOLA
 ================================================== */
 
 function obtenerVozEspanol(){
+
+    if(!("speechSynthesis" in window)){
+        return null;
+    }
 
     const voces =
         vocesDisponibles.length
@@ -732,25 +793,56 @@ function obtenerVozEspanol(){
 
 
     if(!voces || !voces.length){
+
         return null;
+
     }
 
 
+    /*
+     * En Android/Samsung priorizamos es-US,
+     * porque suele funcionar mejor en este entorno.
+     */
+
     return (
+
+        voces.find(
+            voz =>
+                voz.lang &&
+                voz.lang.toLowerCase() ===
+                "es-us"
+        )
+
+        ||
+
+        voces.find(
+            voz =>
+                voz.lang &&
+                voz.lang.toLowerCase() ===
+                "es-mx"
+        )
+
+        ||
+
         voces.find(
             voz =>
                 voz.lang &&
                 voz.lang.toLowerCase() ===
                 "es-es"
         )
+
         ||
+
         voces.find(
             voz =>
                 voz.lang &&
                 voz.lang.toLowerCase().startsWith("es")
         )
+
         ||
+
         null
+
     );
 
 }
@@ -761,8 +853,6 @@ function obtenerVozEspanol(){
 ================================================== */
 
 function escucharRespuesta(texto){
-
-    detenerAudio();
 
     if(!("speechSynthesis" in window)){
 
@@ -784,26 +874,52 @@ function escucharRespuesta(texto){
     }
 
 
+    detenerAudio();
+
+
+    cargarVoces();
+
+
     let indice = 0;
 
 
     function hablarSiguiente(){
 
         if(indice >= partes.length){
+
+            estado.textContent =
+                "Listo para ayudarte";
+
             return;
+
         }
+
+
+        const textoActual =
+            partes[indice];
 
 
         const mensaje =
             new SpeechSynthesisUtterance(
-                partes[indice]
+                textoActual
             );
 
 
-        mensaje.lang = "es-ES";
-        mensaje.rate = 0.9;
-        mensaje.pitch = 1;
-        mensaje.volume = 1;
+        /*
+         * es-US se utiliza como idioma principal.
+         */
+
+        mensaje.lang =
+            "es-US";
+
+        mensaje.rate =
+            0.92;
+
+        mensaje.pitch =
+            1;
+
+        mensaje.volume =
+            1;
 
 
         const voz =
@@ -815,15 +931,30 @@ function escucharRespuesta(texto){
             mensaje.voice =
                 voz;
 
+            console.log(
+                "🔊 Usando voz:",
+                voz.name,
+                voz.lang
+            );
+
+        }else{
+
+            console.warn(
+                "⚠️ No se encontró una voz española."
+            );
+
         }
 
 
         mensaje.onstart =
             function(){
 
+                estado.textContent =
+                    "🔊 Desierto está hablando...";
+
                 console.log(
-                    "🔊 Desierto hablando:",
-                    partes[indice]
+                    "🔊 Hablando:",
+                    textoActual
                 );
 
             };
@@ -836,7 +967,7 @@ function escucharRespuesta(texto){
 
                 setTimeout(
                     hablarSiguiente,
-                    50
+                    80
                 );
 
             };
@@ -846,7 +977,7 @@ function escucharRespuesta(texto){
             function(event){
 
                 console.error(
-                    "❌ Error de speechSynthesis:",
+                    "❌ Error speechSynthesis:",
                     event
                 );
 
@@ -866,11 +997,43 @@ function escucharRespuesta(texto){
                 mensaje
             );
 
+
+            /*
+             * Chrome Android puede dejar
+             * el motor pausado después de
+             * una operación asíncrona.
+             */
+
+            setTimeout(
+                function(){
+
+                    try{
+
+                        window.speechSynthesis.resume();
+
+                    }catch(error){
+
+                        console.error(error);
+
+                    }
+
+                },
+                100
+            );
+
+
         }catch(error){
 
             console.error(
                 "❌ No se pudo reproducir la voz:",
                 error
+            );
+
+            indice++;
+
+            setTimeout(
+                hablarSiguiente,
+                100
             );
 
         }
@@ -879,15 +1042,11 @@ function escucharRespuesta(texto){
 
 
     /*
-       Algunas versiones de Chrome Android
-       cargan las voces de forma asíncrona.
-       Si todavía no están cargadas,
-       esperamos un instante.
-    */
+     * Damos tiempo a Chrome para cargar
+     * las voces si todavía no están listas.
+     */
 
-    if(
-        !vocesDisponibles.length
-    ){
+    if(!vocesDisponibles.length){
 
         setTimeout(
             function(){
@@ -897,7 +1056,7 @@ function escucharRespuesta(texto){
                 hablarSiguiente();
 
             },
-            150
+            250
         );
 
     }else{
@@ -924,6 +1083,7 @@ function mostrarRespuesta(
     respuesta.innerHTML =
         texto;
 
+
     if(hablar){
 
         setTimeout(
@@ -934,7 +1094,7 @@ function mostrarRespuesta(
                 );
 
             },
-            80
+            120
         );
 
     }
@@ -1022,8 +1182,14 @@ function prepararReconocimiento(){
         new SpeechRecognition();
 
 
+    /*
+     * También usamos español de Estados Unidos
+     * para mantener compatibilidad con el motor
+     * de voz del teléfono.
+     */
+
     reconocimiento.lang =
-        "es-ES";
+        "es-US";
 
     reconocimiento.continuous =
         false;
@@ -1045,7 +1211,7 @@ function prepararReconocimiento(){
             );
 
             estado.textContent =
-                "Escuchando...";
+                "🎙️ Escuchando...";
 
         };
 
@@ -1210,7 +1376,7 @@ function prepararReconocimiento(){
 
             if(
                 estado.textContent ===
-                "Escuchando..."
+                "🎙️ Escuchando..."
             ){
 
                 estado.textContent =
@@ -1282,6 +1448,16 @@ async function iniciarEscucha(){
     console.log(
         "🎙️ Botón de micrófono pulsado"
     );
+
+
+    /*
+     * IMPORTANTE:
+     * Esta función se ejecuta directamente
+     * después del toque del usuario.
+     * Aquí activamos el motor de voz.
+     */
+
+    activarAudioDesdeUsuario();
 
 
     if(!reconocimiento){
@@ -1415,6 +1591,8 @@ function enviarTexto(){
     }
 
 
+    activarAudioDesdeUsuario();
+
     procesarPregunta(
         texto
     );
@@ -1442,6 +1620,8 @@ function usarEjemplo(texto){
 
     entradaTexto.value =
         texto;
+
+    activarAudioDesdeUsuario();
 
     procesarPregunta(
         texto
@@ -2954,8 +3134,6 @@ async function consultarTodaInformacion(
         `📦 Distribución: ` +
         `${formatearNumero(distribucionTotal)} kg</div>`;
 
-
-    /* CORRECCIÓN DEL ERROR DE JAVASCRIPT */
 
     const totalMovimientos =
         movimientos.length +
@@ -4650,8 +4828,13 @@ async function procesarPregunta(
     }
 
 
+    /*
+     * Respuesta más natural cuando no reconoce
+     * exactamente la pregunta.
+     */
+
     mostrarRespuesta(
-        "Puedes repetir la pregunta.",
+        "Entiendo. Todavía no tengo una respuesta específica para esa pregunta dentro de ElDesierto. Puedes preguntarme por inventario, cerdos, naves, recetas, movimientos, materiales o fabricación.",
         true
     );
 
@@ -4681,9 +4864,8 @@ async function iniciar(){
 
 
     /*
-       Cargamos las voces al entrar.
-       Esto ayuda especialmente en Chrome Android.
-    */
+     * Cargamos las voces al entrar.
+     */
 
     cargarVoces();
 
@@ -4691,6 +4873,13 @@ async function iniciar(){
     estado.textContent =
         "Listo para ayudarte";
 
+
+    /*
+     * No hablamos automáticamente aquí.
+     * En Android es más fiable que la primera
+     * reproducción ocurra después de una
+     * interacción del usuario.
+     */
 
     mostrarRespuesta(
         "Hola, soy Desierto. ¿En qué puedo ayudarte?",
