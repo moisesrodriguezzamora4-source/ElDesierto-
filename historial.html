@@ -732,6 +732,8 @@ tr:hover td{
 
 <th>Fecha</th>
 
+<th>Comida</th>
+
 <th>Distribución</th>
 
 <th>Cantidad</th>
@@ -1274,7 +1276,7 @@ async function cargarHistorialDistribucion(){
     <tr>
 
         <td
-            colspan="5"
+            colspan="6"
             class="vacio">
 
             ⏳ Cargando historial de distribución...
@@ -1295,7 +1297,7 @@ async function cargarHistorialDistribucion(){
         .from("movimientos_distribucion")
 
         .select(
-            "id, fecha, distribucion, cantidad, usuario"
+            "id, fecha, comida, distribucion, cantidad, usuario"
         )
 
         .order(
@@ -1319,7 +1321,7 @@ async function cargarHistorialDistribucion(){
         <tr>
 
             <td
-                colspan="5"
+                colspan="6"
                 class="vacio">
 
                 ❌ Error cargando el historial:
@@ -1346,7 +1348,7 @@ async function cargarHistorialDistribucion(){
         <tr>
 
             <td
-                colspan="5"
+                colspan="6"
                 class="vacio">
 
                 📭 No hay distribuciones registradas.
@@ -1406,6 +1408,10 @@ async function cargarHistorialDistribucion(){
 
             <td>
                 ${fecha}
+            </td>
+
+            <td>
+                ${movimiento.comida || ""}
             </td>
 
             <td>
