@@ -678,14 +678,7 @@ function detenerAudio(){
             window.speechSynthesis.cancel();
         }
 
-    }catch(error){
-
-        console.error(
-            "Error deteniendo audio:",
-            error
-        );
-
-    }
+    }catch(error){}
 
 }
 
@@ -743,26 +736,15 @@ function escucharRespuesta(texto){
 
             indice++;
 
-            setTimeout(
-                hablarSiguiente,
-                80
-            );
+            hablarSiguiente();
 
         };
 
-        mensaje.onerror = function(error){
-
-            console.error(
-                "Error síntesis de voz:",
-                error
-            );
+        mensaje.onerror = function(){
 
             indice++;
 
-            setTimeout(
-                hablarSiguiente,
-                80
-            );
+            hablarSiguiente();
 
         };
 
@@ -778,407 +760,13 @@ function escucharRespuesta(texto){
 
 
 /* ==================================================
-   RECONOCIMIENTO DE VOZ
-================================================== */
-
-function crearReconocimiento(){
-
-    const SpeechRecognition =
-        window.SpeechRecognition ||
-        window.webkitSpeechRecognition;
-
-
-    if(!SpeechRecognition){
-
-        reconocimiento = null;
-
-        estado.textContent =
-            "⚠️ Este navegador no permite reconocimiento de voz.";
-
-        mostrarRespuesta(
-            "El reconocimiento de voz no está disponible en este navegador. Puedes escribir la pregunta.",
-            false
-        );
-
-        return false;
-
-    }
-
-
-    try{
-
-        reconocimiento =
-            new SpeechRecognition();
-
-        reconocimiento.lang =
-            "es-ES";
-
-        reconocimiento.continuous =
-            false;
-
-        reconocimiento.interimResults =
-            false;
-
-        reconocimiento.maxAlternatives =
-            1;
-
-
-        reconocimiento.onstart =
-            function(){
-
-                escuchando = true;
-
-                microfono.classList.add(
-                    "escuchando"
-                );
-
-                microfono.textContent =
-                    "🔴";
-
-                estado.textContent =
-                    "🎤 Escuchando...";
-
-            };
-
-
-        reconocimiento.onresult =
-            function(event){
-
-                let textoFinal = "";
-
-                for(
-                    let i = event.resultIndex;
-                    i < event.results.length;
-                    i++
-                ){
-
-                    const resultado =
-                        event.results[i];
-
-                    if(
-                        resultado &&
-                        resultado[0]
-                    ){
-
-                        textoFinal +=
-                            resultado[0]
-                                .transcript;
-
-                    }
-
-                }
-
-
-                textoFinal =
-                    textoFinal.trim();
-
-
-                if(textoFinal){
-
-                    entradaTexto.value =
-                        textoFinal;
-
-
-                    estado.textContent =
-                        "Procesando: " +
-                        textoFinal;
-
-
-                    procesarPregunta(
-                        textoFinal
-                    );
-
-                }else{
-
-                    estado.textContent =
-                        "No escuché nada. Inténtalo nuevamente.";
-
-                }
-
-            };
-
-
-        reconocimiento.onerror =
-            function(event){
-
-                console.error(
-                    "Error de reconocimiento:",
-                    event.error,
-                    event.message || ""
-                );
-
-
-                escuchando = false;
-
-                microfono.classList.remove(
-                    "escuchando"
-                );
-
-                microfono.textContent =
-                    "🎙️";
-
-
-                switch(event.error){
-
-                    case "not-allowed":
-
-                    case "permission-denied":
-
-                        estado.textContent =
-                            "🎤 Permiso de micrófono bloqueado.";
-
-                        mostrarRespuesta(
-                            "El micrófono está bloqueado para esta página. Permite el acceso al micrófono en Chrome y vuelve a tocar el botón.",
-                            false
-                        );
-
-                        break;
-
-
-                    case "audio-capture":
-
-                        estado.textContent =
-                            "🎤 No se encontró el micrófono.";
-
-                        mostrarRespuesta(
-                            "No pude acceder al micrófono del dispositivo.",
-                            false
-                        );
-
-                        break;
-
-
-                    case "no-speech":
-
-                        estado.textContent =
-                            "No escuché nada.";
-
-                        mostrarRespuesta(
-                            "No detecté ninguna voz. Acércate al micrófono y vuelve a intentarlo.",
-                            false
-                        );
-
-                        break;
-
-
-                    case "network":
-
-                        estado.textContent =
-                            "Error de conexión del reconocimiento.";
-
-                        mostrarRespuesta(
-                            "El reconocimiento de voz necesita conexión a Internet. Comprueba tu conexión y vuelve a intentarlo.",
-                            false
-                        );
-
-                        break;
-
-
-                    case "aborted":
-
-                        estado.textContent =
-                            "Escucha cancelada.";
-
-                        break;
-
-
-                    default:
-
-                        estado.textContent =
-                            "No pude activar el micrófono.";
-
-                        mostrarRespuesta(
-                            "No pude iniciar el reconocimiento de voz. Comprueba el permiso del micrófono e inténtalo nuevamente.",
-                            false
-                        );
-
-                }
-
-            };
-
-
-        reconocimiento.onend =
-            function(){
-
-                escuchando = false;
-
-                microfono.classList.remove(
-                    "escuchando"
-                );
-
-                microfono.textContent =
-                    "🎙️";
-
-
-                if(
-                    estado.textContent ===
-                    "🎤 Escuchando..."
-                ){
-
-                    estado.textContent =
-                        "Listo para ayudarte";
-
-                }
-
-            };
-
-
-        return true;
-
-    }catch(error){
-
-        console.error(
-            "No se pudo crear reconocimiento:",
-            error
-        );
-
-        reconocimiento = null;
-
-        estado.textContent =
-            "No se pudo activar el micrófono.";
-
-        return false;
-
-    }
-
-}
-
-
-/* ==================================================
-   INICIAR ESCUCHA
-================================================== */
-
-function iniciarEscucha(){
-
-    /*
-       Creamos un reconocimiento nuevo
-       cada vez que se pulsa el micrófono.
-    */
-
-    if(escuchando){
-
-        try{
-
-            if(reconocimiento){
-                reconocimiento.stop();
-            }
-
-        }catch(error){
-
-            console.error(error);
-
-        }
-
-        return;
-
-    }
-
-
-    /*
-       Comprobar compatibilidad
-    */
-
-    const SpeechRecognition =
-        window.SpeechRecognition ||
-        window.webkitSpeechRecognition;
-
-
-    if(!SpeechRecognition){
-
-        estado.textContent =
-            "⚠️ Reconocimiento no disponible.";
-
-        mostrarRespuesta(
-            "Tu navegador no permite reconocimiento de voz. Puedes escribir la pregunta.",
-            false
-        );
-
-        return;
-
-    }
-
-
-    /*
-       Crear reconocimiento nuevo
-    */
-
-    const creado =
-        crearReconocimiento();
-
-
-    if(!creado){
-        return;
-    }
-
-
-    /*
-       Iniciar directamente después
-       del toque del usuario.
-    */
-
-    try{
-
-        reconocimiento.start();
-
-    }catch(error){
-
-        console.error(
-            "Error al iniciar micrófono:",
-            error
-        );
-
-
-        /*
-           Algunos navegadores pueden lanzar
-           InvalidStateError si todavía existe
-           una sesión anterior.
-        */
-
-        try{
-
-            reconocimiento.abort();
-
-        }catch(e){}
-
-
-        setTimeout(
-            function(){
-
-                try{
-
-                    reconocimiento.start();
-
-                }catch(error2){
-
-                    console.error(
-                        "Segundo intento:",
-                        error2
-                    );
-
-                    estado.textContent =
-                        "No pude iniciar el micrófono.";
-
-                    mostrarRespuesta(
-                        "No pude iniciar el micrófono. Revisa que Chrome tenga permiso para usarlo.",
-                        false
-                    );
-
-                }
-
-            },
-            300
-        );
-
-    }
-
-}
-
-
-/* ==================================================
    MOSTRAR RESPUESTA
 ================================================== */
 
-function mostrarRespuesta(texto, hablar=true){
+function mostrarRespuesta(
+    texto,
+    hablar=true
+){
 
     ultimaRespuesta = texto;
 
@@ -1209,8 +797,11 @@ async function verificarSesion(){
             .getSession();
 
         if(error){
+
             console.error(error);
+
             return false;
+
         }
 
         if(!data.session){
@@ -1219,6 +810,7 @@ async function verificarSesion(){
                 "login.html";
 
             return false;
+
         }
 
         return true;
@@ -1226,6 +818,7 @@ async function verificarSesion(){
     }catch(error){
 
         console.error(error);
+
         return false;
 
     }
@@ -1243,155 +836,425 @@ function prepararReconocimiento(){
         window.SpeechRecognition ||
         window.webkitSpeechRecognition;
 
+
     if(!SpeechRecognition){
+
+        reconocimiento = null;
 
         estado.textContent =
             "El reconocimiento de voz no está disponible. Puedes escribir.";
 
+        console.warn(
+            "SpeechRecognition no está disponible."
+        );
+
         return;
 
     }
+
 
     reconocimiento =
         new SpeechRecognition();
 
-    reconocimiento.lang = "es-ES";
 
-    reconocimiento.continuous = false;
-
-    reconocimiento.interimResults = true;
-
-    reconocimiento.maxAlternatives = 1;
+    reconocimiento.lang =
+        "es-ES";
 
 
-    reconocimiento.onstart = function(){
-
-        escuchando = true;
-
-        microfono.classList.add(
-            "escuchando"
-        );
-
-        estado.textContent =
-            "Escuchando...";
-
-    };
+    reconocimiento.continuous =
+        false;
 
 
-    reconocimiento.onresult = function(event){
+    reconocimiento.interimResults =
+        true;
 
-        let textoFinal = "";
 
-        for(
-            let i = event.resultIndex;
-            i < event.results.length;
-            i++
-        ){
+    reconocimiento.maxAlternatives =
+        1;
 
-            const texto =
-                event.results[i][0].transcript;
 
-            if(event.results[i].isFinal){
-                textoFinal += texto;
-            }
+    reconocimiento.onstart =
+        function(){
 
-        }
+            escuchando = true;
 
-        if(textoFinal.trim()){
-
-            entradaTexto.value =
-                textoFinal.trim();
-
-            procesarPregunta(
-                textoFinal.trim()
+            microfono.classList.add(
+                "escuchando"
             );
 
-        }
-
-    };
-
-
-    reconocimiento.onerror = function(event){
-
-        console.error(
-            "Error reconocimiento:",
-            event.error
-        );
-
-        if(event.error === "not-allowed"){
-
             estado.textContent =
-                "Debes permitir el uso del micrófono.";
+                "Escuchando...";
 
-        }else if(event.error === "no-speech"){
-
-            estado.textContent =
-                "No escuché nada. Puedes intentarlo otra vez.";
-
-        }else if(event.error === "audio-capture"){
-
-            estado.textContent =
-                "No se encontró el micrófono.";
-
-        }else{
-
-            estado.textContent =
-                "No pude escuchar. Puedes escribir la pregunta.";
-
-        }
-
-    };
+        };
 
 
-    reconocimiento.onend = function(){
+    reconocimiento.onresult =
+        function(event){
 
-        escuchando = false;
+            let textoFinal = "";
 
-        microfono.classList.remove(
-            "escuchando"
-        );
 
-        if(
-            estado.textContent ===
-            "Escuchando..."
-        ){
+            for(
+                let i = event.resultIndex;
+                i < event.results.length;
+                i++
+            ){
 
-            estado.textContent =
-                "Listo para ayudarte";
+                const texto =
+                    event.results[i][0]
+                        .transcript;
 
-        }
 
-    };
+                if(
+                    event.results[i].isFinal
+                ){
+
+                    textoFinal += texto;
+
+                }
+
+            }
+
+
+            if(textoFinal.trim()){
+
+                entradaTexto.value =
+                    textoFinal.trim();
+
+
+                procesarPregunta(
+                    textoFinal.trim()
+                );
+
+            }
+
+        };
+
+
+    reconocimiento.onerror =
+        function(event){
+
+            console.error(
+                "🎙️ ERROR DE RECONOCIMIENTO:",
+                event.error,
+                event
+            );
+
+
+            escuchando = false;
+
+
+            microfono.classList.remove(
+                "escuchando"
+            );
+
+
+            switch(event.error){
+
+                case "not-allowed":
+
+                    estado.textContent =
+                        "🚫 Chrome bloqueó el micrófono.";
+
+                    mostrarRespuesta(
+                        "Chrome está bloqueando el acceso al micrófono. Permite el micrófono para esta página.",
+                        false
+                    );
+
+                    break;
+
+
+                case "service-not-allowed":
+
+                    estado.textContent =
+                        "🚫 Servicio de voz bloqueado.";
+
+                    mostrarRespuesta(
+                        "El servicio de reconocimiento de voz no está disponible para esta página.",
+                        false
+                    );
+
+                    break;
+
+
+                case "no-speech":
+
+                    estado.textContent =
+                        "No escuché nada.";
+
+                    mostrarRespuesta(
+                        "No escuché nada. Toca nuevamente el micrófono y habla.",
+                        false
+                    );
+
+                    break;
+
+
+                case "audio-capture":
+
+                    estado.textContent =
+                        "No se encontró el micrófono.";
+
+                    mostrarRespuesta(
+                        "Chrome no encontró un micrófono disponible.",
+                        false
+                    );
+
+                    break;
+
+
+                case "network":
+
+                    estado.textContent =
+                        "Error de conexión.";
+
+                    mostrarRespuesta(
+                        "El reconocimiento de voz tuvo un problema de conexión.",
+                        false
+                    );
+
+                    break;
+
+
+                default:
+
+                    estado.textContent =
+                        "Error del micrófono.";
+
+                    mostrarRespuesta(
+                        "No pude iniciar el reconocimiento de voz. Código: " +
+                        event.error,
+                        false
+                    );
+
+                    break;
+
+            }
+
+        };
+
+
+    reconocimiento.onend =
+        function(){
+
+            escuchando = false;
+
+
+            microfono.classList.remove(
+                "escuchando"
+            );
+
+
+            if(
+                estado.textContent ===
+                "Escuchando..."
+            ){
+
+                estado.textContent =
+                    "Listo para ayudarte";
+
+            }
+
+        };
 
 }
 
 
-function iniciarEscucha(){
+/* ==================================================
+   INICIAR ESCUCHA
+================================================== */
+
+async function iniciarEscucha(){
+
+    console.log(
+        "🎙️ Botón de micrófono pulsado"
+    );
+
 
     if(!reconocimiento){
 
         mostrarRespuesta(
-            "El reconocimiento de voz no está disponible en este dispositivo. Puedes escribir la pregunta.",
+            "El reconocimiento de voz no está disponible en este navegador. Puedes escribir la pregunta.",
+            false
+        );
+
+        estado.textContent =
+            "Reconocimiento de voz no disponible";
+
+        return;
+
+    }
+
+
+    if(escuchando){
+
+        try{
+
+            reconocimiento.stop();
+
+        }catch(error){
+
+            console.error(error);
+
+        }
+
+        return;
+
+    }
+
+
+    /*
+       Comprobamos que la página tenga
+       un contexto seguro.
+    */
+
+    if(
+        !window.isSecureContext &&
+        location.hostname !== "localhost" &&
+        location.hostname !== "127.0.0.1"
+    ){
+
+        estado.textContent =
+            "La página necesita HTTPS.";
+
+        mostrarRespuesta(
+            "El micrófono necesita que ElDesierto se abra mediante HTTPS.",
             false
         );
 
         return;
+
     }
 
-    if(escuchando){
 
-        reconocimiento.stop();
+    /*
+       Primero solicitamos permiso de micrófono
+       cuando el navegador lo permite.
+    */
 
-        return;
+    if(
+        navigator.mediaDevices &&
+        navigator.mediaDevices.getUserMedia
+    ){
+
+        try{
+
+            estado.textContent =
+                "Solicitando acceso al micrófono...";
+
+
+            const stream =
+                await navigator.mediaDevices
+                    .getUserMedia({
+                        audio:true
+                    });
+
+
+            /*
+               Ya tenemos permiso.
+               Cerramos inmediatamente esta
+               captura para dejar libre el
+               micrófono al reconocimiento.
+            */
+
+            stream.getTracks().forEach(
+                track => track.stop()
+            );
+
+
+        }catch(error){
+
+            console.error(
+                "ERROR DE PERMISO DEL MICRÓFONO:",
+                error
+            );
+
+
+            if(
+                error.name ===
+                "NotAllowedError"
+            ){
+
+                estado.textContent =
+                    "🚫 Micrófono bloqueado.";
+
+                mostrarRespuesta(
+                    "Chrome bloqueó el micrófono. Permite el acceso al micrófono para ElDesierto y vuelve a tocar el botón.",
+                    false
+                );
+
+            }else if(
+                error.name ===
+                "NotFoundError"
+            ){
+
+                estado.textContent =
+                    "No se encontró el micrófono.";
+
+                mostrarRespuesta(
+                    "No se encontró un micrófono disponible en este dispositivo.",
+                    false
+                );
+
+            }else{
+
+                estado.textContent =
+                    "No se pudo acceder al micrófono.";
+
+                mostrarRespuesta(
+                    "No se pudo acceder al micrófono. Revisa los permisos de Chrome.",
+                    false
+                );
+
+            }
+
+            return;
+
+        }
+
     }
+
+
+    /*
+       Iniciamos el reconocimiento.
+    */
 
     try{
 
+        estado.textContent =
+            "Iniciando micrófono...";
+
+
         reconocimiento.start();
+
 
     }catch(error){
 
-        console.error(error);
+        console.error(
+            "ERROR AL INICIAR RECONOCIMIENTO:",
+            error
+        );
+
+
+        if(
+            error.name ===
+            "InvalidStateError"
+        ){
+
+            estado.textContent =
+                "El micrófono ya está iniciándose.";
+
+        }else{
+
+            estado.textContent =
+                "No se pudo iniciar el micrófono.";
+
+            mostrarRespuesta(
+                "Chrome no pudo iniciar el reconocimiento de voz. Revisa el permiso del micrófono.",
+                false
+            );
+
+        }
 
     }
 
@@ -1407,11 +1270,15 @@ function enviarTexto(){
     const texto =
         entradaTexto.value.trim();
 
+
     if(!texto){
         return;
     }
 
-    procesarPregunta(texto);
+
+    procesarPregunta(
+        texto
+    );
 
 }
 
@@ -1434,9 +1301,12 @@ entradaTexto.addEventListener(
 
 function usarEjemplo(texto){
 
-    entradaTexto.value = texto;
+    entradaTexto.value =
+        texto;
 
-    procesarPregunta(texto);
+    procesarPregunta(
+        texto
+    );
 
 }
 
@@ -1447,7 +1317,9 @@ function usarEjemplo(texto){
 
 function inicioFinHoy(){
 
-    const ahora = new Date();
+    const ahora =
+        new Date();
+
 
     const inicio =
         new Date(
@@ -1457,6 +1329,7 @@ function inicioFinHoy(){
             0,0,0,0
         );
 
+
     const fin =
         new Date(
             ahora.getFullYear(),
@@ -1464,6 +1337,7 @@ function inicioFinHoy(){
             ahora.getDate(),
             23,59,59,999
         );
+
 
     return {
         inicio,
@@ -1475,9 +1349,12 @@ function inicioFinHoy(){
 
 function rangoMesActual(){
 
-    const ahora = new Date();
+    const ahora =
+        new Date();
+
 
     return {
+
         inicio:
             new Date(
                 ahora.getFullYear(),
@@ -1493,6 +1370,7 @@ function rangoMesActual(){
                 0,
                 23,59,59,999
             )
+
     };
 
 }
@@ -1514,7 +1392,9 @@ function obtenerRangoFecha(texto){
     const t =
         normalizar(texto);
 
-    const ahora = new Date();
+
+    const ahora =
+        new Date();
 
 
     if(
@@ -1527,7 +1407,9 @@ function obtenerRangoFecha(texto){
     }
 
 
-    if(t.includes("ayer")){
+    if(
+        t.includes("ayer")
+    ){
 
         const inicio =
             new Date(
@@ -1537,6 +1419,7 @@ function obtenerRangoFecha(texto){
                 0,0,0,0
             );
 
+
         const fin =
             new Date(
                 ahora.getFullYear(),
@@ -1544,6 +1427,7 @@ function obtenerRangoFecha(texto){
                 ahora.getDate()-1,
                 23,59,59,999
             );
+
 
         return {
             inicio,
@@ -1564,6 +1448,7 @@ function obtenerRangoFecha(texto){
 
 
     const meses = {
+
         enero:0,
         febrero:1,
         marzo:2,
@@ -1577,15 +1462,21 @@ function obtenerRangoFecha(texto){
         octubre:9,
         noviembre:10,
         diciembre:11
+
     };
 
 
-    for(const nombre in meses){
+    for(
+        const nombre in meses
+    ){
 
-        if(t.includes(nombre)){
+        if(
+            t.includes(nombre)
+        ){
 
             let año =
                 ahora.getFullYear();
+
 
             const match =
                 t.match(
@@ -1595,10 +1486,16 @@ function obtenerRangoFecha(texto){
                     )
                 );
 
+
             if(match){
+
                 año =
-                    Number(match[1]);
+                    Number(
+                        match[1]
+                    );
+
             }
+
 
             return {
 
@@ -1634,15 +1531,22 @@ function obtenerRangoFecha(texto){
     if(match){
 
         const dia =
-            Number(match[1]);
+            Number(
+                match[1]
+            );
+
 
         const mes =
-            Number(match[2])-1;
+            Number(
+                match[2]
+            )-1;
+
 
         const año =
             match[3]
             ? Number(match[3])
             : ahora.getFullYear();
+
 
         return {
 
@@ -1706,6 +1610,7 @@ async function obtenerProductos(){
 
     }
 
+
     return data || [];
 
 }
@@ -1745,6 +1650,7 @@ async function obtenerMaterialesConstruccion(){
 
     }
 
+
     return data || [];
 
 }
@@ -1758,6 +1664,7 @@ function equivalenciasProducto(texto){
 
     const t =
         normalizar(texto);
+
 
     const mapa = {
 
@@ -1820,23 +1727,35 @@ function equivalenciasProducto(texto){
     };
 
 
-    for(const clave in mapa){
+    for(
+        const clave in mapa
+    ){
 
-        if(mapa[clave].includes(t)){
+        if(
+            mapa[clave].includes(t)
+        ){
+
             return clave;
+
         }
 
     }
+
 
     return t;
 
 }
 
 
-function buscarProducto(productos,nombre){
+function buscarProducto(
+    productos,
+    nombre
+){
 
     const buscado =
-        equivalenciasProducto(nombre);
+        equivalenciasProducto(
+            nombre
+        );
 
 
     return productos.find(
@@ -1853,10 +1772,14 @@ function buscarProducto(productos,nombre){
    MATERIAL POR NOMBRE
 ================================================== */
 
-function buscarMaterial(materiales,nombre){
+function buscarMaterial(
+    materiales,
+    nombre
+){
 
     const buscado =
         normalizar(nombre);
+
 
     return materiales.find(
         m =>
@@ -1874,11 +1797,14 @@ function buscarMaterial(materiales,nombre){
    MOVIMIENTOS POR FECHA
 ================================================== */
 
-async function obtenerMovimientosRango(rango){
+async function obtenerMovimientosRango(
+    rango
+){
 
     if(!rango){
         return [];
     }
+
 
     const {
         data,
@@ -1916,6 +1842,7 @@ async function obtenerMovimientosRango(rango){
 
     }
 
+
     return data || [];
 
 }
@@ -1925,11 +1852,14 @@ async function obtenerMovimientosRango(rango){
    MOVIMIENTOS DE NAVES
 ================================================== */
 
-async function obtenerMovimientosNavesRango(rango){
+async function obtenerMovimientosNavesRango(
+    rango
+){
 
     if(!rango){
         return [];
     }
+
 
     const {
         data,
@@ -1965,6 +1895,7 @@ async function obtenerMovimientosNavesRango(rango){
 
     }
 
+
     return data || [];
 
 }
@@ -1974,11 +1905,14 @@ async function obtenerMovimientosNavesRango(rango){
    MOVIMIENTOS DESTETE
 ================================================== */
 
-async function obtenerMovimientosDesteteRango(rango){
+async function obtenerMovimientosDesteteRango(
+    rango
+){
 
     if(!rango){
         return [];
     }
+
 
     const {
         data,
@@ -2014,6 +1948,7 @@ async function obtenerMovimientosDesteteRango(rango){
 
     }
 
+
     return data || [];
 
 }
@@ -2023,11 +1958,14 @@ async function obtenerMovimientosDesteteRango(rango){
    DISTRIBUCIONES
 ================================================== */
 
-async function obtenerDistribucionesRango(rango){
+async function obtenerDistribucionesRango(
+    rango
+){
 
     if(!rango){
         return [];
     }
+
 
     const {
         data,
@@ -2064,6 +2002,7 @@ async function obtenerDistribucionesRango(rango){
         return [];
 
     }
+
 
     return data || [];
 
@@ -2104,6 +2043,7 @@ async function obtenerProductosElaborados(){
 
     }
 
+
     return data || [];
 
 }
@@ -2143,6 +2083,7 @@ async function obtenerRecetas(){
 
     }
 
+
     return data || [];
 
 }
@@ -2175,6 +2116,7 @@ async function obtenerCerdos(){
         return [];
 
     }
+
 
     return data || [];
 
@@ -2215,6 +2157,7 @@ async function obtenerNaves(){
 
     }
 
+
     return data || [];
 
 }
@@ -2235,6 +2178,7 @@ async function obtenerUsuario(){
             .auth
             .getSession();
 
+
         if(
             data &&
             data.session &&
@@ -2254,6 +2198,7 @@ async function obtenerUsuario(){
 
     }
 
+
     return "Asistente Desierto";
 
 }
@@ -2263,10 +2208,13 @@ async function obtenerUsuario(){
    CONSULTAR PRODUCTO
 ================================================== */
 
-async function consultarProducto(nombre){
+async function consultarProducto(
+    nombre
+){
 
     const productos =
         await obtenerProductos();
+
 
     const producto =
         buscarProducto(
@@ -2312,17 +2260,21 @@ async function consultarListaProductos(){
         "<strong>Productos registrados:</strong><ul class='lista'>";
 
 
-    productos.forEach(p => {
+    productos.forEach(
+        p => {
 
-        html +=
-            `<li>${p.Nombre}: ` +
-            `${formatearNumero(p.Cantidad)} ` +
-            `${p.Unidad || ""}</li>`;
+            html +=
+                `<li>${p.Nombre}: ` +
+                `${formatearNumero(p.Cantidad)} ` +
+                `${p.Unidad || ""}</li>`;
 
-    });
+        }
+    );
 
 
-    html += "</ul>";
+    html +=
+        "</ul>";
+
 
     return html;
 
@@ -2350,17 +2302,21 @@ async function consultarListaMateriales(){
         "<strong>Materiales de construcción:</strong><ul class='lista'>";
 
 
-    materiales.forEach(m => {
+    materiales.forEach(
+        m => {
 
-        html +=
-            `<li>${m.Nombre}: ` +
-            `${formatearNumero(m.Cantidad)} ` +
-            `${m.Unidad || ""}</li>`;
+            html +=
+                `<li>${m.Nombre}: ` +
+                `${formatearNumero(m.Cantidad)} ` +
+                `${m.Unidad || ""}</li>`;
 
-    });
+        }
+    );
 
 
-    html += "</ul>";
+    html +=
+        "</ul>";
+
 
     return html;
 
@@ -2388,17 +2344,21 @@ async function consultarRecetas(){
         "<strong>Recetas registradas:</strong><ul class='lista'>";
 
 
-    recetas.forEach(r => {
+    recetas.forEach(
+        r => {
 
-        html +=
-            `<li><strong>${r.nombre}</strong>` +
-            ` → ${r.producto_resultado || ""}` +
-            ` (${formatearNumero(r.cantidad_resultado)} kg)</li>`;
+            html +=
+                `<li><strong>${r.nombre}</strong>` +
+                ` → ${r.producto_resultado || ""}` +
+                ` (${formatearNumero(r.cantidad_resultado)} kg)</li>`;
 
-    });
+        }
+    );
 
 
-    html += "</ul>";
+    html +=
+        "</ul>";
+
 
     return html;
 
@@ -2414,6 +2374,7 @@ async function consultarCerdosTotal(){
     const cuartones =
         await obtenerCerdos();
 
+
     const naves =
         await obtenerNaves();
 
@@ -2427,12 +2388,17 @@ async function consultarCerdosTotal(){
 
     let total = 0;
 
-    cuartones.forEach(c => {
 
-        total +=
-            Number(c.cantidad_cerdos) || 0;
+    cuartones.forEach(
+        c => {
 
-    });
+            total +=
+                Number(
+                    c.cantidad_cerdos
+                ) || 0;
+
+        }
+    );
 
 
     let html =
@@ -2440,7 +2406,9 @@ async function consultarCerdosTotal(){
         `${formatearNumero(total)}</strong>`;
 
 
-    for(const nave of naves){
+    for(
+        const nave of naves
+    ){
 
         const deNave =
             cuartones.filter(
@@ -2449,13 +2417,19 @@ async function consultarCerdosTotal(){
                     Number(nave.id)
             );
 
+
         const cantidad =
             deNave.reduce(
                 (s,c) =>
                     s +
-                    (Number(c.cantidad_cerdos)||0),
+                    (
+                        Number(
+                            c.cantidad_cerdos
+                        ) || 0
+                    ),
                 0
             );
+
 
         html +=
             `<div class="dato">` +
@@ -2503,7 +2477,10 @@ async function consultarDestete(){
     }
 
 
-    if(!data || !data.length){
+    if(
+        !data ||
+        !data.length
+    ){
 
         return "No hay datos registrados.";
 
@@ -2514,7 +2491,11 @@ async function consultarDestete(){
         data.reduce(
             (s,f) =>
                 s +
-                (Number(f.cantidad_cerdos)||0),
+                (
+                    Number(
+                        f.cantidad_cerdos
+                    ) || 0
+                ),
             0
         );
 
@@ -2523,15 +2504,17 @@ async function consultarDestete(){
         `<strong>Total Destete: ${formatearNumero(total)} cerdos</strong>`;
 
 
-    data.forEach(f => {
+    data.forEach(
+        f => {
 
-        html +=
-            `<div class="dato">` +
-            `<span class="datoTitulo">${f.fila}</span>: ` +
-            `${formatearNumero(f.cantidad_cerdos)} cerdos` +
-            `</div>`;
+            html +=
+                `<div class="dato">` +
+                `<span class="datoTitulo">${f.fila}</span>: ` +
+                `${formatearNumero(f.cantidad_cerdos)} cerdos` +
+                `</div>`;
 
-    });
+        }
+    );
 
 
     return html;
@@ -2560,17 +2543,21 @@ async function consultarProductosElaborados(){
         "<strong>Productos elaborados:</strong><ul class='lista'>";
 
 
-    data.forEach(p => {
+    data.forEach(
+        p => {
 
-        html +=
-            `<li>${p.Nombre}: ` +
-            `${formatearNumero(p.Cantidad)} ` +
-            `${p.Unidad || ""}</li>`;
+            html +=
+                `<li>${p.Nombre}: ` +
+                `${formatearNumero(p.Cantidad)} ` +
+                `${p.Unidad || ""}</li>`;
 
-    });
+        }
+    );
 
 
-    html += "</ul>";
+    html +=
+        "</ul>";
+
 
     return html;
 
@@ -2584,7 +2571,10 @@ async function consultarProductosElaborados(){
 function esEntrada(m){
 
     const tipo =
-        normalizar(m.Tipo);
+        normalizar(
+            m.Tipo
+        );
+
 
     return (
         tipo.includes("entrada") ||
@@ -2597,7 +2587,10 @@ function esEntrada(m){
 function esSalida(m){
 
     const tipo =
-        normalizar(m.Tipo);
+        normalizar(
+            m.Tipo
+        );
+
 
     return (
         tipo.includes("salida") ||
@@ -2608,7 +2601,9 @@ function esSalida(m){
 }
 
 
-async function consultarMovimientosAlimento(rango){
+async function consultarMovimientosAlimento(
+    rango
+){
 
     const movimientos =
         await obtenerMovimientosRango(
@@ -2631,21 +2626,26 @@ async function consultarMovimientosAlimento(rango){
     let salidas = 0;
 
 
-    movimientos.forEach(m => {
+    movimientos.forEach(
+        m => {
 
-        const cantidad =
-            Number(m.Cantidad) || 0;
+            const cantidad =
+                Number(
+                    m.Cantidad
+                ) || 0;
 
 
-        if(esEntrada(m)){
-            entradas += cantidad;
+            if(esEntrada(m)){
+                entradas += cantidad;
+            }
+
+
+            if(esSalida(m)){
+                salidas += cantidad;
+            }
+
         }
-
-        if(esSalida(m)){
-            salidas += cantidad;
-        }
-
-    });
+    );
 
 
     return {
@@ -2661,7 +2661,9 @@ async function consultarMovimientosAlimento(rango){
    INFORMACIÓN COMPLETA DEL DÍA
 ================================================== */
 
-async function consultarTodaInformacion(rango){
+async function consultarTodaInformacion(
+    rango
+){
 
     const [
         productos,
@@ -2686,13 +2688,21 @@ async function consultarTodaInformacion(rango){
 
         obtenerCerdos(),
 
-        obtenerMovimientosRango(rango),
+        obtenerMovimientosRango(
+            rango
+        ),
 
-        obtenerMovimientosNavesRango(rango),
+        obtenerMovimientosNavesRango(
+            rango
+        ),
 
-        obtenerMovimientosDesteteRango(rango),
+        obtenerMovimientosDesteteRango(
+            rango
+        ),
 
-        obtenerDistribucionesRango(rango)
+        obtenerDistribucionesRango(
+            rango
+        )
 
     ]);
 
@@ -2701,7 +2711,11 @@ async function consultarTodaInformacion(rango){
         cerdos.reduce(
             (s,c) =>
                 s +
-                (Number(c.cantidad_cerdos)||0),
+                (
+                    Number(
+                        c.cantidad_cerdos
+                    ) || 0
+                ),
             0
         );
 
@@ -2711,62 +2725,84 @@ async function consultarTodaInformacion(rango){
     let fabricaciones = 0;
 
 
-    movimientos.forEach(m => {
+    movimientos.forEach(
+        m => {
 
-        const cantidad =
-            Number(m.Cantidad)||0;
+            const cantidad =
+                Number(
+                    m.Cantidad
+                ) || 0;
 
-        const tipo =
-            normalizar(m.Tipo);
+
+            const tipo =
+                normalizar(
+                    m.Tipo
+                );
 
 
-        if(
-            tipo.includes("fabricacion")
-        ){
+            if(
+                tipo.includes(
+                    "fabricacion"
+                )
+            ){
 
-            fabricaciones += cantidad;
+                fabricaciones +=
+                    cantidad;
+
+            }
+
+
+            if(esEntrada(m)){
+                entradas += cantidad;
+            }
+
+
+            if(esSalida(m)){
+                salidas += cantidad;
+            }
 
         }
-
-
-        if(esEntrada(m)){
-            entradas += cantidad;
-        }
-
-
-        if(esSalida(m)){
-            salidas += cantidad;
-        }
-
-    });
+    );
 
 
     let ventas = 0;
     let muertes = 0;
 
 
-    movimientosNaves.forEach(m => {
+    movimientosNaves.forEach(
+        m => {
 
-        const op =
-            normalizar(
-                m.operacion
-            );
-
-
-        const cantidad =
-            Number(m.cantidad)||0;
+            const op =
+                normalizar(
+                    m.operacion
+                );
 
 
-        if(op.includes("venta")){
-            ventas += cantidad;
+            const cantidad =
+                Number(
+                    m.cantidad
+                ) || 0;
+
+
+            if(
+                op.includes("venta")
+            ){
+
+                ventas += cantidad;
+
+            }
+
+
+            if(
+                op.includes("muerte")
+            ){
+
+                muertes += cantidad;
+
+            }
+
         }
-
-
-        if(op.includes("muerte")){
-            muertes += cantidad;
-        }
-
-    });
+    );
 
 
     let desteteEntradas = 0;
@@ -2774,39 +2810,61 @@ async function consultarTodaInformacion(rango){
     let desteteMuertes = 0;
 
 
-    movimientosDestete.forEach(m => {
+    movimientosDestete.forEach(
+        m => {
 
-        const op =
-            normalizar(
-                m.operacion
-            );
-
-        const cantidad =
-            Number(m.cantidad)||0;
+            const op =
+                normalizar(
+                    m.operacion
+                );
 
 
-        if(op === "entrada"){
-            desteteEntradas += cantidad;
+            const cantidad =
+                Number(
+                    m.cantidad
+                ) || 0;
+
+
+            if(op === "entrada"){
+
+                desteteEntradas +=
+                    cantidad;
+
+            }
+
+
+            if(
+                op.includes("salida")
+            ){
+
+                desteteSalidas +=
+                    cantidad;
+
+            }
+
+
+            if(
+                op.includes("muerte")
+            ){
+
+                desteteMuertes +=
+                    cantidad;
+
+            }
+
         }
-
-
-        if(op.includes("salida")){
-            desteteSalidas += cantidad;
-        }
-
-
-        if(op.includes("muerte")){
-            desteteMuertes += cantidad;
-        }
-
-    });
+    );
 
 
     let distribucionTotal =
         distribuciones.reduce(
             (s,d) =>
                 s +
-                (Number(d.cantidad)||0),
+                (
+                    Number(
+                        d.cantidad
+                    ) || 0
+                ),
             0
         );
 
@@ -2875,15 +2933,26 @@ async function consultarTodaInformacion(rango){
         `${formatearNumero(distribucionTotal)} kg</div>`;
 
 
-    html +=
-        `<div class="dato">` +
-        `📊 Movimientos registrados: ` +
-        `${formatearNumero(` +
+    /*
+       CORRECCIÓN IMPORTANTE:
+       Antes había una plantilla mal cerrada
+       que provocaba un error de JavaScript
+       y podía impedir que TODO el script
+       funcionara.
+    */
+
+    const totalMovimientos =
         movimientos.length +
         movimientosNaves.length +
         movimientosDestete.length +
-        distribuciones.length
-        )}</div>`;
+        distribuciones.length;
+
+
+    html +=
+        `<div class="dato">` +
+        `📊 Movimientos registrados: ` +
+        `${formatearNumero(totalMovimientos)}` +
+        `</div>`;
 
 
     return html;
@@ -2898,6 +2967,7 @@ async function consultarTodaInformacion(rango){
 async function consultarUltimasSalidas(){
 
     const rango = {
+
         inicio:
             new Date(
                 2000,0,1
@@ -2905,6 +2975,7 @@ async function consultarUltimasSalidas(){
 
         fin:
             new Date()
+
     };
 
 
@@ -2931,24 +3002,31 @@ async function consultarUltimasSalidas(){
         "<strong>Últimas salidas:</strong><ul class='lista'>";
 
 
-    salidas.forEach(m => {
+    salidas.forEach(
+        m => {
 
-        const fecha =
-            new Date(m.Fecha)
+            const fecha =
+                new Date(
+                    m.Fecha
+                )
                 .toLocaleString(
                     "es-ES"
                 );
 
-        html +=
-            `<li>${fecha} — ` +
-            `${m.Producto || ""} — ` +
-            `${formatearNumero(m.Cantidad)} — ` +
-            `${m.Tipo || ""}</li>`;
 
-    });
+            html +=
+                `<li>${fecha} — ` +
+                `${m.Producto || ""} — ` +
+                `${formatearNumero(m.Cantidad)} — ` +
+                `${m.Tipo || ""}</li>`;
+
+        }
+    );
 
 
-    html += "</ul>";
+    html +=
+        "</ul>";
+
 
     return html;
 
@@ -3019,16 +3097,22 @@ function obtenerAyuda(){
 function iniciarCuadrarDia(){
 
     estadoCuadrar = {
+
         activo:true,
+
         paso:0,
+
         datos:{
+
             entradas:null,
             salidas:null,
             muertes:null,
             ventas:null,
             fabricacion:null,
             distribucion:null
+
         }
+
     };
 
 
@@ -3075,16 +3159,20 @@ function actualizarPreguntaCuadrar(){
 
 
     const pasos = [
+
         "1. Entrada de alimento",
         "2. Salida de alimento",
         "3. Muertes",
         "4. Ventas",
         "5. Fabricación",
         "6. Distribución"
+
     ];
 
 
-    if(paso >= preguntas.length){
+    if(
+        paso >= preguntas.length
+    ){
 
         finalizarCuadrarDia();
 
@@ -3096,8 +3184,12 @@ function actualizarPreguntaCuadrar(){
     preguntaCuadrar.textContent =
         preguntas[paso];
 
+
     pasosCuadrar.textContent =
-        pasos.join("  •  ");
+        pasos.join(
+            "  •  "
+        );
+
 
     mostrarRespuesta(
         preguntas[paso],
@@ -3111,7 +3203,9 @@ function actualizarPreguntaCuadrar(){
    PROCESAR RESPUESTA DE CUADRAR
 ================================================== */
 
-async function procesarRespuestaCuadrar(texto){
+async function procesarRespuestaCuadrar(
+    texto
+){
 
     if(!estadoCuadrar){
         return false;
@@ -3137,9 +3231,12 @@ async function procesarRespuestaCuadrar(texto){
             )
         ] = null;
 
+
         estadoCuadrar.paso++;
 
+
         actualizarPreguntaCuadrar();
+
 
         return true;
 
@@ -3156,40 +3253,32 @@ async function procesarRespuestaCuadrar(texto){
         texto;
 
 
-    /*
-       IMPORTANTE:
-       Primero se guarda la respuesta.
-       La operación real solo se ejecuta cuando
-       se disponga de los datos necesarios.
-    */
-
-
     estadoCuadrar.paso++;
 
+
     actualizarPreguntaCuadrar();
+
 
     return true;
 
 }
 
 
-function obtenerNombrePaso(paso){
+function obtenerNombrePaso(
+    paso
+){
 
     const nombres = [
 
         "entradas",
-
         "salidas",
-
         "muertes",
-
         "ventas",
-
         "fabricacion",
-
         "distribucion"
 
     ];
+
 
     return nombres[paso];
 
@@ -3253,6 +3342,7 @@ async function finalizarCuadrarDia(){
 
 
     estadoCuadrar = null;
+
 
     mostrarRespuesta(
         html,
@@ -3364,7 +3454,9 @@ async function ejecutarEntradaProducto(
 
 
     if(
-        !Number.isFinite(cantidadNumerica) ||
+        !Number.isFinite(
+            cantidadNumerica
+        ) ||
         cantidadNumerica <= 0
     ){
 
@@ -3379,7 +3471,9 @@ async function ejecutarEntradaProducto(
 
 
     const nuevaCantidad =
-        Number(producto.Cantidad || 0) +
+        Number(
+            producto.Cantidad || 0
+        ) +
         cantidadNumerica;
 
 
@@ -3389,8 +3483,10 @@ async function ejecutarEntradaProducto(
     await clienteSupabase
         .from("productos")
         .update({
+
             Cantidad:
                 nuevaCantidad
+
         })
         .eq(
             '"Identificación"',
@@ -3423,16 +3519,15 @@ async function ejecutarEntradaProducto(
 
     if(!movimiento){
 
-        /*
-           Intento de rollback si el historial
-           no pudo registrarse.
-        */
-
         await clienteSupabase
             .from("productos")
             .update({
+
                 Cantidad:
-                    Number(producto.Cantidad || 0)
+                    Number(
+                        producto.Cantidad || 0
+                    )
+
             })
             .eq(
                 '"Identificación"',
@@ -3495,11 +3590,15 @@ async function ejecutarSalidaProducto(
 
 
     const disponible =
-        Number(producto.Cantidad || 0);
+        Number(
+            producto.Cantidad || 0
+        );
 
 
     if(
-        !Number.isFinite(cantidadNumerica) ||
+        !Number.isFinite(
+            cantidadNumerica
+        ) ||
         cantidadNumerica <= 0
     ){
 
@@ -3513,7 +3612,10 @@ async function ejecutarSalidaProducto(
     }
 
 
-    if(cantidadNumerica > disponible){
+    if(
+        cantidadNumerica >
+        disponible
+    ){
 
         mostrarRespuesta(
             `No hay suficiente ${producto.Nombre}. Hay ${formatearNumero(disponible)} ${producto.Unidad || ""} disponibles.`,
@@ -3536,8 +3638,10 @@ async function ejecutarSalidaProducto(
     await clienteSupabase
         .from("productos")
         .update({
+
             Cantidad:
                 nuevaCantidad
+
         })
         .eq(
             '"Identificación"',
@@ -3573,8 +3677,10 @@ async function ejecutarSalidaProducto(
         await clienteSupabase
             .from("productos")
             .update({
+
                 Cantidad:
                     disponible
+
             })
             .eq(
                 '"Identificación"',
@@ -3639,11 +3745,15 @@ async function ejecutarDistribucion(
 
 
     const disponible =
-        Number(producto.Cantidad || 0);
+        Number(
+            producto.Cantidad || 0
+        );
 
 
     if(
-        !Number.isFinite(cantidadNumerica) ||
+        !Number.isFinite(
+            cantidadNumerica
+        ) ||
         cantidadNumerica <= 0
     ){
 
@@ -3657,7 +3767,10 @@ async function ejecutarDistribucion(
     }
 
 
-    if(cantidadNumerica > disponible){
+    if(
+        cantidadNumerica >
+        disponible
+    ){
 
         mostrarRespuesta(
             `No hay suficiente producto elaborado. Hay ${formatearNumero(disponible)} disponible.`,
@@ -3680,8 +3793,10 @@ async function ejecutarDistribucion(
     await clienteSupabase
         .from("productos_elaborados")
         .update({
+
             Cantidad:
                 nuevaCantidad
+
         })
         .eq(
             "id",
@@ -3691,7 +3806,9 @@ async function ejecutarDistribucion(
 
     if(updateError){
 
-        console.error(updateError);
+        console.error(
+            updateError
+        );
 
         mostrarRespuesta(
             "No pude realizar la distribución.",
@@ -3731,14 +3848,18 @@ async function ejecutarDistribucion(
 
     if(historialError){
 
-        console.error(historialError);
+        console.error(
+            historialError
+        );
 
 
         await clienteSupabase
             .from("productos_elaborados")
             .update({
+
                 Cantidad:
                     disponible
+
             })
             .eq(
                 "id",
@@ -3768,7 +3889,9 @@ async function ejecutarDistribucion(
    DETECTAR PRODUCTO Y CANTIDAD
 ================================================== */
 
-function extraerCantidad(texto){
+function extraerCantidad(
+    texto
+){
 
     const match =
         normalizar(texto)
@@ -3783,7 +3906,11 @@ function extraerCantidad(texto){
 
 
     return Number(
-        match[1].replace(",",".")
+        match[1]
+            .replace(
+                ",",
+                "."
+            )
     );
 
 }
@@ -3798,7 +3925,9 @@ function extraerProductoDeTexto(
         normalizar(texto);
 
 
-    for(const producto of productos){
+    for(
+        const producto of productos
+    ){
 
         const nombre =
             normalizar(
@@ -3818,6 +3947,7 @@ function extraerProductoDeTexto(
 
 
     const conocidos = [
+
         "maiz",
         "soya",
         "soja",
@@ -3832,12 +3962,17 @@ function extraerProductoDeTexto(
         "chicharo",
         "pienso",
         "harina"
+
     ];
 
 
-    for(const nombre of conocidos){
+    for(
+        const nombre of conocidos
+    ){
 
-        if(t.includes(nombre)){
+        if(
+            t.includes(nombre)
+        ){
 
             return buscarProducto(
                 productos,
@@ -3858,7 +3993,9 @@ function extraerProductoDeTexto(
    PROCESAR ACCIONES SENCILLAS
 ================================================== */
 
-async function intentarProcesarAccion(texto){
+async function intentarProcesarAccion(
+    texto
+){
 
     const t =
         normalizar(texto);
@@ -3885,6 +4022,7 @@ async function intentarProcesarAccion(texto){
                 productos
             );
 
+
         const cantidad =
             extraerCantidad(texto);
 
@@ -3898,6 +4036,7 @@ async function intentarProcesarAccion(texto){
                 producto.Nombre,
                 cantidad
             );
+
 
             return true;
 
@@ -3923,6 +4062,7 @@ async function intentarProcesarAccion(texto){
                 productos
             );
 
+
         const cantidad =
             extraerCantidad(texto);
 
@@ -3936,6 +4076,7 @@ async function intentarProcesarAccion(texto){
                 producto.Nombre,
                 cantidad
             );
+
 
             return true;
 
@@ -3961,7 +4102,9 @@ async function intentarProcesarAccion(texto){
             elaborados.find(
                 p =>
                     t.includes(
-                        normalizar(p.Nombre)
+                        normalizar(
+                            p.Nombre
+                        )
                     )
             );
 
@@ -3971,29 +4114,36 @@ async function intentarProcesarAccion(texto){
 
 
         const destinos = [
+
             {
                 nombre:"Destete",
                 clave:"destete"
             },
+
             {
                 nombre:"Maternidad",
                 clave:"maternidad"
             },
+
             {
                 nombre:"Cría",
                 clave:"cria"
             },
+
             {
                 nombre:"Ceba",
                 clave:"ceba"
             }
+
         ];
 
 
         const destino =
             destinos.find(
                 d =>
-                    t.includes(d.clave)
+                    t.includes(
+                        d.clave
+                    )
             );
 
 
@@ -4008,6 +4158,7 @@ async function intentarProcesarAccion(texto){
                 cantidad,
                 destino.nombre
             );
+
 
             return true;
 
@@ -4025,7 +4176,9 @@ async function intentarProcesarAccion(texto){
    PROCESAR PREGUNTA PRINCIPAL
 ================================================== */
 
-async function procesarPregunta(texto){
+async function procesarPregunta(
+    texto
+){
 
     if(!texto){
         return;
@@ -4057,8 +4210,10 @@ async function procesarPregunta(texto){
             texto
         );
 
+
         estado.textContent =
             "Listo para ayudarte";
+
 
         return;
 
@@ -4066,16 +4221,22 @@ async function procesarPregunta(texto){
 
 
     if(
-        t.includes("vamos a cuadrar el dia") ||
-        t.includes("vamos a cuadrar") ||
+        t.includes(
+            "vamos a cuadrar el dia"
+        ) ||
+        t.includes(
+            "vamos a cuadrar"
+        ) ||
         t === "cuadrar el dia" ||
         t === "cuadrar dia"
     ){
 
         iniciarCuadrarDia();
 
+
         estado.textContent =
             "Cuadrando el día...";
+
 
         return;
 
@@ -4099,8 +4260,10 @@ async function procesarPregunta(texto){
             true
         );
 
+
         estado.textContent =
             "Listo para ayudarte";
+
 
         return;
 
@@ -4122,8 +4285,10 @@ async function procesarPregunta(texto){
             true
         );
 
+
         estado.textContent =
             "Listo para ayudarte";
+
 
         return;
 
@@ -4147,8 +4312,10 @@ async function procesarPregunta(texto){
             true
         );
 
+
         estado.textContent =
             "Listo para ayudarte";
+
 
         return;
 
@@ -4170,6 +4337,7 @@ async function procesarPregunta(texto){
         estado.textContent =
             "Operación completada";
 
+
         return;
 
     }
@@ -4183,12 +4351,13 @@ async function procesarPregunta(texto){
         t.includes("toda la informacion") ||
         t.includes("informacion completa") ||
         t.includes("resumen del dia") ||
-        t.includes("todo lo de hoy") ||
         t.includes("todo lo de hoy")
     ){
 
         let rango =
-            obtenerRangoFecha(texto);
+            obtenerRangoFecha(
+                texto
+            );
 
 
         if(!rango){
@@ -4210,8 +4379,10 @@ async function procesarPregunta(texto){
             true
         );
 
+
         estado.textContent =
             "Consulta completada";
+
 
         return;
 
@@ -4241,8 +4412,10 @@ async function procesarPregunta(texto){
             true
         );
 
+
         estado.textContent =
             "Consulta completada";
+
 
         return;
 
@@ -4254,9 +4427,15 @@ async function procesarPregunta(texto){
     */
 
     if(
-        t.includes("productos elaborados") ||
-        t.includes("pienso elaborado") ||
-        t.includes("productos fabricados")
+        t.includes(
+            "productos elaborados"
+        ) ||
+        t.includes(
+            "pienso elaborado"
+        ) ||
+        t.includes(
+            "productos fabricados"
+        )
     ){
 
         const resultado =
@@ -4268,8 +4447,10 @@ async function procesarPregunta(texto){
             true
         );
 
+
         estado.textContent =
             "Consulta completada";
+
 
         return;
 
@@ -4281,9 +4462,15 @@ async function procesarPregunta(texto){
     */
 
     if(
-        t.includes("materiales de construccion") ||
-        t.includes("materiales construccion") ||
-        t.includes("material de construccion")
+        t.includes(
+            "materiales de construccion"
+        ) ||
+        t.includes(
+            "materiales construccion"
+        ) ||
+        t.includes(
+            "material de construccion"
+        )
     ){
 
         if(
@@ -4299,15 +4486,20 @@ async function procesarPregunta(texto){
             let encontrado = null;
 
 
-            for(const m of materiales){
+            for(
+                const m of materiales
+            ){
 
                 if(
                     t.includes(
-                        normalizar(m.Nombre)
+                        normalizar(
+                            m.Nombre
+                        )
                     )
                 ){
 
                     encontrado = m;
+
                     break;
 
                 }
@@ -4344,6 +4536,7 @@ async function procesarPregunta(texto){
         estado.textContent =
             "Consulta completada";
 
+
         return;
 
     }
@@ -4371,8 +4564,10 @@ async function procesarPregunta(texto){
             true
         );
 
+
         estado.textContent =
             "Consulta completada";
+
 
         return;
 
@@ -4393,8 +4588,10 @@ async function procesarPregunta(texto){
             true
         );
 
+
         estado.textContent =
             "Consulta completada";
+
 
         return;
 
@@ -4415,8 +4612,10 @@ async function procesarPregunta(texto){
             true
         );
 
+
         estado.textContent =
             "Consulta completada";
+
 
         return;
 
@@ -4434,7 +4633,9 @@ async function procesarPregunta(texto){
     ){
 
         const rango =
-            obtenerRangoFecha(texto) ||
+            obtenerRangoFecha(
+                texto
+            ) ||
             inicioFinHoy();
 
 
@@ -4466,6 +4667,7 @@ async function procesarPregunta(texto){
         estado.textContent =
             "Consulta completada";
 
+
         return;
 
     }
@@ -4478,7 +4680,9 @@ async function procesarPregunta(texto){
     ){
 
         const rango =
-            obtenerRangoFecha(texto) ||
+            obtenerRangoFecha(
+                texto
+            ) ||
             inicioFinHoy();
 
 
@@ -4509,6 +4713,7 @@ async function procesarPregunta(texto){
 
         estado.textContent =
             "Consulta completada";
+
 
         return;
 
@@ -4546,8 +4751,10 @@ async function procesarPregunta(texto){
             true
         );
 
+
         estado.textContent =
             "Consulta completada";
+
 
         return;
 
@@ -4570,8 +4777,10 @@ async function procesarPregunta(texto){
             true
         );
 
+
         estado.textContent =
             "Consulta completada";
+
 
         return;
 
@@ -4583,7 +4792,9 @@ async function procesarPregunta(texto){
     */
 
     const rango =
-        obtenerRangoFecha(texto);
+        obtenerRangoFecha(
+            texto
+        );
 
 
     if(
@@ -4603,8 +4814,10 @@ async function procesarPregunta(texto){
             true
         );
 
+
         estado.textContent =
             "Consulta completada";
+
 
         return;
 
@@ -4663,4 +4876,4 @@ iniciar();
 
 </body>
 
-    </html>
+      </html>
