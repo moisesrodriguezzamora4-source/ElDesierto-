@@ -7,7 +7,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Productos Elaborados - ElDesierto</title>
+<title>Productos elaborados - ElDesierto</title>
 
 <style>
 
@@ -24,248 +24,287 @@
 body{
     font-family:Arial,sans-serif;
     min-height:100vh;
-    color:white;
-
     background:
-        radial-gradient(circle at top,#1d1d1d,#050505 65%);
-}
-
-
-/* ==================================================
-   TITULO
-================================================== */
-
-h1{
-    text-align:center;
-    margin:25px 0;
-    color:#ff3030;
-    font-size:32px;
-    text-shadow:
-        0 0 10px rgba(255,0,0,.5),
-        0 4px 8px #000;
-}
-
-
-/* ==================================================
-   BOTON REGRESAR
-================================================== */
-
-.botonRegresar{
-    display:block;
-    width:220px;
-    margin:0 auto 25px;
-
-    padding:14px;
-
-    text-align:center;
-
+        radial-gradient(circle at top,#3b0000 0%,#140000 45%,#000 100%);
     color:white;
-    text-decoration:none;
-    font-weight:bold;
-    font-size:16px;
-
-    border-radius:12px;
-
-    background:linear-gradient(
-        145deg,
-        #ff3030,
-        #a80000
-    );
-
-    box-shadow:
-        0 5px 0 #650000,
-        0 10px 20px rgba(0,0,0,.7);
-
-    transition:.2s;
+    padding:20px;
 }
-
-.botonRegresar:hover{
-    transform:translateY(-2px);
-}
-
 
 /* ==================================================
    CONTENEDOR
 ================================================== */
 
 .contenedor{
-    width:95%;
-    max-width:1100px;
+    max-width:1000px;
     margin:auto;
 }
 
+/* ==================================================
+   ENCABEZADO
+================================================== */
+
+.encabezado{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.logo{
+    font-size:45px;
+    margin-bottom:5px;
+}
+
+.marca{
+    font-size:30px;
+    font-weight:bold;
+    color:#ff1a1a;
+    text-shadow:
+        0 0 5px #ff0000,
+        0 0 15px #ff0000,
+        0 0 30px #8b0000;
+}
+
+.subtitulo{
+    color:#ccc;
+    font-size:15px;
+    margin-top:5px;
+}
+
+.titulo{
+    margin-top:25px;
+    font-size:28px;
+    color:#ff2222;
+    text-shadow:0 0 12px #ff0000;
+}
+
+.descripcion{
+    margin-top:8px;
+    color:#bbb;
+}
+
+/* ==================================================
+   BOTÓN VOLVER
+================================================== */
+
+.boton-volver{
+    display:inline-block;
+    margin:20px 0;
+    padding:12px 22px;
+    border:none;
+    border-radius:10px;
+    background:linear-gradient(145deg,#ff2222,#8b0000);
+    color:white;
+    font-weight:bold;
+    text-decoration:none;
+    box-shadow:
+        0 5px 0 #450000,
+        0 8px 18px rgba(255,0,0,.35);
+    transition:.2s;
+}
+
+.boton-volver:hover{
+    transform:translateY(-2px);
+}
+
+/* ==================================================
+   PANEL
+================================================== */
+
+.panel{
+    background:
+        linear-gradient(145deg,#1a1a1a,#070707);
+    border:1px solid #550000;
+    border-radius:18px;
+    padding:20px;
+    box-shadow:
+        0 15px 35px rgba(0,0,0,.7),
+        inset 0 1px 0 rgba(255,255,255,.05);
+    overflow-x:auto;
+}
 
 /* ==================================================
    TABLA
 ================================================== */
 
-.tablaContenedor{
-    width:100%;
-    overflow-x:auto;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(30,30,30,.95),
-            rgba(5,5,5,.98)
-        );
-
-    border-radius:16px;
-
-    padding:15px;
-
-    box-shadow:
-        0 8px 25px rgba(0,0,0,.8),
-        inset 0 1px 1px rgba(255,255,255,.05);
-}
-
 table{
     width:100%;
+    min-width:800px;
     border-collapse:collapse;
-    min-width:700px;
+}
+
+thead{
+    background:linear-gradient(180deg,#a00000,#520000);
 }
 
 th{
-    background:#9d0000;
-    color:white;
-
     padding:14px 10px;
-
-    text-align:center;
-
-    font-size:15px;
+    color:white;
+    font-size:14px;
+    border-bottom:2px solid #ff2222;
 }
 
 td{
-    padding:12px 10px;
-
+    padding:13px 10px;
     text-align:center;
-
-    border-bottom:1px solid #333;
-
-    color:#eee;
+    border-bottom:1px solid #292929;
+    color:#ddd;
 }
 
-tr:hover{
-    background:rgba(255,48,48,.08);
+tbody tr:hover{
+    background:rgba(255,0,0,.07);
 }
-
 
 /* ==================================================
    BOTONES
 ================================================== */
 
 button{
-    border:none;
-    cursor:pointer;
+    font-family:inherit;
+}
 
+.boton-consumir{
+    border:none;
+    border-radius:8px;
+    padding:9px 13px;
+    background:linear-gradient(145deg,#ff2222,#8b0000);
     color:white;
     font-weight:bold;
-
-    border-radius:10px;
-
-    padding:10px 14px;
-
-    background:linear-gradient(
-        145deg,
-        #ff3030,
-        #a80000
-    );
-
+    cursor:pointer;
     box-shadow:
-        0 4px 0 #650000,
-        0 7px 15px rgba(0,0,0,.6);
-
-    transition:.2s;
+        0 4px 0 #450000,
+        0 5px 12px rgba(255,0,0,.3);
 }
 
-button:hover{
-    transform:translateY(-2px);
+.boton-consumir:hover{
+    transform:translateY(-1px);
 }
 
-button:active{
-    transform:translateY(2px);
-
-    box-shadow:
-        0 2px 0 #650000;
+.boton-eliminar{
+    border:none;
+    border-radius:8px;
+    padding:9px 13px;
+    background:linear-gradient(145deg,#444,#151515);
+    color:#ff3333;
+    font-weight:bold;
+    cursor:pointer;
+    border:1px solid #650000;
 }
 
+.boton-eliminar:hover{
+    background:#300000;
+}
 
 /* ==================================================
-   CONSUMO
+   MENÚ CONSUMO
 ================================================== */
 
-.consumo{
-    display:flex;
-    flex-direction:column;
-    gap:8px;
+.menu-consumo{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.8);
+    z-index:1000;
     align-items:center;
+    justify-content:center;
 }
 
-.consumo input{
-    width:100px;
+.menu-consumo.activo{
+    display:flex;
+}
 
-    padding:8px;
-
-    border-radius:8px;
-
-    border:1px solid #555;
-
-    background:#111;
-
+.boton-opcion{
+    width:100%;
+    padding:14px;
+    margin:7px 0;
+    border:none;
+    border-radius:10px;
+    background:linear-gradient(145deg,#ff2222,#7b0000);
     color:white;
-
-    text-align:center;
+    font-weight:bold;
+    cursor:pointer;
 }
 
-.consumo select{
-    padding:8px;
-
-    border-radius:8px;
-
-    border:1px solid #555;
-
-    background:#111;
-
-    color:white;
+.boton-opcion:hover{
+    filter:brightness(1.15);
 }
-
 
 /* ==================================================
-   MENSAJES
+   MENÚ DESTINOS
 ================================================== */
 
-.mensaje{
+.menu-destinos{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.8);
+    z-index:1100;
+    align-items:center;
+    justify-content:center;
+}
+
+.menu-destinos.activo{
+    display:flex;
+}
+
+.titulo-destinos{
+    color:#ff2222;
     text-align:center;
+    font-size:22px;
+    margin-bottom:15px;
+    text-shadow:0 0 10px #ff0000;
+}
 
-    padding:25px;
+.boton-destino{
+    width:100%;
+    padding:14px;
+    margin:7px 0;
+    border:none;
+    border-radius:10px;
+    background:linear-gradient(145deg,#ff2222,#7b0000);
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
 
+.boton-destino:hover{
+    filter:brightness(1.15);
+}
+
+/* ==================================================
+   ESTADO VACÍO
+================================================== */
+
+.vacio{
+    text-align:center;
+    padding:40px 20px;
     color:#aaa;
-
     font-size:17px;
 }
-
-.error{
-    color:#ff5555;
-}
-
 
 /* ==================================================
    RESPONSIVE
 ================================================== */
 
-@media(max-width:700px){
+@media(max-width:600px){
 
-    h1{
-        font-size:26px;
+    body{
+        padding:12px;
     }
 
-    .contenedor{
-        width:98%;
+    .marca{
+        font-size:25px;
     }
 
-    .tablaContenedor{
-        padding:8px;
+    .titulo{
+        font-size:23px;
+    }
+
+    .panel{
+        padding:12px;
+    }
+
+    th,
+    td{
+        font-size:13px;
     }
 
 }
@@ -274,21 +313,37 @@ button:active{
 
 </head>
 
-
 <body>
-
-
-<h1>🐷 Productos Elaborados</h1>
-
-
-<a href="inventario.html" class="botonRegresar">
-    ⬅️ Volver al Inventario
-</a>
-
 
 <div class="contenedor">
 
-    <div class="tablaContenedor">
+    <div class="encabezado">
+
+        <div class="logo">🐷</div>
+
+        <div class="marca">
+            ElDesierto
+        </div>
+
+        <div class="subtitulo">
+            Sistema de control y gestión
+        </div>
+
+        <div class="titulo">
+            🏭 Productos elaborados
+        </div>
+
+        <div class="descripcion">
+            Existencias actuales de productos elaborados
+        </div>
+
+    </div>
+
+    <a href="inventario.html" class="boton-volver">
+        ⬅ Volver al inventario
+    </a>
+
+    <div class="panel">
 
         <table>
 
@@ -314,7 +369,7 @@ button:active{
 
                 <tr>
 
-                    <td colspan="5" class="mensaje">
+                    <td colspan="5" class="vacio">
                         Cargando productos...
                     </td>
 
@@ -329,27 +384,104 @@ button:active{
 </div>
 
 
+<!-- ==================================================
+     MENÚ DE CONSUMO
+================================================== -->
+
+<div id="menuConsumo" class="menu-consumo">
+
+    <div class="panel" style="width:90%;max-width:420px;">
+
+        <h2 class="titulo-destinos">
+            Consumo del producto
+        </h2>
+
+        <button
+            class="boton-opcion"
+            onclick="prepararConsumo('todo')">
+            Consumir todo
+        </button>
+
+        <button
+            class="boton-opcion"
+            onclick="prepararConsumo('cantidad')">
+            Consumir cantidad específica
+        </button>
+
+        <button
+            class="boton-opcion"
+            onclick="cerrarMenuConsumo()">
+            Cancelar
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- ==================================================
+     MENÚ DE DESTINOS
+================================================== -->
+
+<div id="menuDestinos" class="menu-destinos">
+
+    <div class="panel" style="width:90%;max-width:420px;">
+
+        <div class="titulo-destinos">
+            Seleccione destino
+        </div>
+
+        <button
+            class="boton-destino"
+            onclick="ejecutarConsumo('Destete')">
+            🐷 Destete
+        </button>
+
+        <button
+            class="boton-destino"
+            onclick="ejecutarConsumo('Maternidad')">
+            🐷 Maternidad
+        </button>
+
+        <button
+            class="boton-destino"
+            onclick="ejecutarConsumo('Cría')">
+            🐷 Cría
+        </button>
+
+        <button
+            class="boton-destino"
+            onclick="ejecutarConsumo('Ceba')">
+            🐷 Ceba
+        </button>
+
+        <button
+            class="boton-destino"
+            onclick="cancelarDestino()">
+            Cancelar
+        </button>
+
+    </div>
+
+</div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script src="supabase.js"></script>
-
 
 <script>
 
-/* ==================================================
-   VARIABLES
-================================================== */
-
 let usuarioActual = "";
-
+let productoSeleccionado = null;
+let cantidadSeleccionada = 0;
+let tipoConsumo = "";
 
 
 /* ==================================================
-   VERIFICAR SESIÓN
+   OBTENER USUARIO
 ================================================== */
 
-async function verificarSesion(){
+async function obtenerUsuario(){
 
     const {
         data:{
@@ -357,97 +489,81 @@ async function verificarSesion(){
         }
     } = await clienteSupabase.auth.getSession();
 
-
     if(!session){
 
         window.location.href="login.html";
-
         return false;
+
     }
 
-
     usuarioActual =
-        session.user.email ||
-        session.user.id ||
-        "";
-
+        session.user.email || "";
 
     return true;
-}
 
+}
 
 
 /* ==================================================
    CARGAR PRODUCTOS
 ================================================== */
 
-async function cargarProductos(){
+async function cargarElaborados(){
 
     const tabla =
         document.getElementById("tablaProductos");
-
-
-    tabla.innerHTML = `
-        <tr>
-            <td colspan="5" class="mensaje">
-                Cargando productos...
-            </td>
-        </tr>
-    `;
-
 
     const {
         data,
         error
     } = await clienteSupabase
-
         .from("productos_elaborados")
-
         .select("*")
-
-        .order("id",{ascending:true});
+        .order("Nombre",{ascending:true});
 
 
     if(error){
 
         console.error(error);
 
-        tabla.innerHTML = `
+        tabla.innerHTML=`
             <tr>
-                <td colspan="5" class="mensaje error">
-                    Error al cargar los productos elaborados.
+                <td colspan="5" class="vacio">
+                    Error al cargar los productos.
                 </td>
             </tr>
         `;
 
         return;
+
     }
 
 
-    if(!data || data.length === 0){
+    if(!data || data.length===0){
 
-        tabla.innerHTML = `
+        tabla.innerHTML=`
             <tr>
-                <td colspan="5" class="mensaje">
-                    No hay productos elaborados registrados.
+                <td colspan="5" class="vacio">
+                    No existen productos elaborados.
                 </td>
             </tr>
         `;
 
         return;
+
     }
 
 
-    tabla.innerHTML = "";
+    tabla.innerHTML="";
 
 
-    data.forEach(producto => {
+    data.forEach(producto=>{
 
         const fila =
             document.createElement("tr");
 
 
-        fila.innerHTML = `
+        fila.innerHTML=`
 
             <td>
                 ${producto.Nombre || ""}
@@ -458,61 +574,29 @@ async function cargarProductos(){
             </td>
 
             <td>
-                ${producto.Cantidad ?? 0}
+                ${producto.Cantidad || 0}
             </td>
 
             <td>
 
-                <div class="consumo">
+                <button
+                    class="boton-consumir"
+                    onclick='mostrarMenuConsumo(${JSON.stringify(producto)})'>
 
-                    <input
-                        type="number"
-                        min="0"
-                        step="0.01"
-                        id="cantidad_${producto.id}"
-                        placeholder="Cantidad"
-                    >
+                    Consumir
 
-                    <select id="destino_${producto.id}">
-
-                        <option value="">
-                            Seleccionar destino
-                        </option>
-
-                        <option value="Destete">
-                            Destete
-                        </option>
-
-                        <option value="Maternidad">
-                            Maternidad
-                        </option>
-
-                        <option value="Cría">
-                            Cría
-                        </option>
-
-                        <option value="Ceba">
-                            Ceba
-                        </option>
-
-                    </select>
-
-                    <button
-                        onclick="consumirProducto(${producto.id})"
-                    >
-                        Consumir
-                    </button>
-
-                </div>
+                </button>
 
             </td>
 
             <td>
 
                 <button
-                    onclick="eliminarProducto(${producto.id})"
-                >
-                    🗑️ Eliminar
+                    class="boton-eliminar"
+                    onclick='eliminarProductoElaborado(${producto.id})'>
+
+                    Eliminar
+
                 </button>
 
             </td>
@@ -527,119 +611,189 @@ async function cargarProductos(){
 }
 
 
-
 /* ==================================================
-   CONSUMIR PRODUCTO
+   MOSTRAR MENÚ DE CONSUMO
 ================================================== */
 
-async function consumirProducto(id){
+function mostrarMenuConsumo(producto){
 
-    const input =
-        document.getElementById(
-            `cantidad_${id}`
-        );
+    productoSeleccionado =
+        producto;
+
+    document
+        .getElementById("menuConsumo")
+        .classList
+        .add("activo");
+
+}
 
 
-    const select =
-        document.getElementById(
-            `destino_${id}`
-        );
+/* ==================================================
+   CERRAR MENÚ
+================================================== */
+
+function cerrarMenuConsumo(){
+
+    document
+        .getElementById("menuConsumo")
+        .classList
+        .remove("activo");
+
+}
+
+
+/* ==================================================
+   PREPARAR CONSUMO
+================================================== */
+
+async function prepararConsumo(tipo){
+
+    tipoConsumo =
+        tipo;
+
+    cerrarMenuConsumo();
+
+
+    if(tipo==="todo"){
+
+        cantidadSeleccionada =
+            Number(productoSeleccionado.Cantidad);
+
+        document
+            .getElementById("menuDestinos")
+            .classList
+            .add("activo");
+
+        return;
+
+    }
+
+
+    if(tipo==="cantidad"){
+
+        const cantidad =
+            prompt(
+                "Introduzca la cantidad a consumir:"
+            );
+
+
+        if(cantidad===null){
+            return;
+        }
+
+
+        const valor =
+            Number(cantidad);
+
+
+        if(
+            isNaN(valor) ||
+            valor<=0 ||
+            valor>Number(productoSeleccionado.Cantidad)
+        ){
+
+            alert(
+                "Cantidad no válida."
+            );
+
+            return;
+
+        }
+
+
+        cantidadSeleccionada =
+            valor;
+
+
+        document
+            .getElementById("menuDestinos")
+            .classList
+            .add("activo");
+
+    }
+
+}
+
+
+/* ==================================================
+   PREPARAR CANTIDAD
+================================================== */
+
+function prepararCantidad(){
+
+    prepararConsumo("cantidad");
+
+}
+
+
+/* ==================================================
+   CANCELAR DESTINO
+================================================== */
+
+function cancelarDestino(){
+
+    document
+        .getElementById("menuDestinos")
+        .classList
+        .remove("activo");
+
+    productoSeleccionado=null;
+    cantidadSeleccionada=0;
+
+}
+
+
+/* ==================================================
+   EJECUTAR CONSUMO
+================================================== */
+
+async function ejecutarConsumo(destino){
+
+    if(!productoSeleccionado){
+        return;
+    }
 
 
     const cantidad =
-        parseFloat(input.value);
+        Number(cantidadSeleccionada);
 
 
-    const destino =
-        select.value;
-
-
-    if(!cantidad || cantidad <= 0){
+    if(
+        !cantidad ||
+        cantidad<=0
+    ){
 
         alert(
-            "Introduzca una cantidad válida."
+            "Cantidad no válida."
         );
 
         return;
+
     }
 
-
-    if(!destino){
-
-        alert(
-            "Seleccione un destino."
-        );
-
-        return;
-    }
-
-
-
-    /* ==============================================
-       OBTENER PRODUCTO
-    ============================================== */
-
-    const {
-        data:producto,
-        error:errorProducto
-    } = await clienteSupabase
-
-        .from("productos_elaborados")
-
-        .select("*")
-
-        .eq("id",id)
-
-        .single();
-
-
-    if(errorProducto || !producto){
-
-        console.error(errorProducto);
-
-        alert(
-            "No se pudo obtener el producto."
-        );
-
-        return;
-    }
-
-
-
-    /* ==============================================
-       COMPROBAR EXISTENCIA
-    ============================================== */
-
-    const cantidadDisponible =
-        Number(producto.Cantidad || 0);
-
-
-    if(cantidad > cantidadDisponible){
-
-        alert(
-            "La cantidad a consumir es mayor que la cantidad disponible."
-        );
-
-        return;
-    }
-
-
-
-    /* ==============================================
-       NUEVA CANTIDAD
-    ============================================== */
 
     const nuevaCantidad =
-        cantidadDisponible - cantidad;
+        Number(productoSeleccionado.Cantidad)
+        - cantidad;
 
 
+    if(nuevaCantidad<0){
 
-    /* ==============================================
+        alert(
+            "La cantidad supera las existencias."
+        );
+
+        return;
+
+    }
+
+
+    /* ==================================================
        ACTUALIZAR PRODUCTO
-    ============================================== */
+    ================================================== */
 
     const {
-        error:errorUpdate
+        error:errorActualizacion
     } = await clienteSupabase
 
         .from("productos_elaborados")
@@ -648,29 +802,31 @@ async function consumirProducto(id){
             Cantidad:nuevaCantidad
         })
 
-        .eq("id",id);
+        .eq(
+            "id",
+            productoSeleccionado.id
+        );
 
 
-    if(errorUpdate){
+    if(errorActualizacion){
 
-        console.error(errorUpdate);
+        console.error(
+            errorActualizacion
+        );
 
         alert(
-            "Error al actualizar el producto."
+            "No se pudo actualizar el producto."
         );
 
         return;
+
     }
 
 
-
-    /* ==============================================
+    /* ==================================================
        REGISTRAR DISTRIBUCIÓN
-       
-       MODIFICACIÓN:
-       Se guarda también el nombre del producto
-       en la columna "comida".
-    ============================================== */
+       AHORA TAMBIÉN GUARDA LA COMIDA
+    ================================================== */
 
     const {
         error:errorMovimiento
@@ -682,7 +838,7 @@ async function consumirProducto(id){
 
             distribucion:destino,
 
-            comida:producto.Nombre,
+            comida:productoSeleccionado.Nombre,
 
             cantidad:cantidad,
 
@@ -693,47 +849,52 @@ async function consumirProducto(id){
 
     if(errorMovimiento){
 
-        console.error(errorMovimiento);
-
-        alert(
-            "El producto se actualizó, pero ocurrió un error al registrar la distribución."
+        console.error(
+            errorMovimiento
         );
 
-        cargarProductos();
+        alert(
+            "El producto se actualizó, pero no se pudo registrar la distribución."
+        );
 
         return;
+
     }
 
 
+    document
+        .getElementById("menuDestinos")
+        .classList
+        .remove("activo");
+
+
+    productoSeleccionado=null;
+    cantidadSeleccionada=0;
+
+
+    await cargarElaborados();
+
 
     alert(
-        "Distribución registrada correctamente."
+        "Consumo registrado correctamente."
     );
 
-
-    cargarProductos();
-
 }
-
 
 
 /* ==================================================
    ELIMINAR PRODUCTO
 ================================================== */
 
-async function eliminarProducto(id){
+async function eliminarProductoElaborado(id){
 
-    const confirmar =
-        confirm(
-            "¿Está seguro de eliminar este producto elaborado?"
-        );
-
-
-    if(!confirmar){
+    if(!confirm(
+        "¿Está seguro de eliminar este producto elaborado?"
+    )){
 
         return;
-    }
 
+    }
 
 
     const {
@@ -752,22 +913,17 @@ async function eliminarProducto(id){
         console.error(error);
 
         alert(
-            "Error al eliminar el producto."
+            "No se pudo eliminar el producto."
         );
 
         return;
+
     }
 
 
-    alert(
-        "Producto eliminado correctamente."
-    );
-
-
-    cargarProductos();
+    await cargarElaborados();
 
 }
-
 
 
 /* ==================================================
@@ -776,17 +932,16 @@ async function eliminarProducto(id){
 
 async function iniciar(){
 
-    const sesion =
-        await verificarSesion();
+    const usuario =
+        await obtenerUsuario();
 
 
-    if(!sesion){
-
+    if(!usuario){
         return;
     }
 
 
-    cargarProductos();
+    await cargarElaborados();
 
 }
 
@@ -794,7 +949,6 @@ async function iniciar(){
 iniciar();
 
 </script>
-
 
 </body>
 
