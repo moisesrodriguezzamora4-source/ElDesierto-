@@ -102,8 +102,13 @@ body{
 }
 
 @keyframes pulso{
-    0%,100%{transform:scale(1)}
-    50%{transform:scale(1.08)}
+    0%,100%{
+        transform:scale(1)
+    }
+
+    50%{
+        transform:scale(1.08)
+    }
 }
 
 .entrada{
@@ -155,15 +160,6 @@ body{
     color:#ff2525;
     font-weight:bold;
     margin-bottom:8px;
-}
-
-.dato{
-    padding:7px 0;
-    border-bottom:1px solid #222;
-}
-
-.dato:last-child{
-    border-bottom:none;
 }
 
 .controles{
@@ -263,7 +259,7 @@ body{
         <button
             id="microfono"
             class="microfono"
-            onclick="iniciarEscucha()"
+            type="button"
             aria-label="Hablar con Desierto">
             🎙️
         </button>
@@ -277,7 +273,10 @@ body{
                 autocomplete="off"
             >
 
-            <button class="btn" onclick="enviarPregunta()">
+            <button
+                id="btnPreguntar"
+                class="btn"
+                type="button">
                 Preguntar
             </button>
 
@@ -290,22 +289,27 @@ body{
             </div>
 
             Hola. Soy Desierto, tu asistente de ElDesierto.
-            Puedo consultar información y ejecutar acciones
-            de inventario cuando me lo confirmes.
+            Estoy listo para conversar contigo.
 
         </div>
 
         <div class="controles">
 
-            <button onclick="probarVoz()">
+            <button
+                id="btnProbarVoz"
+                type="button">
                 🔊 Probar voz
             </button>
 
-            <button onclick="detenerAudio()">
+            <button
+                id="btnDetenerVoz"
+                type="button">
                 🔇 Detener voz
             </button>
 
-            <button onclick="limpiarConversacion()">
+            <button
+                id="btnLimpiar"
+                type="button">
                 🗑️ Limpiar conversación
             </button>
 
@@ -315,57 +319,48 @@ body{
 
             <h3>Ejemplos</h3>
 
-            <div
-                class="ejemplo"
-                onclick="usarEjemplo('¿Cuánto maíz tenemos?')">
+            <div class="ejemplo"
+                 data-texto="¿Cuánto maíz tenemos?">
                 🌽 ¿Cuánto maíz tenemos?
             </div>
 
-            <div
-                class="ejemplo"
-                onclick="usarEjemplo('Registra 500 kg de maíz')">
+            <div class="ejemplo"
+                 data-texto="Registra 500 kg de maíz">
                 ➕ Registra 500 kg de maíz
             </div>
 
-            <div
-                class="ejemplo"
-                onclick="usarEjemplo('Saca 100 kg de soya')">
+            <div class="ejemplo"
+                 data-texto="Saca 100 kg de soya">
                 ➖ Saca 100 kg de soya
             </div>
 
-            <div
-                class="ejemplo"
-                onclick="usarEjemplo('¿Cuánto pienso tenemos?')">
+            <div class="ejemplo"
+                 data-texto="¿Cuánto pienso tenemos?">
                 🐷 ¿Cuánto pienso tenemos?
             </div>
 
-            <div
-                class="ejemplo"
-                onclick="usarEjemplo('¿Cuántos cerdos tenemos?')">
+            <div class="ejemplo"
+                 data-texto="¿Cuántos cerdos tenemos?">
                 🐖 ¿Cuántos cerdos tenemos?
             </div>
 
-            <div
-                class="ejemplo"
-                onclick="usarEjemplo('¿Qué materiales de construcción tenemos?')">
+            <div class="ejemplo"
+                 data-texto="¿Qué materiales de construcción tenemos?">
                 🧱 ¿Qué materiales tenemos?
             </div>
 
-            <div
-                class="ejemplo"
-                onclick="usarEjemplo('¿Qué recetas tenemos?')">
+            <div class="ejemplo"
+                 data-texto="¿Qué recetas tenemos?">
                 📋 ¿Qué recetas tenemos?
             </div>
 
-            <div
-                class="ejemplo"
-                onclick="usarEjemplo('¿Cuáles fueron las últimas salidas?')">
+            <div class="ejemplo"
+                 data-texto="¿Cuáles fueron las últimas salidas?">
                 📦 ¿Cuáles fueron las últimas salidas?
             </div>
 
-            <div
-                class="ejemplo"
-                onclick="usarEjemplo('Hola Desierto')">
+            <div class="ejemplo"
+                 data-texto="Hola Desierto">
                 👋 Hola Desierto
             </div>
 
@@ -383,13 +378,16 @@ body{
 <script>
 
 /* =========================================================
-   VARIABLES
+   ESTADO GENERAL
 ========================================================= */
 
 let reconocimiento = null;
+
 let escuchando = false;
-let vocesDisponibles = [];
+
 let hablando = false;
+
+let vocesDisponibles = [];
 
 let conversacion = [];
 
@@ -399,12 +397,99 @@ let ultimoProductoConversacion = null;
 
 
 /* =========================================================
+   ELEMENTOS
+========================================================= */
+
+const $ = id => document.getElementById(id);
+
+
+/* =========================================================
+   EVENTOS DE LA INTERFAZ
+========================================================= */
+
+window.addEventListener("DOMContentLoaded",function(){
+
+    $("btnPreguntar").addEventListener(
+        "click",
+        enviarPregunta
+    );
+
+    $("btnProbarVoz").addEventListener(
+        "click",
+        probarVoz
+    );
+
+    $("btnDetenerVoz").addEventListener(
+        "click",
+        detenerAudio
+    );
+
+    $("btnLimpiar").addEventListener(
+        "click",
+        limpiarConversacion
+    );
+
+    $("microfono").addEventListener(
+        "click",
+        iniciarEscucha
+    );
+
+    $("pregunta").addEventListener(
+        "keydown",
+        function(event){
+
+            if(event.key === "Enter"){
+
+                event.preventDefault();
+
+                enviarPregunta();
+            }
+        }
+    );
+
+
+    document
+    .querySelectorAll(".ejemplo")
+    .forEach(function(elemento){
+
+        elemento.addEventListener(
+            "click",
+            function(){
+
+                usarEjemplo(
+                    elemento.dataset.texto
+                );
+            }
+        );
+    });
+
+
+    cargarVoces();
+
+    if("speechSynthesis" in window){
+
+        speechSynthesis.onvoiceschanged =
+        cargarVoces;
+    }
+
+
+    console.log(
+        "Desierto iniciado correctamente."
+    );
+
+});
+
+
+/* =========================================================
    VOZ
 ========================================================= */
 
 function cargarVoces(){
 
-    if(!("speechSynthesis" in window)){
+    if(
+        !("speechSynthesis" in window)
+    ){
+
         return;
     }
 
@@ -412,31 +497,20 @@ function cargarVoces(){
         speechSynthesis.getVoices();
 
     console.log(
-        "Voces disponibles:",
+        "Voces:",
         vocesDisponibles.map(
-            v => v.name + " | " + v.lang
+            v =>
+                v.name +
+                " | " +
+                v.lang
         )
     );
-}
-
-if("speechSynthesis" in window){
-
-    cargarVoces();
-
-    speechSynthesis.onvoiceschanged =
-    function(){
-
-        cargarVoces();
-
-    };
 }
 
 
 function obtenerVozEspanol(){
 
-    if(!vocesDisponibles.length){
-        cargarVoces();
-    }
+    cargarVoces();
 
     const prioridades = [
         "es-US",
@@ -446,47 +520,64 @@ function obtenerVozEspanol(){
         "es"
     ];
 
-    for(const idioma of prioridades){
+    for(
+        const idioma of prioridades
+    ){
 
         const voz =
             vocesDisponibles.find(
-                v =>
-                    v.lang &&
-                    v.lang.toLowerCase() ===
-                    idioma.toLowerCase()
+                function(v){
+
+                    return (
+                        v.lang &&
+                        v.lang.toLowerCase() ===
+                        idioma.toLowerCase()
+                    );
+                }
             );
 
         if(voz){
+
             return voz;
         }
     }
 
+
     return vocesDisponibles.find(
-        v =>
-            v.lang &&
-            v.lang.toLowerCase().startsWith("es")
+        function(v){
+
+            return (
+                v.lang &&
+                v.lang
+                .toLowerCase()
+                .startsWith("es")
+            );
+        }
     ) || null;
 }
 
 
 /* =========================================================
-   LIMPIAR TEXTO PARA VOZ
+   ELIMINAR EMOJIS DE LA VOZ
 ========================================================= */
 
 function limpiarTextoParaVoz(texto){
 
     if(!texto){
+
         return "";
     }
 
     let limpio =
         String(texto);
 
+
     limpio =
         limpio.replace(
             /<[^>]*>/g,
             " "
         );
+
 
     const area =
         document.createElement(
@@ -499,17 +590,30 @@ function limpiarTextoParaVoz(texto){
     limpio =
         area.value;
 
+
     limpio =
         limpio.replace(
             /[*_~`#>]/g,
             " "
         );
 
-    limpio =
-        limpio.replace(
-            /[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2300}-\u{23FF}\u{2B00}-\u{2BFF}\u{FE00}-\u{FE0F}\u{1F3FB}-\u{1F3FF}\u{200D}]/gu,
-            " "
+
+    try{
+
+        limpio =
+            limpio.replace(
+                /[\u{1F000}-\u{1FAFF}\u{2300}-\u{23FF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{1F3FB}-\u{1F3FF}\u{FE00}-\u{FE0F}\u{200D}]/gu,
+                " "
+            );
+
+    }catch(error){
+
+        console.warn(
+            "No se pudo eliminar algún emoji:",
+            error
         );
+    }
+
 
     limpio =
         limpio.replace(
@@ -517,11 +621,13 @@ function limpiarTextoParaVoz(texto){
             " "
         );
 
+
     limpio =
         limpio.replace(
             /[\u0000-\u001F\u007F]/g,
             " "
         );
+
 
     limpio =
         limpio.replace(
@@ -530,6 +636,7 @@ function limpiarTextoParaVoz(texto){
         )
         .trim();
 
+
     return limpio;
 }
 
@@ -537,9 +644,12 @@ function limpiarTextoParaVoz(texto){
 function dividirTextoVoz(texto){
 
     const limpio =
-        limpiarTextoParaVoz(texto);
+        limpiarTextoParaVoz(
+            texto
+        );
 
     if(!limpio){
+
         return [];
     }
 
@@ -550,69 +660,122 @@ function dividirTextoVoz(texto){
 
     return partes
         ? partes
-            .map(p => p.trim())
+            .map(
+                p => p.trim()
+            )
             .filter(Boolean)
         : [limpio];
 }
 
 
+/* =========================================================
+   DETENER VOZ
+========================================================= */
+
 function detenerAudio(){
 
-    if("speechSynthesis" in window){
+    try{
 
-        speechSynthesis.cancel();
+        if(
+            "speechSynthesis" in window
+        ){
 
-        hablando = false;
-
-        const estado =
-            document.getElementById(
-                "estado"
-            );
-
-        if(estado){
-
-            estado.className =
-                "estado";
-
-            estado.textContent =
-                "Listo para conversar contigo";
+            speechSynthesis.cancel();
         }
+
+    }catch(error){
+
+        console.warn(
+            "Error deteniendo voz:",
+            error
+        );
+    }
+
+
+    hablando = false;
+
+
+    const estado =
+        $("estado");
+
+    if(
+        estado &&
+        !escuchando
+    ){
+
+        estado.className =
+            "estado";
+
+        estado.textContent =
+            "Listo para conversar contigo";
     }
 }
 
 
+/* =========================================================
+   HABLAR
+========================================================= */
+
 function escucharRespuesta(texto){
 
-    if(!("speechSynthesis" in window)){
+    if(
+        !("speechSynthesis" in window)
+    ){
+
+        console.warn(
+            "SpeechSynthesis no disponible."
+        );
+
         return;
     }
+
 
     const partes =
         dividirTextoVoz(texto);
 
+
     if(!partes.length){
+
         return;
     }
 
-    speechSynthesis.cancel();
+
+    try{
+
+        speechSynthesis.cancel();
+
+        speechSynthesis.resume();
+
+    }catch(error){
+
+        console.warn(
+            "Error preparando voz:",
+            error
+        );
+    }
+
 
     const voz =
         obtenerVozEspanol();
 
     let indice = 0;
 
+
     function siguiente(){
 
-        if(indice >= partes.length){
+        if(
+            indice >= partes.length
+        ){
 
             hablando = false;
 
             const estado =
-                document.getElementById(
-                    "estado"
-                );
+                $("estado");
 
-            if(estado){
+            if(
+                estado &&
+                !escuchando
+            ){
 
                 estado.className =
                     "estado";
@@ -624,18 +787,22 @@ function escucharRespuesta(texto){
             return;
         }
 
+
         const frase =
             partes[indice++];
+
 
         const mensaje =
             new SpeechSynthesisUtterance(
                 frase
             );
 
+
         mensaje.lang =
-            voz ?
-            voz.lang :
-            "es-US";
+            voz
+            ? voz.lang
+            : "es-US";
+
 
         mensaje.rate =
             0.92;
@@ -646,10 +813,13 @@ function escucharRespuesta(texto){
         mensaje.volume =
             1;
 
+
         if(voz){
+
             mensaje.voice =
                 voz;
         }
+
 
         mensaje.onstart =
         function(){
@@ -657,9 +827,7 @@ function escucharRespuesta(texto){
             hablando = true;
 
             const estado =
-                document.getElementById(
-                    "estado"
-                );
+                $("estado");
 
             if(estado){
 
@@ -671,6 +839,7 @@ function escucharRespuesta(texto){
             }
         };
 
+
         mensaje.onend =
         function(){
 
@@ -680,26 +849,55 @@ function escucharRespuesta(texto){
             );
         };
 
+
         mensaje.onerror =
         function(error){
 
             console.warn(
-                "Error de voz:",
+                "Error de síntesis:",
                 error
             );
 
-            setTimeout(
-                siguiente,
-                80
-            );
+            hablando = false;
+
+            /*
+               No bloqueamos la respuesta escrita
+               si el motor de voz falla.
+            */
+
+            const estado =
+                $("estado");
+
+            if(estado){
+
+                estado.className =
+                    "estado";
+
+                estado.textContent =
+                    "Respuesta enviada";
+            }
         };
 
-        speechSynthesis.resume();
 
-        speechSynthesis.speak(
-            mensaje
-        );
+        try{
+
+            speechSynthesis.resume();
+
+            speechSynthesis.speak(
+                mensaje
+            );
+
+        }catch(error){
+
+            console.error(
+                "No se pudo hablar:",
+                error
+            );
+
+            siguiente();
+        }
     }
+
 
     siguiente();
 }
@@ -707,7 +905,9 @@ function escucharRespuesta(texto){
 
 function hablar(texto){
 
-    escucharRespuesta(texto);
+    escucharRespuesta(
+        texto
+    );
 }
 
 
@@ -715,21 +915,24 @@ function probarVoz(){
 
     detenerAudio();
 
+    const texto =
+        "Hola. Soy Desierto. Esta es una prueba de voz.";
+
     setTimeout(
         function(){
 
             escucharRespuesta(
-                "Hola. Soy Desierto. La voz está funcionando correctamente."
+                texto
             );
 
         },
-        100
+        150
     );
 }
 
 
 /* =========================================================
-   RECONOCIMIENTO DE VOZ
+   RECONOCIMIENTO
 ========================================================= */
 
 function prepararReconocimiento(){
@@ -738,18 +941,21 @@ function prepararReconocimiento(){
         window.SpeechRecognition ||
         window.webkitSpeechRecognition;
 
+
     if(!SpeechRecognition){
 
         mostrarRespuesta(
-            "Tu navegador no permite reconocimiento de voz. Puedes escribirme en el cuadro de texto.",
-            true
+            "Este navegador no permite reconocimiento de voz. Puedes escribirme usando el cuadro de texto.",
+            false
         );
 
         return false;
     }
 
+
     reconocimiento =
         new SpeechRecognition();
+
 
     reconocimiento.lang =
         "es-US";
@@ -770,18 +976,16 @@ function prepararReconocimiento(){
         escuchando = true;
 
         const microfono =
-            document.getElementById(
-                "microfono"
-            );
+            $("microfono");
 
         const estado =
-            document.getElementById(
-                "estado"
-            );
+            $("estado");
+
 
         microfono.classList.add(
             "escuchando"
         );
+
 
         estado.className =
             "estado escuchando";
@@ -794,8 +998,10 @@ function prepararReconocimiento(){
     reconocimiento.onresult =
     function(event){
 
-        let textoFinal = "";
-        let textoIntermedio = "";
+        let finalTexto = "";
+
+        let intermedio = "";
+
 
         for(
             let i =
@@ -808,42 +1014,46 @@ function prepararReconocimiento(){
             const resultado =
                 event.results[i];
 
+
             const texto =
                 resultado[0]
                 .transcript;
 
-            if(resultado.isFinal){
 
-                textoFinal +=
+            if(
+                resultado.isFinal
+            ){
+
+                finalTexto +=
                     texto;
 
             }else{
 
-                textoIntermedio +=
+                intermedio +=
                     texto;
             }
         }
 
 
-        const pregunta =
-            document.getElementById(
-                "pregunta"
-            );
+        const input =
+            $("pregunta");
 
 
-        if(textoFinal.trim()){
+        if(
+            finalTexto.trim()
+        ){
 
-            pregunta.value =
-                textoFinal.trim();
+            input.value =
+                finalTexto.trim();
 
             enviarPregunta();
 
         }else if(
-            textoIntermedio.trim()
+            intermedio.trim()
         ){
 
-            pregunta.value =
-                textoIntermedio.trim();
+            input.value =
+                intermedio.trim();
         }
     };
 
@@ -856,9 +1066,11 @@ function prepararReconocimiento(){
             event.error
         );
 
+
         escuchando = false;
 
         actualizarEstadoMicrofono();
+
 
         if(
             event.error ===
@@ -866,8 +1078,8 @@ function prepararReconocimiento(){
         ){
 
             mostrarRespuesta(
-                "Necesito permiso para utilizar el micrófono. Revisa el permiso del navegador.",
-                true
+                "El micrófono no tiene permiso. Activa el permiso de micrófono para esta página.",
+                false
             );
 
         }else if(
@@ -876,8 +1088,8 @@ function prepararReconocimiento(){
         ){
 
             mostrarRespuesta(
-                "El reconocimiento de voz necesita conexión a Internet en este navegador.",
-                true
+                "El reconocimiento de voz necesita conexión a Internet.",
+                false
             );
         }
     };
@@ -891,6 +1103,7 @@ function prepararReconocimiento(){
         actualizarEstadoMicrofono();
     };
 
+
     return true;
 }
 
@@ -898,14 +1111,11 @@ function prepararReconocimiento(){
 function actualizarEstadoMicrofono(){
 
     const microfono =
-        document.getElementById(
-            "microfono"
-        );
+        $("microfono");
 
     const estado =
-        document.getElementById(
-            "estado"
-        );
+        $("estado");
+
 
     if(microfono){
 
@@ -913,6 +1123,7 @@ function actualizarEstadoMicrofono(){
             "escuchando"
         );
     }
+
 
     if(
         estado &&
@@ -928,18 +1139,15 @@ function actualizarEstadoMicrofono(){
 }
 
 
+/* =========================================================
+   INICIAR ESCUCHA
+========================================================= */
+
 async function iniciarEscucha(){
 
     console.log(
-        "Botón de micrófono pulsado"
+        "Micrófono pulsado."
     );
-
-    if(
-        "speechSynthesis" in window
-    ){
-
-        speechSynthesis.resume();
-    }
 
 
     if(!reconocimiento){
@@ -948,6 +1156,7 @@ async function iniciarEscucha(){
             prepararReconocimiento();
 
         if(!preparado){
+
             return;
         }
     }
@@ -959,33 +1168,13 @@ async function iniciarEscucha(){
 
             reconocimiento.stop();
 
-        }catch(e){}
+        }catch(error){}
 
         return;
     }
 
 
     try{
-
-        if(
-            navigator.mediaDevices &&
-            navigator.mediaDevices.getUserMedia
-        ){
-
-            const stream =
-                await navigator.mediaDevices
-                .getUserMedia({
-                    audio:true
-                });
-
-            stream
-                .getTracks()
-                .forEach(
-                    track =>
-                        track.stop()
-                );
-        }
-
 
         reconocimiento.start();
 
@@ -996,33 +1185,67 @@ async function iniciarEscucha(){
             error
         );
 
-        try{
-            reconocimiento.stop();
-        }catch(e){}
+        /*
+           Algunos navegadores no permiten
+           start() repetido inmediatamente.
+        */
+
+        setTimeout(
+            function(){
+
+                try{
+
+                    if(!escuchando){
+
+                        reconocimiento.start();
+                    }
+
+                }catch(e){
+
+                    console.error(
+                        "Segundo intento fallido:",
+                        e
+                    );
+                }
+
+            },
+            300
+        );
     }
 }
 
 
 /* =========================================================
-   MOSTRAR RESPUESTA
+   RESPUESTA EN PANTALLA
 ========================================================= */
 
 function mostrarRespuesta(
     texto,
-    hablarRespuesta = true
+    activarVoz = true
 ){
 
     const panel =
-        document.getElementById(
-            "respuesta"
+        $("respuesta");
+
+
+    if(!panel){
+
+        console.error(
+            "No existe #respuesta"
         );
+
+        return;
+    }
+
 
     panel.innerHTML =
         '<div class="titulo">Desierto</div>' +
-        formatearRespuesta(texto);
+        formatearRespuesta(
+            texto
+        );
 
 
-    if(hablarRespuesta){
+    if(activarVoz){
 
         setTimeout(
             function(){
@@ -1042,7 +1265,8 @@ function formatearRespuesta(texto){
 
     return String(
         texto || ""
-    ).replace(
+    )
+    .replace(
         /\n/g,
         "<br>"
     );
@@ -1050,29 +1274,13 @@ function formatearRespuesta(texto){
 
 
 /* =========================================================
-   INPUT
+   EJEMPLOS
 ========================================================= */
-
-document
-.getElementById("pregunta")
-.addEventListener(
-    "keydown",
-    function(event){
-
-        if(event.key === "Enter"){
-
-            enviarPregunta();
-        }
-    }
-);
-
 
 function usarEjemplo(texto){
 
     const input =
-        document.getElementById(
-            "pregunta"
-        );
+        $("pregunta");
 
     input.value =
         texto;
@@ -1093,11 +1301,17 @@ function guardarConversacion(
 ){
 
     conversacion.push({
-        usuario:usuario,
-        asistente:asistente,
+
+        usuario:
+            usuario,
+
+        asistente:
+            asistente,
+
         fecha:
             new Date().toISOString()
     });
+
 
     if(
         conversacion.length > 20
@@ -1116,36 +1330,49 @@ function guardarConversacion(
 async function enviarPregunta(){
 
     const input =
-        document.getElementById(
-            "pregunta"
-        );
+        $("pregunta");
+
 
     if(!input){
+
+        console.error(
+            "No existe el campo #pregunta"
+        );
+
         return;
     }
+
 
     const pregunta =
         input.value.trim();
 
+
     if(!pregunta){
+
         return;
     }
+
 
     console.log(
         "Usuario:",
         pregunta
     );
 
+
     detenerAudio();
+
 
     input.value = "";
 
+
     const estado =
-        document.getElementById(
-            "estado"
-        );
+        $("estado");
+
 
     if(estado){
+
+        estado.className =
+            "estado";
 
         estado.textContent =
             "Desierto está pensando...";
@@ -1159,35 +1386,42 @@ async function enviarPregunta(){
                 pregunta
             );
 
+
         console.log(
-            "Desierto:",
+            "Respuesta:",
             respuesta
         );
+
 
         mostrarRespuesta(
             respuesta,
             true
         );
 
+
         guardarConversacion(
             pregunta,
             respuesta
         );
 
+
     }catch(error){
 
         console.error(
-            "ERROR EN DESIERTO:",
+            "ERROR EN PROCESAR PREGUNTA:",
             error
         );
 
+
         const respuestaError =
-            "Tuve un problema al procesar la solicitud. No hice ningún cambio en el inventario.";
+            "Tuve un problema al procesar esa solicitud. No hice ningún cambio en el sistema.";
+
 
         mostrarRespuesta(
             respuestaError,
             true
         );
+
 
         guardarConversacion(
             pregunta,
@@ -1203,14 +1437,16 @@ async function enviarPregunta(){
 
 function normalizar(texto){
 
-    return String(texto || "")
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(
-            /[\u0300-\u036f]/g,
-            ""
-        )
-        .trim();
+    return String(
+        texto || ""
+    )
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(
+        /[\u0300-\u036f]/g,
+        ""
+    )
+    .trim();
 }
 
 
@@ -1219,9 +1455,14 @@ function formatearNumero(numero){
     const n =
         Number(numero);
 
-    if(isNaN(n)){
+
+    if(
+        Number.isNaN(n)
+    ){
+
         return "0";
     }
+
 
     return n.toLocaleString(
         "es-ES",
@@ -1229,6 +1470,52 @@ function formatearNumero(numero){
             maximumFractionDigits:2
         }
     );
+}
+
+
+/* =========================================================
+   OBTENER INVENTARIO
+========================================================= */
+
+async function obtenerInventario(){
+
+    try{
+
+        const resultado =
+            await clienteSupabase
+            .from("productos")
+            .select("*")
+            .order(
+                "Nombre",
+                {
+                    ascending:true
+                }
+            );
+
+
+        if(resultado.error){
+
+            console.error(
+                "Error inventario:",
+                resultado.error
+            );
+
+            return null;
+        }
+
+
+        return resultado.data || [];
+
+
+    }catch(error){
+
+        console.error(
+            "Error inventario:",
+            error
+        );
+
+        return null;
+    }
 }
 
 
@@ -1242,65 +1529,39 @@ async function consultarProducto(
 
     try{
 
-        const {data,error} =
+        const resultado =
             await clienteSupabase
             .from("productos")
             .select("*")
             .ilike(
                 "Nombre",
-                `%${nombre.trim()}%`
+                "%" +
+                nombre.trim() +
+                "%"
             )
             .limit(10);
 
-        if(error){
 
-            console.error(error);
+        if(resultado.error){
 
-            return null;
-        }
-
-        return data || [];
-
-    }catch(error){
-
-        console.error(error);
-
-        return null;
-    }
-}
-
-
-/* =========================================================
-   INVENTARIO
-========================================================= */
-
-async function obtenerInventario(){
-
-    try{
-
-        const {data,error} =
-            await clienteSupabase
-            .from("productos")
-            .select("*")
-            .order(
-                "Nombre",
-                {
-                    ascending:true
-                }
+            console.error(
+                "Error buscando producto:",
+                resultado.error
             );
 
-        if(error){
-
-            console.error(error);
-
             return null;
         }
 
-        return data || [];
+
+        return resultado.data || [];
+
 
     }catch(error){
 
-        console.error(error);
+        console.error(
+            "Error buscando producto:",
+            error
+        );
 
         return null;
     }
@@ -1315,7 +1576,7 @@ async function obtenerMateriales(){
 
     try{
 
-        const {data,error} =
+        const resultado =
             await clienteSupabase
             .from("materiales_construccion")
             .select("*")
@@ -1326,18 +1587,27 @@ async function obtenerMateriales(){
                 }
             );
 
-        if(error){
 
-            console.error(error);
+        if(resultado.error){
+
+            console.error(
+                "Error materiales:",
+                resultado.error
+            );
 
             return null;
         }
 
-        return data || [];
+
+        return resultado.data || [];
+
 
     }catch(error){
 
-        console.error(error);
+        console.error(
+            "Error materiales:",
+            error
+        );
 
         return null;
     }
@@ -1352,7 +1622,7 @@ async function obtenerProductosElaborados(){
 
     try{
 
-        const {data,error} =
+        const resultado =
             await clienteSupabase
             .from("productos_elaborados")
             .select("*")
@@ -1363,18 +1633,27 @@ async function obtenerProductosElaborados(){
                 }
             );
 
-        if(error){
 
-            console.error(error);
+        if(resultado.error){
+
+            console.error(
+                "Error productos elaborados:",
+                resultado.error
+            );
 
             return null;
         }
 
-        return data || [];
+
+        return resultado.data || [];
+
 
     }catch(error){
 
-        console.error(error);
+        console.error(
+            "Error productos elaborados:",
+            error
+        );
 
         return null;
     }
@@ -1389,29 +1668,54 @@ async function obtenerRecetas(){
 
     try{
 
-        const {data,error} =
+        const resultado =
             await clienteSupabase
             .from("recetas")
             .select("*")
             .order(
-                "Nombre",
+                "nombre",
                 {
                     ascending:true
                 }
             );
 
-        if(error){
 
-            console.error(error);
+        if(resultado.error){
 
-            return null;
+            /*
+               Algunas instalaciones pueden tener
+               "Nombre" en lugar de "nombre".
+            */
+
+            const segundo =
+                await clienteSupabase
+                .from("recetas")
+                .select("*");
+
+            if(segundo.error){
+
+                console.error(
+                    "Error recetas:",
+                    segundo.error
+                );
+
+                return null;
+            }
+
+
+            return segundo.data || [];
         }
 
-        return data || [];
+
+        return resultado.data || [];
+
 
     }catch(error){
 
-        console.error(error);
+        console.error(
+            "Error recetas:",
+            error
+        );
 
         return null;
     }
@@ -1426,7 +1730,7 @@ async function obtenerMovimientos(){
 
     try{
 
-        const {data,error} =
+        const resultado =
             await clienteSupabase
             .from("movimientos")
             .select("*")
@@ -1438,18 +1742,27 @@ async function obtenerMovimientos(){
             )
             .limit(10);
 
-        if(error){
 
-            console.error(error);
+        if(resultado.error){
+
+            console.error(
+                "Error movimientos:",
+                resultado.error
+            );
 
             return null;
         }
 
-        return data || [];
+
+        return resultado.data || [];
+
 
     }catch(error){
 
-        console.error(error);
+        console.error(
+            "Error movimientos:",
+            error
+        );
 
         return null;
     }
@@ -1462,35 +1775,44 @@ async function obtenerMovimientos(){
 
 function extraerCantidad(texto){
 
-    const limpio =
-        normalizar(texto)
+    const t =
+        normalizar(
+            texto
+        )
         .replace(
             /,/g,
             "."
         );
 
-    const coincidencias =
-        limpio.match(
+
+    const encontrado =
+        t.match(
             /(\d+(?:\.\d+)?)/
         );
 
-    if(!coincidencias){
+
+    if(!encontrado){
+
         return null;
     }
 
+
     const cantidad =
         Number(
-            coincidencias[1]
+            encontrado[1]
         );
 
-    return isNaN(cantidad)
-        ? null
-        : cantidad;
+
+    return Number.isFinite(
+        cantidad
+    )
+        ? cantidad
+        : null;
 }
 
 
 /* =========================================================
-   DETECTAR PRODUCTO DE UNA ACCIÓN
+   DETECTAR PRODUCTO
 ========================================================= */
 
 async function detectarProductoAccion(
@@ -1500,39 +1822,57 @@ async function detectarProductoAccion(
     const inventario =
         await obtenerInventario();
 
+
     if(!inventario){
+
         return null;
     }
 
-    const normalizado =
-        normalizar(texto);
+
+    const t =
+        normalizar(
+            texto
+        );
+
 
     /*
-       Primero intentamos encontrar
-       el nombre completo del producto.
+       Primero buscamos el nombre real
+       del producto.
     */
 
     const encontrados =
         inventario
-        .filter(p => {
+        .filter(
+            function(producto){
 
-            const nombre =
-                normalizar(
-                    p.Nombre
+                const nombre =
+                    normalizar(
+                        producto.Nombre
+                    );
+
+
+                return (
+                    nombre &&
+                    t.includes(
+                        nombre
+                    )
                 );
-
-            return (
-                nombre &&
-                normalizado.includes(
-                    nombre
-                )
-            );
-        })
+            }
+        )
         .sort(
-            (a,b) =>
-                normalizar(b.Nombre).length -
-                normalizar(a.Nombre).length
+            function(a,b){
+
+                return (
+                    normalizar(
+                        b.Nombre
+                    ).length -
+                    normalizar(
+                        a.Nombre
+                    ).length
+                );
+            }
         );
+
 
     if(encontrados.length){
 
@@ -1541,132 +1881,98 @@ async function detectarProductoAccion(
 
 
     /*
-       Alias habituales
+       Alias.
     */
 
     const alias = [
 
-        {
-            buscar:"soya",
-            nombre:"soya"
-        },
-
-        {
-            buscar:"soja",
-            nombre:"soya"
-        },
-
-        {
-            buscar:"maiz",
-            nombre:"maiz"
-        },
-
-        {
-            buscar:"cebada",
-            nombre:"cebada"
-        },
-
-        {
-            buscar:"salvado",
-            nombre:"salvado"
-        },
-
-        {
-            buscar:"pienso",
-            nombre:"pienso"
-        }
+        ["soja","soya"],
+        ["soya","soya"],
+        ["maiz","maiz"],
+        ["cebada","cebada"],
+        ["salvado","salvado"],
+        ["pienso","pienso"]
     ];
 
 
     for(
-        const item of alias
+        const par of alias
     ){
 
         if(
-            normalizado.includes(
-                item.buscar
+            t.includes(
+                par[0]
             )
         ){
 
-            const encontradosAlias =
-                inventario.filter(
-                    p =>
-                        normalizar(
+            const encontrado =
+                inventario.find(
+                    function(p){
+
+                        return normalizar(
                             p.Nombre
                         ).includes(
-                            item.nombre
-                        )
+                            par[1]
+                        );
+                    }
                 );
 
-            if(
-                encontradosAlias.length
-            ){
 
-                return encontradosAlias[0];
+            if(encontrado){
+
+                return encontrado;
             }
         }
     }
+
 
     return null;
 }
 
 
 /* =========================================================
-   DETECTAR TIPO DE ACCIÓN
+   TIPO DE ACCIÓN
 ========================================================= */
 
-function detectarTipoAccion(texto){
+function detectarTipoAccion(
+    texto
+){
 
     const t =
-        normalizar(texto);
+        normalizar(
+            texto
+        );
 
-    const palabrasEntrada = [
 
-        "registra una entrada",
-        "registrar una entrada",
-        "haz una entrada",
-        "hacer una entrada",
-        "entra",
-        "entraron",
-        "entrada",
-        "agrega",
-        "agregar",
-        "anade",
-        "añade",
-        "suma",
-        "sumale",
-        "sumar",
-        "recibe",
-        "recibimos"
-    ];
-
-    const palabrasSalida = [
-
-        "registra una salida",
-        "registrar una salida",
-        "haz una salida",
-        "hacer una salida",
-        "saca",
-        "sacar",
-        "salida",
-        "retira",
-        "retirar",
-        "quita",
-        "quitar",
-        "resta",
-        "restarle",
-        "descuenta",
-        "descontar",
-        "utiliza",
-        "usamos",
-        "consumimos"
-    ];
+    const salida =
+        [
+            "saca ",
+            "sacar ",
+            "sacar",
+            "retira ",
+            "retirar ",
+            "quita ",
+            "quitar ",
+            "resta ",
+            "descuenta ",
+            "descontar ",
+            "consumir ",
+            "consume ",
+            "utiliza ",
+            "usar ",
+            "usa ",
+            "salida de",
+            "registrar una salida",
+            "registra una salida"
+        ];
 
 
     if(
-        palabrasSalida.some(
+        salida.some(
             palabra =>
-                t.includes(palabra)
+                t.includes(
+                    palabra
+                )
         )
     ){
 
@@ -1674,10 +1980,32 @@ function detectarTipoAccion(texto){
     }
 
 
+    const entrada =
+        [
+            "registra ",
+            "registrar ",
+            "agrega ",
+            "agregar ",
+            "añade ",
+            "anade ",
+            "suma ",
+            "sumar ",
+            "recibe ",
+            "recibimos ",
+            "entra ",
+            "entraron ",
+            "entrada de",
+            "registrar una entrada",
+            "registra una entrada"
+        ];
+
+
     if(
-        palabrasEntrada.some(
+        entrada.some(
             palabra =>
-                t.includes(palabra)
+                t.includes(
+                    palabra
+                )
         )
     ){
 
@@ -1690,7 +2018,7 @@ function detectarTipoAccion(texto){
 
 
 /* =========================================================
-   CREAR ACCIÓN PENDIENTE
+   PREPARAR ACCIÓN
 ========================================================= */
 
 async function prepararAccionInventario(
@@ -1702,7 +2030,9 @@ async function prepararAccionInventario(
             texto
         );
 
+
     if(!tipo){
+
         return null;
     }
 
@@ -1712,6 +2042,7 @@ async function prepararAccionInventario(
             texto
         );
 
+
     if(
         cantidad === null ||
         cantidad <= 0
@@ -1719,7 +2050,7 @@ async function prepararAccionInventario(
 
         return {
             error:
-                "Dime también la cantidad que quieres registrar."
+                "Dime la cantidad que quieres registrar."
         };
     }
 
@@ -1734,31 +2065,55 @@ async function prepararAccionInventario(
 
         return {
             error:
-                "No pude identificar el producto. Dime, por ejemplo: registra 500 kg de maíz."
+                "No pude identificar el producto. Por ejemplo, puedes decir: registra 500 kg de maíz."
         };
     }
 
 
+    const id =
+        producto.Identificación ??
+        producto.identificacion ??
+        producto.id;
+
+
+    if(
+        id === null ||
+        id === undefined
+    ){
+
+        return {
+            error:
+                "Encontré el producto, pero no pude identificar su registro."
+        };
+    }
+
+
+    const cantidadActual =
+        Number(
+            producto.Cantidad
+        ) || 0;
+
+
     accionPendiente = {
 
-        tipo:tipo,
+        tipo:
+            tipo,
 
         productoId:
-            producto.Identificación ??
-            producto.id,
+            id,
 
         productoNombre:
             producto.Nombre,
 
         unidad:
-            producto.Unidad || "unidad",
+            producto.Unidad ||
+            "unidad",
 
-        cantidad:cantidad,
+        cantidad:
+            cantidad,
 
         cantidadActual:
-            Number(
-                producto.Cantidad
-            ) || 0
+            cantidadActual
     };
 
 
@@ -1771,16 +2126,20 @@ async function prepararAccionInventario(
 
 
 /* =========================================================
-   CONFIRMAR ACCIÓN
+   CONFIRMACIÓN
 ========================================================= */
 
-function esConfirmacion(texto){
+function esConfirmacion(
+    texto
+){
 
     const t =
-        normalizar(texto);
+        normalizar(
+            texto
+        );
+
 
     return [
-
         "si",
         "sí",
         "confirmo",
@@ -1793,7 +2152,6 @@ function esConfirmacion(texto){
         "ok",
         "okay",
         "acepto"
-
     ].some(
         palabra =>
             t === palabra ||
@@ -1805,16 +2163,20 @@ function esConfirmacion(texto){
 
 
 /* =========================================================
-   CANCELAR ACCIÓN
+   CANCELACIÓN
 ========================================================= */
 
-function esCancelacion(texto){
+function esCancelacion(
+    texto
+){
 
     const t =
-        normalizar(texto);
+        normalizar(
+            texto
+        );
+
 
     return [
-
         "no",
         "cancelar",
         "cancela",
@@ -1824,25 +2186,25 @@ function esCancelacion(texto){
         "detener",
         "olvidalo",
         "olvidalo"
-
     ].some(
         palabra =>
             t === palabra ||
-            t.includes(palabra)
+            t.includes(
+                palabra
+            )
     );
 }
 
 
 /* =========================================================
-   EJECUTAR ACCIÓN DE INVENTARIO
+   EJECUTAR ACCIÓN
 ========================================================= */
 
 async function ejecutarAccionInventario(){
 
     if(!accionPendiente){
 
-        return
-            "No hay ninguna acción pendiente.";
+        return "No hay ninguna operación pendiente.";
     }
 
 
@@ -1853,12 +2215,10 @@ async function ejecutarAccionInventario(){
     try{
 
         /*
-           Volvemos a consultar el producto
-           antes de modificarlo para evitar
-           trabajar con una cantidad antigua.
+           Verificar nuevamente el producto.
         */
 
-        const {data,error} =
+        let consulta =
             await clienteSupabase
             .from("productos")
             .select("*")
@@ -1869,25 +2229,55 @@ async function ejecutarAccionInventario(){
             .maybeSingle();
 
 
-        if(error){
+        /*
+           Compatibilidad si el identificador
+           de la tabla realmente es id.
+        */
 
-            console.error(error);
+        if(
+            consulta.error
+        ){
 
-            return
-                "No pude verificar el producto antes de ejecutar la operación.";
+            consulta =
+                await clienteSupabase
+                .from("productos")
+                .select("*")
+                .eq(
+                    "id",
+                    accion.productoId
+                )
+                .maybeSingle();
         }
 
 
-        if(!data){
+        if(consulta.error){
 
-            return
-                "El producto ya no está disponible en el inventario.";
+            console.error(
+                "Error verificando producto:",
+                consulta.error
+            );
+
+            return (
+                "No pude verificar el producto antes de realizar la operación."
+            );
         }
 
 
-        const cantidadActual =
+        const producto =
+            consulta.data;
+
+
+        if(!producto){
+
+            return (
+                "No encontré el producto en el inventario."
+            );
+        }
+
+
+        const actual =
             Number(
-                data.Cantidad
+                producto.Cantidad
             ) || 0;
 
 
@@ -1900,52 +2290,54 @@ async function ejecutarAccionInventario(){
         ){
 
             nuevaCantidad =
-                cantidadActual +
+                actual +
                 accion.cantidad;
 
         }else{
 
             if(
                 accion.cantidad >
-                cantidadActual
+                actual
             ){
 
+                accionPendiente =
+                    null;
+
                 return (
-                    "No puedo ejecutar la salida. " +
-                    "Intentas retirar " +
+                    "No puedo realizar la salida. " +
+                    "Hay " +
                     formatearNumero(
-                        accion.cantidad
-                    ) +
-                    " " +
-                    accion.unidad +
-                    ", pero actualmente solo hay " +
-                    formatearNumero(
-                        cantidadActual
+                        actual
                     ) +
                     " " +
                     accion.unidad +
                     " de " +
-                    data.Nombre +
+                    producto.Nombre +
+                    " y estás intentando sacar " +
+                    formatearNumero(
+                        accion.cantidad
+                    ) +
                     "."
                 );
             }
 
 
             nuevaCantidad =
-                cantidadActual -
+                actual -
                 accion.cantidad;
         }
 
 
         /*
-           Actualizar inventario
+           Actualizar producto.
         */
 
-        const {error:errorUpdate} =
+        let actualizacion =
             await clienteSupabase
             .from("productos")
             .update({
-                Cantidad:nuevaCantidad
+                Cantidad:
+                    nuevaCantidad
             })
             .eq(
                 "Identificación",
@@ -1953,29 +2345,55 @@ async function ejecutarAccionInventario(){
             );
 
 
-        if(errorUpdate){
+        /*
+           Compatibilidad con id.
+        */
+
+        if(
+            actualizacion.error
+        ){
+
+            actualizacion =
+                await clienteSupabase
+                .from("productos")
+                .update({
+                    Cantidad:
+                        nuevaCantidad
+                })
+                .eq(
+                    "id",
+                    accion.productoId
+                );
+        }
+
+
+        if(
+            actualizacion.error
+        ){
 
             console.error(
-                "Error actualizando producto:",
-                errorUpdate
+                "Error actualizando:",
+                actualizacion.error
             );
 
-            return
-                "No pude actualizar la cantidad del producto. La operación no se completó.";
+            return (
+                "No pude actualizar el inventario. No registré la operación."
+            );
         }
 
 
         /*
-           Registrar movimiento
+           Registrar movimiento.
         */
 
         const movimiento = {
 
             Fecha:
-                new Date().toISOString(),
+                new Date()
+                .toISOString(),
 
             Producto:
-                data.Nombre,
+                producto.Nombre,
 
             Tipo:
                 accion.tipo,
@@ -1995,9 +2413,7 @@ async function ejecutarAccionInventario(){
         };
 
 
-        const {
-            error:errorMovimiento
-        } =
+        const registro =
             await clienteSupabase
             .from("movimientos")
             .insert(
@@ -2005,42 +2421,55 @@ async function ejecutarAccionInventario(){
             );
 
 
-        /*
-           Si el movimiento falla,
-           avisamos claramente.
-        */
-
-        if(errorMovimiento){
+        if(
+            registro.error
+        ){
 
             console.error(
-                "Error registrando movimiento:",
-                errorMovimiento
+                "Error movimiento:",
+                registro.error
             );
 
+
             /*
-               Intentamos dejar el inventario
-               como estaba si el registro
-               del movimiento no pudo hacerse.
+               Intentar revertir el inventario
+               para evitar una operación
+               incompleta.
             */
 
             await clienteSupabase
                 .from("productos")
                 .update({
                     Cantidad:
-                        cantidadActual
+                        actual
                 })
                 .eq(
                     "Identificación",
                     accion.productoId
                 );
 
-            return
-                "No pude registrar el movimiento, por lo que dejé el inventario sin cambios.";
+
+            await clienteSupabase
+                .from("productos")
+                .update({
+                    Cantidad:
+                        actual
+                })
+                .eq(
+                    "id",
+                    accion.productoId
+                );
+
+
+            return (
+                "No pude registrar el movimiento. Dejé el inventario como estaba."
+            );
         }
 
 
         ultimoProductoConversacion =
-            data.Nombre;
+            producto.Nombre;
+
 
         accionPendiente =
             null;
@@ -2057,9 +2486,9 @@ async function ejecutarAccionInventario(){
             " " +
             accion.unidad +
             " de " +
-            data.Nombre +
+            producto.Nombre +
             ". " +
-            "La cantidad actual es " +
+            "Ahora quedan " +
             formatearNumero(
                 nuevaCantidad
             ) +
@@ -2076,14 +2505,15 @@ async function ejecutarAccionInventario(){
             error
         );
 
-        return
-            "Ocurrió un error y no pude completar la operación.";
+        return (
+            "Ocurrió un error al ejecutar la operación. No pude completarla."
+        );
     }
 }
 
 
 /* =========================================================
-   CONSULTA DE PRODUCTO
+   CONSULTA NATURAL DE PRODUCTO
 ========================================================= */
 
 async function consultarProductoNatural(
@@ -2095,117 +2525,39 @@ async function consultarProductoNatural(
             nombre
         );
 
+
     if(
         !productos ||
         !productos.length
     ){
 
-        return
-            "No encontré ese producto en el inventario.";
+        return (
+            "No encontré " +
+            nombre +
+            " en el inventario."
+        );
     }
 
 
-    const p =
+    const producto =
         productos[0];
 
+
     ultimoProductoConversacion =
-        p.Nombre;
+        producto.Nombre;
 
 
     return (
-        "Sí. Actualmente tenemos " +
+        "Actualmente tenemos " +
         formatearNumero(
-            p.Cantidad
+            producto.Cantidad
         ) +
         " " +
-        (p.Unidad || "") +
+        (producto.Unidad || "") +
         " de " +
-        (p.Nombre || nombre) +
+        producto.Nombre +
         "."
     );
-}
-
-
-/* =========================================================
-   CONSULTAR TODA LA INFORMACIÓN
-========================================================= */
-
-async function consultarTodaInformacion(){
-
-    const inventario =
-        await obtenerInventario();
-
-    const materiales =
-        await obtenerMateriales();
-
-    const elaborados =
-        await obtenerProductosElaborados();
-
-    const recetas =
-        await obtenerRecetas();
-
-    const movimientos =
-        await obtenerMovimientos();
-
-
-    let respuesta = "";
-
-
-    respuesta +=
-        "En el inventario hay " +
-        formatearNumero(
-            inventario
-                ? inventario.length
-                : 0
-        ) +
-        " productos registrados.";
-
-
-    if(materiales){
-
-        respuesta +=
-            " Hay " +
-            formatearNumero(
-                materiales.length
-            ) +
-            " materiales de construcción.";
-    }
-
-
-    if(elaborados){
-
-        respuesta +=
-            " También hay " +
-            formatearNumero(
-                elaborados.length
-            ) +
-            " productos elaborados.";
-    }
-
-
-    if(recetas){
-
-        respuesta +=
-            " Tengo " +
-            formatearNumero(
-                recetas.length
-            ) +
-            " recetas registradas.";
-    }
-
-
-    if(movimientos){
-
-        respuesta +=
-            " Hay " +
-            formatearNumero(
-                movimientos.length
-            ) +
-            " movimientos recientes disponibles.";
-    }
-
-
-    return respuesta;
 }
 
 
@@ -2223,9 +2575,13 @@ async function procesarPregunta(
         );
 
 
-    /* -----------------------------------------------------
-       CONFIRMACIÓN DE ACCIÓN
-    ----------------------------------------------------- */
+    if(!texto){
+
+        return "Dime algo y te responderé.";
+    }
+
+
+    /* ACCIÓN PENDIENTE */
 
     if(
         accionPendiente &&
@@ -2234,16 +2590,9 @@ async function procesarPregunta(
         )
     ){
 
-        const respuesta =
-            await ejecutarAccionInventario();
-
-        return respuesta;
+        return ejecutarAccionInventario();
     }
 
-
-    /* -----------------------------------------------------
-       CANCELACIÓN
-    ----------------------------------------------------- */
 
     if(
         accionPendiente &&
@@ -2253,31 +2602,28 @@ async function procesarPregunta(
     ){
 
         const producto =
-            accionPendiente
-                .productoNombre;
+            accionPendiente.productoNombre;
 
         accionPendiente =
             null;
 
         return (
-            "Está bien. Cancelé la operación sobre " +
+            "De acuerdo. Cancelé la operación sobre " +
             producto +
             ". No hice ningún cambio."
         );
     }
 
 
-    /* -----------------------------------------------------
-       NUEVA ACCIÓN
-    ----------------------------------------------------- */
+    /* NUEVA ACCIÓN */
 
-    const posibleAccion =
+    const tipo =
         detectarTipoAccion(
             texto
         );
 
 
-    if(posibleAccion){
+    if(tipo){
 
         const accion =
             await prepararAccionInventario(
@@ -2314,16 +2660,13 @@ async function procesarPregunta(
                 ) +
                 " " +
                 accion.unidad +
-                ". " +
-                "¿Confirmas la operación?"
+                ". ¿Confirmas la operación?"
             );
         }
     }
 
 
-    /* -----------------------------------------------------
-       SALUDOS
-    ----------------------------------------------------- */
+    /* SALUDOS */
 
     if(
         texto === "hola" ||
@@ -2334,8 +2677,7 @@ async function procesarPregunta(
     ){
 
         return (
-            "Hola. Me alegra hablar contigo. " +
-            "¿Qué necesitas hacer en ElDesierto?"
+            "Hola. Me alegra hablar contigo. ¿Qué necesitas hacer en ElDesierto?"
         );
     }
 
@@ -2357,15 +2699,12 @@ async function procesarPregunta(
     ){
 
         return (
-            "Soy Desierto, el asistente de ElDesierto. " +
-            "Puedo consultar información y ejecutar operaciones dentro del sistema cuando me las confirmes."
+            "Soy Desierto, el asistente de ElDesierto. Puedo consultar información y ejecutar operaciones cuando me las confirmes."
         );
     }
 
 
-    /* -----------------------------------------------------
-       DESPEDIDA
-    ----------------------------------------------------- */
+    /* DESPEDIDA */
 
     if(
         texto.includes("adios") ||
@@ -2379,16 +2718,12 @@ async function procesarPregunta(
     }
 
 
-    /* -----------------------------------------------------
-       ¿CUÁNTO QUEDA?
-       Usa el último producto de la conversación
-    ----------------------------------------------------- */
+    /* CUÁNTO QUEDA */
 
     if(
         texto.includes("cuanto queda") ||
         texto.includes("cuanto hay ahora") ||
-        texto.includes("cuanto tenemos ahora") ||
-        texto.includes("cuanto queda ahora")
+        texto.includes("cuanto tenemos ahora")
     ){
 
         if(
@@ -2400,15 +2735,14 @@ async function procesarPregunta(
             );
         }
 
+
         return (
             "Dime de qué producto quieres saber la cantidad."
         );
     }
 
 
-    /* -----------------------------------------------------
-       INVENTARIO GENERAL
-    ----------------------------------------------------- */
+    /* INVENTARIO */
 
     if(
         texto.includes("inventario") ||
@@ -2418,6 +2752,7 @@ async function procesarPregunta(
 
         const inventario =
             await obtenerInventario();
+
 
         if(!inventario){
 
@@ -2435,10 +2770,6 @@ async function procesarPregunta(
         }
 
 
-        let respuesta =
-            "Claro. Esto es lo que aparece actualmente en el inventario: ";
-
-
         const lista =
             inventario
             .slice(0,12)
@@ -2454,27 +2785,15 @@ async function procesarPregunta(
             );
 
 
-        respuesta +=
+        return (
+            "Actualmente tengo: " +
             lista.join(", ") +
-            ".";
-
-
-        if(
-            inventario.length > 12
-        ){
-
-            respuesta +=
-                " Hay más productos registrados que puedo consultar individualmente.";
-        }
-
-
-        return respuesta;
+            "."
+        );
     }
 
 
-    /* -----------------------------------------------------
-       PRODUCTOS ESPECÍFICOS
-    ----------------------------------------------------- */
+    /* PRODUCTOS */
 
     if(
         texto.includes("maiz")
@@ -2538,9 +2857,7 @@ async function procesarPregunta(
     }
 
 
-    /* -----------------------------------------------------
-       MATERIALES
-    ----------------------------------------------------- */
+    /* MATERIALES */
 
     if(
         texto.includes(
@@ -2560,6 +2877,7 @@ async function procesarPregunta(
         const materiales =
             await obtenerMateriales();
 
+
         if(!materiales){
 
             return (
@@ -2577,7 +2895,7 @@ async function procesarPregunta(
 
 
         return (
-            "Estos son los materiales de construcción registrados: " +
+            "Los materiales registrados son: " +
             materiales
             .map(
                 m =>
@@ -2595,17 +2913,15 @@ async function procesarPregunta(
     }
 
 
-    /* -----------------------------------------------------
-       RECETAS
-    ----------------------------------------------------- */
+    /* RECETAS */
 
     if(
-        texto.includes("recetas") ||
         texto.includes("receta")
     ){
 
         const recetas =
             await obtenerRecetas();
+
 
         if(!recetas){
 
@@ -2638,9 +2954,7 @@ async function procesarPregunta(
     }
 
 
-    /* -----------------------------------------------------
-       PRODUCTOS ELABORADOS
-    ----------------------------------------------------- */
+    /* PRODUCTOS ELABORADOS */
 
     if(
         texto.includes(
@@ -2653,6 +2967,7 @@ async function procesarPregunta(
 
         const productos =
             await obtenerProductosElaborados();
+
 
         if(!productos){
 
@@ -2671,10 +2986,11 @@ async function procesarPregunta(
 
 
         return (
-            "Actualmente tengo registrados: " +
+            "Tengo registrados: " +
             productos
             .map(
-                p => p.Nombre
+                p =>
+                    p.Nombre
             )
             .join(", ") +
             "."
@@ -2682,9 +2998,7 @@ async function procesarPregunta(
     }
 
 
-    /* -----------------------------------------------------
-       MOVIMIENTOS
-    ----------------------------------------------------- */
+    /* MOVIMIENTOS */
 
     if(
         texto.includes(
@@ -2704,6 +3018,7 @@ async function procesarPregunta(
         const movimientos =
             await obtenerMovimientos();
 
+
         if(!movimientos){
 
             return (
@@ -2721,34 +3036,25 @@ async function procesarPregunta(
 
 
         return (
-            "Los movimientos más recientes son: " +
+            "Los movimientos recientes son: " +
             movimientos
             .slice(0,5)
             .map(
-                m => {
-
-                    const producto =
-                        m.Producto ||
-                        m.producto ||
-                        "producto";
-
-                    const tipo =
-                        m.Tipo ||
-                        m.tipo ||
-                        "movimiento";
-
-                    const cantidad =
-                        m.Cantidad ||
-                        m.cantidad ||
-                        0;
+                function(m){
 
                     return (
-                        tipo +
+                        (m.Tipo ||
+                         m.tipo ||
+                         "movimiento") +
                         " de " +
-                        producto +
+                        (m.Producto ||
+                         m.producto ||
+                         "producto") +
                         " por " +
                         formatearNumero(
-                            cantidad
+                            m.Cantidad ||
+                            m.cantidad ||
+                            0
                         )
                     );
                 }
@@ -2759,68 +3065,45 @@ async function procesarPregunta(
     }
 
 
-    /* -----------------------------------------------------
-       INFORMACIÓN GENERAL
-    ----------------------------------------------------- */
-
-    if(
-        texto.includes("informacion") ||
-        texto.includes("resumen")
-    ){
-
-        return consultarTodaInformacion();
-    }
-
-
-    /* -----------------------------------------------------
-       MEMORIA
-    ----------------------------------------------------- */
+    /* MEMORIA */
 
     if(
         texto.includes("que te dije") ||
-        texto.includes("que te habia dicho") ||
         texto.includes("de que hablamos")
     ){
 
         if(!conversacion.length){
 
             return (
-                "Todavía no tenemos suficiente conversación guardada en esta sesión."
+                "Todavía no tenemos conversación suficiente en esta sesión."
             );
         }
 
 
-        const ultimas =
+        return (
+            "Recuerdo que me dijiste: " +
             conversacion
             .slice(-3)
             .map(
                 c =>
                     c.usuario
             )
-            .join("; ");
-
-
-        return (
-            "En los últimos mensajes me preguntaste: " +
-            ultimas +
+            .join("; ") +
             "."
         );
     }
 
 
-    /* -----------------------------------------------------
-       RESPUESTA GENERAL
-    ----------------------------------------------------- */
+    /* RESPUESTA FINAL */
 
     return (
-        "Entiendo lo que me dices. Puedo consultar y ejecutar acciones en ElDesierto. " +
-        "Por ejemplo, puedes decirme: registra 500 kg de maíz, saca 100 kg de soya, cuánto maíz tenemos o qué recetas tenemos."
+        "Entiendo. Puedo conversar contigo y trabajar con la información de ElDesierto. También puedo ejecutar entradas y salidas de inventario cuando me indiques la cantidad y el producto."
     );
 }
 
 
 /* =========================================================
-   LIMPIAR CONVERSACIÓN
+   LIMPIAR
 ========================================================= */
 
 function limpiarConversacion(){
@@ -2833,29 +3116,12 @@ function limpiarConversacion(){
 
     detenerAudio();
 
+
     mostrarRespuesta(
         "Conversación limpiada. Empezamos de nuevo cuando quieras.",
         false
     );
 }
-
-
-/* =========================================================
-   INICIO
-========================================================= */
-
-window.addEventListener(
-    "load",
-    function(){
-
-        cargarVoces();
-
-        console.log(
-            "Desierto iniciado correctamente."
-        );
-
-    }
-);
 
 </script>
 
