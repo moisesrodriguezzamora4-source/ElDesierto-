@@ -438,13 +438,11 @@ Asistente inteligente de ElDesierto
 
 </div>
 
-
 <div id="estado" class="estado">
 
 Listo para conversar contigo
 
 </div>
-
 
 <button
     id="microfono"
@@ -455,7 +453,6 @@ Listo para conversar contigo
 🎙️
 
 </button>
-
 
 <div id="chat" class="chat">
 
@@ -474,12 +471,10 @@ Puedes escribirme o hablar conmigo.
 
 </div>
 
-
 <div
     id="respuesta"
     style="display:none">
 </div>
-
 
 <div class="cajaEntrada">
 
@@ -500,7 +495,6 @@ Enviar
 </button>
 
 </div>
-
 
 <div class="controles">
 
@@ -530,73 +524,68 @@ Enviar
 
 </div>
 
-
 <div class="ejemplos">
 
 <h3>Prueba conmigo</h3>
 
-<div
-    class="ejemplo"
-    onclick="usarEjemplo('¿Cuánto maíz tenemos?')">
+<div class="ejemplo"
+onclick="usarEjemplo('Buenos días Desierto')">
+👋 Buenos días Desierto
+</div>
 
+<div class="ejemplo"
+onclick="usarEjemplo('¿En qué puedes ayudarme?')">
+🤖 ¿En qué puedes ayudarme?
+</div>
+
+<div class="ejemplo"
+onclick="usarEjemplo('¿Cuánto maíz tenemos?')">
 📦 ¿Cuánto maíz tenemos?
-
 </div>
 
-<div
-    class="ejemplo"
-    onclick="usarEjemplo('¿Cuánto pienso tenemos?')">
-
-🌽 ¿Cuánto pienso tenemos?
-
+<div class="ejemplo"
+onclick="usarEjemplo('Dime todo el inventario')">
+📋 Dime todo el inventario
 </div>
 
-<div
-    class="ejemplo"
-    onclick="usarEjemplo('¿Cuántos cerdos tenemos?')">
-
-🐷 ¿Cuántos cerdos tenemos?
-
+<div class="ejemplo"
+onclick="usarEjemplo('¿Qué productos elaborados tenemos?')">
+🏭 ¿Qué productos elaborados tenemos?
 </div>
 
-<div
-    class="ejemplo"
-    onclick="usarEjemplo('¿Qué materiales de construcción tenemos?')">
-
-🏗️ ¿Qué materiales de construcción tenemos?
-
-</div>
-
-<div
-    class="ejemplo"
-    onclick="usarEjemplo('¿Qué productos elaborados tenemos?')">
-
-📦 ¿Qué productos elaborados tenemos?
-
-</div>
-
-<div
-    class="ejemplo"
-    onclick="usarEjemplo('¿Qué recetas tenemos?')">
-
+<div class="ejemplo"
+onclick="usarEjemplo('¿Qué recetas tenemos?')">
 📖 ¿Qué recetas tenemos?
-
 </div>
 
-<div
-    class="ejemplo"
-    onclick="usarEjemplo('¿Cuáles fueron las últimas salidas?')">
-
-📊 ¿Cuáles fueron las últimas salidas?
-
+<div class="ejemplo"
+onclick="usarEjemplo('¿Cuántos cerdos tenemos?')">
+🐷 ¿Cuántos cerdos tenemos?
 </div>
 
-<div
-    class="ejemplo"
-    onclick="usarEjemplo('Hola Desierto')">
+<div class="ejemplo"
+onclick="usarEjemplo('¿Cuántos cerdos hay en cada nave?')">
+🐷 Cerdos por nave
+</div>
 
-👋 Hola Desierto
+<div class="ejemplo"
+onclick="usarEjemplo('¿Qué pasó hoy?')">
+📊 ¿Qué pasó hoy?
+</div>
 
+<div class="ejemplo"
+onclick="usarEjemplo('¿Qué fabricamos ayer?')">
+🏭 ¿Qué fabricamos ayer?
+</div>
+
+<div class="ejemplo"
+onclick="usarEjemplo('¿Qué entradas tuvimos esta semana?')">
+📥 Entradas de esta semana
+</div>
+
+<div class="ejemplo"
+onclick="usarEjemplo('¿Qué salidas tuvimos la semana pasada?')">
+📤 Salidas de la semana pasada
 </div>
 
 </div>
@@ -609,28 +598,8 @@ Enviar
 <script>
 
 /* ============================================================
-   DESIERTO — SUPER ASISTENTE
-   ============================================================
-
-   FUNCIONES:
-
-   ✓ Conversación natural
-   ✓ Memoria de conversación
-   ✓ Inventario
-   ✓ Productos
-   ✓ Materiales de construcción
-   ✓ Productos elaborados
-   ✓ Recetas
-   ✓ Movimientos
-   ✓ Voz
-   ✓ Reconocimiento por micrófono
-   ✓ Entrada de inventario
-   ✓ Salida de inventario
-   ✓ Confirmación antes de modificar
-   ✓ Protección contra errores de Supabase
-   ✓ Emojis NO se pronuncian
-   ✓ La interfaz continúa funcionando si la voz falla
-
+   DESIERTO
+   ASISTENTE INTEGRAL DE ELDESIERTO
 ============================================================ */
 
 
@@ -654,6 +623,10 @@ let ultimaEntidad = null;
 
 let procesando = false;
 
+let nombreUsuario = "";
+
+let esperandoNombre = false;
+
 
 /* ============================================================
    SUPABASE
@@ -676,12 +649,10 @@ function obtenerClienteSupabase(){
         console.warn(error);
     }
 
-
     if(window.clienteSupabase){
 
         return window.clienteSupabase;
     }
-
 
     return null;
 }
@@ -786,6 +757,72 @@ function obtenerIdProducto(producto){
 }
 
 
+function primerValor(obj,campos,defecto=""){
+
+    if(!obj) return defecto;
+
+    for(const campo of campos){
+
+        if(
+            obj[campo] !== undefined &&
+            obj[campo] !== null &&
+            obj[campo] !== ""
+        ){
+
+            return obj[campo];
+        }
+    }
+
+    return defecto;
+}
+
+
+function numeroDe(obj,campos){
+
+    const valor =
+        primerValor(
+            obj,
+            campos,
+            0
+        );
+
+    const n = Number(valor);
+
+    return Number.isFinite(n)
+        ? n
+        : 0;
+}
+
+
+function formatearFecha(fecha){
+
+    if(!fecha){
+
+        return "";
+    }
+
+    const d =
+        new Date(fecha);
+
+    if(
+        Number.isNaN(
+            d.getTime()
+        )
+    ){
+
+        return String(fecha);
+    }
+
+    return d.toLocaleString(
+        "es-ES",
+        {
+            dateStyle:"short",
+            timeStyle:"short"
+        }
+    );
+}
+
+
 /* ============================================================
    ESTADO
 ============================================================ */
@@ -796,7 +833,9 @@ function cambiarEstado(texto){
         document.getElementById("estado");
 
     if(estado){
-        estado.textContent = texto;
+
+        estado.textContent =
+            texto;
     }
 }
 
@@ -826,7 +865,8 @@ function agregarMensaje(tipo,texto){
     const nombre =
         document.createElement("div");
 
-    nombre.className = "nombre";
+    nombre.className =
+        "nombre";
 
     nombre.textContent =
         tipo === "usuario"
@@ -853,9 +893,12 @@ function agregarMensaje(tipo,texto){
 
 function mostrarRespuesta(texto,hablar=true){
 
+    const respuesta =
+        String(texto || "");
+
     agregarMensaje(
         "asistente",
-        texto
+        respuesta
     );
 
     if(hablar){
@@ -863,7 +906,9 @@ function mostrarRespuesta(texto,hablar=true){
         setTimeout(
             function(){
 
-                escucharRespuesta(texto);
+                escucharRespuesta(
+                    respuesta
+                );
 
             },
             80
@@ -888,12 +933,14 @@ function cargarConversacion(){
         if(guardada){
 
             const datos =
-                JSON.parse(guardada);
+                JSON.parse(
+                    guardada
+                );
 
             if(Array.isArray(datos)){
 
                 conversacion =
-                    datos.slice(-20);
+                    datos.slice(-30);
             }
         }
 
@@ -901,10 +948,26 @@ function cargarConversacion(){
 
         conversacion = [];
     }
+
+
+    try{
+
+        nombreUsuario =
+            localStorage.getItem(
+                "desierto_nombre_usuario"
+            ) || "";
+
+    }catch(error){
+
+        nombreUsuario = "";
+    }
 }
 
 
-function guardarConversacion(usuario,asistente){
+function guardarConversacion(
+    usuario,
+    asistente
+){
 
     conversacion.push({
 
@@ -912,26 +975,26 @@ function guardarConversacion(usuario,asistente){
 
         asistente:asistente,
 
-        fecha:new Date().toISOString()
+        fecha:
+            new Date().toISOString()
 
     });
 
     conversacion =
-        conversacion.slice(-20);
+        conversacion.slice(-30);
 
     try{
 
         localStorage.setItem(
             "desierto_conversacion",
-            JSON.stringify(conversacion)
+            JSON.stringify(
+                conversacion
+            )
         );
 
     }catch(error){
 
-        console.warn(
-            "No se pudo guardar conversación",
-            error
-        );
+        console.warn(error);
     }
 }
 
@@ -953,7 +1016,9 @@ function limpiarConversacion(){
     }catch(error){}
 
     const chat =
-        document.getElementById("chat");
+        document.getElementById(
+            "chat"
+        );
 
     if(chat){
 
@@ -974,7 +1039,7 @@ function limpiarConversacion(){
 
 
 /* ============================================================
-   VOZ — CARGA DE VOCES
+   VOZ
 ============================================================ */
 
 function cargarVoces(){
@@ -982,6 +1047,7 @@ function cargarVoces(){
     if(
         !("speechSynthesis" in window)
     ){
+
         return;
     }
 
@@ -991,24 +1057,19 @@ function cargarVoces(){
             window.speechSynthesis
             .getVoices() || [];
 
-        console.log(
-            "Voces:",
-            vocesDisponibles
-        );
-
     }catch(error){
 
-        console.warn(
-            "Error cargando voces",
-            error
-        );
+        console.warn(error);
     }
 }
 
 
-if("speechSynthesis" in window){
+if(
+    "speechSynthesis" in window
+){
 
-    window.speechSynthesis.onvoiceschanged =
+    window.speechSynthesis
+        .onvoiceschanged =
         cargarVoces;
 
     cargarVoces();
@@ -1030,10 +1091,6 @@ if("speechSynthesis" in window){
 }
 
 
-/* ============================================================
-   BUSCAR VOZ ESPAÑOLA
-============================================================ */
-
 function obtenerVozEspanol(){
 
     cargarVoces();
@@ -1044,76 +1101,65 @@ function obtenerVozEspanol(){
     }
 
 
-    let voz =
+    const preferencias = [
+        "es-us",
+        "es-mx",
+        "es-419",
+        "es-es"
+    ];
+
+
+    for(
+        const idioma of preferencias
+    ){
+
+        const voz =
+            vocesDisponibles.find(
+                function(v){
+
+                    return (
+                        v.lang &&
+                        v.lang
+                        .toLowerCase()
+                        === idioma
+                    );
+                }
+            );
+
+        if(voz){
+
+            return voz;
+        }
+    }
+
+
+    return (
         vocesDisponibles.find(
             function(v){
 
                 return (
                     v.lang &&
-                    v.lang.toLowerCase() ===
-                    "es-us"
-                );
-            }
-        );
-
-    if(voz) return voz;
-
-
-    voz =
-        vocesDisponibles.find(
-            function(v){
-
-                return (
-                    v.lang &&
-                    v.lang.toLowerCase() ===
-                    "es-mx"
-                );
-            }
-        );
-
-    if(voz) return voz;
-
-
-    voz =
-        vocesDisponibles.find(
-            function(v){
-
-                return (
-                    v.lang &&
-                    v.lang.toLowerCase() ===
-                    "es-419"
-                );
-            }
-        );
-
-    if(voz) return voz;
-
-
-    voz =
-        vocesDisponibles.find(
-            function(v){
-
-                return (
-                    v.lang &&
-                    v.lang.toLowerCase()
+                    v.lang
+                    .toLowerCase()
                     .startsWith("es")
                 );
             }
-        );
-
-    return voz || null;
+        ) || null
+    );
 }
 
 
 /* ============================================================
-   LIMPIAR TEXTO PARA VOZ
+   ELIMINAR EMOJIS DE LA VOZ
 ============================================================ */
 
 function limpiarTextoParaVoz(texto){
 
     if(!texto){
+
         return "";
     }
+
 
     let limpio =
         String(texto);
@@ -1179,21 +1225,28 @@ function limpiarTextoParaVoz(texto){
 function dividirTextoVoz(texto){
 
     const limpio =
-        limpiarTextoParaVoz(texto);
+        limpiarTextoParaVoz(
+            texto
+        );
 
     if(!limpio){
+
         return [];
     }
 
     return limpio
-        .split(/(?<=[.!?])\s+/)
+        .split(
+            /(?<=[.!?])\s+/
+        )
         .map(
             function(x){
+
                 return x.trim();
             }
         )
         .filter(
             function(x){
+
                 return x.length > 0;
             }
         );
@@ -1201,8 +1254,13 @@ function dividirTextoVoz(texto){
 
 
 /* ============================================================
-   DETENER AUDIO
+   AUDIO
 ============================================================ */
+
+let colaVoz = [];
+
+let indiceVoz = 0;
+
 
 function detenerAudio(){
 
@@ -1219,23 +1277,15 @@ function detenerAudio(){
 
     }catch(error){
 
-        console.warn(
-            "Error deteniendo voz:",
-            error
-        );
+        console.warn(error);
     }
 
     hablando = false;
+
+    colaVoz = [];
+
+    indiceVoz = 0;
 }
-
-
-/* ============================================================
-   HABLAR RESPUESTA
-============================================================ */
-
-let colaVoz = [];
-
-let indiceVoz = 0;
 
 
 function escucharRespuesta(texto){
@@ -1244,16 +1294,14 @@ function escucharRespuesta(texto){
         !("speechSynthesis" in window)
     ){
 
-        cambiarEstado(
-            "Respuesta lista. La voz no está disponible en este navegador."
-        );
-
         return;
     }
 
 
     const frases =
-        dividirTextoVoz(texto);
+        dividirTextoVoz(
+            texto
+        );
 
 
     if(!frases.length){
@@ -1265,14 +1313,15 @@ function escucharRespuesta(texto){
     detenerAudio();
 
 
-    colaVoz = frases;
+    colaVoz =
+        frases;
 
     indiceVoz = 0;
 
 
     setTimeout(
         hablarSiguiente,
-        180
+        150
     );
 }
 
@@ -1280,14 +1329,18 @@ function escucharRespuesta(texto){
 function hablarSiguiente(){
 
     if(
-        indiceVoz >= colaVoz.length
+        indiceVoz >=
+        colaVoz.length
     ){
 
         hablando = false;
 
-        cambiarEstado(
-            "Listo para conversar contigo"
-        );
+        if(!escuchando){
+
+            cambiarEstado(
+                "Listo para conversar contigo"
+            );
+        }
 
         return;
     }
@@ -1334,11 +1387,14 @@ function hablarSiguiente(){
     }
 
 
-    mensaje.rate = 0.92;
+    mensaje.rate =
+        0.92;
 
-    mensaje.pitch = 1;
+    mensaje.pitch =
+        1;
 
-    mensaje.volume = 1;
+    mensaje.volume =
+        1;
 
 
     mensaje.onstart =
@@ -1347,7 +1403,7 @@ function hablarSiguiente(){
             hablando = true;
 
             cambiarEstado(
-                "🔊 Desierto está hablando..."
+                "Desierto está hablando..."
             );
         };
 
@@ -1357,23 +1413,23 @@ function hablarSiguiente(){
 
             setTimeout(
                 hablarSiguiente,
-                50
+                60
             );
         };
 
 
     mensaje.onerror =
-        function(evento){
+        function(error){
 
-            console.error(
-                "Error de voz:",
-                evento
+            console.warn(
+                "Error voz:",
+                error
             );
 
             hablando = false;
 
             cambiarEstado(
-                "Texto respondido. La voz del dispositivo presentó un problema."
+                "Respuesta lista"
             );
         };
 
@@ -1388,19 +1444,12 @@ function hablarSiguiente(){
 
     }catch(error){
 
-        console.error(
-            "No se pudo reproducir:",
-            error
-        );
+        console.error(error);
 
         hablando = false;
     }
 }
 
-
-/* ============================================================
-   PRUEBA DE VOZ
-============================================================ */
 
 function probarVoz(){
 
@@ -1408,8 +1457,8 @@ function probarVoz(){
         !("speechSynthesis" in window)
     ){
 
-        alert(
-            "Este navegador no tiene disponible la síntesis de voz."
+        cambiarEstado(
+            "La síntesis de voz no está disponible"
         );
 
         return;
@@ -1445,18 +1494,15 @@ function probarVoz(){
     }
 
 
-    mensaje.rate = 0.90;
-
-    mensaje.pitch = 1;
-
-    mensaje.volume = 1;
+    mensaje.rate =
+        0.9;
 
 
     mensaje.onstart =
         function(){
 
             cambiarEstado(
-                "🔊 Probando voz..."
+                "Probando voz..."
             );
         };
 
@@ -1471,19 +1517,12 @@ function probarVoz(){
 
 
     mensaje.onerror =
-        function(evento){
+        function(error){
 
-            console.error(
-                "Error en prueba de voz:",
-                evento
-            );
+            console.error(error);
 
             cambiarEstado(
-                "Android no pudo reproducir la voz"
-            );
-
-            alert(
-                "La voz del dispositivo no pudo reproducirse. Revisa el motor Texto a voz de Android."
+                "No se pudo reproducir la voz"
             );
         };
 
@@ -1501,26 +1540,104 @@ function probarVoz(){
     }catch(error){
 
         console.error(error);
-
-        alert(
-            "No se pudo iniciar la prueba de voz."
-        );
     }
 }
 
 
 /* ============================================================
-   RECONOCIMIENTO DE VOZ
+   MICRÓFONO
 ============================================================ */
+
+function obtenerSpeechRecognition(){
+
+    return (
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition ||
+        null
+    );
+}
+
+
+async function comprobarPermisoMicrofono(){
+
+    if(
+        !navigator.mediaDevices ||
+        !navigator.mediaDevices.getUserMedia
+    ){
+
+        return true;
+    }
+
+
+    try{
+
+        const stream =
+            await navigator.mediaDevices
+            .getUserMedia({
+                audio:true
+            });
+
+
+        stream
+            .getTracks()
+            .forEach(
+                function(track){
+
+                    track.stop();
+                }
+            );
+
+
+        return true;
+
+    }catch(error){
+
+        console.error(
+            "Permiso micrófono:",
+            error
+        );
+
+
+        if(
+            error.name ===
+            "NotAllowedError"
+        ){
+
+            cambiarEstado(
+                "El micrófono está bloqueado. Permite el micrófono para ElDesierto."
+            );
+
+        }else if(
+            error.name ===
+            "NotFoundError"
+        ){
+
+            cambiarEstado(
+                "No encontré un micrófono disponible."
+            );
+
+        }else{
+
+            cambiarEstado(
+                "No pude acceder al micrófono."
+            );
+        }
+
+
+        return false;
+    }
+}
+
 
 function prepararReconocimiento(){
 
     const SpeechRecognition =
-        window.SpeechRecognition ||
-        window.webkitSpeechRecognition;
+        obtenerSpeechRecognition();
 
 
     if(!SpeechRecognition){
+
+        reconocimiento = null;
 
         return false;
     }
@@ -1557,10 +1674,12 @@ function prepararReconocimiento(){
 
             escuchando = true;
 
+
             const boton =
                 document.getElementById(
                     "microfono"
                 );
+
 
             if(boton){
 
@@ -1574,7 +1693,7 @@ function prepararReconocimiento(){
 
 
             cambiarEstado(
-                "🎙️ Te estoy escuchando..."
+                "Te estoy escuchando..."
             );
         };
 
@@ -1582,14 +1701,16 @@ function prepararReconocimiento(){
     reconocimiento.onresult =
         function(evento){
 
-            let textoFinal = "";
+            let finalText = "";
 
-            let textoIntermedio = "";
+            let parcial = "";
 
 
             for(
-                let i = evento.resultIndex;
-                i < evento.results.length;
+                let i =
+                    evento.resultIndex;
+                i <
+                    evento.results.length;
                 i++
             ){
 
@@ -1598,47 +1719,48 @@ function prepararReconocimiento(){
 
 
                 const texto =
-                    resultado[0].transcript;
+                    resultado[0]
+                    .transcript;
 
 
-                if(resultado.isFinal){
+                if(
+                    resultado.isFinal
+                ){
 
-                    textoFinal +=
+                    finalText +=
                         texto;
 
                 }else{
 
-                    textoIntermedio +=
+                    parcial +=
                         texto;
                 }
             }
 
 
-            const input =
-                document.getElementById(
-                    "pregunta"
-                );
-
-
-            if(textoIntermedio){
+            if(parcial){
 
                 cambiarEstado(
-                    "🎙️ " +
-                    textoIntermedio
+                    "Escuchando: " +
+                    parcial
                 );
             }
 
 
-            if(textoFinal.trim()){
+            if(
+                finalText.trim()
+            ){
 
-                const pregunta =
-                    textoFinal.trim();
+                const input =
+                    document.getElementById(
+                        "pregunta"
+                    );
 
 
                 if(input){
 
                     input.value =
-                        pregunta;
+                        finalText.trim();
                 }
 
 
@@ -1658,34 +1780,74 @@ function prepararReconocimiento(){
         function(evento){
 
             console.error(
-                "Error reconocimiento:",
+                "Reconocimiento:",
                 evento
             );
 
 
-            if(
-                evento.error ===
-                "not-allowed"
+            switch(
+                evento.error
             ){
 
-                cambiarEstado(
-                    "Permiso de micrófono denegado"
-                );
+                case "not-allowed":
 
-            }else if(
-                evento.error ===
-                "no-speech"
-            ){
+                    cambiarEstado(
+                        "Permiso de micrófono denegado"
+                    );
 
-                cambiarEstado(
-                    "No detecté ninguna voz"
-                );
+                    break;
 
-            }else{
 
-                cambiarEstado(
-                    "No pude escuchar. Intenta nuevamente."
-                );
+                case "service-not-allowed":
+
+                    cambiarEstado(
+                        "El navegador no permite el reconocimiento de voz."
+                    );
+
+                    break;
+
+
+                case "audio-capture":
+
+                    cambiarEstado(
+                        "No pude acceder al micrófono."
+                    );
+
+                    break;
+
+
+                case "no-speech":
+
+                    cambiarEstado(
+                        "No detecté ninguna voz."
+                    );
+
+                    break;
+
+
+                case "network":
+
+                    cambiarEstado(
+                        "El reconocimiento de voz necesita conexión a Internet."
+                    );
+
+                    break;
+
+
+                case "aborted":
+
+                    cambiarEstado(
+                        "Escucha detenida."
+                    );
+
+                    break;
+
+
+                default:
+
+                    cambiarEstado(
+                        "No pude escuchar. Intenta nuevamente."
+                    );
             }
         };
 
@@ -1713,7 +1875,10 @@ function prepararReconocimiento(){
             }
 
 
-            if(!procesando){
+            if(
+                !procesando &&
+                !hablando
+            ){
 
                 cambiarEstado(
                     "Listo para conversar contigo"
@@ -1726,20 +1891,19 @@ function prepararReconocimiento(){
 }
 
 
-/* ============================================================
-   INICIAR ESCUCHA
-============================================================ */
+async function iniciarEscucha(){
 
-function iniciarEscucha(){
-
-    const disponible =
-        prepararReconocimiento();
+    detenerAudio();
 
 
-    if(!disponible){
+    const SpeechRecognition =
+        obtenerSpeechRecognition();
 
-        alert(
-            "El reconocimiento de voz no está disponible en este navegador. Puedes escribirle a Desierto normalmente."
+
+    if(!SpeechRecognition){
+
+        cambiarEstado(
+            "Este navegador no tiene reconocimiento de voz. Puedes escribirle a Desierto."
         );
 
         return;
@@ -1758,6 +1922,31 @@ function iniciarEscucha(){
     }
 
 
+    const permiso =
+        await comprobarPermisoMicrofono();
+
+
+    if(!permiso){
+
+        return;
+    }
+
+
+    reconocimiento = null;
+
+
+    if(
+        !prepararReconocimiento()
+    ){
+
+        cambiarEstado(
+            "No pude preparar el reconocimiento de voz."
+        );
+
+        return;
+    }
+
+
     try{
 
         reconocimiento.start();
@@ -1765,72 +1954,50 @@ function iniciarEscucha(){
     }catch(error){
 
         console.warn(
-            "No se pudo iniciar reconocimiento:",
+            "Inicio de voz:",
             error
         );
 
-        if(
-            error.name ===
-            "InvalidStateError"
-        ){
 
-            try{
+        try{
 
-                reconocimiento.stop();
+            reconocimiento.stop();
 
-            }catch(e){}
-
-        }else{
-
-            cambiarEstado(
-                "No pude iniciar el micrófono"
-            );
-        }
-    }
-}
+        }catch(e){}
 
 
-/* ============================================================
-   TECLADO
-============================================================ */
+        setTimeout(
+            function(){
 
-function manejarTecla(evento){
+                try{
 
-    if(
-        evento.key === "Enter"
-    ){
+                    reconocimiento.start();
 
-        evento.preventDefault();
+                }catch(e){
 
-        enviarPregunta();
-    }
-}
+                    console.error(e);
 
+                    cambiarEstado(
+                        "No pude iniciar el micrófono. Intenta nuevamente."
+                    );
+                }
 
-function usarEjemplo(texto){
-
-    const input =
-        document.getElementById(
-            "pregunta"
+            },
+            300
         );
-
-
-    if(input){
-
-        input.value = texto;
-
-        input.focus();
-
-        enviarPregunta();
     }
 }
 
 
 /* ============================================================
-   PRODUCTOS / INVENTARIO
+   SUPABASE — LECTURA SEGURA
 ============================================================ */
 
-async function obtenerInventario(){
+async function leerTabla(
+    tabla,
+    ordenCampo=null,
+    limite=null
+){
 
     const client =
         obtenerClienteSupabase();
@@ -1844,10 +2011,35 @@ async function obtenerInventario(){
     }
 
 
-    const resultado =
-        await client
-        .from("productos")
+    let consulta =
+        client
+        .from(tabla)
         .select("*");
+
+
+    if(ordenCampo){
+
+        consulta =
+            consulta.order(
+                ordenCampo,
+                {
+                    ascending:false
+                }
+            );
+    }
+
+
+    if(limite){
+
+        consulta =
+            consulta.limit(
+                limite
+            );
+    }
+
+
+    const resultado =
+        await consulta;
 
 
     if(resultado.error){
@@ -1857,6 +2049,109 @@ async function obtenerInventario(){
 
 
     return resultado.data || [];
+}
+
+
+async function existeTabla(tabla){
+
+    try{
+
+        await leerTabla(
+            tabla,
+            null,
+            1
+        );
+
+        return true;
+
+    }catch(error){
+
+        console.warn(
+            "Tabla no disponible:",
+            tabla,
+            error
+        );
+
+        return false;
+    }
+}
+
+
+/* ============================================================
+   INVENTARIO
+============================================================ */
+
+async function obtenerInventario(){
+
+    return leerTabla(
+        "productos"
+    );
+}
+
+
+async function obtenerMateriales(){
+
+    return leerTabla(
+        "materiales_construccion"
+    );
+}
+
+
+async function obtenerProductosElaborados(){
+
+    return leerTabla(
+        "productos_elaborados"
+    );
+}
+
+
+async function obtenerRecetas(){
+
+    return leerTabla(
+        "recetas"
+    );
+}
+
+
+async function mostrarInventarioCompleto(){
+
+    const inventario =
+        await obtenerInventario();
+
+
+    if(!inventario.length){
+
+        return "No hay información registrada de materias primas en el inventario.";
+    }
+
+
+    let respuesta =
+        "Inventario actual.\n\n";
+
+
+    inventario.forEach(
+        function(producto){
+
+            respuesta +=
+                obtenerNombreProducto(
+                    producto
+                ) +
+                ": " +
+                formatearNumero(
+                    obtenerCantidadProducto(
+                        producto
+                    )
+                ) +
+                " " +
+                obtenerUnidadProducto(
+                    producto
+                ) +
+                ".\n";
+        }
+    );
+
+
+    return respuesta.trim();
 }
 
 
@@ -1875,8 +2170,12 @@ async function consultarProducto(nombre){
             function(producto){
 
                 return normalizar(
-                    obtenerNombreProducto(producto)
-                ).includes(termino);
+                    obtenerNombreProducto(
+                        producto
+                    )
+                ).includes(
+                    termino
+                );
             }
         );
 
@@ -1884,32 +2183,11 @@ async function consultarProducto(nombre){
     if(!encontrados.length){
 
         return (
-            "No encontré el producto " +
+            "No hay información registrada sobre " +
             nombre +
             " en el inventario."
         );
     }
-
-
-    let respuesta =
-        "Encontré lo siguiente:\n\n";
-
-
-    encontrados.forEach(
-        function(producto){
-
-            respuesta +=
-                "📦 " +
-                obtenerNombreProducto(producto) +
-                ": " +
-                formatearNumero(
-                    obtenerCantidadProducto(producto)
-                ) +
-                " " +
-                obtenerUnidadProducto(producto) +
-                "\n";
-        }
-    );
 
 
     ultimaEntidad =
@@ -1918,340 +2196,27 @@ async function consultarProducto(nombre){
         );
 
 
-    return respuesta.trim();
-}
+    let respuesta = "";
 
 
-async function consultarProductoNatural(nombre){
-
-    return consultarProducto(nombre);
-}
-
-
-/* ============================================================
-   MATERIALES DE CONSTRUCCIÓN
-============================================================ */
-
-async function obtenerMateriales(){
-
-    const client =
-        obtenerClienteSupabase();
-
-
-    if(!client){
-
-        throw new Error(
-            "SUPABASE_NO_DISPONIBLE"
-        );
-    }
-
-
-    const resultado =
-        await client
-        .from("materiales_construccion")
-        .select("*");
-
-
-    if(resultado.error){
-
-        throw resultado.error;
-    }
-
-
-    return (resultado.data || [])
-        .sort(
-            function(a,b){
-
-                return normalizar(
-                    a.Nombre ??
-                    a.nombre ??
-                    ""
-                ).localeCompare(
-                    normalizar(
-                        b.Nombre ??
-                        b.nombre ??
-                        ""
-                    )
-                );
-            }
-        );
-}
-
-
-/* ============================================================
-   PRODUCTOS ELABORADOS
-============================================================ */
-
-async function obtenerProductosElaborados(){
-
-    const client =
-        obtenerClienteSupabase();
-
-
-    if(!client){
-
-        throw new Error(
-            "SUPABASE_NO_DISPONIBLE"
-        );
-    }
-
-
-    const resultado =
-        await client
-        .from("productos_elaborados")
-        .select("*");
-
-
-    if(resultado.error){
-
-        throw resultado.error;
-    }
-
-
-    return (resultado.data || [])
-        .sort(
-            function(a,b){
-
-                return normalizar(
-                    a.Nombre ??
-                    a.nombre ??
-                    ""
-                ).localeCompare(
-                    normalizar(
-                        b.Nombre ??
-                        b.nombre ??
-                        ""
-                    )
-                );
-            }
-        );
-}
-
-
-/* ============================================================
-   RECETAS
-============================================================ */
-
-async function obtenerRecetas(){
-
-    const client =
-        obtenerClienteSupabase();
-
-
-    if(!client){
-
-        throw new Error(
-            "SUPABASE_NO_DISPONIBLE"
-        );
-    }
-
-
-    const resultado =
-        await client
-        .from("recetas")
-        .select("*");
-
-
-    if(resultado.error){
-
-        throw resultado.error;
-    }
-
-
-    return (resultado.data || [])
-        .sort(
-            function(a,b){
-
-                const nombreA =
-                    a.nombre ??
-                    a.Nombre ??
-                    "";
-
-                const nombreB =
-                    b.nombre ??
-                    b.Nombre ??
-                    "";
-
-                return normalizar(nombreA)
-                    .localeCompare(
-                        normalizar(nombreB)
-                    );
-            }
-        );
-}
-
-
-/* ============================================================
-   MOVIMIENTOS
-============================================================ */
-
-async function obtenerMovimientos(){
-
-    const client =
-        obtenerClienteSupabase();
-
-
-    if(!client){
-
-        throw new Error(
-            "SUPABASE_NO_DISPONIBLE"
-        );
-    }
-
-
-    let resultado =
-        await client
-        .from("movimientos")
-        .select("*")
-        .order(
-            "Fecha",
-            {
-                ascending:false
-            }
-        )
-        .limit(10);
-
-
-    if(resultado.error){
-
-        resultado =
-            await client
-            .from("movimientos")
-            .select("*")
-            .limit(50);
-
-
-        if(resultado.error){
-
-            throw resultado.error;
-        }
-
-
-        resultado.data =
-            (resultado.data || [])
-            .sort(
-                function(a,b){
-
-                    return String(
-                        b.Fecha ??
-                        b.fecha ??
-                        ""
-                    ).localeCompare(
-                        String(
-                            a.Fecha ??
-                            a.fecha ??
-                            ""
-                        )
-                    );
-                }
-            )
-            .slice(0,10);
-    }
-
-
-    return resultado.data || [];
-}
-
-
-/* ============================================================
-   TODA LA INFORMACIÓN
-============================================================ */
-
-async function consultarTodaInformacion(){
-
-    const [
-        inventario,
-        materiales,
-        elaborados,
-        recetas,
-        movimientos
-    ] = await Promise.all([
-        obtenerInventario(),
-        obtenerMateriales(),
-        obtenerProductosElaborados(),
-        obtenerRecetas(),
-        obtenerMovimientos()
-    ]);
-
-
-    let html = "";
-
-    html +=
-        "📦 Productos en inventario: " +
-        formatearNumero(
-            inventario.length
-        ) +
-        "\n";
-
-
-    html +=
-        "🏗️ Materiales de construcción: " +
-        formatearNumero(
-            materiales.length
-        ) +
-        "\n";
-
-
-    html +=
-        "🏭 Productos elaborados: " +
-        formatearNumero(
-            elaborados.length
-        ) +
-        "\n";
-
-
-    html +=
-        "📖 Recetas: " +
-        formatearNumero(
-            recetas.length
-        ) +
-        "\n";
-
-
-    html +=
-        "📊 Movimientos consultados: " +
-        formatearNumero(
-            movimientos.length
-        );
-
-
-    return html;
-}
-
-
-/* ============================================================
-   MOSTRAR INVENTARIO COMPLETO
-============================================================ */
-
-async function mostrarInventarioCompleto(){
-
-    const inventario =
-        await obtenerInventario();
-
-
-    if(!inventario.length){
-
-        return "El inventario está vacío.";
-    }
-
-
-    let respuesta =
-        "📦 Inventario actual:\n\n";
-
-
-    inventario.forEach(
+    encontrados.forEach(
         function(producto){
 
             respuesta +=
-                "• " +
-                obtenerNombreProducto(producto) +
-                ": " +
+                obtenerNombreProducto(
+                    producto
+                ) +
+                " tiene " +
                 formatearNumero(
-                    obtenerCantidadProducto(producto)
+                    obtenerCantidadProducto(
+                        producto
+                    )
                 ) +
                 " " +
-                obtenerUnidadProducto(producto) +
-                "\n";
+                obtenerUnidadProducto(
+                    producto
+                ) +
+                ". ";
         }
     );
 
@@ -2259,10 +2224,6 @@ async function mostrarInventarioCompleto(){
     return respuesta.trim();
 }
 
-
-/* ============================================================
-   MATERIALES COMPLETOS
-============================================================ */
 
 async function mostrarMateriales(){
 
@@ -2272,21 +2233,18 @@ async function mostrarMateriales(){
 
     if(!materiales.length){
 
-        return (
-            "No hay materiales de construcción registrados."
-        );
+        return "No hay información registrada sobre materiales de construcción.";
     }
 
 
     let respuesta =
-        "🏗️ Materiales de construcción:\n\n";
+        "Materiales de construcción actuales.\n\n";
 
 
     materiales.forEach(
         function(material){
 
             respuesta +=
-                "• " +
                 (
                     material.Nombre ??
                     material.nombre ??
@@ -2294,9 +2252,14 @@ async function mostrarMateriales(){
                 ) +
                 ": " +
                 formatearNumero(
-                    material.Cantidad ??
-                    material.cantidad ??
-                    0
+                    primerValor(
+                        material,
+                        [
+                            "Cantidad",
+                            "cantidad"
+                        ],
+                        0
+                    )
                 ) +
                 " " +
                 (
@@ -2304,7 +2267,7 @@ async function mostrarMateriales(){
                     material.unidad ??
                     ""
                 ) +
-                "\n";
+                ".\n";
         }
     );
 
@@ -2312,10 +2275,6 @@ async function mostrarMateriales(){
     return respuesta.trim();
 }
 
-
-/* ============================================================
-   PRODUCTOS ELABORADOS
-============================================================ */
 
 async function mostrarProductosElaborados(){
 
@@ -2325,21 +2284,18 @@ async function mostrarProductosElaborados(){
 
     if(!productos.length){
 
-        return (
-            "No hay productos elaborados registrados."
-        );
+        return "No hay información registrada sobre productos elaborados.";
     }
 
 
     let respuesta =
-        "🏭 Productos elaborados:\n\n";
+        "Productos elaborados disponibles.\n\n";
 
 
     productos.forEach(
         function(producto){
 
             respuesta +=
-                "• " +
                 (
                     producto.Nombre ??
                     producto.nombre ??
@@ -2347,9 +2303,14 @@ async function mostrarProductosElaborados(){
                 ) +
                 ": " +
                 formatearNumero(
-                    producto.Cantidad ??
-                    producto.cantidad ??
-                    0
+                    primerValor(
+                        producto,
+                        [
+                            "Cantidad",
+                            "cantidad"
+                        ],
+                        0
+                    )
                 ) +
                 " " +
                 (
@@ -2357,7 +2318,7 @@ async function mostrarProductosElaborados(){
                     producto.unidad ??
                     ""
                 ) +
-                "\n";
+                ".\n";
         }
     );
 
@@ -2367,7 +2328,7 @@ async function mostrarProductosElaborados(){
 
 
 /* ============================================================
-   RECETAS COMPLETAS
+   RECETAS Y DETALLES
 ============================================================ */
 
 async function mostrarRecetas(){
@@ -2378,58 +2339,205 @@ async function mostrarRecetas(){
 
     if(!recetas.length){
 
-        return "No hay recetas registradas.";
+        return "No hay información registrada sobre recetas.";
     }
 
 
     let respuesta =
-        "📖 Recetas registradas:\n\n";
+        "Estas son las recetas registradas.\n\n";
 
 
-    recetas.forEach(
-        function(receta){
+    for(
+        const receta of recetas
+    ){
 
-            const nombre =
-                receta.nombre ??
-                receta.Nombre ??
-                "Receta";
+        const nombre =
+            primerValor(
+                receta,
+                [
+                    "nombre",
+                    "Nombre"
+                ],
+                "Receta"
+            );
 
-            const resultado =
-                receta.producto_resultado ??
-                receta.Producto_resultado ??
-                "";
 
+        const producto =
+            primerValor(
+                receta,
+                [
+                    "producto_resultado",
+                    "Producto_resultado"
+                ],
+                ""
+            );
+
+
+        const cantidad =
+            primerValor(
+                receta,
+                [
+                    "cantidad_resultado"
+                ],
+                ""
+            );
+
+
+        respuesta +=
+            nombre;
+
+
+        if(producto){
 
             respuesta +=
-                "• " +
-                nombre;
+                ", produce " +
+                producto;
+        }
 
 
-            if(resultado){
+        if(cantidad !== ""){
 
-                respuesta +=
-                    " → " +
-                    resultado;
+            respuesta +=
+                ", cantidad " +
+                formatearNumero(
+                    cantidad
+                );
+        }
+
+
+        respuesta += ".\n";
+    }
+
+
+    return respuesta.trim();
+}
+
+
+async function consultarDetalleReceta(nombre){
+
+    const recetas =
+        await obtenerRecetas();
+
+
+    const receta =
+        recetas.find(
+            function(r){
+
+                return normalizar(
+                    primerValor(
+                        r,
+                        [
+                            "nombre",
+                            "Nombre"
+                        ],
+                        ""
+                    )
+                ).includes(
+                    normalizar(nombre)
+                );
             }
+        );
 
 
-            if(
-                receta.cantidad_resultado !==
-                undefined &&
-                receta.cantidad_resultado !==
-                null
-            ){
+    if(!receta){
 
-                respuesta +=
-                    " (" +
-                    formatearNumero(
-                        receta.cantidad_resultado
-                    ) +
-                    ")";
-            }
+        return (
+            "No hay información registrada sobre la receta " +
+            nombre +
+            "."
+        );
+    }
 
 
-            respuesta += "\n";
+    const id =
+        primerValor(
+            receta,
+            [
+                "id",
+                "recetas_id"
+            ],
+            null
+        );
+
+
+    if(id === null){
+
+        return (
+            "La receta existe, pero no tiene un identificador disponible para consultar sus materias primas."
+        );
+    }
+
+
+    const client =
+        obtenerClienteSupabase();
+
+
+    const resultado =
+        await client
+        .from("detalle_recetas")
+        .select("*")
+        .eq(
+            "recetas_id",
+            id
+        );
+
+
+    if(resultado.error){
+
+        throw resultado.error;
+    }
+
+
+    const detalles =
+        resultado.data || [];
+
+
+    let respuesta =
+        "La receta " +
+        primerValor(
+            receta,
+            [
+                "nombre",
+                "Nombre"
+            ],
+            "receta"
+        ) +
+        " utiliza:\n\n";
+
+
+    if(!detalles.length){
+
+        respuesta +=
+            "No hay materias primas registradas en el detalle de esta receta.";
+
+        return respuesta;
+    }
+
+
+    detalles.forEach(
+        function(detalle){
+
+            respuesta +=
+                primerValor(
+                    detalle,
+                    [
+                        "materia_prima",
+                        "Materia_prima"
+                    ],
+                    "Materia prima"
+                ) +
+                ": " +
+                formatearNumero(
+                    primerValor(
+                        detalle,
+                        [
+                            "cantidad",
+                            "Cantidad"
+                        ],
+                        0
+                    )
+                ) +
+                ".\n";
         }
     );
 
@@ -2439,64 +2547,542 @@ async function mostrarRecetas(){
 
 
 /* ============================================================
-   MOVIMIENTOS
+   FECHAS
 ============================================================ */
 
-async function mostrarMovimientos(){
+function inicioDelDia(fecha){
+
+    const d =
+        new Date(fecha);
+
+    d.setHours(
+        0,0,0,0
+    );
+
+    return d;
+}
+
+
+function finDelDia(fecha){
+
+    const d =
+        new Date(fecha);
+
+    d.setHours(
+        23,59,59,999
+    );
+
+    return d;
+}
+
+
+function rangoFecha(pregunta){
+
+    const ahora =
+        new Date();
+
+
+    const texto =
+        normalizar(
+            pregunta
+        );
+
+
+    let inicio;
+    let fin;
+
+
+    if(
+        texto.includes("hoy")
+    ){
+
+        inicio =
+            inicioDelDia(
+                ahora
+            );
+
+        fin =
+            finDelDia(
+                ahora
+            );
+
+        return {
+            inicio,
+            fin,
+            nombre:"hoy"
+        };
+    }
+
+
+    if(
+        texto.includes("ayer")
+    ){
+
+        const d =
+            new Date(ahora);
+
+        d.setDate(
+            d.getDate() - 1
+        );
+
+        return {
+            inicio:
+                inicioDelDia(d),
+            fin:
+                finDelDia(d),
+            nombre:"ayer"
+        };
+    }
+
+
+    if(
+        texto.includes("semana pasada")
+    ){
+
+        const d =
+            new Date(ahora);
+
+        const dia =
+            d.getDay();
+
+        const diferencia =
+            dia === 0
+                ? 6
+                : dia - 1;
+
+
+        d.setDate(
+            d.getDate() -
+            diferencia -
+            7
+        );
+
+
+        const inicioSemana =
+            inicioDelDia(d);
+
+
+        const finSemana =
+            new Date(
+                inicioSemana
+            );
+
+
+        finSemana.setDate(
+            finSemana.getDate()+6
+        );
+
+
+        return {
+            inicio:
+                inicioSemana,
+            fin:
+                finDelDia(
+                    finSemana
+                ),
+            nombre:
+                "la semana pasada"
+        };
+    }
+
+
+    if(
+        texto.includes("esta semana")
+    ){
+
+        const d =
+            new Date(ahora);
+
+        const dia =
+            d.getDay();
+
+        const diferencia =
+            dia === 0
+                ? 6
+                : dia - 1;
+
+
+        d.setDate(
+            d.getDate() -
+            diferencia
+        );
+
+
+        const inicioSemana =
+            inicioDelDia(d);
+
+
+        return {
+            inicio:
+                inicioSemana,
+            fin:
+                finDelDia(ahora),
+            nombre:
+                "esta semana"
+        };
+    }
+
+
+    if(
+        texto.includes("mes pasado")
+    ){
+
+        const inicio =
+            new Date(
+                ahora.getFullYear(),
+                ahora.getMonth()-1,
+                1
+            );
+
+
+        const fin =
+            new Date(
+                ahora.getFullYear(),
+                ahora.getMonth(),
+                0
+            );
+
+
+        return {
+            inicio,
+            fin:
+                finDelDia(fin),
+            nombre:
+                "el mes pasado"
+        };
+    }
+
+
+    if(
+        texto.includes("este mes")
+    ){
+
+        const inicio =
+            new Date(
+                ahora.getFullYear(),
+                ahora.getMonth(),
+                1
+            );
+
+
+        return {
+            inicio,
+            fin:
+                finDelDia(ahora),
+            nombre:
+                "este mes"
+        };
+    }
+
+
+    const fechaNumerica =
+        texto.match(
+            /\b(\d{1,2})[\/\-](\d{1,2})(?:[\/\-](\d{2,4}))?\b/
+        );
+
+
+    if(fechaNumerica){
+
+        const dia =
+            Number(
+                fechaNumerica[1]
+            );
+
+        const mes =
+            Number(
+                fechaNumerica[2]
+            ) - 1;
+
+        let anio =
+            fechaNumerica[3]
+                ? Number(
+                    fechaNumerica[3]
+                )
+                : ahora.getFullYear();
+
+
+        if(anio < 100){
+
+            anio += 2000;
+        }
+
+
+        const fecha =
+            new Date(
+                anio,
+                mes,
+                dia
+            );
+
+
+        return {
+            inicio:
+                inicioDelDia(fecha),
+            fin:
+                finDelDia(fecha),
+            nombre:
+                fecha.toLocaleDateString(
+                    "es-ES"
+                )
+        };
+    }
+
+
+    return null;
+}
+
+
+function fechaDeRegistro(obj){
+
+    return primerValor(
+        obj,
+        [
+            "Fecha",
+            "fecha",
+            "created_at",
+            "fecha_registro",
+            "Fecha_registro",
+            "createdAt"
+        ],
+        null
+    );
+}
+
+
+function registroEstaEnRango(
+    registro,
+    rango
+){
+
+    if(!rango){
+
+        return true;
+    }
+
+
+    const fecha =
+        fechaDeRegistro(
+            registro
+        );
+
+
+    if(!fecha){
+
+        return false;
+    }
+
+
+    const d =
+        new Date(fecha);
+
+
+    if(
+        Number.isNaN(
+            d.getTime()
+        )
+    ){
+
+        return false;
+    }
+
+
+    return (
+        d >= rango.inicio &&
+        d <= rango.fin
+    );
+}
+
+
+/* ============================================================
+   MOVIMIENTOS GENERALES
+============================================================ */
+
+async function obtenerMovimientos(){
+
+    return leerTabla(
+        "movimientos"
+    );
+}
+
+
+function describirMovimiento(m){
+
+    const fecha =
+        fechaDeRegistro(m);
+
+
+    const producto =
+        primerValor(
+            m,
+            [
+                "Producto",
+                "producto"
+            ],
+            "producto"
+        );
+
+
+    const tipo =
+        primerValor(
+            m,
+            [
+                "Tipo",
+                "tipo"
+            ],
+            ""
+        );
+
+
+    const cantidad =
+        numeroDe(
+            m,
+            [
+                "Cantidad",
+                "cantidad"
+            ]
+        );
+
+
+    return (
+        formatearFecha(fecha) +
+        ": " +
+        tipo +
+        " de " +
+        formatearNumero(
+            cantidad
+        ) +
+        " de " +
+        producto
+    );
+}
+
+
+async function consultarMovimientosRango(
+    pregunta
+){
 
     const movimientos =
         await obtenerMovimientos();
 
 
-    if(!movimientos.length){
+    const rango =
+        rangoFecha(
+            pregunta
+        );
 
-        return "No encontré movimientos recientes.";
+
+    const filtrados =
+        rango
+            ? movimientos.filter(
+                function(m){
+
+                    return registroEstaEnRango(
+                        m,
+                        rango
+                    );
+                }
+            )
+            : movimientos.slice(0,20);
+
+
+    if(!filtrados.length){
+
+        return (
+            "No hay información registrada de movimientos para " +
+            (
+                rango
+                    ? rango.nombre
+                    : "ese período"
+            ) +
+            "."
+        );
     }
 
 
+    const entradas =
+        filtrados.filter(
+            function(m){
+
+                return normalizar(
+                    primerValor(
+                        m,
+                        [
+                            "Tipo",
+                            "tipo"
+                        ],
+                        ""
+                    )
+                ).includes(
+                    "entrada"
+                );
+            }
+        );
+
+
+    const salidas =
+        filtrados.filter(
+            function(m){
+
+                return normalizar(
+                    primerValor(
+                        m,
+                        [
+                            "Tipo",
+                            "tipo"
+                        ],
+                        ""
+                    )
+                ).includes(
+                    "salida"
+                );
+            }
+        );
+
+
     let respuesta =
-        "📊 Movimientos recientes:\n\n";
+        "Movimientos de " +
+        (
+            rango
+                ? rango.nombre
+                : "ElDesierto"
+        ) +
+        ".\n\n";
 
 
-    movimientos.forEach(
-        function(movimiento){
-
-            const fecha =
-                movimiento.Fecha ??
-                movimiento.fecha ??
-                "";
+    respuesta +=
+        "Entradas: " +
+        entradas.length +
+        ".\n";
 
 
-            const producto =
-                movimiento.Producto ??
-                movimiento.producto ??
-                "Producto";
+    respuesta +=
+        "Salidas: " +
+        salidas.length +
+        ".\n\n";
 
 
-            const tipo =
-                movimiento.Tipo ??
-                movimiento.tipo ??
-                "";
+    filtrados
+        .sort(
+            function(a,b){
 
+                return String(
+                    fechaDeRegistro(b) || ""
+                ).localeCompare(
+                    String(
+                        fechaDeRegistro(a) || ""
+                    )
+                );
+            }
+        )
+        .slice(0,50)
+        .forEach(
+            function(m){
 
-            const cantidad =
-                movimiento.Cantidad ??
-                movimiento.cantidad ??
-                0;
-
-
-            respuesta +=
-                "• " +
-                String(fecha).substring(0,16) +
-                " — " +
-                producto +
-                " — " +
-                tipo +
-                " — " +
-                formatearNumero(cantidad) +
-                "\n";
-        }
-    );
+                respuesta +=
+                    describirMovimiento(m) +
+                    ".\n";
+            }
+        );
 
 
     return respuesta.trim();
@@ -2504,10 +3090,1136 @@ async function mostrarMovimientos(){
 
 
 /* ============================================================
-   EXTRAER CANTIDAD
+   DISTRIBUCIONES
 ============================================================ */
 
-function extraerCantidad(texto){
+async function consultarDistribuciones(
+    pregunta
+){
+
+    const disponible =
+        await existeTabla(
+            "movimientos_distribucion"
+        );
+
+
+    if(!disponible){
+
+        return (
+            "No hay información registrada de distribuciones."
+        );
+    }
+
+
+    const datos =
+        await leerTabla(
+            "movimientos_distribucion"
+        );
+
+
+    const rango =
+        rangoFecha(
+            pregunta
+        );
+
+
+    const filtrados =
+        rango
+            ? datos.filter(
+                function(x){
+
+                    return registroEstaEnRango(
+                        x,
+                        rango
+                    );
+                }
+            )
+            : datos;
+
+
+    if(!filtrados.length){
+
+        return (
+            "No hay información registrada de distribuciones para " +
+            (
+                rango
+                    ? rango.nombre
+                    : "ese período"
+            ) +
+            "."
+        );
+    }
+
+
+    let respuesta =
+        "Distribuciones de " +
+        (
+            rango
+                ? rango.nombre
+                : "ElDesierto"
+        ) +
+        ".\n\n";
+
+
+    filtrados
+        .sort(
+            function(a,b){
+
+                return String(
+                    fechaDeRegistro(b) || ""
+                ).localeCompare(
+                    String(
+                        fechaDeRegistro(a) || ""
+                    )
+                );
+            }
+        )
+        .slice(0,50)
+        .forEach(
+            function(x){
+
+                const destino =
+                    primerValor(
+                        x,
+                        [
+                            "distribucion",
+                            "Distribucion"
+                        ],
+                        "destino"
+                    );
+
+
+                const comida =
+                    primerValor(
+                        x,
+                        [
+                            "comida",
+                            "Comida"
+                        ],
+                        ""
+                    );
+
+
+                const cantidad =
+                    numeroDe(
+                        x,
+                        [
+                            "cantidad",
+                            "Cantidad"
+                        ]
+                    );
+
+
+                respuesta +=
+                    formatearFecha(
+                        fechaDeRegistro(x)
+                    ) +
+                    ": " +
+                    destino;
+
+
+                if(comida){
+
+                    respuesta +=
+                        ", " +
+                        comida;
+                }
+
+
+                respuesta +=
+                    ", " +
+                    formatearNumero(
+                        cantidad
+                    ) +
+                    ".\n";
+            }
+        );
+
+
+    return respuesta.trim();
+}
+
+
+/* ============================================================
+   FABRICACIONES
+============================================================ */
+
+async function consultarFabricaciones(
+    pregunta
+){
+
+    const posibles = [
+        "movimientos_fabricacion",
+        "fabricaciones",
+        "movimientos"
+    ];
+
+
+    let datos = null;
+
+    let tabla = null;
+
+
+    for(
+        const nombreTabla of posibles
+    ){
+
+        if(
+            await existeTabla(
+                nombreTabla
+            )
+        ){
+
+            datos =
+                await leerTabla(
+                    nombreTabla
+                );
+
+            tabla =
+                nombreTabla;
+
+            break;
+        }
+    }
+
+
+    if(!datos){
+
+        return (
+            "No hay información registrada de fabricaciones."
+        );
+    }
+
+
+    let fabricaciones =
+        datos;
+
+
+    if(tabla === "movimientos"){
+
+        fabricaciones =
+            datos.filter(
+                function(x){
+
+                    return normalizar(
+                        primerValor(
+                            x,
+                            [
+                                "Tipo",
+                                "tipo"
+                            ],
+                            ""
+                        )
+                    ).includes(
+                        "fabric"
+                    );
+                }
+            );
+    }
+
+
+    const rango =
+        rangoFecha(
+            pregunta
+        );
+
+
+    if(rango){
+
+        fabricaciones =
+            fabricaciones.filter(
+                function(x){
+
+                    return registroEstaEnRango(
+                        x,
+                        rango
+                    );
+                }
+            );
+    }
+
+
+    if(!fabricaciones.length){
+
+        return (
+            "No hay información registrada de fabricaciones para " +
+            (
+                rango
+                    ? rango.nombre
+                    : "ese período"
+            ) +
+            "."
+        );
+    }
+
+
+    let respuesta =
+        "Fabricaciones de " +
+        (
+            rango
+                ? rango.nombre
+                : "ElDesierto"
+        ) +
+        ".\n\n";
+
+
+    fabricaciones
+        .sort(
+            function(a,b){
+
+                return String(
+                    fechaDeRegistro(b) || ""
+                ).localeCompare(
+                    String(
+                        fechaDeRegistro(a) || ""
+                    )
+                );
+            }
+        )
+        .slice(0,50)
+        .forEach(
+            function(x){
+
+                const producto =
+                    primerValor(
+                        x,
+                        [
+                            "producto",
+                            "Producto",
+                            "producto_resultado",
+                            "Producto_resultado"
+                        ],
+                        "producto elaborado"
+                    );
+
+
+                const cantidad =
+                    numeroDe(
+                        x,
+                        [
+                            "cantidad",
+                            "Cantidad",
+                            "cantidad_resultado"
+                        ]
+                    );
+
+
+                respuesta +=
+                    formatearFecha(
+                        fechaDeRegistro(x)
+                    ) +
+                    ": " +
+                    producto +
+                    ", " +
+                    formatearNumero(
+                        cantidad
+                    ) +
+                    ".\n";
+            }
+        );
+
+
+    return respuesta.trim();
+}
+
+
+/* ============================================================
+   NAVES / CUARTONES
+============================================================ */
+
+async function obtenerNaves(){
+
+    return leerTabla(
+        "naves"
+    );
+}
+
+
+async function obtenerCuartones(){
+
+    return leerTabla(
+        "cuartones"
+    );
+}
+
+
+function obtenerNombreNave(
+    nave
+){
+
+    return primerValor(
+        nave,
+        [
+            "nombre",
+            "Nombre",
+            "nave",
+            "Nave",
+            "numero",
+            "Numero"
+        ],
+        "Nave"
+    );
+}
+
+
+function obtenerNumeroCuarton(
+    cuarton
+){
+
+    return primerValor(
+        cuarton,
+        [
+            "numero",
+            "Numero",
+            "nombre",
+            "Nombre",
+            "cuarton",
+            "Cuarton"
+        ],
+        "cuartón"
+    );
+}
+
+
+function obtenerCantidadCerdos(
+    obj
+){
+
+    return numeroDe(
+        obj,
+        [
+            "cerdos",
+            "Cerdos",
+            "cantidad",
+            "Cantidad",
+            "cantidad_cerdos",
+            "Cantidad_cerdos",
+            "animales",
+            "Animales"
+        ]
+    );
+}
+
+
+async function consultarCerdosPorNave(){
+
+    const naves =
+        await obtenerNaves();
+
+
+    const cuartones =
+        await obtenerCuartones();
+
+
+    if(
+        !naves.length &&
+        !cuartones.length
+    ){
+
+        return (
+            "No hay información registrada sobre naves o cuartones."
+        );
+    }
+
+
+    let total = 0;
+
+    let respuesta =
+        "Cerdos por nave.\n\n";
+
+
+    if(cuartones.length){
+
+        for(
+            const nave of naves
+        ){
+
+            const idNave =
+                primerValor(
+                    nave,
+                    [
+                        "id",
+                        "Identificación"
+                    ],
+                    null
+                );
+
+
+            const pertenecen =
+                cuartones.filter(
+                    function(c){
+
+                        const id =
+                            primerValor(
+                                c,
+                                [
+                                    "nave_id",
+                                    "naves_id",
+                                    "Nave_id",
+                                    "Nave"
+                                ],
+                                null
+                            );
+
+                        return (
+                            idNave !== null &&
+                            String(id) ===
+                            String(idNave)
+                        );
+                    }
+                );
+
+
+            let cantidadNave = 0;
+
+
+            pertenecen.forEach(
+                function(c){
+
+                    cantidadNave +=
+                        obtenerCantidadCerdos(
+                            c
+                        );
+                }
+            );
+
+
+            total +=
+                cantidadNave;
+
+
+            respuesta +=
+                obtenerNombreNave(
+                    nave
+                ) +
+                ": " +
+                formatearNumero(
+                    cantidadNave
+                ) +
+                " cerdos.\n";
+        }
+
+
+        if(!naves.length){
+
+            cuartones.forEach(
+                function(c){
+
+                    const cantidad =
+                        obtenerCantidadCerdos(
+                            c
+                        );
+
+                    total +=
+                        cantidad;
+
+                    respuesta +=
+                        "Cuartón " +
+                        obtenerNumeroCuarton(
+                            c
+                        ) +
+                        ": " +
+                        formatearNumero(
+                            cantidad
+                        ) +
+                        " cerdos.\n";
+                }
+            );
+        }
+
+    }else{
+
+        naves.forEach(
+            function(nave){
+
+                const cantidad =
+                    obtenerCantidadCerdos(
+                        nave
+                    );
+
+                total +=
+                    cantidad;
+
+                respuesta +=
+                    obtenerNombreNave(
+                        nave
+                    ) +
+                    ": " +
+                    formatearNumero(
+                        cantidad
+                    ) +
+                    " cerdos.\n";
+            }
+        );
+    }
+
+
+    respuesta +=
+        "\nTotal registrado: " +
+        formatearNumero(total) +
+        " cerdos.";
+
+
+    return respuesta.trim();
+}
+
+
+async function consultarTotalCerdos(){
+
+    const cuartones =
+        await obtenerCuartones();
+
+
+    const naves =
+        await obtenerNaves();
+
+
+    let total = 0;
+
+
+    if(cuartones.length){
+
+        cuartones.forEach(
+            function(c){
+
+                total +=
+                    obtenerCantidadCerdos(
+                        c
+                    );
+            }
+        );
+
+    }else{
+
+        naves.forEach(
+            function(n){
+
+                total +=
+                    obtenerCantidadCerdos(
+                        n
+                    );
+            }
+        );
+    }
+
+
+    if(
+        !cuartones.length &&
+        !naves.length
+    ){
+
+        return (
+            "No hay información registrada sobre la cantidad de cerdos."
+        );
+    }
+
+
+    return (
+        "En ElDesierto hay registrados " +
+        formatearNumero(total) +
+        " cerdos en total."
+    );
+}
+
+
+/* ============================================================
+   HISTORIA DE CERDOS
+============================================================ */
+
+async function consultarHistorialCerdos(
+    pregunta
+){
+
+    const tablas = [
+        "movimientos_naves",
+        "movimientos_destete"
+    ];
+
+
+    let todos = [];
+
+
+    for(
+        const tabla of tablas
+    ){
+
+        if(
+            await existeTabla(
+                tabla
+            )
+        ){
+
+            const datos =
+                await leerTabla(
+                    tabla
+                );
+
+
+            datos.forEach(
+                function(x){
+
+                    todos.push({
+
+                        ...x,
+
+                        __tabla:
+                            tabla
+                    });
+                }
+            );
+        }
+    }
+
+
+    const rango =
+        rangoFecha(
+            pregunta
+        );
+
+
+    if(rango){
+
+        todos =
+            todos.filter(
+                function(x){
+
+                    return registroEstaEnRango(
+                        x,
+                        rango
+                    );
+                }
+            );
+    }
+
+
+    if(!todos.length){
+
+        return (
+            "No hay información registrada del historial de cerdos para " +
+            (
+                rango
+                    ? rango.nombre
+                    : "ese período"
+            ) +
+            "."
+        );
+    }
+
+
+    let respuesta =
+        "Historial de cerdos " +
+        (
+            rango
+                ? rango.nombre
+                : ""
+        ) +
+        ".\n\n";
+
+
+    todos
+        .sort(
+            function(a,b){
+
+                return String(
+                    fechaDeRegistro(b) || ""
+                ).localeCompare(
+                    String(
+                        fechaDeRegistro(a) || ""
+                    )
+                );
+            }
+        )
+        .slice(0,60)
+        .forEach(
+            function(x){
+
+                const tipo =
+                    primerValor(
+                        x,
+                        [
+                            "tipo",
+                            "Tipo",
+                            "movimiento",
+                            "Movimiento",
+                            "accion",
+                            "Accion"
+                        ],
+                        "Movimiento"
+                    );
+
+
+                const cantidad =
+                    numeroDe(
+                        x,
+                        [
+                            "cantidad",
+                            "Cantidad",
+                            "cerdos",
+                            "Cerdos"
+                        ]
+                    );
+
+
+                respuesta +=
+                    formatearFecha(
+                        fechaDeRegistro(x)
+                    ) +
+                    ": " +
+                    tipo +
+                    ", " +
+                    formatearNumero(
+                        cantidad
+                    ) +
+                    " cerdos.\n";
+            }
+        );
+
+
+    return respuesta.trim();
+}
+
+
+/* ============================================================
+   DESTETE
+============================================================ */
+
+async function consultarDestete(
+    pregunta
+){
+
+    const tablas = [
+        "destete_filas",
+        "movimientos_destete"
+    ];
+
+
+    let datos = [];
+
+
+    for(
+        const tabla of tablas
+    ){
+
+        if(
+            await existeTabla(
+                tabla
+            )
+        ){
+
+            const filas =
+                await leerTabla(
+                    tabla
+                );
+
+
+            filas.forEach(
+                function(x){
+
+                    datos.push({
+
+                        ...x,
+
+                        __tabla:
+                            tabla
+                    });
+                }
+            );
+        }
+    }
+
+
+    const rango =
+        rangoFecha(
+            pregunta
+        );
+
+
+    if(rango){
+
+        datos =
+            datos.filter(
+                function(x){
+
+                    return registroEstaEnRango(
+                        x,
+                        rango
+                    );
+                }
+            );
+    }
+
+
+    if(!datos.length){
+
+        return (
+            "No hay información registrada de destete para " +
+            (
+                rango
+                    ? rango.nombre
+                    : "ese período"
+            ) +
+            "."
+        );
+    }
+
+
+    let respuesta =
+        "Información de destete " +
+        (
+            rango
+                ? rango.nombre
+                : ""
+        ) +
+        ".\n\n";
+
+
+    datos
+        .slice(0,60)
+        .forEach(
+            function(x){
+
+                const fila =
+                    primerValor(
+                        x,
+                        [
+                            "fila",
+                            "Fila",
+                            "nombre",
+                            "Nombre",
+                            "cuarton",
+                            "Cuarton"
+                        ],
+                        "registro"
+                    );
+
+
+                const cantidad =
+                    numeroDe(
+                        x,
+                        [
+                            "cantidad",
+                            "Cantidad",
+                            "cerdos",
+                            "Cerdos"
+                        ]
+                    );
+
+
+                respuesta +=
+                    fila +
+                    ": " +
+                    formatearNumero(
+                        cantidad
+                    ) +
+                    " cerdos.\n";
+            }
+        );
+
+
+    return respuesta.trim();
+}
+
+
+/* ============================================================
+   TODA LA INFORMACIÓN
+============================================================ */
+
+async function consultarTodaInformacion(){
+
+    const resultados = [];
+
+
+    try{
+
+        const inventario =
+            await obtenerInventario();
+
+        resultados.push(
+            "Materias primas registradas: " +
+            inventario.length
+        );
+
+    }catch(error){
+
+        resultados.push(
+            "Materias primas: no disponible"
+        );
+    }
+
+
+    try{
+
+        const materiales =
+            await obtenerMateriales();
+
+        resultados.push(
+            "Materiales de construcción: " +
+            materiales.length
+        );
+
+    }catch(error){
+
+        resultados.push(
+            "Materiales de construcción: no disponible"
+        );
+    }
+
+
+    try{
+
+        const elaborados =
+            await obtenerProductosElaborados();
+
+        resultados.push(
+            "Productos elaborados: " +
+            elaborados.length
+        );
+
+    }catch(error){
+
+        resultados.push(
+            "Productos elaborados: no disponible"
+        );
+    }
+
+
+    try{
+
+        const recetas =
+            await obtenerRecetas();
+
+        resultados.push(
+            "Recetas: " +
+            recetas.length
+        );
+
+    }catch(error){
+
+        resultados.push(
+            "Recetas: no disponible"
+        );
+    }
+
+
+    try{
+
+        const naves =
+            await obtenerNaves();
+
+        const cuartones =
+            await obtenerCuartones();
+
+        let total = 0;
+
+        if(cuartones.length){
+
+            cuartones.forEach(
+                function(c){
+
+                    total +=
+                        obtenerCantidadCerdos(
+                            c
+                        );
+                }
+            );
+
+        }else{
+
+            naves.forEach(
+                function(n){
+
+                    total +=
+                        obtenerCantidadCerdos(
+                            n
+                        );
+                }
+            );
+        }
+
+
+        resultados.push(
+            "Cerdos registrados actualmente: " +
+            formatearNumero(total)
+        );
+
+    }catch(error){
+
+        resultados.push(
+            "Cerdos: no disponible"
+        );
+    }
+
+
+    return (
+        "Resumen general de ElDesierto.\n\n" +
+        resultados.join("\n")
+    );
+}
+
+
+/* ============================================================
+   DETECTAR OPERACIONES
+============================================================ */
+
+function detectarTipoAccion(
+    texto
+){
+
+    const t =
+        normalizar(
+            texto
+        );
+
+
+    if(
+        /\b(
+            agrega|
+            agregar|
+            anade|
+            añadir|
+            ingresa|
+            ingresar|
+            mete|
+            meter|
+            recibe|
+            recibir|
+            registra entrada|
+            registrar entrada|
+            entrada
+        )\b/i.test(t)
+    ){
+
+        return "entrada";
+    }
+
+
+    if(
+        /\b(
+            saca|
+            sacar|
+            quita|
+            quitar|
+            retira|
+            retirar|
+            despacha|
+            despachar|
+            registra salida|
+            registrar salida|
+            salida
+        )\b/i.test(t)
+    ){
+
+        return "salida";
+    }
+
+
+    return null;
+}
+
+
+function extraerCantidad(
+    texto
+){
 
     const coincidencia =
         String(texto)
@@ -2542,56 +4254,18 @@ function extraerCantidad(texto){
 }
 
 
-/* ============================================================
-   DETECTAR ACCIÓN
-============================================================ */
-
-function detectarTipoAccion(texto){
-
-    const t =
-        normalizar(texto);
-
-
-    const entrada =
-        /\b(agrega|agregar|anade|añade|añadir|ingresa|ingresar|mete|meter|recibe|recibir|registrar entrada|registra entrada|haz una entrada)\b/
-        .test(t);
-
-
-    if(entrada){
-
-        return "entrada";
-    }
-
-
-    const salida =
-        /\b(saca|sacar|quita|quitar|retira|retirar|despacha|despachar|registrar salida|registra salida|haz una salida)\b/
-        .test(t);
-
-
-    if(salida){
-
-        return "salida";
-    }
-
-
-    return null;
-}
-
-
-/* ============================================================
-   BUSCAR PRODUCTO DENTRO DE UNA FRASE
-============================================================ */
-
 function buscarProductoEnTexto(
     inventario,
     texto
 ){
 
     const t =
-        normalizar(texto);
+        normalizar(
+            texto
+        );
 
 
-    const candidatos =
+    const encontrados =
         inventario
         .filter(
             function(producto){
@@ -2624,12 +4298,81 @@ function buscarProductoEnTexto(
         );
 
 
-    return candidatos[0] || null;
+    return encontrados[0] || null;
 }
 
 
 /* ============================================================
-   PREPARAR ACCIÓN
+   USUARIO
+============================================================ */
+
+function obtenerUsuarioActual(){
+
+    try{
+
+        return (
+            localStorage.getItem(
+                "usuario"
+            ) ||
+            localStorage.getItem(
+                "nombreUsuario"
+            ) ||
+            localStorage.getItem(
+                "usuarioActual"
+            ) ||
+            sessionStorage.getItem(
+                "usuario"
+            ) ||
+            nombreUsuario ||
+            "Desierto"
+        );
+
+    }catch(error){
+
+        return (
+            nombreUsuario ||
+            "Desierto"
+        );
+    }
+}
+
+
+function guardarNombreUsuario(
+    nombre
+){
+
+    nombre =
+        String(nombre || "")
+        .trim();
+
+
+    if(!nombre){
+
+        return;
+    }
+
+
+    nombreUsuario =
+        nombre;
+
+
+    esperandoNombre =
+        false;
+
+
+    try{
+
+        localStorage.setItem(
+            "desierto_nombre_usuario",
+            nombre
+        );
+
+    }catch(error){}
+}
+
+
+/* ============================================================
+   ENTRADA / SALIDA
 ============================================================ */
 
 async function prepararAccionInventario(
@@ -2654,12 +4397,10 @@ async function prepararAccionInventario(
         );
 
 
-    if(
-        cantidad === null
-    ){
+    if(cantidad === null){
 
         return (
-            "Claro. Dime qué cantidad quieres registrar."
+            "Dime qué cantidad quieres registrar. Por ejemplo, agrega 50 kilogramos de maíz."
         );
     }
 
@@ -2678,110 +4419,89 @@ async function prepararAccionInventario(
     if(!producto){
 
         return (
-            "Entendí que quieres hacer una " +
+            "Entendí que quieres registrar una " +
             tipo +
-            ", pero no pude identificar el producto. " +
-            "Dime, por ejemplo: agrega 50 kg de maíz."
+            ", pero no pude identificar el producto. Puedes decirme, por ejemplo, agrega 50 kilogramos de maíz."
         );
     }
 
 
     accionPendiente = {
 
-        tipo:tipo,
+        tipo,
 
-        cantidad:cantidad,
+        cantidad,
 
         productoId:
-            obtenerIdProducto(producto),
+            obtenerIdProducto(
+                producto
+            ),
 
         productoNombre:
-            obtenerNombreProducto(producto),
+            obtenerNombreProducto(
+                producto
+            ),
 
         unidad:
-            obtenerUnidadProducto(producto)
+            obtenerUnidadProducto(
+                producto
+            )
     };
 
 
-    const verbo =
-        tipo === "entrada"
-            ? "registrar una entrada"
-            : "registrar una salida";
-
-
     return (
-        "Voy a " +
-        verbo +
+        "Voy a registrar una " +
+        tipo +
         " de " +
-        formatearNumero(cantidad) +
+        formatearNumero(
+            cantidad
+        ) +
         " " +
         accionPendiente.unidad +
         " de " +
         accionPendiente.productoNombre +
-        ".\n\n" +
-        "¿Confirmas la operación?"
+        ". ¿Confirmas la operación?"
     );
 }
 
 
-/* ============================================================
-   CONFIRMACIÓN
-============================================================ */
-
-function esConfirmacion(texto){
+function esConfirmacion(
+    texto
+){
 
     const t =
-        normalizar(texto);
-
-
-    return /\b(si|sí|confirmo|confirmar|ejecuta|ejecutar|hazlo|dale|adelante|correcto)\b/
-        .test(t);
-}
-
-
-function esCancelacion(texto){
-
-    const t =
-        normalizar(texto);
-
-
-    return /\b(no|cancela|cancelar|olvida|olvidalo|olvídalo)\b/
-        .test(t);
-}
-
-
-/* ============================================================
-   USUARIO ACTUAL
-============================================================ */
-
-function obtenerUsuarioActual(){
-
-    try{
-
-        return (
-            localStorage.getItem("usuario") ||
-            localStorage.getItem("nombreUsuario") ||
-            localStorage.getItem("usuarioActual") ||
-            sessionStorage.getItem("usuario") ||
-            "Desierto"
+        normalizar(
+            texto
         );
 
-    }catch(error){
 
-        return "Desierto";
-    }
+    return /\b(si|confirmo|confirmar|ejecuta|ejecutar|hazlo|dale|adelante|correcto|procede)\b/
+        .test(t);
 }
 
 
-/* ============================================================
-   EJECUTAR ENTRADA / SALIDA
-============================================================ */
+function esCancelacion(
+    texto
+){
+
+    const t =
+        normalizar(
+            texto
+        );
+
+
+    return /\b(no|cancela|cancelar|olvida|olvidalo|deten|detener)\b/
+        .test(t);
+}
+
 
 async function ejecutarAccionPendiente(){
 
     if(!accionPendiente){
 
-        return "No tengo ninguna operación pendiente.";
+        return (
+            "No tengo ninguna operación pendiente."
+        );
     }
 
 
@@ -2795,25 +4515,11 @@ async function ejecutarAccionPendiente(){
 
     if(!client){
 
-        accionPendiente = null;
+        accionPendiente =
+            null;
 
         throw new Error(
             "SUPABASE_NO_DISPONIBLE"
-        );
-    }
-
-
-    if(
-        accion.productoId ===
-        null ||
-        accion.productoId ===
-        undefined
-    ){
-
-        accionPendiente = null;
-
-        return (
-            "No pude identificar el producto correctamente."
         );
     }
 
@@ -2841,7 +4547,8 @@ async function ejecutarAccionPendiente(){
 
     if(!producto){
 
-        accionPendiente = null;
+        accionPendiente =
+            null;
 
         return (
             "No encontré nuevamente el producto en el inventario."
@@ -2849,13 +4556,13 @@ async function ejecutarAccionPendiente(){
     }
 
 
-    const cantidadAnterior =
+    const anterior =
         obtenerCantidadProducto(
             producto
         );
 
 
-    let cantidadNueva;
+    let nueva;
 
 
     if(
@@ -2863,46 +4570,44 @@ async function ejecutarAccionPendiente(){
         "entrada"
     ){
 
-        cantidadNueva =
-            cantidadAnterior +
+        nueva =
+            anterior +
             accion.cantidad;
 
     }else{
 
-        cantidadNueva =
-            cantidadAnterior -
+        nueva =
+            anterior -
             accion.cantidad;
 
 
-        if(cantidadNueva < 0){
+        if(nueva < 0){
 
-            accionPendiente = null;
+            accionPendiente =
+                null;
 
             return (
-                "No puedo realizar esa salida porque " +
-                accion.productoNombre +
-                " tiene solamente " +
+                "No puedo realizar la salida porque solamente hay " +
                 formatearNumero(
-                    cantidadAnterior
+                    anterior
                 ) +
                 " " +
                 accion.unidad +
+                " de " +
+                accion.productoNombre +
                 " disponibles."
             );
         }
     }
 
 
-    /* --------------------------------------------------------
-       ACTUALIZAR INVENTARIO
-    -------------------------------------------------------- */
-
     const actualizacion =
         await client
         .from("productos")
         .update({
 
-            Cantidad:cantidadNueva
+            Cantidad:
+                nueva
 
         })
         .eq(
@@ -2917,10 +4622,6 @@ async function ejecutarAccionPendiente(){
     }
 
 
-    /* --------------------------------------------------------
-       REGISTRAR MOVIMIENTO
-    -------------------------------------------------------- */
-
     const movimiento = {
 
         Fecha:
@@ -2930,7 +4631,8 @@ async function ejecutarAccionPendiente(){
             accion.productoNombre,
 
         Tipo:
-            accion.tipo === "entrada"
+            accion.tipo ===
+            "entrada"
                 ? "Entrada"
                 : "Salida",
 
@@ -2941,7 +4643,7 @@ async function ejecutarAccionPendiente(){
             obtenerUsuarioActual(),
 
         Observación:
-            "Operación ejecutada por el asistente Desierto",
+            "Operación ejecutada por Desierto",
 
         Numero_operacion:
             Date.now()
@@ -2956,19 +4658,13 @@ async function ejecutarAccionPendiente(){
         );
 
 
-    /*
-       Si el movimiento no pudo registrarse,
-       intentamos devolver el inventario a su
-       cantidad anterior.
-    */
-
     if(registro.error){
 
         await client
             .from("productos")
             .update({
                 Cantidad:
-                    cantidadAnterior
+                    anterior
             })
             .eq(
                 "Identificación",
@@ -2979,18 +4675,15 @@ async function ejecutarAccionPendiente(){
     }
 
 
-    accionPendiente = null;
-
-
-    const palabra =
-        accion.tipo === "entrada"
-            ? "entrada"
-            : "salida";
+    accionPendiente =
+        null;
 
 
     return (
-        "Listo. Registré la " +
-        palabra +
+        "Listo, " +
+        obtenerUsuarioActual() +
+        ". Registré la " +
+        accion.tipo +
         " de " +
         formatearNumero(
             accion.cantidad
@@ -2999,21 +4692,32 @@ async function ejecutarAccionPendiente(){
         accion.unidad +
         " de " +
         accion.productoNombre +
-        ".\n\n" +
-        "Existencia anterior: " +
+        ". La existencia anterior era de " +
         formatearNumero(
-            cantidadAnterior
+            anterior
+        ) +
+        " y ahora quedan " +
+        formatearNumero(
+            nueva
         ) +
         " " +
         accion.unidad +
-        ".\n" +
-        "Existencia actual: " +
-        formatearNumero(
-            cantidadNueva
-        ) +
-        " " +
-        accion.unidad +
-        "."
+        ". ¿Necesitas algo más?"
+    );
+}
+
+
+/* ============================================================
+   AYUDA
+============================================================ */
+
+function explicarCapacidades(){
+
+    return (
+        "Puedo ayudarte con prácticamente toda la información registrada en ElDesierto. " +
+        "Puedo consultar materias primas, productos elaborados, materiales de construcción, recetas, materias primas de cada receta, fabricaciones, entradas, salidas, distribuciones, naves, cuartones, cantidad total de cerdos, cerdos por nave, destete, muertes, ventas, reagrupes e historiales. " +
+        "También puedo buscar información de hoy, ayer, esta semana, la semana pasada, este mes, el mes pasado o una fecha específica. " +
+        "Además puedo ejecutar operaciones como entradas y salidas de mercancía, fabricación, creación de recetas y determinadas operaciones sobre los cerdos, siempre confirmando antes de modificar los datos."
     );
 }
 
@@ -3027,38 +4731,113 @@ async function procesarPregunta(
 ){
 
     const original =
-        String(pregunta || "")
-        .trim();
+        String(
+            pregunta || ""
+        ).trim();
 
 
     const texto =
-        normalizar(original);
+        normalizar(
+            original
+        );
 
 
     if(!texto){
 
-        return "Dime algo y te responderé.";
+        return (
+            "Dime qué necesitas y te ayudaré."
+        );
     }
 
 
     /* --------------------------------------------------------
-       CONFIRMACIÓN DE ACCIÓN
+       NOMBRE
+    -------------------------------------------------------- */
+
+    if(esperandoNombre){
+
+        if(
+            texto.length >= 2 &&
+            texto.length <= 60
+        ){
+
+            guardarNombreUsuario(
+                original
+            );
+
+
+            return (
+                "Mucho gusto, " +
+                nombreUsuario +
+                ". Desde ahora te llamaré por tu nombre. ¿En qué puedo ayudarte?"
+            );
+        }
+    }
+
+
+    if(
+        texto.includes(
+            "me llamo "
+        )
+    ){
+
+        const nombre =
+            original
+            .split(
+                /me llamo/i
+            )[1]
+            .trim();
+
+
+        if(nombre){
+
+            guardarNombreUsuario(
+                nombre
+            );
+
+
+            return (
+                "Mucho gusto, " +
+                nombreUsuario +
+                ". ¿En qué puedo ayudarte?"
+            );
+        }
+    }
+
+
+    /* --------------------------------------------------------
+       CONFIRMACIÓN
     -------------------------------------------------------- */
 
     if(accionPendiente){
 
-        if(esConfirmacion(texto)){
+        if(
+            esConfirmacion(
+                texto
+            )
+        ){
 
             return ejecutarAccionPendiente();
         }
 
 
-        if(esCancelacion(texto)){
+        if(
+            esCancelacion(
+                texto
+            )
+        ){
 
-            accionPendiente = null;
+            accionPendiente =
+                null;
 
             return (
-                "De acuerdo. Cancelé la operación."
+                "De acuerdo, " +
+                (
+                    nombreUsuario
+                        ? nombreUsuario
+                        : ""
+                ) +
+                ". Cancelé la operación. ¿Necesitas algo más?"
             );
         }
     }
@@ -3073,65 +4852,145 @@ async function procesarPregunta(
         .test(texto)
     ){
 
+        if(!nombreUsuario){
+
+            esperandoNombre =
+                true;
+
+            return (
+                "Hola. Qué bueno escucharte. Soy Desierto, el asistente de ElDesierto. Antes de comenzar, ¿con quién estoy hablando?"
+            );
+        }
+
+
         return (
-            "Hola. Aquí estoy. Soy Desierto, tu asistente de ElDesierto. " +
-            "Puedo consultar la información del sistema, conversar contigo y ejecutar operaciones de inventario cuando me las confirmes."
+            "Hola, " +
+            nombreUsuario +
+            ". Me alegra hablar contigo. ¿Cómo estás? ¿Cómo va el negocio? ¿En qué puedo ayudarte hoy?"
         );
     }
 
 
     if(
-        texto.includes("como estas") ||
-        texto.includes("como te sientes")
+        texto.includes(
+            "como estas"
+        )
     ){
 
         return (
-            "Estoy listo para ayudarte. Dime qué necesitas revisar o qué operación quieres realizar."
+            "Estoy muy bien y listo para trabajar contigo, " +
+            (
+                nombreUsuario ||
+                ""
+            ) +
+            ". ¿Cómo va el negocio? Dime qué quieres consultar."
         );
     }
 
 
     if(
-        texto.includes("quien eres") ||
-        texto.includes("que eres")
+        texto.includes(
+            "como va el negocio"
+        )
     ){
 
         return (
-            "Soy Desierto, el asistente inteligente de ElDesierto. " +
-            "Puedo consultar la información de tu sistema, recordar el contexto de nuestra conversación y ejecutar determinadas operaciones cuando me las confirmes."
-        );
-    }
-
-
-    if(
-        texto.includes("gracias") ||
-        texto.includes("muchas gracias")
-    ){
-
-        return (
-            "De nada. Estoy aquí para ayudarte."
-        );
-    }
-
-
-    if(
-        texto === "adios" ||
-        texto === "chao" ||
-        texto === "hasta luego"
-    ){
-
-        return (
-            "Hasta luego. Cuando necesites algo, aquí estaré."
+            "Puedo revisar contigo cómo está el negocio consultando inventario, fabricaciones, movimientos, cerdos, ventas, muertes, destete y demás información registrada. Dime qué período quieres revisar y lo consultamos."
         );
     }
 
 
     /* --------------------------------------------------------
-       ACCIONES DE INVENTARIO
+       QUIÉN ERES
     -------------------------------------------------------- */
 
     if(
-        detectarTipoAccion(original)
+        texto.includes(
+            "quien eres"
+        ) ||
+        texto.includes(
+            "que eres"
+        )
+    ){
+
+        return (
+            "Soy Desierto, el asistente inteligente de ElDesierto. Estoy conectado con la información del sistema y puedo consultarla contigo y ejecutar operaciones autorizadas cuando me confirmes que deseas realizarlas."
+        );
+    }
+
+
+    /* --------------------------------------------------------
+       CAPACIDADES
+    -------------------------------------------------------- */
+
+    if(
+        texto.includes(
+            "en que puedes ayudarme"
+        ) ||
+        texto.includes(
+            "que puedes hacer"
+        ) ||
+        texto.includes(
+            "que informacion puedes"
+        ) ||
+        texto.includes(
+            "todo lo que puedes hacer"
+        )
+    ){
+
+        return explicarCapacidades();
+    }
+
+
+    /* --------------------------------------------------------
+       GRACIAS
+    -------------------------------------------------------- */
+
+    if(
+        texto.includes(
+            "gracias"
+        )
+    ){
+
+        return (
+            "De nada, " +
+            (
+                nombreUsuario ||
+                ""
+            ) +
+            ". Siempre que necesites algo puedes consultarme. ¿Necesitas algo más?"
+        );
+    }
+
+
+    /* --------------------------------------------------------
+       DESPEDIDA
+    -------------------------------------------------------- */
+
+    if(
+        /^(adios|chao|hasta luego|hasta pronto|nos vemos|ya esta|eso es todo|no necesito nada)$/
+        .test(texto)
+    ){
+
+        return (
+            "De acuerdo, " +
+            (
+                nombreUsuario ||
+                ""
+            ) +
+            ". Me alegra haberte ayudado. Cuando necesites algo, consulta conmigo. Siempre estaré aquí para ayudarte. Hasta luego."
+        );
+    }
+
+
+    /* --------------------------------------------------------
+       ENTRADA / SALIDA
+    -------------------------------------------------------- */
+
+    if(
+        detectarTipoAccion(
+            original
+        )
     ){
 
         return prepararAccionInventario(
@@ -3141,29 +5000,20 @@ async function procesarPregunta(
 
 
     /* --------------------------------------------------------
-       INFORMACIÓN GENERAL
-    -------------------------------------------------------- */
-
-    if(
-        texto.includes("toda la informacion") ||
-        texto.includes("informacion general") ||
-        texto.includes("resumen general") ||
-        texto.includes("como esta el sistema")
-    ){
-
-        return consultarTodaInformacion();
-    }
-
-
-    /* --------------------------------------------------------
        INVENTARIO COMPLETO
     -------------------------------------------------------- */
 
     if(
-        texto.includes("todo el inventario") ||
-        texto.includes("inventario completo") ||
-        texto.includes("que tenemos en inventario") ||
-        texto === "inventario"
+        texto === "inventario" ||
+        texto.includes(
+            "todo el inventario"
+        ) ||
+        texto.includes(
+            "inventario completo"
+        ) ||
+        texto.includes(
+            "que tenemos en inventario"
+        )
     ){
 
         return mostrarInventarioCompleto();
@@ -3198,37 +5048,43 @@ async function procesarPregunta(
     ){
 
         if(
-            texto.includes(producto)
+            texto.includes(
+                producto
+            )
         ){
 
-            let nombreBusqueda =
+            let nombre =
                 producto;
 
 
             if(
-                producto === "soja"
+                producto ===
+                "soja"
             ){
 
-                nombreBusqueda =
+                nombre =
                     "soya";
             }
 
 
-            return consultarProductoNatural(
-                nombreBusqueda
+            return consultarProducto(
+                nombre
             );
         }
     }
 
 
     /* --------------------------------------------------------
-       MATERIALES DE CONSTRUCCIÓN
+       MATERIALES
     -------------------------------------------------------- */
 
     if(
-        texto.includes("materiales de construccion") ||
-        texto.includes("materiales de construcción") ||
-        texto.includes("materiales")
+        texto.includes(
+            "materiales de construccion"
+        ) ||
+        texto.includes(
+            "materiales"
+        )
     ){
 
         return mostrarMateriales();
@@ -3240,9 +5096,12 @@ async function procesarPregunta(
     -------------------------------------------------------- */
 
     if(
-        texto.includes("productos elaborados") ||
-        texto.includes("producto elaborado") ||
-        texto.includes("elaborados")
+        texto.includes(
+            "productos elaborados"
+        ) ||
+        texto.includes(
+            "producto elaborado"
+        )
     ){
 
         return mostrarProductosElaborados();
@@ -3254,39 +5113,324 @@ async function procesarPregunta(
     -------------------------------------------------------- */
 
     if(
-        texto.includes("recetas") ||
-        texto.includes("receta") ||
-        texto.includes("formulaciones")
+        texto === "recetas" ||
+        texto.includes(
+            "que recetas"
+        ) ||
+        texto.includes(
+            "recetas tenemos"
+        )
     ){
 
         return mostrarRecetas();
     }
 
 
-    /* --------------------------------------------------------
-       MOVIMIENTOS / SALIDAS / ENTRADAS
-    -------------------------------------------------------- */
-
     if(
-        texto.includes("ultimas salidas") ||
-        texto.includes("ultimas entradas") ||
-        texto.includes("ultimos movimientos") ||
-        texto.includes("movimientos recientes") ||
-        texto.includes("historial de movimientos")
+        texto.includes(
+            "ingredientes de la receta"
+        ) ||
+        texto.includes(
+            "materias primas de la receta"
+        ) ||
+        texto.includes(
+            "detalle de la receta"
+        )
     ){
 
-        return mostrarMovimientos();
+        const palabras =
+            original
+            .replace(
+                /.*(?:receta|recetas)/i,
+                ""
+            )
+            .trim();
+
+
+        if(palabras){
+
+            return consultarDetalleReceta(
+                palabras
+            );
+        }
+
+
+        return (
+            "Dime el nombre de la receta que quieres consultar."
+        );
     }
 
 
     /* --------------------------------------------------------
-       MEMORIA / CONVERSACIÓN
+       FABRICACIÓN
     -------------------------------------------------------- */
 
     if(
-        texto.includes("que te dije") ||
-        texto.includes("que hablamos") ||
-        texto.includes("recuerdas")
+        texto.includes(
+            "fabricacion"
+        ) ||
+        texto.includes(
+            "fabricamos"
+        ) ||
+        texto.includes(
+            "que se fabrico"
+        ) ||
+        texto.includes(
+            "que fabricamos"
+        )
+    ){
+
+        return consultarFabricaciones(
+            original
+        );
+    }
+
+
+    /* --------------------------------------------------------
+       ENTRADAS / SALIDAS / MOVIMIENTOS
+    -------------------------------------------------------- */
+
+    if(
+        texto.includes(
+            "entradas"
+        ) ||
+        texto.includes(
+            "salidas"
+        ) ||
+        texto.includes(
+            "movimientos"
+        ) ||
+        texto.includes(
+            "historial de movimientos"
+        )
+    ){
+
+        return consultarMovimientosRango(
+            original
+        );
+    }
+
+
+    /* --------------------------------------------------------
+       DISTRIBUCIONES
+    -------------------------------------------------------- */
+
+    if(
+        texto.includes(
+            "distribucion"
+        ) ||
+        texto.includes(
+            "distribuciones"
+        ) ||
+        texto.includes(
+            "comida distribuida"
+        )
+    ){
+
+        return consultarDistribuciones(
+            original
+        );
+    }
+
+
+    /* --------------------------------------------------------
+       CERDOS
+    -------------------------------------------------------- */
+
+    if(
+        texto.includes(
+            "cuantos cerdos"
+        ) &&
+        (
+            texto.includes(
+                "cada nave"
+            ) ||
+            texto.includes(
+                "por nave"
+            )
+        )
+    ){
+
+        return consultarCerdosPorNave();
+    }
+
+
+    if(
+        texto.includes(
+            "cerdos por nave"
+        ) ||
+        texto.includes(
+            "cerdos en cada nave"
+        )
+    ){
+
+        return consultarCerdosPorNave();
+    }
+
+
+    if(
+        texto.includes(
+            "cuantos cerdos tenemos"
+        ) ||
+        texto.includes(
+            "total de cerdos"
+        ) ||
+        texto.includes(
+            "cerdos en total"
+        )
+    ){
+
+        return consultarTotalCerdos();
+    }
+
+
+    /* --------------------------------------------------------
+       MUERTES
+    -------------------------------------------------------- */
+
+    if(
+        texto.includes(
+            "muertes"
+        ) ||
+        texto.includes(
+            "muertos"
+        ) ||
+        texto.includes(
+            "cerdos muertos"
+        )
+    ){
+
+        return consultarHistorialCerdos(
+            original
+        );
+    }
+
+
+    /* --------------------------------------------------------
+       VENTAS
+    -------------------------------------------------------- */
+
+    if(
+        texto.includes(
+            "ventas de cerdos"
+        ) ||
+        texto.includes(
+            "venta de cerdos"
+        ) ||
+        texto.includes(
+            "cerdos vendidos"
+        )
+    ){
+
+        return consultarHistorialCerdos(
+            original
+        );
+    }
+
+
+    /* --------------------------------------------------------
+       REAGRUPES
+    -------------------------------------------------------- */
+
+    if(
+        texto.includes(
+            "reagrupes"
+        ) ||
+        texto.includes(
+            "reagrupamiento"
+        ) ||
+        texto.includes(
+            "reagrupaciones"
+        ) ||
+        texto.includes(
+            "reagrupar"
+        )
+    ){
+
+        return consultarHistorialCerdos(
+            original
+        );
+    }
+
+
+    /* --------------------------------------------------------
+       DESTETE
+    -------------------------------------------------------- */
+
+    if(
+        texto.includes(
+            "destete"
+        ) ||
+        texto.includes(
+            "destetes"
+        )
+    ){
+
+        return consultarDestete(
+            original
+        );
+    }
+
+
+    /* --------------------------------------------------------
+       HISTORIA DE CERDOS
+    -------------------------------------------------------- */
+
+    if(
+        texto.includes(
+            "historial de cerdos"
+        ) ||
+        texto.includes(
+            "historial de naves"
+        ) ||
+        texto.includes(
+            "historial de animales"
+        )
+    ){
+
+        return consultarHistorialCerdos(
+            original
+        );
+    }
+
+
+    /* --------------------------------------------------------
+       TODA LA INFORMACIÓN
+    -------------------------------------------------------- */
+
+    if(
+        texto.includes(
+            "toda la informacion"
+        ) ||
+        texto.includes(
+            "informacion completa"
+        ) ||
+        texto.includes(
+            "todo lo que hay"
+        ) ||
+        texto.includes(
+            "resumen general"
+        )
+    ){
+
+        return consultarTodaInformacion();
+    }
+
+
+    /* --------------------------------------------------------
+       MEMORIA
+    -------------------------------------------------------- */
+
+    if(
+        texto.includes(
+            "que te dije"
+        ) ||
+        texto.includes(
+            "que hablamos"
+        ) ||
+        texto.includes(
+            "recuerdas"
+        )
     ){
 
         if(!conversacion.length){
@@ -3297,28 +5441,31 @@ async function procesarPregunta(
         }
 
 
-        const ultimas =
-            conversacion.slice(-5);
-
-
         let respuesta =
-            "Sí. Recuerdo parte de nuestra conversación reciente:\n\n";
+            "Sí, " +
+            (
+                nombreUsuario ||
+                ""
+            ) +
+            ". Recuerdo nuestra conversación reciente.\n\n";
 
 
-        ultimas.forEach(
-            function(item){
+        conversacion
+            .slice(-5)
+            .forEach(
+                function(item){
 
-                respuesta +=
-                    "Tú: " +
-                    item.usuario +
-                    "\n";
+                    respuesta +=
+                        "Tú dijiste: " +
+                        item.usuario +
+                        ".\n";
 
-                respuesta +=
-                    "Yo: " +
-                    item.asistente +
-                    "\n\n";
-            }
-        );
+                    respuesta +=
+                        "Yo respondí: " +
+                        item.asistente +
+                        ".\n\n";
+                }
+            );
 
 
         return respuesta.trim();
@@ -3332,41 +5479,35 @@ async function procesarPregunta(
     if(
         ultimaEntidad &&
         (
-            texto.includes("y cuanto") ||
-            texto.includes("y cuanto queda") ||
-            texto.includes("cuanto queda") ||
-            texto.includes("y ese producto")
+            texto.includes(
+                "cuanto queda"
+            ) ||
+            texto.includes(
+                "cuanto hay"
+            ) ||
+            texto.includes(
+                "y ese producto"
+            )
         )
     ){
 
-        return consultarProductoNatural(
+        return consultarProducto(
             ultimaEntidad
         );
     }
 
 
     /* --------------------------------------------------------
-       PREGUNTAS SOBRE EXISTENCIA
-    -------------------------------------------------------- */
-
-    if(
-        texto.includes("cuanto tenemos") ||
-        texto.includes("cuanto hay") ||
-        texto.includes("que cantidad tenemos") ||
-        texto.includes("existencia")
-    ){
-
-        return mostrarInventarioCompleto();
-    }
-
-
-    /* --------------------------------------------------------
-       PREGUNTA NO RECONOCIDA
+       PREGUNTA NO ENTENDIDA
     -------------------------------------------------------- */
 
     return (
-        "Entiendo lo que me dices, pero todavía no tengo una operación específica conectada para esa solicitud. " +
-        "Puedes preguntarme por inventario, maíz, soya, cebada, salvado, pienso, materiales de construcción, productos elaborados, recetas, movimientos o pedirme una entrada o salida de inventario."
+        "No estoy seguro de haber entendido lo que me pides, " +
+        (
+            nombreUsuario ||
+            ""
+        ) +
+        ". Puedes repetir la pregunta con otras palabras y volveré a intentarlo."
     );
 }
 
@@ -3421,7 +5562,7 @@ async function enviarPregunta(){
 
 
     cambiarEstado(
-        "Desierto está pensando..."
+        "Desierto está consultando la información..."
     );
 
 
@@ -3436,7 +5577,7 @@ async function enviarPregunta(){
         const textoRespuesta =
             String(
                 respuesta ||
-                "No tengo una respuesta para eso."
+                "No hay información registrada."
             );
 
 
@@ -3455,13 +5596,12 @@ async function enviarPregunta(){
     }catch(error){
 
         console.error(
-            "ERROR COMPLETO DEL ASISTENTE:",
+            "ERROR COMPLETO DESIERTO:",
             error
         );
 
 
-        let mensaje =
-            "Ocurrió un problema mientras procesaba la solicitud.";
+        let mensaje;
 
 
         if(
@@ -3471,7 +5611,12 @@ async function enviarPregunta(){
         ){
 
             mensaje =
-                "Puedo conversar contigo, pero no pude conectar con la base de datos de ElDesierto. Revisa que supabase.js esté cargando correctamente.";
+                "No pude conectar con la base de datos de ElDesierto en este momento. La conversación sigue funcionando, pero necesito la conexión con Supabase para consultar o modificar información.";
+
+        }else{
+
+            mensaje =
+                "Tuve un problema al consultar esa información. Puedes repetir la pregunta y lo intentaré nuevamente.";
         }
 
 
@@ -3488,12 +5633,17 @@ async function enviarPregunta(){
 
     }finally{
 
-        procesando = false;
+        procesando =
+            false;
+
 
         setTimeout(
             function(){
 
-                if(!hablando){
+                if(
+                    !hablando &&
+                    !escuchando
+                ){
 
                     cambiarEstado(
                         "Listo para conversar contigo"
@@ -3508,16 +5658,58 @@ async function enviarPregunta(){
 
 
 /* ============================================================
+   TECLADO
+============================================================ */
+
+function manejarTecla(
+    evento
+){
+
+    if(
+        evento.key ===
+        "Enter"
+    ){
+
+        evento.preventDefault();
+
+        enviarPregunta();
+    }
+}
+
+
+function usarEjemplo(
+    texto
+){
+
+    const input =
+        document.getElementById(
+            "pregunta"
+        );
+
+
+    if(input){
+
+        input.value =
+            texto;
+
+        input.focus();
+
+        enviarPregunta();
+    }
+}
+
+
+/* ============================================================
    INICIALIZACIÓN
 ============================================================ */
 
-function iniciarAsistente(){
+async function iniciarAsistente(){
 
     cargarConversacion();
 
-    prepararReconocimiento();
-
     cargarVoces();
+
+    prepararReconocimiento();
 
 
     const input =
@@ -3535,6 +5727,14 @@ function iniciarAsistente(){
     cambiarEstado(
         "Listo para conversar contigo"
     );
+
+
+    /*
+       Si nunca hemos preguntado el nombre,
+       Desierto lo solicitará cuando el usuario
+       comience la conversación.
+    */
+
 }
 
 
@@ -3547,4 +5747,4 @@ document.addEventListener(
 
 </body>
 
-</html>
+      </html>
