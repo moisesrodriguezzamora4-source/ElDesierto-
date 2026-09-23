@@ -17,6 +17,7 @@ content="width=device-width, initial-scale=1.0">
 }
 
 body{
+
     font-family:Arial,sans-serif;
 
     background:
@@ -31,6 +32,7 @@ body{
 }
 
 h1{
+
     text-align:center;
 
     color:#ff3030;
@@ -48,6 +50,7 @@ h2{
 }
 
 .boton{
+
     display:block;
 
     width:90%;
@@ -80,6 +83,7 @@ h2{
 }
 
 .boton:active{
+
     transform:translateY(5px);
 
     box-shadow:
@@ -100,7 +104,7 @@ h2{
 
     display:grid;
 
-    grid-template-columns:1fr 1fr;
+    grid-template-columns:1fr 1fr 1fr;
 
     gap:15px;
 }
@@ -517,6 +521,50 @@ tbody tr:hover td{
 
 
 /* ==========================================
+   MATERNIDAD
+========================================== */
+
+.maternidadTitulo{
+
+    width:95%;
+    max-width:1100px;
+
+    margin:25px auto;
+
+    padding:20px;
+
+    border-radius:20px;
+
+    text-align:center;
+
+    background:
+    linear-gradient(145deg,#202020,#080808);
+
+    border:1px solid #3a3a3a;
+
+    box-shadow:
+    8px 8px 25px #000;
+}
+
+.maternidadTitulo h2{
+
+    margin:0;
+
+    color:#ff4040;
+
+    text-shadow:
+    0 0 8px rgba(255,0,0,.4);
+}
+
+.maternidadTitulo p{
+
+    color:#aaa;
+
+    margin-bottom:0;
+}
+
+
+/* ==========================================
    RESPONSIVE
 ========================================== */
 
@@ -575,7 +623,6 @@ tbody tr:hover td{
 
 </head>
 
-
 <body>
 
 
@@ -597,24 +644,36 @@ onclick="window.location.href='naves.html'">
 
 <div class="botonesHistorial">
 
-    <button
-    id="botonHistorialCeba"
-    class="botonHistorial activo"
-    onclick="mostrarHistorialCeba()">
 
-    🐷 Historial Ceba
+<button
+id="botonHistorialCeba"
+class="botonHistorial activo"
+onclick="mostrarHistorialCeba()">
 
-    </button>
+🐷 Historial Ceba
+
+</button>
 
 
-    <button
-    id="botonHistorialDestete"
-    class="botonHistorial"
-    onclick="cambiarHistorialDestete()">
+<button
+id="botonHistorialDestete"
+class="botonHistorial"
+onclick="cambiarHistorialDestete()">
 
-    🍼 Historial Destete
+🍼 Historial Destete
 
-    </button>
+</button>
+
+
+<button
+id="botonHistorialMaternidad"
+class="botonHistorial"
+onclick="cambiarHistorialMaternidad()">
+
+🐷 Historial Maternidad
+
+</button>
+
 
 </div>
 
@@ -860,7 +919,6 @@ class="mensaje">
 
 </div>
 
-
 </div>
 
 
@@ -1081,6 +1139,298 @@ class="mensaje">
 
 </div>
 
+</div>
+
+
+<!-- ==========================================
+     HISTORIAL MATERNIDAD
+========================================== -->
+
+<div
+id="seccionMaternidad"
+class="seccionHistorial">
+
+
+<div class="maternidadTitulo">
+
+<h2>
+🐷🐷 Historial de Maternidad
+</h2>
+
+<p>
+Registro de entradas, salidas para Ceba,
+ventas y muertes del área de Maternidad.
+</p>
+
+</div>
+
+
+<!-- ESTADÍSTICAS MATERNIDAD -->
+
+<div class="estadisticas">
+
+
+<div class="estadistica">
+
+<div class="icono">➕🐷</div>
+
+<div class="titulo">
+ENTRADAS MATERNIDAD
+</div>
+
+<div
+class="numero"
+id="totalEntradasMaternidad">
+
+0
+
+</div>
+
+</div>
+
+
+<div class="estadistica">
+
+<div class="icono">🚚</div>
+
+<div class="titulo">
+SALIDAS A CEBA
+</div>
+
+<div
+class="numero"
+id="totalSalidasMaternidad">
+
+0
+
+</div>
+
+</div>
+
+
+<div class="estadistica">
+
+<div class="icono">💰</div>
+
+<div class="titulo">
+CERDOS VENDIDOS
+</div>
+
+<div
+class="numero"
+id="totalVentasMaternidad">
+
+0
+
+</div>
+
+</div>
+
+
+<div class="estadistica">
+
+<div class="icono">☠️</div>
+
+<div class="titulo">
+MUERTES
+</div>
+
+<div
+class="numero"
+id="totalMuertesMaternidad">
+
+0
+
+</div>
+
+</div>
+
+
+<div class="estadistica">
+
+<div class="icono">⚖️</div>
+
+<div class="titulo">
+MUERTES DE VENTA
+</div>
+
+<div
+class="numero"
+id="totalMuertesVentaMaternidad">
+
+0
+
+</div>
+
+</div>
+
+
+<div class="estadistica">
+
+<div class="icono">📊</div>
+
+<div class="titulo">
+MOVIMIENTOS
+</div>
+
+<div
+class="numero"
+id="totalMovimientosMaternidad">
+
+0
+
+</div>
+
+</div>
+
+
+</div>
+
+
+<!-- FILTROS MATERNIDAD -->
+
+<div class="filtros">
+
+<h2>
+🔎 Filtrar historial de Maternidad
+</h2>
+
+
+<div class="contenedorFiltros">
+
+
+<select id="filtroNaveMaternidad">
+
+<option value="">
+🏠 Todas las naves
+</option>
+
+</select>
+
+
+<select id="filtroFilaMaternidad">
+
+<option value="">
+🐷 Todas las filas
+</option>
+
+</select>
+
+
+<select id="filtroOperacionMaternidad">
+
+<option value="">
+📋 Todas las operaciones
+</option>
+
+<option value="Entrada">
+➕ Entrada
+</option>
+
+<option value="Salida Ceba">
+🚚 Salida Ceba
+</option>
+
+<option value="Venta">
+💰 Venta
+</option>
+
+<option value="Muerte total">
+☠️ Muerte total
+</option>
+
+<option value="Muerte de venta">
+⚖️ Muerte de venta
+</option>
+
+</select>
+
+
+<input
+type="date"
+id="filtroFechaMaternidad">
+
+
+</div>
+
+
+<button
+class="botonFiltro"
+style="width:100%;margin-top:15px;"
+onclick="aplicarFiltrosMaternidad()">
+
+🔎 Buscar
+
+</button>
+
+
+<button
+class="botonFiltro"
+style="width:100%;margin-top:15px;"
+onclick="limpiarFiltrosMaternidad()">
+
+🔄 Limpiar filtros
+
+</button>
+
+
+</div>
+
+
+<!-- TABLA MATERNIDAD -->
+
+<div class="caja">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>📅 Fecha</th>
+
+<th>🕒 Hora</th>
+
+<th>🏠 Nave</th>
+
+<th>🐷 Fila</th>
+
+<th>📦 Operación</th>
+
+<th>🔢 Cantidad</th>
+
+<th>⚖️ Peso kg</th>
+
+<th>📋 Motivo</th>
+
+<th>👤 Usuario</th>
+
+<th>⚙️ Acción</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="tablaHistorialMaternidad">
+
+<tr>
+
+<td
+colspan="10"
+class="mensaje">
+
+⏳ Cargando historial de Maternidad...
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
 
 </div>
 
@@ -1109,6 +1459,8 @@ let todosLosMovimientos=[];
 
 let todosLosMovimientosDestete=[];
 
+let todosLosMovimientosMaternidad=[];
+
 
 /* ==========================================
    CAMBIAR A HISTORIAL CEBA
@@ -1129,6 +1481,12 @@ function mostrarHistorialCeba(){
 
 
     document
+    .getElementById("seccionMaternidad")
+    .classList
+    .remove("activa");
+
+
+    document
     .getElementById("botonHistorialCeba")
     .classList
     .add("activo");
@@ -1136,6 +1494,12 @@ function mostrarHistorialCeba(){
 
     document
     .getElementById("botonHistorialDestete")
+    .classList
+    .remove("activo");
+
+
+    document
+    .getElementById("botonHistorialMaternidad")
     .classList
     .remove("activo");
 
@@ -1161,6 +1525,12 @@ async function cambiarHistorialDestete(){
 
 
     document
+    .getElementById("seccionMaternidad")
+    .classList
+    .remove("activa");
+
+
+    document
     .getElementById("botonHistorialCeba")
     .classList
     .remove("activo");
@@ -1172,7 +1542,60 @@ async function cambiarHistorialDestete(){
     .add("activo");
 
 
+    document
+    .getElementById("botonHistorialMaternidad")
+    .classList
+    .remove("activo");
+
+
     await cargarHistorialDestete();
+
+}
+
+
+/* ==========================================
+   CAMBIAR A HISTORIAL MATERNIDAD
+========================================== */
+
+async function cambiarHistorialMaternidad(){
+
+    document
+    .getElementById("seccionCeba")
+    .classList
+    .remove("activa");
+
+
+    document
+    .getElementById("seccionDestete")
+    .classList
+    .remove("activa");
+
+
+    document
+    .getElementById("seccionMaternidad")
+    .classList
+    .add("activa");
+
+
+    document
+    .getElementById("botonHistorialCeba")
+    .classList
+    .remove("activo");
+
+
+    document
+    .getElementById("botonHistorialDestete")
+    .classList
+    .remove("activo");
+
+
+    document
+    .getElementById("botonHistorialMaternidad")
+    .classList
+    .add("activo");
+
+
+    await cargarHistorialMaternidad();
 
 }
 
@@ -1247,7 +1670,7 @@ async function verificarSesion(){
 
 
 /* ==========================================
-   NAVES FILTRO
+   NAVES FILTRO CEBA
 ========================================== */
 
 async function cargarNavesFiltro(){
@@ -2426,6 +2849,859 @@ async function eliminarMovimientoDestete(id){
 
 
     await cargarHistorialDestete();
+
+}
+
+
+/* ==================================================
+   HISTORIAL MATERNIDAD
+================================================== */
+
+
+/* ==========================================
+   CARGAR HISTORIAL MATERNIDAD
+========================================== */
+
+async function cargarHistorialMaternidad(){
+
+    const tabla=
+    document.getElementById(
+        "tablaHistorialMaternidad"
+    );
+
+
+    tabla.innerHTML=`
+
+    <tr>
+
+    <td
+    colspan="10"
+    class="mensaje">
+
+    ⏳ Cargando historial de Maternidad...
+
+    </td>
+
+    </tr>
+
+    `;
+
+
+    const {data,error}=
+    await clienteSupabase
+    .from("movimientos_maternidad")
+    .select("*")
+    .order(
+        "fecha",
+        {
+            ascending:false
+        }
+    );
+
+
+    if(error){
+
+        tabla.innerHTML=`
+
+        <tr>
+
+        <td
+        colspan="10"
+        class="mensaje">
+
+        ❌ Error cargando historial de Maternidad:
+
+        <br><br>
+
+        ${error.message}
+
+        </td>
+
+        </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    todosLosMovimientosMaternidad=
+    data || [];
+
+
+    cargarNavesFiltroMaternidad();
+
+
+    mostrarHistorialMaternidad(
+        todosLosMovimientosMaternidad
+    );
+
+}
+
+
+/* ==========================================
+   CARGAR FILTROS MATERNIDAD
+========================================== */
+
+function cargarNavesFiltroMaternidad(){
+
+    const selectNave=
+    document.getElementById(
+        "filtroNaveMaternidad"
+    );
+
+
+    const selectFila=
+    document.getElementById(
+        "filtroFilaMaternidad"
+    );
+
+
+    const naveAnterior=
+    selectNave.value;
+
+
+    const filaAnterior=
+    selectFila.value;
+
+
+    const naves=[];
+
+    const filas=[];
+
+
+    todosLosMovimientosMaternidad
+    .forEach(m=>{
+
+        if(
+            m.nave &&
+            !naves.includes(m.nave)
+        ){
+
+            naves.push(m.nave);
+
+        }
+
+
+        if(
+            m.fila &&
+            !filas.includes(m.fila)
+        ){
+
+            filas.push(m.fila);
+
+        }
+
+    });
+
+
+    selectNave.innerHTML=`
+
+    <option value="">
+
+    🏠 Todas las naves
+
+    </option>
+
+    `;
+
+
+    naves.forEach(nave=>{
+
+        selectNave.innerHTML+=`
+
+        <option value="${nave}">
+
+        ${nave}
+
+        </option>
+
+        `;
+
+    });
+
+
+    selectFila.innerHTML=`
+
+    <option value="">
+
+    🐷 Todas las filas
+
+    </option>
+
+    `;
+
+
+    filas.forEach(fila=>{
+
+        selectFila.innerHTML+=`
+
+        <option value="${fila}">
+
+        ${fila}
+
+        </option>
+
+        `;
+
+    });
+
+
+    if(
+        naves.includes(naveAnterior)
+    ){
+
+        selectNave.value=
+        naveAnterior;
+
+    }
+
+
+    if(
+        filas.includes(filaAnterior)
+    ){
+
+        selectFila.value=
+        filaAnterior;
+
+    }
+
+}
+
+
+/* ==========================================
+   MOSTRAR HISTORIAL MATERNIDAD
+========================================== */
+
+function mostrarHistorialMaternidad(
+    movimientos
+){
+
+    const tabla=
+    document.getElementById(
+        "tablaHistorialMaternidad"
+    );
+
+
+    actualizarEstadisticasMaternidad(
+        movimientos
+    );
+
+
+    if(
+        !movimientos ||
+        movimientos.length===0
+    ){
+
+        tabla.innerHTML=`
+
+        <tr>
+
+        <td
+        colspan="10"
+        class="mensaje">
+
+        📭 No hay movimientos de Maternidad para mostrar.
+
+        </td>
+
+        </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    let html="";
+
+
+    movimientos.forEach(m=>{
+
+        const fechaCompleta=
+        new Date(m.fecha);
+
+
+        const fecha=
+        fechaCompleta
+        .toLocaleDateString(
+            "es-ES"
+        );
+
+
+        const hora=
+        fechaCompleta
+        .toLocaleTimeString(
+            "es-ES",
+            {
+                hour:"2-digit",
+                minute:"2-digit"
+            }
+        );
+
+
+        const cantidad=
+        Number(
+            m.cantidad || 0
+        );
+
+
+        const peso=
+        Number(
+            m.peso_kg || 0
+        );
+
+
+        const operacion=
+        String(
+            m.operacion || ""
+        );
+
+
+        const botonEliminar=
+
+        esAdministrador
+
+        ?
+
+        `
+
+        <button
+        class="eliminar"
+        onclick="eliminarMovimientoMaternidad(${m.id})">
+
+        🗑️ Eliminar
+
+        </button>
+
+        `
+
+        :
+
+        `
+
+        <span class="sinPermiso">
+
+        🔒 Sin permiso
+
+        </span>
+
+        `;
+
+
+        let operacionMostrar=
+        operacion;
+
+
+        if(
+            operacion==="Entrada"
+        ){
+
+            operacionMostrar=
+            "➕ Entrada";
+
+        }
+
+
+        else if(
+            operacion==="Salida Ceba"
+        ){
+
+            operacionMostrar=
+            "🚚 Salida Ceba";
+
+        }
+
+
+        else if(
+            operacion==="Venta"
+        ){
+
+            operacionMostrar=
+            "💰 Venta";
+
+        }
+
+
+        else if(
+            operacion==="Muerte total"
+        ){
+
+            operacionMostrar=
+            "☠️ Muerte total";
+
+        }
+
+
+        else if(
+            operacion==="Muerte de venta"
+        ){
+
+            operacionMostrar=
+            "⚖️ Muerte de venta";
+
+        }
+
+
+        html+=`
+
+        <tr>
+
+
+        <td>
+
+        ${fecha}
+
+        </td>
+
+
+        <td>
+
+        ${hora}
+
+        </td>
+
+
+        <td class="grupo">
+
+        ${m.nave || "—"}
+
+        </td>
+
+
+        <td class="grupo">
+
+        ${m.fila || "—"}
+
+        </td>
+
+
+        <td>
+
+        ${operacionMostrar}
+
+        </td>
+
+
+        <td>
+
+        <strong>
+
+        ${cantidad}
+
+        </strong>
+
+        </td>
+
+
+        <td>
+
+        ${
+            peso>0
+            ?
+            peso.toFixed(2)
+            :
+            "—"
+        }
+
+        </td>
+
+
+        <td>
+
+        ${m.motivo || "—"}
+
+        </td>
+
+
+        <td>
+
+        ${m.usuario || "—"}
+
+        </td>
+
+
+        <td>
+
+        ${botonEliminar}
+
+        </td>
+
+
+        </tr>
+
+        `;
+
+    });
+
+
+    tabla.innerHTML=
+    html;
+
+}
+
+
+/* ==========================================
+   ESTADÍSTICAS MATERNIDAD
+========================================== */
+
+function actualizarEstadisticasMaternidad(
+    movimientos
+){
+
+    let entradas=0;
+
+    let salidas=0;
+
+    let ventas=0;
+
+    let muertes=0;
+
+    let muertesVenta=0;
+
+
+    movimientos.forEach(m=>{
+
+        const cantidad=
+        Number(
+            m.cantidad || 0
+        );
+
+
+        const operacion=
+        String(
+            m.operacion || ""
+        )
+        .trim()
+        .toLowerCase();
+
+
+        if(
+            operacion==="entrada"
+        ){
+
+            entradas+=cantidad;
+
+        }
+
+
+        if(
+            operacion==="salida ceba"
+        ){
+
+            salidas+=cantidad;
+
+        }
+
+
+        if(
+            operacion==="venta"
+        ){
+
+            ventas+=cantidad;
+
+        }
+
+
+        if(
+            operacion==="muerte total"
+        ){
+
+            muertes+=cantidad;
+
+        }
+
+
+        if(
+            operacion==="muerte de venta"
+        ){
+
+            muertesVenta+=cantidad;
+
+        }
+
+    });
+
+
+    document
+    .getElementById(
+        "totalEntradasMaternidad"
+    )
+    .innerText=
+    entradas;
+
+
+    document
+    .getElementById(
+        "totalSalidasMaternidad"
+    )
+    .innerText=
+    salidas;
+
+
+    document
+    .getElementById(
+        "totalVentasMaternidad"
+    )
+    .innerText=
+    ventas;
+
+
+    document
+    .getElementById(
+        "totalMuertesMaternidad"
+    )
+    .innerText=
+    muertes;
+
+
+    document
+    .getElementById(
+        "totalMuertesVentaMaternidad"
+    )
+    .innerText=
+    muertesVenta;
+
+
+    document
+    .getElementById(
+        "totalMovimientosMaternidad"
+    )
+    .innerText=
+    movimientos.length;
+
+}
+
+
+/* ==========================================
+   FILTROS MATERNIDAD
+========================================== */
+
+function aplicarFiltrosMaternidad(){
+
+    const nave=
+    document.getElementById(
+        "filtroNaveMaternidad"
+    ).value;
+
+
+    const fila=
+    document.getElementById(
+        "filtroFilaMaternidad"
+    ).value;
+
+
+    const operacion=
+    document.getElementById(
+        "filtroOperacionMaternidad"
+    ).value;
+
+
+    const fecha=
+    document.getElementById(
+        "filtroFechaMaternidad"
+    ).value;
+
+
+    let resultado=
+    [...todosLosMovimientosMaternidad];
+
+
+    if(nave){
+
+        resultado=
+        resultado.filter(m=>
+
+            String(
+                m.nave || ""
+            )
+            .trim()
+            ===
+            String(nave)
+            .trim()
+
+        );
+
+    }
+
+
+    if(fila){
+
+        resultado=
+        resultado.filter(m=>
+
+            String(
+                m.fila || ""
+            )
+            .trim()
+            .toUpperCase()
+            ===
+            String(fila)
+            .trim()
+            .toUpperCase()
+
+        );
+
+    }
+
+
+    if(operacion){
+
+        resultado=
+        resultado.filter(m=>
+
+            String(
+                m.operacion || ""
+            )
+            .trim()
+            ===
+            operacion
+
+        );
+
+    }
+
+
+    if(fecha){
+
+        resultado=
+        resultado.filter(m=>{
+
+            const d=
+            new Date(m.fecha);
+
+
+            const local=
+
+            d.getFullYear()
+            +
+            "-"
+            +
+            String(
+                d.getMonth()+1
+            ).padStart(2,"0")
+            +
+            "-"
+            +
+            String(
+                d.getDate()
+            ).padStart(2,"0");
+
+
+            return local===fecha;
+
+        });
+
+    }
+
+
+    mostrarHistorialMaternidad(
+        resultado
+    );
+
+}
+
+
+/* ==========================================
+   LIMPIAR FILTROS MATERNIDAD
+========================================== */
+
+function limpiarFiltrosMaternidad(){
+
+    document
+    .getElementById(
+        "filtroNaveMaternidad"
+    )
+    .value="";
+
+
+    document
+    .getElementById(
+        "filtroFilaMaternidad"
+    )
+    .value="";
+
+
+    document
+    .getElementById(
+        "filtroOperacionMaternidad"
+    )
+    .value="";
+
+
+    document
+    .getElementById(
+        "filtroFechaMaternidad"
+    )
+    .value="";
+
+
+    mostrarHistorialMaternidad(
+        todosLosMovimientosMaternidad
+    );
+
+}
+
+
+/* ==========================================
+   ELIMINAR MOVIMIENTO MATERNIDAD
+========================================== */
+
+async function eliminarMovimientoMaternidad(
+    id
+){
+
+    if(!esAdministrador){
+
+        alert(
+            "❌ No tienes permisos para eliminar registros."
+        );
+
+        return;
+
+    }
+
+
+    if(!confirm(
+        "⚠️ ¿Seguro que deseas eliminar este registro de Maternidad?\n\n"+
+        "Esta acción no se puede deshacer."
+    )){
+
+        return;
+
+    }
+
+
+    const {error}=
+    await clienteSupabase
+    .from("movimientos_maternidad")
+    .delete()
+    .eq(
+        "id",
+        id
+    );
+
+
+    if(error){
+
+        alert(
+            "❌ Error eliminando el registro de Maternidad:\n\n"+
+            error.message
+        );
+
+        return;
+
+    }
+
+
+    alert(
+        "✅ Registro de Maternidad eliminado correctamente."
+    );
+
+
+    await cargarHistorialMaternidad();
 
 }
 
