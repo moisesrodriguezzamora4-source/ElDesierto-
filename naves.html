@@ -4,605 +4,526 @@
 <head>
 
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>ElDesierto - Naves</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
 <style>
+
+/* ==================================================
+   CONFIGURACIÓN GENERAL
+================================================== */
 
 *{
     box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
 body{
     font-family:Arial,sans-serif;
-    background:
-    radial-gradient(circle at top,#1d1d1d,#050505 65%);
-    color:white;
-    margin:0;
-    padding:20px;
-    text-align:center;
     min-height:100vh;
+    background:#050505;
+    color:white;
+    padding:20px;
 }
 
 h1{
-    color:#ff3030;
-    font-size:32px;
-    margin:10px 0 5px;
-    text-shadow:0 0 10px rgba(255,0,0,.6);
+    text-align:center;
+    color:#ff1e1e;
+    margin-bottom:20px;
+    text-shadow:
+        0 0 5px #ff0000,
+        0 0 15px #ff0000;
 }
 
 h2{
-    color:#ff4b4b;
+    color:#ff3333;
+    text-align:center;
+    margin-bottom:15px;
 }
 
+/* ==================================================
+   BOTONES
+================================================== */
+
 .boton{
-    display:block;
-    width:90%;
-    max-width:500px;
-    margin:15px auto;
-    padding:16px;
-    background:
-    linear-gradient(145deg,#ff3838,#9d0000);
+    background:linear-gradient(145deg,#ff2020,#8b0000);
     color:white;
     border:none;
-    border-radius:14px;
-    font-size:17px;
-    font-weight:bold;
+    padding:12px 18px;
+    border-radius:10px;
     cursor:pointer;
+    font-size:15px;
+    font-weight:bold;
+    margin:5px;
     box-shadow:
-    0 7px 0 #500000,
-    0 12px 25px rgba(255,0,0,.18);
+        0 5px 10px rgba(0,0,0,.7),
+        inset 0 1px 2px rgba(255,255,255,.3);
     transition:.2s;
 }
 
-.boton:active{
-    transform:translateY(5px);
-    box-shadow:0 2px 0 #500000;
+.boton:hover{
+    transform:translateY(-2px);
+    box-shadow:
+        0 8px 15px rgba(255,0,0,.35),
+        inset 0 1px 2px rgba(255,255,255,.3);
 }
+
+.boton:active{
+    transform:translateY(1px);
+}
+
+.selectorNaves{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+}
+
+/* ==================================================
+   TOTAL GENERAL DE LAS TRES ÁREAS
+================================================== */
+
+.totalTodasNaves{
+    width:100%;
+    max-width:900px;
+    margin:15px auto 25px;
+    padding:18px;
+    border-radius:15px;
+    background:
+        linear-gradient(145deg,#1b1b1b,#070707);
+    border:2px solid #a00000;
+    box-shadow:
+        0 8px 20px rgba(0,0,0,.8),
+        inset 0 0 12px rgba(255,0,0,.12);
+    text-align:center;
+}
+
+.totalTodasNaves h2{
+    margin-bottom:12px;
+    font-size:20px;
+}
+
+.detalleTotalTodasNaves{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.detalleTotalTodasNaves span{
+    background:#111;
+    border:1px solid #8b0000;
+    border-radius:8px;
+    padding:8px 12px;
+}
+
+.detalleTotalTodasNaves b{
+    color:#ff3333;
+}
+
+.numeroTotalTodasNaves{
+    font-size:38px;
+    font-weight:bold;
+    color:#ff1e1e;
+    text-shadow:
+        0 0 8px #ff0000,
+        0 0 18px #ff0000;
+    margin:10px 0 5px;
+}
+
+/* ==================================================
+   NAVES CEBA
+================================================== */
 
 .nave{
-    width:95%;
-    max-width:850px;
-    margin:25px auto;
-    padding:20px;
-    border-radius:20px;
     background:
-    linear-gradient(145deg,#202020,#090909);
-    border:1px solid #3a3a3a;
+        linear-gradient(145deg,#171717,#050505);
+    border:2px solid #8b0000;
+    border-radius:15px;
+    padding:15px;
+    margin:15px auto;
+    max-width:1000px;
     box-shadow:
-    10px 10px 25px #000,
-    -3px -3px 15px #252525,
-    inset 0 0 15px rgba(255,0,0,.05);
-}
-
-.nave h2{
-    margin-top:0;
-    color:#ff3b3b;
-    text-shadow:0 0 8px rgba(255,0,0,.5);
+        0 8px 20px rgba(0,0,0,.8),
+        inset 0 0 15px rgba(255,0,0,.08);
 }
 
 .contenedorNave{
-    background:
-    linear-gradient(145deg,#151515,#050505);
-    border:2px solid #8f0000;
-    border-radius:16px;
-    padding:14px;
     display:grid;
-    grid-template-columns:repeat(5,1fr);
-    gap:10px;
-    box-shadow:
-    inset 0 0 15px black,
-    0 0 12px rgba(255,0,0,.15);
+    grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+    gap:12px;
 }
 
 .cuarton{
-    min-height:85px;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    cursor:pointer;
-    border-radius:12px;
     background:
-    linear-gradient(145deg,#292929,#101010);
-    border:1px solid #4a4a4a;
+        linear-gradient(145deg,#242424,#0b0b0b);
+    border:2px solid #550000;
+    border-radius:12px;
+    padding:15px 8px;
+    text-align:center;
+    cursor:pointer;
     box-shadow:
-    5px 5px 10px #000,
-    -2px -2px 6px #303030;
+        0 5px 12px rgba(0,0,0,.7),
+        inset 0 0 8px rgba(255,0,0,.08);
     transition:.2s;
 }
 
 .cuarton:hover{
-    border-color:#ff2525;
-    box-shadow:0 0 15px rgba(255,0,0,.6);
+    border-color:#ff0000;
     transform:translateY(-2px);
 }
 
-.cuarton:active{
-    transform:scale(.96);
-}
-
 .numero{
-    color:#ff5555;
-    font-size:13px;
+    color:#ff2222;
+    font-size:18px;
     font-weight:bold;
 }
 
 .cerdos{
-    font-size:22px;
+    font-size:26px;
+    font-weight:bold;
     margin-top:8px;
-    color:white;
 }
 
 .totalNave{
-    margin-top:18px;
-    padding:14px;
-    border-radius:12px;
-    background:
-    linear-gradient(145deg,#280000,#100000);
-    color:#ff5555;
-    font-size:18px;
+    text-align:center;
+    color:#ff4444;
+    font-size:20px;
+    margin-top:15px;
     font-weight:bold;
-    border:1px solid #750000;
-    box-shadow:inset 0 0 10px black;
 }
 
 .panel{
-    width:90%;
-    max-width:500px;
-    margin:25px auto;
-    padding:22px;
-    border-radius:20px;
+    max-width:600px;
+    margin:15px auto;
+    padding:20px;
     background:
-    linear-gradient(145deg,#202020,#080808);
-    border:1px solid #3a3a3a;
+        linear-gradient(145deg,#181818,#060606);
+    border:2px solid #8b0000;
+    border-radius:15px;
     box-shadow:
-    10px 10px 25px #000,
-    -3px -3px 12px #252525;
+        0 8px 20px rgba(0,0,0,.8);
+    text-align:center;
 }
 
-.panel button{
-    display:block;
+input,select{
     width:100%;
-    padding:14px;
-    margin:12px 0;
-    border:none;
-    border-radius:12px;
-    font-size:16px;
-    font-weight:bold;
+    padding:12px;
+    margin:7px 0;
+    border-radius:8px;
+    border:1px solid #770000;
+    background:#111;
     color:white;
-    cursor:pointer;
-    background:
-    linear-gradient(145deg,#e50000,#850000);
-    box-shadow:
-    0 5px 0 #480000,
-    0 10px 18px rgba(255,0,0,.12);
-}
-
-.panel button:active{
-    transform:translateY(4px);
-    box-shadow:0 1px 0 #480000;
-}
-
-input,
-select{
-    width:100%;
-    padding:14px;
-    box-sizing:border-box;
-    margin:12px 0;
-    border-radius:12px;
-    font-size:16px;
-    color:white;
-    background:#101010;
-    border:1px solid #4a4a4a;
-    outline:none;
-    box-shadow:inset 0 0 10px #000;
-}
-
-input:focus,
-select:focus{
-    border-color:#ff3030;
-    box-shadow:0 0 10px rgba(255,0,0,.4);
+    font-size:15px;
 }
 
 .oculto{
-    display:none;
+    display:none!important;
 }
 
 #mensaje{
-    margin:20px;
+    max-width:700px;
+    margin:20px auto;
+    padding:12px;
+    text-align:center;
+    border-radius:10px;
+    background:#111;
+    color:#ff3333;
     font-weight:bold;
-    color:#ff5555;
 }
 
 .totalGeneral{
-    width:95%;
-    max-width:850px;
-    margin:30px auto;
-    padding:25px;
-    border-radius:22px;
+    max-width:500px;
+    margin:20px auto;
+    padding:20px;
+    text-align:center;
+    border-radius:15px;
     background:
-    linear-gradient(145deg,#e60000,#750000);
+        linear-gradient(145deg,#200000,#080000);
+    border:2px solid #b00000;
     box-shadow:
-    0 8px 0 #400000,
-    0 15px 30px rgba(255,0,0,.25);
-}
-
-.totalGeneral h2{
-    color:white;
-    margin-top:0;
+        0 8px 20px rgba(0,0,0,.8),
+        inset 0 0 15px rgba(255,0,0,.15);
 }
 
 .numeroTotal{
-    font-size:42px;
+    font-size:40px;
+    color:#ff1e1e;
     font-weight:bold;
+    text-shadow:0 0 12px #ff0000;
 }
 
 .resumen{
-    width:95%;
-    max-width:850px;
-    margin:25px auto;
-    padding:22px;
-    border-radius:20px;
-    background:
-    linear-gradient(145deg,#1d1d1d,#080808);
-    border:1px solid #3a3a3a;
-    box-shadow:8px 8px 25px #000;
+    max-width:800px;
+    margin:15px auto;
 }
 
 .movimientoResumen{
-    padding:13px;
-    margin:8px 0;
-    border-radius:10px;
-    background:#111;
-    border-left:4px solid #e00000;
-    font-weight:bold;
+    background:#101010;
+    border:1px solid #550000;
+    border-radius:8px;
+    padding:10px;
+    margin:6px 0;
 }
 
 .seleccionGrupo{
-    margin:10px 0;
-    padding:14px;
-    border-radius:12px;
-    background:
-    linear-gradient(145deg,#252525,#101010);
-    border:1px solid #444;
-    text-align:left;
-}
-
-.seleccionGrupo strong{
-    color:#ff5555;
+    background:#111;
+    border:1px solid #770000;
+    padding:10px;
+    border-radius:8px;
+    margin:8px 0;
 }
 
 .botonQuitar{
-    background:
-    linear-gradient(145deg,#555,#222) !important;
-    box-shadow:
-    0 4px 0 #111 !important;
-    padding:9px !important;
-    margin:8px 0 0 !important;
-    font-size:14px !important;
-}
-
-.resumenGrupo{
-    margin-top:15px;
-    padding:15px;
-    border-radius:12px;
-    background:#100000;
-    border:1px solid #700000;
-    text-align:left;
-}
-
-.itemDisponible{
-    margin:8px 0;
-    padding:12px;
-    border-radius:10px;
-    background:#151515;
-    border:1px solid #333;
+    background:#550000;
+    color:white;
+    border:none;
+    border-radius:6px;
+    padding:6px 10px;
     cursor:pointer;
 }
 
-.itemDisponible:hover{
-    border-color:#ff3030;
-}
-
-
 /* ==================================================
-   SELECCIÓN DE TIPO DE NAVES
-================================================== */
-
-.selectorNaves{
-    width:95%;
-    max-width:850px;
-    margin:25px auto;
-}
-
-.selectorNaves .boton{
-    max-width:600px;
-}
-
-
-/* ==================================================
-   NAVES DESTETE
+   DESTETE
 ================================================== */
 
 .naveDestete{
-    width:95%;
-    max-width:850px;
-    margin:25px auto;
-    padding:20px;
-    border-radius:20px;
-
     background:
-    linear-gradient(145deg,#202020,#090909);
-
-    border:1px solid #3a3a3a;
-
+        linear-gradient(145deg,#171717,#050505);
+    border:2px solid #8b0000;
+    border-radius:15px;
+    padding:15px;
+    margin:15px auto;
+    max-width:1000px;
     box-shadow:
-    10px 10px 25px #000,
-    -3px -3px 15px #252525,
-    inset 0 0 15px rgba(255,0,0,.05);
+        0 8px 20px rgba(0,0,0,.8),
+        inset 0 0 15px rgba(255,0,0,.08);
 }
-
-.naveDestete h2{
-    margin-top:0;
-    color:#ff3b3b;
-    text-shadow:0 0 8px rgba(255,0,0,.5);
-}
-
-
-/* CUADRADO QUE REPRESENTA LA NAVE */
 
 .estructuraDestete{
-    width:100%;
-    max-width:700px;
-    margin:20px auto;
-
-    padding:16px;
-
-    border-radius:18px;
-
-    background:
-    linear-gradient(145deg,#151515,#050505);
-
-    border:2px solid #8f0000;
-
-    box-shadow:
-    inset 0 0 15px black,
-    0 0 12px rgba(255,0,0,.15);
-
-    display:flex;
-    flex-direction:column;
-    gap:12px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
 }
 
-
-/* FILAS */
-
 .filaDestete{
-    min-height:115px;
-
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-
-    cursor:pointer;
-
-    border-radius:14px;
-
     background:
-    linear-gradient(145deg,#292929,#101010);
-
-    border:2px solid #4a4a4a;
-
+        linear-gradient(145deg,#242424,#0b0b0b);
+    border:2px solid #550000;
+    border-radius:12px;
+    padding:20px 10px;
+    text-align:center;
+    cursor:pointer;
     box-shadow:
-    6px 6px 12px #000,
-    -2px -2px 7px #303030;
-
+        0 5px 12px rgba(0,0,0,.7),
+        inset 0 0 8px rgba(255,0,0,.08);
     transition:.2s;
 }
 
 .filaDestete:hover{
-    border-color:#ff2525;
-
-    box-shadow:
-    0 0 18px rgba(255,0,0,.6);
-
+    border-color:#ff0000;
     transform:translateY(-2px);
 }
 
-.filaDestete:active{
-    transform:scale(.98);
-}
-
 .nombreFila{
-    color:#ff5555;
+    color:#ff2222;
     font-size:20px;
     font-weight:bold;
 }
 
 .cerdosFila{
-    font-size:28px;
-    margin-top:10px;
-    color:white;
+    font-size:30px;
+    font-weight:bold;
+    margin-top:8px;
 }
 
 .totalFila{
-    margin-top:5px;
-    color:#aaa;
-    font-size:14px;
+    text-align:center;
+    color:#ff4444;
+    font-size:20px;
+    margin-top:15px;
+    font-weight:bold;
 }
 
 .totalDestete{
-    margin-top:20px;
-    padding:18px;
-
-    border-radius:14px;
-
+    max-width:500px;
+    margin:20px auto;
+    padding:20px;
+    text-align:center;
+    border-radius:15px;
     background:
-    linear-gradient(145deg,#280000,#100000);
-
-    color:#ff5555;
-
-    font-size:20px;
-    font-weight:bold;
-
-    border:1px solid #750000;
-
+        linear-gradient(145deg,#200000,#080000);
+    border:2px solid #b00000;
     box-shadow:
-    inset 0 0 10px black;
+        0 8px 20px rgba(0,0,0,.8),
+        inset 0 0 15px rgba(255,0,0,.15);
 }
 
 .numeroTotalDestete{
     font-size:40px;
-    color:white;
-    margin-top:8px;
+    color:#ff1e1e;
+    font-weight:bold;
+    text-shadow:0 0 12px #ff0000;
 }
-
-
-/* ==================================================
-   DATOS DE CUARTONES DEL DESTETE
-================================================== */
 
 .datosCuartonesDestete{
-    width:100%;
-    max-width:700px;
-    margin:20px auto 0;
-    padding:18px;
-
-    border-radius:18px;
-
-    background:
-    linear-gradient(145deg,#1d1d1d,#080808);
-
-    border:1px solid #3a3a3a;
-
-    box-shadow:
-    8px 8px 20px #000,
-    inset 0 0 12px rgba(255,0,0,.04);
-}
-
-.datosCuartonesDestete h3{
-    margin-top:0;
-    color:#ff5555;
-    text-shadow:0 0 7px rgba(255,0,0,.4);
+    max-width:900px;
+    margin:20px auto;
+    background:#101010;
+    border:2px solid #660000;
+    border-radius:12px;
+    padding:15px;
 }
 
 .tablaCuartonesDestete{
     width:100%;
-    border-collapse:separate;
-    border-spacing:0 8px;
+    border-collapse:collapse;
+}
+
+.tablaCuartonesDestete th,
+.tablaCuartonesDestete td{
+    border:1px solid #550000;
+    padding:10px;
+    text-align:center;
 }
 
 .tablaCuartonesDestete th{
-    padding:12px 8px;
-    color:#ff5555;
-    background:#100000;
-    border-bottom:1px solid #750000;
-    font-size:13px;
+    color:#ff3333;
 }
-
-.tablaCuartonesDestete td{
-    padding:13px 8px;
-    background:
-    linear-gradient(145deg,#292929,#101010);
-    border-top:1px solid #333;
-    border-bottom:1px solid #111;
-    font-weight:bold;
-}
-
-.tablaCuartonesDestete td:first-child{
-    color:#ff5555;
-}
-
-.tablaCuartonesDestete td:last-child{
-    color:#ff9999;
-}
-
-.tablaCuartonesDestete td:first-child{
-    border-left:1px solid #333;
-    border-radius:10px 0 0 10px;
-}
-
-.tablaCuartonesDestete td:last-child{
-    border-right:1px solid #333;
-    border-radius:0 10px 10px 0;
-}
-
-
-/* ==================================================
-   PANEL DESTETE
-================================================== */
 
 .infoFilaDestete{
-    padding:14px;
-    margin:12px 0;
-
-    border-radius:12px;
-
-    background:#100000;
-
-    border:1px solid #700000;
-
-    font-weight:bold;
-
-    color:#ff5555;
+    color:#aaa;
+    margin-top:8px;
 }
 
 .reagrupeDestete{
-    padding:14px;
+    margin-top:10px;
+}
 
-    margin-top:15px;
+/* ==================================================
+   MATERNIDAD
+================================================== */
 
+.contenedorMaternidad{
+    max-width:1100px;
+    margin:auto;
+}
+
+.estructuraMaternidad{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+}
+
+.naveMaternidad{
+    background:
+        linear-gradient(145deg,#171717,#050505);
+    border:2px solid #8b0000;
+    border-radius:15px;
+    padding:18px;
+    box-shadow:
+        0 8px 20px rgba(0,0,0,.8),
+        inset 0 0 15px rgba(255,0,0,.08);
+}
+
+.tituloNaveMaternidad{
+    text-align:center;
+    color:#ff2222;
+    font-size:22px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+.filasMaternidad{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+}
+
+.filaMaternidad{
+    background:
+        linear-gradient(145deg,#242424,#0b0b0b);
+    border:2px solid #550000;
     border-radius:12px;
-
-    background:#111;
-
-    border:1px solid #333;
+    padding:25px 10px;
+    text-align:center;
+    cursor:pointer;
+    box-shadow:
+        0 5px 12px rgba(0,0,0,.7),
+        inset 0 0 8px rgba(255,0,0,.08);
+    transition:.2s;
 }
 
-.reagrupeDestete strong{
-    color:#ff5555;
+.filaMaternidad:hover{
+    border-color:#ff0000;
+    transform:translateY(-2px);
 }
 
+.nombreFilaMaternidad{
+    color:#ff2222;
+    font-size:20px;
+    font-weight:bold;
+}
+
+.cerdosFilaMaternidad{
+    font-size:30px;
+    font-weight:bold;
+    margin-top:8px;
+}
+
+.totalMaternidad{
+    max-width:600px;
+    margin:20px auto;
+    padding:20px;
+    text-align:center;
+    border-radius:15px;
+    background:
+        linear-gradient(145deg,#200000,#080000);
+    border:2px solid #b00000;
+    box-shadow:
+        0 8px 20px rgba(0,0,0,.8),
+        inset 0 0 15px rgba(255,0,0,.15);
+}
+
+.numeroTotalMaternidad{
+    font-size:40px;
+    color:#ff1e1e;
+    font-weight:bold;
+    text-shadow:0 0 12px #ff0000;
+}
+
+.infoFilaMaternidad{
+    color:#aaa;
+    margin-top:8px;
+}
 
 /* ==================================================
    RESPONSIVE
 ================================================== */
 
-@media(max-width:600px){
+@media(max-width:700px){
 
-    body{
-        padding:12px;
+    .estructuraDestete{
+        grid-template-columns:1fr;
+    }
+
+    .estructuraMaternidad{
+        grid-template-columns:1fr;
     }
 
     .contenedorNave{
-        grid-template-columns:repeat(3,1fr);
-    }
-
-    .cuarton{
-        min-height:75px;
-    }
-
-    .filaDestete{
-        min-height:100px;
-    }
-
-    .tablaCuartonesDestete{
-        font-size:13px;
-    }
-
-    .tablaCuartonesDestete th,
-    .tablaCuartonesDestete td{
-        padding:10px 5px;
+        grid-template-columns:repeat(2,1fr);
     }
 
 }
 
 </style>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 </head>
 
@@ -610,52 +531,340 @@ select:focus{
 
 <h1>🐷 Naves</h1>
 
-<button
-class="boton"
-onclick="window.location.href='menu.html'">
-
-⬅️ Volver al menú
-
-</button>
-
+<div style="text-align:center;">
+    <button class="boton" onclick="window.location.href='menu.html'">
+        ⬅️ Volver al menú
+    </button>
+</div>
 
 <!-- ==================================================
-     SELECCIÓN DE NAVES
+     SELECTOR PRINCIPAL
 ================================================== -->
 
-<div id="selectorNaves" class="selectorNaves">
+<div class="selectorNaves">
 
-<button
-class="boton"
-onclick="mostrarNavesCeba()">
+    <button class="boton" onclick="mostrarNavesCeba()">
+        🐷 Naves Ceba
+    </button>
 
-🐷 Naves Ceba
+    <button class="boton" onclick="mostrarNavesDestete()">
+        🍼 Naves Destete
+    </button>
 
-</button>
-
-<button
-class="boton"
-onclick="mostrarNavesDestete()">
-
-🍼 Naves Destete
-
-</button>
+    <button class="boton" onclick="mostrarNavesMaternidad()">
+        🐖 Naves Maternidad
+    </button>
 
 </div>
 
+<!-- ==================================================
+     TOTAL GENERAL
+================================================== -->
+
+<div id="resumenTotalTodasNaves" class="totalTodasNaves">
+
+    <h2>🐷 TOTAL GENERAL DE CERDOS</h2>
+
+    <div class="detalleTotalTodasNaves">
+
+        <span>
+            Ceba:
+            <b id="totalGeneralCeba">0</b>
+        </span>
+
+        <span>
+            Destete:
+            <b id="totalGeneralDestete">0</b>
+        </span>
+
+        <span>
+            Maternidad:
+            <b id="totalGeneralMaternidad">0</b>
+        </span>
+
+    </div>
+
+    <div id="totalGeneralTodasNaves"
+         class="numeroTotalTodasNaves">
+        0
+    </div>
+
+    <div>
+        Total Ceba + Destete + Maternidad
+    </div>
+
+</div>
 
 <!-- ==================================================
      CONTENIDO CEBA
 ================================================== -->
 
-<div id="contenidoCeba" class="oculto">
+<div id="contenidoCeba">
 
-<div id="contenido">
-Cargando naves...
+    <div id="totalCeba" class="totalGeneral">
+
+        <h2>🐷 Total de las 4 naves</h2>
+
+        <div id="numeroTotalCeba" class="numeroTotal">
+            0
+        </div>
+
+    </div>
+
+    <div id="contenedorNaves"></div>
+
+    <!-- PANEL CUARTÓN -->
+
+    <div id="panelCuarton" class="panel oculto">
+
+        <h2 id="tituloCuarton"></h2>
+
+        <button class="boton"
+                onclick="mostrarAgregar()">
+            ➕ Agregar cerdos
+        </button>
+
+        <button class="boton"
+                onclick="mostrarVenta()">
+            💰 Vender
+        </button>
+
+        <button class="boton"
+                onclick="mostrarMuerte()">
+            ☠️ Muerte
+        </button>
+
+        <button class="boton"
+                onclick="mostrarReagrupe()">
+            🔄 Reagrupar
+        </button>
+
+        <button class="boton"
+                onclick="cerrarPanel()">
+            ❌ Cancelar
+        </button>
+
+    </div>
+
+    <!-- PANEL AGREGAR -->
+
+    <div id="panelAgregar" class="panel oculto">
+
+        <h2>➕ Agregar cerdos</h2>
+
+        <select id="tipoEntrada">
+
+            <option value="">
+                Seleccione el tipo de entrada
+            </option>
+
+            <option value="Entrada Destete">
+                Entrada Destete
+            </option>
+
+            <option value="Entrada Exterior">
+                Entrada Exterior
+            </option>
+
+        </select>
+
+        <input
+            id="cantidadEntrada"
+            type="number"
+            min="1"
+            placeholder="Cantidad de cerdos"
+        >
+
+        <button class="boton"
+                onclick="agregarCerdos()">
+            Confirmar
+        </button>
+
+        <button class="boton"
+                onclick="cerrarPanel()">
+            Cancelar
+        </button>
+
+    </div>
+
+    <!-- PANEL VENTA -->
+
+    <div id="panelVenta" class="panel oculto">
+
+        <h2>💰 Venta</h2>
+
+        <input
+            id="cantidadVenta"
+            type="number"
+            min="1"
+            placeholder="Cantidad"
+        >
+
+        <input
+            id="pesoVenta"
+            type="number"
+            min="0"
+            step="0.01"
+            placeholder="Peso total kg"
+        >
+
+        <button class="boton"
+                onclick="procesarVentaIndividual()">
+            Vender
+        </button>
+
+        <button class="boton"
+                onclick="mostrarVentaGrupo()">
+            Vender por grupo
+        </button>
+
+        <button class="boton"
+                onclick="cerrarPanel()">
+            Cancelar
+        </button>
+
+    </div>
+
+    <!-- PANEL VENTA GRUPO -->
+
+    <div id="panelVentaGrupo" class="panel oculto">
+
+        <h2>💰 Venta por grupo</h2>
+
+        <div id="contenedorSeleccionGrupo"></div>
+
+        <button class="boton"
+                onclick="agregarSeleccionGrupo()">
+            ➕ Agregar cuartón
+        </button>
+
+        <input
+            id="pesoVentaGrupo"
+            type="number"
+            min="0"
+            step="0.01"
+            placeholder="Peso total kg"
+        >
+
+        <button class="boton"
+                onclick="procesarVentaGrupo()">
+            Confirmar venta
+        </button>
+
+        <button class="boton"
+                onclick="cerrarPanel()">
+            Cancelar
+        </button>
+
+    </div>
+
+    <!-- PANEL MUERTE -->
+
+    <div id="panelMuerte" class="panel oculto">
+
+        <h2>☠️ Muerte</h2>
+
+        <button class="boton"
+                onclick="mostrarMuerteTotal()">
+            Muerte total
+        </button>
+
+        <button class="boton"
+                onclick="mostrarMuerteVenta()">
+            Muerte de venta
+        </button>
+
+        <button class="boton"
+                onclick="cerrarPanel()">
+            Cancelar
+        </button>
+
+    </div>
+
+    <div id="panelMuerteTotal" class="panel oculto">
+
+        <h2>☠️ Muerte total</h2>
+
+        <input
+            id="cantidadMuerteTotal"
+            type="number"
+            min="1"
+            placeholder="Cantidad"
+        >
+
+        <button class="boton"
+                onclick="procesarMuerteTotal()">
+            Confirmar
+        </button>
+
+        <button class="boton"
+                onclick="cerrarPanel()">
+            Cancelar
+        </button>
+
+    </div>
+
+    <div id="panelMuerteVenta" class="panel oculto">
+
+        <h2>☠️ Muerte de venta</h2>
+
+        <input
+            id="cantidadMuerteVenta"
+            type="number"
+            min="1"
+            placeholder="Cantidad"
+        >
+
+        <input
+            id="pesoMuerteVenta"
+            type="number"
+            min="0"
+            step="0.01"
+            placeholder="Peso total kg"
+        >
+
+        <button class="boton"
+                onclick="procesarMuerteVenta()">
+            Confirmar
+        </button>
+
+        <button class="boton"
+                onclick="cerrarPanel()">
+            Cancelar
+        </button>
+
+    </div>
+
+    <!-- PANEL REAGRUPE CEBA -->
+
+    <div id="panelReagrupeSalida" class="panel oculto">
+
+        <h2>🔄 Reagrupe</h2>
+
+        <select id="selectNaveDestinoReagrupe"></select>
+
+        <select id="selectCuartonDestinoReagrupe"></select>
+
+        <input
+            id="cantidadReagrupe"
+            type="number"
+            min="1"
+            placeholder="Cantidad"
+        >
+
+        <button class="boton"
+                onclick="procesarReagrupe()">
+            Confirmar
+        </button>
+
+        <button class="boton"
+                onclick="cerrarPanel()">
+            Cancelar
+        </button>
+
+    </div>
+
 </div>
-
-</div>
-
 
 <!-- ==================================================
      CONTENIDO DESTETE
@@ -663,660 +872,535 @@ Cargando naves...
 
 <div id="contenidoDestete" class="oculto">
 
-<div id="contenidoDesteteNave">
-Cargando destete...
-</div>
+    <div class="totalDestete">
+
+        <h2>🍼 Total Destete</h2>
+
+        <div id="numeroTotalDestete"
+             class="numeroTotalDestete">
+            0
+        </div>
+
+    </div>
+
+    <div id="contenedorDestete"></div>
+
+    <!-- PANEL FILA -->
+
+    <div id="panelFilaDestete" class="panel oculto">
+
+        <h2 id="tituloFilaDestete"></h2>
+
+        <button class="boton"
+                onclick="mostrarAgregarDestete()">
+            ➕ Agregar
+        </button>
+
+        <button class="boton"
+                onclick="mostrarSalidaCebaDestete()">
+            ➡️ Sacar para Ceba
+        </button>
+
+        <button class="boton"
+                onclick="mostrarMuerteDestete()">
+            ☠️ Muerte
+        </button>
+
+        <button class="boton"
+                onclick="mostrarReagrupeDestete()">
+            🔄 Reagrupe
+        </button>
+
+        <button class="boton"
+                onclick="cerrarPanel()">
+            Cancelar
+        </button>
+
+    </div>
+
+    <div id="panelAgregarDestete"
+         class="panel oculto">
+
+        <h2>➕ Agregar cerdos</h2>
+
+        <input
+            id="cantidadAgregarDestete"
+            type="number"
+            min="1"
+            placeholder="Cantidad"
+        >
+
+        <button class="boton"
+                onclick="agregarCerdosDestete()">
+            Confirmar
+        </button>
+
+        <button class="boton"
+                onclick="cerrarPanel()">
+            Cancelar
+        </button>
+
+    </div>
+
+    <div id="panelSalidaCebaDestete"
+         class="panel oculto">
+
+        <h2>➡️ Sacar para Ceba</h2>
+
+        <select id="selectNaveCebaDestete"></select>
+
+        <select id="selectCuartonCebaDestete"></select>
+
+        <input
+            id="cantidadSalidaCebaDestete"
+            type="number"
+            min="1"
+            placeholder="Cantidad"
+        >
+
+        <button class="boton"
+                onclick="procesarSalidaCebaDestete()">
+            Confirmar
+        </button>
+
+        <button class="boton"
+                onclick="cerrarPanel()">
+            Cancelar
+        </button>
+
+    </div>
+
+    <div id="panelMuerteDestete"
+         class="panel oculto">
+
+        <h2>☠️ Muerte Destete</h2>
+
+        <input
+            id="cantidadMuerteDestete"
+            type="number"
+            min="1"
+            placeholder="Cantidad"
+        >
+
+        <button class="boton"
+                onclick="procesarMuerteDestete()">
+            Confirmar
+        </button>
+
+        <button class="boton"
+                onclick="cerrarPanel()">
+            Cancelar
+        </button>
+
+    </div>
+
+    <div id="panelAgregarDatosDestete"
+         class="panel oculto">
+
+        <h2>📋 Datos de cuartones</h2>
+
+        <input
+            id="datosDesteteCantidad"
+            type="number"
+            min="0"
+            placeholder="Cantidad"
+        >
+
+        <button class="boton"
+                onclick="guardarDatosDestete()">
+            Guardar
+        </button>
+
+        <button class="boton"
+                onclick="cerrarPanel()">
+            Cancelar
+        </button>
+
+    </div>
+
+    <div id="panelReagrupeDestete"
+         class="panel oculto">
+
+        <h2>🔄 Reagrupe Destete</h2>
+
+        <select id="selectFilaDestinoDestete"></select>
+
+        <input
+            id="cantidadReagrupeDestete"
+            type="number"
+            min="1"
+            placeholder="Cantidad"
+        >
+
+        <button class="boton"
+                onclick="procesarReagrupeDestete()">
+            Confirmar
+        </button>
+
+        <button class="boton"
+                onclick="cerrarPanel()">
+            Cancelar
+        </button>
+
+    </div>
 
 </div>
-
 
 <!-- ==================================================
-     PANEL CUARTÓN CEBA
+     CONTENIDO MATERNIDAD
 ================================================== -->
 
-<div id="panelCuarton" class="panel oculto">
+<div id="contenidoMaternidad"
+     class="oculto">
 
-<h2 id="tituloCuarton">
-Cuartón
-</h2>
+    <div class="contenedorMaternidad">
 
-<div id="cantidadActual">
-🐷 Cerdos actuales: 0
-</div>
+        <div id="contenedorMaternidadNaves"></div>
 
-<button onclick="mostrarAgregar()">
-➕ Agregar cerdos
-</button>
+        <div class="totalMaternidad">
 
-<button onclick="mostrarMotivoSalida()">
-➖ Sacar cerdos
-</button>
+            <h2>🐖 Total Maternidad</h2>
 
-<button onclick="cerrarPanel()">
-Cancelar
-</button>
+            <div id="numeroTotalMaternidad"
+                 class="numeroTotalMaternidad">
+                0
+            </div>
 
-</div>
+        </div>
 
+    </div>
 
-<!-- ==================================================
-     TIPO ENTRADA CEBA
-================================================== -->
+    <!-- PANEL FILA MATERNIDAD -->
 
-<div id="panelEntrada" class="panel oculto">
+    <div id="panelFilaMaternidad"
+         class="panel oculto">
 
-<h2>➕ Entrada de cerdos</h2>
+        <h2 id="tituloFilaMaternidad"></h2>
 
-<p>Selecciona el tipo de entrada:</p>
+        <button class="boton"
+                onclick="mostrarAgregarMaternidad()">
+            ➕ Agregar cerdos
+        </button>
 
-<button onclick="mostrarCantidadEntrada('Entrada Destete')">
-🍼 Entrada por destete
-</button>
+        <button class="boton"
+                onclick="mostrarSalidaCebaMaternidad()">
+            ➡️ Sacar para Ceba
+        </button>
 
-<button onclick="mostrarCantidadEntrada('Entrada Exterior')">
-🚚 Entrada exterior
-</button>
+        <button class="boton"
+                onclick="mostrarMuerteMaternidad()">
+            ☠️ Muerte
+        </button>
 
-<button onclick="cerrarPanel()">
-Cancelar
-</button>
+        <button class="boton"
+                onclick="mostrarVentaMaternidad()">
+            💰 Venta
+        </button>
 
-</div>
+        <button class="boton"
+                onclick="mostrarReagrupeMaternidad()">
+            🔄 Reagrupe
+        </button>
 
+        <button class="boton"
+                onclick="cerrarPanel()">
+            ❌ Cancelar
+        </button>
 
-<!-- ==================================================
-     CANTIDAD ENTRADA CEBA
-================================================== -->
+    </div>
 
-<div id="panelAgregar" class="panel oculto">
+    <!-- AGREGAR MATERNIDAD -->
 
-<h2 id="tituloAgregar">
-➕ Agregar cerdos
-</h2>
+    <div id="panelAgregarMaternidad"
+         class="panel oculto">
 
-<input
-type="number"
-id="cantidadAgregar"
-min="1"
-placeholder="Cantidad de cerdos">
+        <h2>➕ Agregar cerdos</h2>
 
-<button onclick="agregarCerdos()">
-Guardar
-</button>
+        <button class="boton"
+                onclick="mostrarAgregarDirectoMaternidad()">
+            ➕ Agregar
+        </button>
 
-<button onclick="cerrarPanel()">
-Cancelar
-</button>
+        <button class="boton"
+                onclick="mostrarAgregarDesdeCebaMaternidad()">
+            🐷 Agregar desde Ceba
+        </button>
 
-</div>
+        <button class="boton"
+                onclick="cerrarPanel()">
+            Cancelar
+        </button>
 
+    </div>
 
-<!-- ==================================================
-     MOTIVO SALIDA CEBA
-================================================== -->
+    <div id="panelAgregarDirectoMaternidad"
+         class="panel oculto">
 
-<div id="panelMotivo" class="panel oculto">
+        <h2>➕ Agregar cerdos</h2>
 
-<h2>➖ Sacar cerdos</h2>
+        <input
+            id="cantidadAgregarDirectoMaternidad"
+            type="number"
+            min="1"
+            placeholder="Cantidad de cerdos"
+        >
 
-<p>Selecciona el motivo:</p>
+        <button class="boton"
+                onclick="procesarAgregarDirectoMaternidad()">
+            Confirmar
+        </button>
 
-<button onclick="mostrarVenta()">
-💰 Venta
-</button>
+        <button class="boton"
+                onclick="cerrarPanel()">
+            Cancelar
+        </button>
 
-<button onclick="mostrarMuerte()">
-☠️ Muerte
-</button>
+    </div>
 
-<button onclick="mostrarReagrupeSalida()">
-🔄 Reagrupe
-</button>
+    <!-- AGREGAR DESDE CEBA -->
 
-<button onclick="cerrarPanel()">
-Cancelar
-</button>
+    <div id="panelAgregarDesdeCebaMaternidad"
+         class="panel oculto">
 
-</div>
+        <h2>🐷 Agregar desde Ceba</h2>
 
+        <select id="selectNaveOrigenMaternidad"></select>
 
-<!-- ==================================================
-     VENTA INDIVIDUAL CEBA
-================================================== -->
+        <select id="selectCuartonOrigenMaternidad"></select>
 
-<div id="panelVenta" class="panel oculto">
+        <input
+            id="cantidadDesdeCebaMaternidad"
+            type="number"
+            min="1"
+            placeholder="Cantidad"
+        >
 
-<h2>💰 Venta</h2>
+        <button class="boton"
+                onclick="procesarAgregarDesdeCebaMaternidad()">
+            Confirmar
+        </button>
 
-<input
-type="number"
-id="cantidadVenta"
-min="1"
-placeholder="Cantidad de cerdos">
+        <button class="boton"
+                onclick="cerrarPanel()">
+            Cancelar
+        </button>
 
-<input
-type="number"
-id="pesoVenta"
-min="0"
-step="0.01"
-placeholder="Peso total de los cerdos (kg)">
+    </div>
 
-<button onclick="procesarVenta()">
-Confirmar venta
-</button>
+    <!-- SALIDA PARA CEBA -->
 
-<button onclick="mostrarVentaGrupo()">
-🐷 Vender por grupo
-</button>
+    <div id="panelSalidaCebaMaternidad"
+         class="panel oculto">
 
-<button onclick="cerrarPanel()">
-Cancelar
-</button>
+        <h2>➡️ Sacar para Ceba</h2>
 
-</div>
+        <select id="selectNaveDestinoMaternidad"></select>
 
+        <select id="selectCuartonDestinoMaternidad"></select>
 
-<!-- ==================================================
-     VENTA GRUPO CEBA
-================================================== -->
+        <input
+            id="cantidadSalidaCebaMaternidad"
+            type="number"
+            min="1"
+            placeholder="Cantidad"
+        >
 
-<div id="panelVentaGrupo" class="panel oculto">
+        <button class="boton"
+                onclick="procesarSalidaCebaMaternidad()">
+            Confirmar
+        </button>
 
-<h2>🐷 Vender por grupo</h2>
+        <button class="boton"
+                onclick="cerrarPanel()">
+            Cancelar
+        </button>
 
-<p>
-Selecciona un cuartón y la cantidad de cerdos que vas a vender.
-</p>
+    </div>
 
-<select
-id="grupoNaveSeleccionada"
-onchange="cargarCuartonesGrupo()">
+    <!-- MUERTE -->
 
-<option value="">
-🏠 Selecciona una nave
-</option>
+    <div id="panelMuerteMaternidad"
+         class="panel oculto">
 
-</select>
+        <h2>☠️ Muerte</h2>
 
-<select id="grupoCuartonSeleccionado">
+        <button class="boton"
+                onclick="mostrarMuerteTotalMaternidad()">
+            Muerte Total
+        </button>
 
-<option value="">
-🐷 Selecciona un cuartón
-</option>
+        <button class="boton"
+                onclick="mostrarMuerteVentaMaternidad()">
+            Muerte de venta
+        </button>
 
-</select>
+        <button class="boton"
+                onclick="cerrarPanel()">
+            Cancelar
+        </button>
 
-<input
-type="number"
-id="cantidadGrupo"
-min="1"
-placeholder="Cantidad de cerdos">
+    </div>
 
-<button onclick="agregarCuartonGrupo()">
-➕ Agregar
-</button>
+    <div id="panelMuerteTotalMaternidad"
+         class="panel oculto">
 
-<div id="listaGrupo"></div>
+        <h2>☠️ Muerte Total</h2>
 
-<div class="resumenGrupo">
+        <input
+            id="cantidadMuerteTotalMaternidad"
+            type="number"
+            min="1"
+            placeholder="Cantidad"
+        >
 
-<strong>📊 Resumen de la venta</strong>
+        <button class="boton"
+                onclick="procesarMuerteTotalMaternidad()">
+            Confirmar
+        </button>
 
-<div id="resumenGrupoTexto">
-No hay cuartones seleccionados.
-</div>
+        <button class="boton"
+                onclick="cerrarPanel()">
+            Cancelar
+        </button>
 
-</div>
+    </div>
 
-<input
-type="number"
-id="pesoGrupo"
-min="0"
-step="0.01"
-placeholder="Peso total de todos los cerdos (kg)">
+    <div id="panelMuerteVentaMaternidad"
+         class="panel oculto">
 
-<button onclick="procesarVentaGrupo()">
-💰 Confirmar venta del grupo
-</button>
+        <h2>☠️ Muerte de venta</h2>
 
-<button onclick="cerrarPanel()">
-Cancelar
-</button>
+        <input
+            id="cantidadMuerteVentaMaternidad"
+            type="number"
+            min="1"
+            placeholder="Cantidad"
+        >
 
-</div>
+        <input
+            id="pesoMuerteVentaMaternidad"
+            type="number"
+            min="0"
+            step="0.01"
+            placeholder="Peso total kg"
+        >
 
+        <button class="boton"
+                onclick="procesarMuerteVentaMaternidad()">
+            Confirmar
+        </button>
 
-<!-- ==================================================
-     MUERTE CEBA
-================================================== -->
+        <button class="boton"
+                onclick="cerrarPanel()">
+            Cancelar
+        </button>
 
-<div id="panelMuerte" class="panel oculto">
+    </div>
 
-<h2>☠️ Muerte</h2>
+    <!-- VENTA -->
 
-<p>Selecciona el tipo:</p>
+    <div id="panelVentaMaternidad"
+         class="panel oculto">
 
-<button onclick="mostrarMuerteTotal()">
-☠️ Muerte total
-</button>
+        <h2>💰 Venta</h2>
 
-<button onclick="mostrarMuerteVenta()">
-⚖️ Muerte de venta
-</button>
+        <input
+            id="cantidadVentaMaternidad"
+            type="number"
+            min="1"
+            placeholder="Cantidad"
+        >
 
-<button onclick="cerrarPanel()">
-Cancelar
-</button>
+        <input
+            id="pesoVentaMaternidad"
+            type="number"
+            min="0"
+            step="0.01"
+            placeholder="Peso total kg"
+        >
 
-</div>
+        <button class="boton"
+                onclick="procesarVentaMaternidad()">
+            Confirmar venta
+        </button>
 
+        <button class="boton"
+                onclick="cerrarPanel()">
+            Cancelar
+        </button>
 
-<!-- ==================================================
-     MUERTE TOTAL CEBA
-================================================== -->
+    </div>
 
-<div id="panelMuerteTotal" class="panel oculto">
+    <!-- REAGRUPE -->
 
-<h2>☠️ Muerte total</h2>
+    <div id="panelReagrupeMaternidad"
+         class="panel oculto">
 
-<input
-type="number"
-id="cantidadMuerteTotal"
-min="1"
-placeholder="Cantidad de cerdos">
+        <h2>🔄 Reagrupe</h2>
 
-<button onclick="procesarMuerteTotal()">
-Confirmar muerte
-</button>
+        <select id="selectDestinoReagrupeMaternidad"></select>
 
-<button onclick="cerrarPanel()">
-Cancelar
-</button>
+        <input
+            id="cantidadReagrupeMaternidad"
+            type="number"
+            min="1"
+            placeholder="Cantidad"
+        >
 
-</div>
+        <button class="boton"
+                onclick="procesarReagrupeMaternidad()">
+            Confirmar
+        </button>
 
+        <button class="boton"
+                onclick="cerrarPanel()">
+            Cancelar
+        </button>
 
-<!-- ==================================================
-     MUERTE VENTA CEBA
-================================================== -->
-
-<div id="panelMuerteVenta" class="panel oculto">
-
-<h2>⚖️ Muerte de venta</h2>
-
-<input
-type="number"
-id="cantidadMuerteVenta"
-min="1"
-placeholder="Cantidad de cerdos muertos">
-
-<input
-type="number"
-id="pesoMuerteVenta"
-min="0"
-step="0.01"
-placeholder="Peso total (kg)">
-
-<button onclick="procesarMuerteVenta()">
-Confirmar muerte de venta
-</button>
-
-<button onclick="cerrarPanel()">
-Cancelar
-</button>
-
-</div>
-
-
-<!-- ==================================================
-     REAGRUPACIÓN CEBA
-================================================== -->
-
-<div id="panelReagrupeSalida" class="panel oculto">
-
-<h2>🔄 Reagrupe</h2>
-
-<p>
-Cuartón de origen:
-</p>
-
-<div
-style="
-padding:14px;
-margin:12px 0;
-border-radius:12px;
-background:#100000;
-border:1px solid #700000;
-font-weight:bold;
-color:#ff5555;
-">
-
-🐷 <span id="origenReagrupeTexto">
-Cuartón seleccionado
-</span>
+    </div>
 
 </div>
-
-<input
-type="number"
-id="cantidadReagrupeSalida"
-min="1"
-placeholder="Cantidad de cerdos">
-
-<select id="cuartonDestinoSalida">
-
-<option value="">
-Selecciona cuartón destino
-</option>
-
-</select>
-
-<button onclick="procesarReagrupe()">
-Confirmar reagrupe
-</button>
-
-<button onclick="cerrarPanel()">
-Cancelar
-</button>
-
-</div>
-
-
-<!-- ==================================================
-     PANEL DESTETE
-================================================== -->
-
-<div id="panelFilaDestete" class="panel oculto">
-
-<h2 id="tituloFilaDestete">
-F1
-</h2>
-
-<div
-id="cantidadFilaDestete"
-class="infoFilaDestete">
-
-🐷 Cerdos actuales: 0
-
-</div>
-
-<button onclick="mostrarAgregarDestete()">
-
-➕ Agregar cerdos
-
-</button>
-
-<button onclick="mostrarSalidaCebaDestete()">
-
-➡️ Sacar cerdos para la Ceba
-
-</button>
-
-<button onclick="mostrarMuerteDestete()">
-
-☠️ Sacar cerdos por muerte
-
-</button>
-
-<button onclick="mostrarReagrupeDestete()">
-
-🔄 Sacar cerdos para otra fila
-
-</button>
-
-<button onclick="mostrarAgregarDatosDestete()">
-
-📊 Agregar Datos
-
-</button>
-
-<button onclick="cerrarPanel()">
-
-Cancelar
-
-</button>
-
-</div>
-
-
-<!-- ==================================================
-     AGREGAR DESTETE
-================================================== -->
-
-<div id="panelAgregarDestete" class="panel oculto">
-
-<h2 id="tituloAgregarDestete">
-
-➕ Agregar cerdos
-
-</h2>
-
-<input
-type="number"
-id="cantidadAgregarDestete"
-min="1"
-placeholder="Cantidad de cerdos">
-
-<button onclick="procesarAgregarDestete()">
-
-Guardar
-
-</button>
-
-<button onclick="cerrarPanel()">
-
-Cancelar
-
-</button>
-
-</div>
-
-
-<!-- ==================================================
-     SALIDA DESTETE PARA CEBA
-================================================== -->
-
-<div id="panelSalidaCebaDestete" class="panel oculto">
-
-<h2>
-
-➡️ Salida para Ceba
-
-</h2>
-
-<div
-id="infoSalidaCebaDestete"
-class="infoFilaDestete">
-
-</div>
-
-<input
-type="number"
-id="cantidadSalidaCebaDestete"
-min="1"
-placeholder="Cantidad de cerdos">
-
-<button onclick="procesarSalidaCebaDestete()">
-
-Confirmar salida para Ceba
-
-</button>
-
-<button onclick="cerrarPanel()">
-
-Cancelar
-
-</button>
-
-</div>
-
-
-<!-- ==================================================
-     MUERTE DESTETE
-================================================== -->
-
-<div id="panelMuerteDestete" class="panel oculto">
-
-<h2>
-
-☠️ Salida por muerte
-
-</h2>
-
-<div
-id="infoMuerteDestete"
-class="infoFilaDestete">
-
-</div>
-
-<input
-type="number"
-id="cantidadMuerteDestete"
-min="1"
-placeholder="Cantidad de cerdos muertos">
-
-<button onclick="procesarMuerteDestete()">
-
-Confirmar muerte
-
-</button>
-
-<button onclick="cerrarPanel()">
-
-Cancelar
-
-</button>
-
-</div>
-
-
-<!-- ==================================================
-     AGREGAR DATOS DESTETE
-================================================== -->
-
-<div id="panelAgregarDatosDestete" class="panel oculto">
-
-<h2 id="tituloAgregarDatosDestete">
-
-📊 Agregar Datos
-
-</h2>
-
-<div
-id="infoAgregarDatosDestete"
-class="infoFilaDestete">
-
-</div>
-
-<input
-type="number"
-id="cantidadCuartonesDestete"
-min="0"
-placeholder="Cantidad de cuartones">
-
-<input
-type="number"
-id="cantidadCuartonesVaciosDestete"
-min="0"
-placeholder="Cantidad de cuartones vacíos">
-
-<button onclick="procesarAgregarDatosDestete()">
-
-💾 Guardar datos
-
-</button>
-
-<button onclick="cerrarPanel()">
-
-Cancelar
-
-</button>
-
-</div>
-
-
-<!-- ==================================================
-     REAGRUPACIÓN DESTETE
-================================================== -->
-
-<div id="panelReagrupeDestete" class="panel oculto">
-
-<h2>
-
-🔄 Reagrupe entre filas
-
-</h2>
-
-<div
-id="infoReagrupeDestete"
-class="infoFilaDestete">
-
-</div>
-
-<input
-type="number"
-id="cantidadReagrupeDestete"
-min="1"
-placeholder="Cantidad de cerdos">
-
-<select id="filaDestinoDestete">
-
-<option value="">
-
-Selecciona fila destino
-
-</option>
-
-</select>
-
-<button onclick="procesarReagrupeDestete()">
-
-Confirmar reagrupe
-
-</button>
-
-<button onclick="cerrarPanel()">
-
-Cancelar
-
-</button>
-
-</div>
-
 
 <div id="mensaje"></div>
 
-
-<script src="supabase.js"></script>
-
 <script>
 
-
 /* ==================================================
-   VARIABLES GENERALES
+   VARIABLES
 ================================================== */
 
 let naveSeleccionada=null;
-
 let cuartonSeleccionado=null;
 
-let tipoEntradaSeleccionado=null;
-
 let todasLasNaves=[];
-
 let todosLosCuartones=[];
 
 let ventaGrupo=[];
 
-
-/* ==================================================
-   VARIABLES DESTETE
-================================================== */
-
 let filasDestete=[];
-
 let filaDesteteSeleccionada=null;
 
+let navesMaternidad=[];
+let filasMaternidad=[];
+let naveMaternidadSeleccionada=null;
+let filaMaternidadSeleccionada=null;
+
+/* ==================================================
+   MENSAJE
+================================================== */
+
+function mostrarMensaje(texto){
+
+    const mensaje=document.getElementById("mensaje");
+
+    if(mensaje){
+        mensaje.textContent=texto;
+
+        setTimeout(()=>{
+            mensaje.textContent="";
+        },4000);
+    }
+}
 
 /* ==================================================
    SESIÓN
@@ -1324,674 +1408,212 @@ let filaDesteteSeleccionada=null;
 
 async function verificarSesion(){
 
-    const {data}=await clienteSupabase
-    .auth
-    .getSession();
+    const {data,error}=await clienteSupabase.auth.getSession();
 
-    if(!data.session){
+    if(error || !data.session){
 
         window.location.href="login.html";
 
-        return false;
-
+        return null;
     }
 
-    return true;
+    return data.session;
 }
 
-
 /* ==================================================
-   MENÚ NAVES
+   SELECTOR CEBA
 ================================================== */
 
 function mostrarNavesCeba(){
 
     ocultarTodosLosPaneles();
 
-    document
-    .getElementById("selectorNaves")
-    .classList
-    .remove("oculto");
+    document.getElementById("contenidoCeba")
+        .classList.remove("oculto");
 
-    document
-    .getElementById("contenidoCeba")
-    .classList
-    .remove("oculto");
+    document.getElementById("contenidoDestete")
+        .classList.add("oculto");
 
-    document
-    .getElementById("contenidoDestete")
-    .classList
-    .add("oculto");
+    document.getElementById("contenidoMaternidad")
+        .classList.add("oculto");
 
     cargarNaves();
-
 }
 
+/* ==================================================
+   SELECTOR DESTETE
+================================================== */
 
 function mostrarNavesDestete(){
 
     ocultarTodosLosPaneles();
 
-    document
-    .getElementById("contenidoCeba")
-    .classList
-    .add("oculto");
+    document.getElementById("contenidoCeba")
+        .classList.add("oculto");
 
-    document
-    .getElementById("contenidoDestete")
-    .classList
-    .remove("oculto");
+    document.getElementById("contenidoDestete")
+        .classList.remove("oculto");
+
+    document.getElementById("contenidoMaternidad")
+        .classList.add("oculto");
 
     cargarDestete();
-
 }
 
+/* ==================================================
+   SELECTOR MATERNIDAD
+================================================== */
+
+function mostrarNavesMaternidad(){
+
+    ocultarTodosLosPaneles();
+
+    document.getElementById("contenidoCeba")
+        .classList.add("oculto");
+
+    document.getElementById("contenidoDestete")
+        .classList.add("oculto");
+
+    document.getElementById("contenidoMaternidad")
+        .classList.remove("oculto");
+
+    cargarMaternidad();
+}
 
 /* ==================================================
-   CARGAR NAVES CEBA
+   CARGAR CEBA
 ================================================== */
 
 async function cargarNaves(){
 
-    const {data:naves,error:errorNaves}=
+    const {data,error}=await clienteSupabase
+        .from("naves")
+        .select("*")
+        .order("id");
 
-    await clienteSupabase
-    .from("naves")
-    .select("*")
-    .order("id");
+    if(error){
 
-    if(errorNaves){
+        mostrarMensaje("Error cargando las naves de Ceba");
 
-        document.getElementById("contenido").innerHTML=
-        "❌ Error cargando naves: "
-        +
-        errorNaves.message;
+        console.error(error);
 
         return;
     }
 
-    todasLasNaves=naves || [];
+    todasLasNaves=data || [];
 
-    todosLosCuartones=[];
+    const contenedor=document.getElementById("contenedorNaves");
 
-    let html="";
+    contenedor.innerHTML="";
 
     let totalGeneral=0;
 
-    for(const nave of naves){
+    todosLosCuartones=[];
 
-        const {data:cuartones,error:errorCuartones}=
+    for(const nave of todasLasNaves){
 
-        await clienteSupabase
-        .from("cuartones")
-        .select("*")
-        .eq("nave_id",nave.id)
-        .order("numero");
+        const {data:cuartones,error:errorCuartones}
+            =await clienteSupabase
+            .from("cuartones")
+            .select("*")
+            .eq("nave_id",nave.id)
+            .order("id");
 
         if(errorCuartones){
 
-            document.getElementById("contenido").innerHTML=
-            "❌ Error cargando cuartones: "
-            +
-            errorCuartones.message;
+            console.error(errorCuartones);
 
-            return;
+            continue;
         }
+
+        const cuartones=cuartones || [];
 
         let totalNave=0;
 
-        html+=`
+        const divNave=document.createElement("div");
 
-        <div class="nave">
+        divNave.className="nave";
 
-        <h2>🐷 ${nave.nombre}</h2>
+        divNave.innerHTML=
+            `<h2>${nave.nombre || "Nave "+nave.id}</h2>
+             <div class="contenedorNave"></div>
+             <div class="totalNave">
+                Total: <span>${0}</span>
+             </div>`;
 
-        <div class="contenedorNave">
-        `;
+        const contenedorCuartones=
+            divNave.querySelector(".contenedorNave");
+
+        const spanTotal=
+            divNave.querySelector(".totalNave span");
 
         cuartones.forEach(cuarton=>{
 
-            totalNave+=Number(
-                cuarton.cantidad_cerdos
-            );
+            const cantidad=
+                Number(cuarton.cantidad_cerdos || 0);
 
-            totalGeneral+=Number(
-                cuarton.cantidad_cerdos
-            );
+            totalNave+=cantidad;
+
+            totalGeneral+=cantidad;
 
             todosLosCuartones.push({
-
                 ...cuarton,
-
-                nave_nombre:nave.nombre
-
+                nave:nave
             });
 
-            html+=`
+            const div=document.createElement("div");
 
-            <div
-            class="cuarton"
-            onclick="seleccionarCuarton(
-                ${nave.id},
-                ${cuarton.id},
-                '${String(nave.nombre).replace(/'/g,"\\'")}',
-                ${cuarton.numero},
-                ${cuarton.cantidad_cerdos}
-            )">
+            div.className="cuarton";
 
-            <div class="numero">
+            div.innerHTML=
+                `<div class="numero">
+                    Cuartón ${cuarton.numero}
+                 </div>
+                 <div class="cerdos">
+                    ${cantidad}
+                 </div>
+                 <div>🐷 cerdos</div>`;
 
-            CUARTÓN ${cuarton.numero}
+            div.onclick=()=>seleccionarCuarton(
+                nave,
+                cuarton
+            );
 
-            </div>
-
-            <div class="cerdos">
-
-            🐷 ${cuarton.cantidad_cerdos}
-
-            </div>
-
-            </div>
-
-            `;
+            contenedorCuartones.appendChild(div);
 
         });
 
-        html+=`
+        spanTotal.textContent=totalNave;
 
-        </div>
-
-        <div class="totalNave">
-
-        🐷 Total en ${nave.nombre}: ${totalNave}
-
-        </div>
-
-        </div>
-
-        `;
-
+        contenedor.appendChild(divNave);
     }
 
+    document.getElementById("numeroTotalCeba")
+        .textContent=totalGeneral;
 
-    html+=`
-
-    <div class="totalGeneral">
-
-    <h2>🐷 TOTAL DE CERDOS</h2>
-
-    <div class="numeroTotal">
-
-    ${totalGeneral}
-
-    </div>
-
-    <div>
-
-    Total de las 4 naves
-
-    </div>
-
-    </div>
-
-    `;
-
-
-    const ahora=new Date();
-
-    const inicioHoy=new Date(
-
-        ahora.getFullYear(),
-
-        ahora.getMonth(),
-
-        ahora.getDate()
-
-    );
-
-    const finHoy=new Date(
-
-        ahora.getFullYear(),
-
-        ahora.getMonth(),
-
-        ahora.getDate()+1
-
-    );
-
-    const {data:movimientos,error:errorMovimientos}=
-
-    await clienteSupabase
-    .from("movimientos_naves")
-    .select("*")
-    .gte("fecha",inicioHoy.toISOString())
-    .lt("fecha",finHoy.toISOString())
-    .order("fecha",{ascending:false});
-
-    if(!errorMovimientos){
-
-        let ventas=[];
-
-        let muertes=[];
-
-        movimientos.forEach(m=>{
-
-            if(
-
-                String(m.motivo || "")
-                .toLowerCase()
-                .includes("venta")
-
-            ){
-
-                ventas.push(m);
-
-            }
-
-            if(
-
-                String(m.motivo || "")
-                .toLowerCase()
-                .includes("muerte")
-
-            ){
-
-                muertes.push(m);
-
-            }
-
-        });
-
-
-        html+=`
-
-        <div class="resumen">
-
-        <h2>📊 Resumen de hoy</h2>
-
-        <h3 style="color:#ff5555;">
-
-        💰 Ventas de hoy
-
-        </h3>
-
-        `;
-
-
-        if(ventas.length===0){
-
-            html+=`
-
-            <p>
-            No hay ventas registradas hoy.
-            </p>
-
-            `;
-
-        }else{
-
-            ventas.forEach(v=>{
-
-                const cuartonesTexto=
-
-                    v.cuartones
-                    ?
-                    v.cuartones
-                    :
-                    "C"+v.cuarton;
-
-                html+=`
-
-                <div class="movimientoResumen">
-
-                ${
-                    v.naves
-                    ?
-                    "Naves: "+v.naves
-                    :
-                    "N"+v.nave_id
-                }
-
-                <br>
-
-                Cuartones: ${cuartonesTexto}
-
-                <br>
-
-                ${v.cantidad} 🐷
-
-                ${
-                    Number(v.peso_kg || 0)>0
-                    ?
-                    " • "+
-                    Number(v.peso_kg)
-                    .toFixed(2)+
-                    " kg"
-                    :
-                    ""
-                }
-
-                </div>
-
-                `;
-
-            });
-
-        }
-
-
-        html+=`
-
-        <h3 style="color:#ff5555;margin-top:25px;">
-
-        ☠️ Muertes de hoy
-
-        </h3>
-
-        `;
-
-
-        if(muertes.length===0){
-
-            html+=`
-
-            <p>
-            No hay muertes registradas hoy.
-            </p>
-
-            `;
-
-        }else{
-
-            muertes.forEach(m=>{
-
-                html+=`
-
-                <div class="movimientoResumen">
-
-                N${m.nave_id}
-
-                -
-
-                C${m.cuarton}
-
-                :
-
-                ${m.cantidad} 🐷
-
-                ${
-                    Number(m.peso_kg || 0)>0
-                    ?
-                    " • "+
-                    Number(m.peso_kg)
-                    .toFixed(2)+
-                    " kg"
-                    :
-                    ""
-                }
-
-                <br>
-
-                <span
-                style="
-                color:#aaa;
-                font-size:13px;
-                ">
-
-                ${m.motivo}
-
-                </span>
-
-                </div>
-
-                `;
-
-            });
-
-        }
-
-        html+=`
-
-        </div>
-
-        `;
-
-    }
-
-
-    document.getElementById(
-        "contenido"
-    ).innerHTML=html;
-
-    cargarOpcionesCuartones(naves);
-
-    cargarNavesVentaGrupo();
+    actualizarTotalGeneralNaves();
 
 }
-
-
-/* ==================================================
-   OPCIONES CUARTONES
-================================================== */
-
-async function cargarOpcionesCuartones(naves){
-
-    const destinosSalida=
-    document.getElementById(
-        "cuartonDestinoSalida"
-    );
-
-    destinosSalida.innerHTML=`
-
-    <option value="">
-
-    Selecciona cuartón destino
-
-    </option>
-
-    `;
-
-    for(const nave of naves){
-
-        const {data:cuartones}=
-
-        await clienteSupabase
-        .from("cuartones")
-        .select("*")
-        .eq("nave_id",nave.id)
-        .order("numero");
-
-        (cuartones || []).forEach(c=>{
-
-            const texto=
-            `${nave.nombre} - Cuartón ${c.numero}`;
-
-            destinosSalida.innerHTML+=`
-
-            <option value="${c.id}">
-
-            ${texto}
-
-            </option>
-
-            `;
-
-        });
-
-    }
-
-}
-
-
-/* ==================================================
-   NAVES VENTA GRUPO
-================================================== */
-
-function cargarNavesVentaGrupo(){
-
-    const select=
-    document.getElementById(
-        "grupoNaveSeleccionada"
-    );
-
-    select.innerHTML=`
-
-    <option value="">
-
-    🏠 Selecciona una nave
-
-    </option>
-
-    `;
-
-    todasLasNaves.forEach(nave=>{
-
-        select.innerHTML+=`
-
-        <option value="${nave.id}">
-
-        ${nave.nombre}
-
-        </option>
-
-        `;
-
-    });
-
-}
-
-
-/* ==================================================
-   CUARTONES VENTA GRUPO
-================================================== */
-
-function cargarCuartonesGrupo(){
-
-    const naveId=
-    document.getElementById(
-        "grupoNaveSeleccionada"
-    ).value;
-
-    const select=
-    document.getElementById(
-        "grupoCuartonSeleccionado"
-    );
-
-    select.innerHTML=`
-
-    <option value="">
-
-    🐷 Selecciona un cuartón
-
-    </option>
-
-    `;
-
-    if(!naveId){
-
-        return;
-
-    }
-
-    const cuartones=
-    todosLosCuartones.filter(c=>
-
-        String(c.nave_id)===
-        String(naveId)
-
-    );
-
-    cuartones.forEach(c=>{
-
-        select.innerHTML+=`
-
-        <option value="${c.id}">
-
-        C${c.numero}
-
-        —
-
-        ${c.cantidad_cerdos}
-
-        cerdos disponibles
-
-        </option>
-
-        `;
-
-    });
-
-}
-
 
 /* ==================================================
    SELECCIONAR CUARTÓN
 ================================================== */
 
-function seleccionarCuarton(
+function seleccionarCuarton(nave,cuarton){
 
-    naveId,
-    cuartonId,
-    naveNombre,
-    numero,
-    cantidad
-
-){
-
-    naveSeleccionada={
-
-        id:naveId,
-
-        nombre:naveNombre
-
-    };
-
-    cuartonSeleccionado={
-
-        id:cuartonId,
-
-        numero:numero,
-
-        cantidad:Number(cantidad)
-
-    };
-
-    document.getElementById(
-        "tituloCuarton"
-    ).innerText=
-
-    "Cuartón "+
-    numero+
-    " - "+
-    naveNombre;
-
-    document.getElementById(
-        "cantidadActual"
-    ).innerText=
-
-    "🐷 Cerdos actuales: "+
-    cantidad;
-
-    document.getElementById(
-        "origenReagrupeTexto"
-    ).innerText=
-
-    naveNombre+
-    " - Cuartón "+
-    numero+
-    " — "+
-    cantidad+
-    " cerdos";
+    naveSeleccionada=nave;
+    cuartonSeleccionado=cuarton;
 
     ocultarTodosLosPaneles();
 
-    document
-    .getElementById("panelCuarton")
-    .classList
-    .remove("oculto");
+    document.getElementById("tituloCuarton")
+        .textContent=
+        `${nave.nombre} - Cuartón ${cuarton.numero}`;
+
+    document.getElementById("panelCuarton")
+        .classList.remove("oculto");
 
 }
-
 
 /* ==================================================
    AGREGAR CEBA
@@ -2001,2955 +1623,2387 @@ function mostrarAgregar(){
 
     ocultarTodosLosPaneles();
 
-    document
-    .getElementById("panelEntrada")
-    .classList
-    .remove("oculto");
-
+    document.getElementById("panelAgregar")
+        .classList.remove("oculto");
 }
-
-
-function mostrarCantidadEntrada(tipo){
-
-    tipoEntradaSeleccionado=tipo;
-
-    document.getElementById(
-        "tituloAgregar"
-    ).innerText=
-
-    "➕ "+tipo;
-
-    ocultarTodosLosPaneles();
-
-    document
-    .getElementById("panelAgregar")
-    .classList
-    .remove("oculto");
-
-}
-
 
 async function agregarCerdos(){
 
-    const cantidad=
-    Number(
-        document.getElementById(
-            "cantidadAgregar"
-        ).value
+    const tipo=document.getElementById("tipoEntrada").value;
+
+    const cantidad=Number(
+        document.getElementById("cantidadEntrada").value
     );
 
-    if(!cantidad || cantidad<=0){
+    if(!tipo || cantidad<=0){
 
-        alert(
-            "Introduce una cantidad válida."
-        );
+        mostrarMensaje("Introduzca los datos correctamente");
 
         return;
-
     }
-
-
-    const {data:actual,error:errorConsulta}=
-
-    await clienteSupabase
-    .from("cuartones")
-    .select("cantidad_cerdos")
-    .eq("id",cuartonSeleccionado.id)
-    .single();
-
-
-    if(errorConsulta){
-
-        alert(
-            "Error leyendo el cuartón:\n\n"+
-            errorConsulta.message
-        );
-
-        return;
-
-    }
-
 
     const nuevaCantidad=
+        Number(cuartonSeleccionado.cantidad_cerdos || 0)
+        +cantidad;
 
-    Number(
-        actual.cantidad_cerdos || 0
-    )
-    +
-    cantidad;
-
-
-    const {error}=
-
-    await clienteSupabase
-    .from("cuartones")
-    .update({
-
-        cantidad_cerdos:nuevaCantidad
-
-    })
-    .eq(
-        "id",
-        cuartonSeleccionado.id
-    );
-
+    const {error}=await clienteSupabase
+        .from("cuartones")
+        .update({
+            cantidad_cerdos:nuevaCantidad
+        })
+        .eq("id",cuartonSeleccionado.id);
 
     if(error){
 
-        alert(
-            "Error agregando cerdos:\n\n"+
-            error.message
-        );
+        mostrarMensaje("Error agregando cerdos");
+
+        console.error(error);
 
         return;
-
     }
 
-
     await registrarMovimiento(
-
-        tipoEntradaSeleccionado,
-
+        tipo,
         cantidad,
-
-        tipoEntradaSeleccionado,
-
         0
-
     );
 
-
-    alert(
-
-        "✅ Se agregaron "+
-        cantidad+
-        " cerdos correctamente."
-
-    );
-
+    mostrarMensaje("Cerdos agregados correctamente");
 
     cerrarPanel();
 
-    await cargarNaves();
-
+    cargarNaves();
 }
-
 
 /* ==================================================
-   SALIDA CEBA
+   VENTA CEBA
 ================================================== */
-
-function mostrarMotivoSalida(){
-
-    ocultarTodosLosPaneles();
-
-    document
-    .getElementById("panelMotivo")
-    .classList
-    .remove("oculto");
-
-}
-
 
 function mostrarVenta(){
 
     ocultarTodosLosPaneles();
 
-    document
-    .getElementById("panelVenta")
-    .classList
-    .remove("oculto");
-
+    document.getElementById("panelVenta")
+        .classList.remove("oculto");
 }
 
+async function procesarVentaIndividual(){
 
-function mostrarVentaGrupo(){
-
-    ventaGrupo=[];
-
-    actualizarResumenGrupo();
-
-    document.getElementById(
-        "grupoNaveSeleccionada"
-    ).value="";
-
-    document.getElementById(
-        "grupoCuartonSeleccionado"
-    ).innerHTML=`
-
-    <option value="">
-
-    🐷 Selecciona un cuartón
-
-    </option>
-
-    `;
-
-    document.getElementById(
-        "cantidadGrupo"
-    ).value="";
-
-    document.getElementById(
-        "pesoGrupo"
-    ).value="";
-
-    ocultarTodosLosPaneles();
-
-    document
-    .getElementById("panelVentaGrupo")
-    .classList
-    .remove("oculto");
-
-}
-
-
-function agregarCuartonGrupo(){
-
-    const cuartonId=
-    document.getElementById(
-        "grupoCuartonSeleccionado"
-    ).value;
-
-    const cantidad=
-    Number(
-        document.getElementById(
-            "cantidadGrupo"
-        ).value
+    const cantidad=Number(
+        document.getElementById("cantidadVenta").value
     );
 
-
-    if(!cuartonId){
-
-        alert(
-            "Selecciona un cuartón."
-        );
-
-        return;
-
-    }
-
-
-    if(!cantidad || cantidad<=0){
-
-        alert(
-            "Introduce una cantidad válida."
-        );
-
-        return;
-
-    }
-
-
-    const cuarton=
-    todosLosCuartones.find(c=>
-
-        String(c.id)===
-        String(cuartonId)
-
+    const peso=Number(
+        document.getElementById("pesoVenta").value
     );
 
+    if(cantidad<=0 || peso<0){
 
-    if(!cuarton){
-
-        alert(
-            "No se encontró el cuartón."
-        );
+        mostrarMensaje("Introduzca cantidad y peso");
 
         return;
-
     }
 
+    const actual=
+        Number(cuartonSeleccionado.cantidad_cerdos || 0);
 
-    const existente=
-    ventaGrupo.find(v=>
+    if(cantidad>actual){
 
-        String(v.cuarton_id)===
-        String(cuartonId)
-
-    );
-
-
-    const cantidadYaSeleccionada=
-
-    existente
-    ?
-    Number(existente.cantidad)
-    :
-    0;
-
-
-    if(
-
-        cantidadYaSeleccionada+
-        cantidad
-        >
-        Number(cuarton.cantidad_cerdos)
-
-    ){
-
-        alert(
-            "No puedes vender más cerdos de los que hay en ese cuartón."
-        );
+        mostrarMensaje("No hay suficientes cerdos");
 
         return;
-
     }
 
-
-    if(existente){
-
-        existente.cantidad=
-
-        cantidadYaSeleccionada+
-        cantidad;
-
-    }else{
-
-        ventaGrupo.push({
-
-            nave_id:cuarton.nave_id,
-
-            nave_nombre:cuarton.nave_nombre,
-
-            cuarton_id:cuarton.id,
-
-            cuarton_numero:cuarton.numero,
-
-            cantidad:cantidad
-
-        });
-
-    }
-
-
-    document.getElementById(
-        "cantidadGrupo"
-    ).value="";
-
-    actualizarResumenGrupo();
-
-}
-
-
-function actualizarResumenGrupo(){
-
-    const contenedor=
-    document.getElementById(
-        "listaGrupo"
-    );
-
-    const resumen=
-    document.getElementById(
-        "resumenGrupoTexto"
-    );
-
-
-    if(ventaGrupo.length===0){
-
-        contenedor.innerHTML="";
-
-        resumen.innerHTML=
-        "No hay cuartones seleccionados.";
-
-        return;
-
-    }
-
-
-    let html="";
-
-    let total=0;
-
-
-    ventaGrupo.forEach((v,index)=>{
-
-        total+=Number(v.cantidad);
-
-        html+=`
-
-        <div class="seleccionGrupo">
-
-        <strong>
-
-        ${v.nave_nombre}
-
-        —
-
-        C${v.cuarton_numero}
-
-        </strong>
-
-        <br>
-
-        🐷 ${v.cantidad} cerdos
-
-        <button
-        class="botonQuitar"
-        onclick="quitarCuartonGrupo(${index})">
-
-        🗑️ Quitar
-
-        </button>
-
-        </div>
-
-        `;
-
-    });
-
-
-    contenedor.innerHTML=html;
-
-
-    resumen.innerHTML=
-
-    "🐷 Cerdos seleccionados: "+
-    "<strong>"+total+"</strong>"+
-    "<br><br>"+
-    "📦 Cuartones: "+
-    ventaGrupo.length;
-
-}
-
-
-function quitarCuartonGrupo(index){
-
-    ventaGrupo.splice(index,1);
-
-    actualizarResumenGrupo();
-
-}
-
-
-async function procesarVenta(){
-
-    const cantidad=
-    Number(
-        document.getElementById(
-            "cantidadVenta"
-        ).value
-    );
-
-    const peso=
-    Number(
-        document.getElementById(
-            "pesoVenta"
-        ).value
-    );
-
-
-    if(!cantidad || cantidad<=0){
-
-        alert(
-            "Introduce una cantidad válida."
-        );
-
-        return;
-
-    }
-
-
-    const {data:actual,error:errorConsulta}=
-
-    await clienteSupabase
-    .from("cuartones")
-    .select("cantidad_cerdos")
-    .eq("id",cuartonSeleccionado.id)
-    .single();
-
-
-    if(errorConsulta){
-
-        alert(
-            "Error verificando el cuartón:\n\n"+
-            errorConsulta.message
-        );
-
-        return;
-
-    }
-
-
-    if(
-
-        cantidad>
-        Number(actual.cantidad_cerdos)
-
-    ){
-
-        alert(
-            "No puedes sacar más cerdos de los que hay."
-        );
-
-        return;
-
-    }
-
-
-    if(!peso || peso<=0){
-
-        alert(
-            "Introduce el peso total en kg."
-        );
-
-        return;
-
-    }
-
-
-    const nuevaCantidad=
-
-    Number(actual.cantidad_cerdos)
-    -
-    cantidad;
-
-
-    const {error}=
-
-    await clienteSupabase
-    .from("cuartones")
-    .update({
-
-        cantidad_cerdos:nuevaCantidad
-
-    })
-    .eq(
-        "id",
-        cuartonSeleccionado.id
-    );
-
+    const {error}=await clienteSupabase
+        .from("cuartones")
+        .update({
+            cantidad_cerdos:actual-cantidad
+        })
+        .eq("id",cuartonSeleccionado.id);
 
     if(error){
 
-        alert(
-            "Error realizando la venta:\n\n"+
-            error.message
-        );
+        mostrarMensaje("Error realizando venta");
 
         return;
-
     }
 
-
     await registrarMovimiento(
-
-        "Salida",
-
-        cantidad,
-
         "Venta",
-
+        cantidad,
         peso
-
     );
 
-
-    alert(
-
-        "✅ Venta registrada correctamente.\n\n"+
-        "Cerdos: "+cantidad+
-        "\nPeso: "+peso.toFixed(2)+" kg"
-
-    );
-
+    mostrarMensaje("Venta registrada");
 
     cerrarPanel();
 
-    await cargarNaves();
-
+    cargarNaves();
 }
 
+/* ==================================================
+   VENTA GRUPO
+================================================== */
+
+function mostrarVentaGrupo(){
+
+    ocultarTodosLosPaneles();
+
+    ventaGrupo=[];
+
+    document.getElementById("panelVentaGrupo")
+        .classList.remove("oculto");
+
+    agregarSeleccionGrupo();
+}
+
+function agregarSeleccionGrupo(){
+
+    const contenedor=
+        document.getElementById("contenedorSeleccionGrupo");
+
+    const div=document.createElement("div");
+
+    div.className="seleccionGrupo";
+
+    const id=Date.now();
+
+    div.innerHTML=
+        `<select id="grupoNave${id}"
+                 onchange="cargarCuartonesGrupo(${id})">
+             <option value="">Seleccione nave</option>
+         </select>
+
+         <select id="grupoCuarton${id}">
+             <option value="">Seleccione cuartón</option>
+         </select>
+
+         <input
+             id="grupoCantidad${id}"
+             type="number"
+             min="1"
+             placeholder="Cantidad"
+         >
+
+         <button
+             class="botonQuitar"
+             onclick="this.parentElement.remove()">
+             Quitar
+         </button>`;
+
+    contenedor.appendChild(div);
+
+    cargarNavesVentaGrupo(id);
+}
+
+function cargarNavesVentaGrupo(id){
+
+    const select=document.getElementById(
+        `grupoNave${id}`
+    );
+
+    if(!select)return;
+
+    todasLasNaves.forEach(nave=>{
+
+        const option=document.createElement("option");
+
+        option.value=nave.id;
+
+        option.textContent=nave.nombre;
+
+        select.appendChild(option);
+
+    });
+}
+
+async function cargarCuartonesGrupo(id){
+
+    const naveId=document.getElementById(
+        `grupoNave${id}`
+    ).value;
+
+    const select=document.getElementById(
+        `grupoCuarton${id}`
+    );
+
+    select.innerHTML=
+        `<option value="">Seleccione cuartón</option>`;
+
+    if(!naveId)return;
+
+    const {data,error}=await clienteSupabase
+        .from("cuartones")
+        .select("*")
+        .eq("nave_id",naveId)
+        .order("id");
+
+    if(error)return;
+
+    data.forEach(cuarton=>{
+
+        const option=document.createElement("option");
+
+        option.value=cuarton.id;
+
+        option.textContent=
+            `Cuartón ${cuarton.numero} (${cuarton.cantidad_cerdos || 0})`;
+
+        select.appendChild(option);
+
+    });
+}
 
 async function procesarVentaGrupo(){
 
-    if(ventaGrupo.length===0){
-
-        alert(
-            "Selecciona al menos un cuartón."
+    const bloques=
+        document.querySelectorAll(
+            "#contenedorSeleccionGrupo .seleccionGrupo"
         );
 
-        return;
+    if(!bloques.length){
 
+        mostrarMensaje("Agregue al menos un cuartón");
+
+        return;
     }
 
-
-    const peso=
-    Number(
-        document.getElementById(
-            "pesoGrupo"
-        ).value
+    const peso=Number(
+        document.getElementById("pesoVentaGrupo").value
     );
 
+    let totalCantidad=0;
 
-    if(!peso || peso<=0){
+    const operaciones=[];
 
-        alert(
-            "Introduce el peso total de todos los cerdos vendidos."
+    for(const bloque of bloques){
+
+        const cuartonId=
+            bloque.querySelector("select:nth-of-type(2)").value;
+
+        const cantidad=Number(
+            bloque.querySelector("input").value
         );
 
-        return;
+        if(!cuartonId || cantidad<=0){
 
-    }
+            mostrarMensaje("Revise los datos de la venta");
 
+            return;
+        }
 
-    let cantidadTotal=0;
+        const {data,error}=await clienteSupabase
+            .from("cuartones")
+            .select("*")
+            .eq("id",cuartonId)
+            .single();
 
-    ventaGrupo.forEach(v=>{
+        if(error || !data){
 
-        cantidadTotal+=Number(v.cantidad);
+            mostrarMensaje("No se encontró el cuartón");
 
-    });
+            return;
+        }
 
+        if(cantidad>Number(data.cantidad_cerdos || 0)){
 
-    const ids=
-    ventaGrupo.map(
-        v=>v.cuarton_id
-    );
-
-
-    const {
-        data:cuartonesActuales,
-        error:errorConsulta
-    }=
-
-    await clienteSupabase
-    .from("cuartones")
-    .select("*")
-    .in("id",ids);
-
-
-    if(errorConsulta){
-
-        alert(
-            "Error verificando los cuartones:\n\n"+
-            errorConsulta.message
-        );
-
-        return;
-
-    }
-
-
-    for(const venta of ventaGrupo){
-
-        const actual=
-
-        cuartonesActuales.find(c=>
-
-            String(c.id)===
-            String(venta.cuarton_id)
-
-        );
-
-
-        if(!actual){
-
-            alert(
-                "No se encontró el cuartón C"+
-                venta.cuarton_numero
+            mostrarMensaje(
+                `No hay suficientes cerdos en el Cuartón ${data.numero}`
             );
 
             return;
-
         }
 
+        operaciones.push({
+            id:cuartonId,
+            nueva:
+                Number(data.cantidad_cerdos || 0)-cantidad,
+            cantidad
+        });
 
-        if(
-
-            Number(venta.cantidad)>
-            Number(actual.cantidad_cerdos)
-
-        ){
-
-            alert(
-                "No hay suficientes cerdos en "+
-                venta.nave_nombre+
-                " - C"+
-                venta.cuarton_numero
-            );
-
-            return;
-
-        }
-
+        totalCantidad+=cantidad;
     }
 
+    for(const op of operaciones){
 
-    const actualizados=[];
-
-
-    for(const venta of ventaGrupo){
-
-        const actual=
-
-        cuartonesActuales.find(c=>
-
-            String(c.id)===
-            String(venta.cuarton_id)
-
-        );
-
-
-        const nuevaCantidad=
-
-        Number(actual.cantidad_cerdos)
-        -
-        Number(venta.cantidad);
-
-
-        const {error}=
-
-        await clienteSupabase
-        .from("cuartones")
-        .update({
-
-            cantidad_cerdos:
-            nuevaCantidad
-
-        })
-        .eq(
-            "id",
-            venta.cuarton_id
-        );
-
+        const {error}=await clienteSupabase
+            .from("cuartones")
+            .update({
+                cantidad_cerdos:op.nueva
+            })
+            .eq("id",op.id);
 
         if(error){
 
-            for(const anterior of actualizados){
-
-                await clienteSupabase
-                .from("cuartones")
-                .update({
-
-                    cantidad_cerdos:
-                    anterior.cantidad_original
-
-                })
-                .eq(
-                    "id",
-                    anterior.id
-                );
-
-            }
-
-
-            alert(
-                "❌ No se pudo completar la venta.\n\n"+
-                error.message
-            );
+            mostrarMensaje("Error actualizando venta");
 
             return;
-
         }
-
-
-        actualizados.push({
-
-            id:venta.cuarton_id,
-
-            cantidad_original:
-            Number(actual.cantidad_cerdos)
-
-        });
-
     }
 
+    const session=await verificarSesion();
 
-    const cuartonesTexto=
-
-    ventaGrupo
-    .map(v=>"C"+v.cuarton_numero)
-    .join(",");
-
-
-    const navesTexto=
-
-    ventaGrupo
-    .map(v=>"N"+v.nave_id)
-    .join(",");
-
-
-    const primerElemento=
-    ventaGrupo[0];
-
-
-    const {data:sesionData}=
-
-    await clienteSupabase
-    .auth
-    .getSession();
-
-
-    if(!sesionData.session){
-
-        window.location.href="login.html";
-
-        return;
-
-    }
-
-
-    const correoUsuario=
-
-    sesionData.session.user.email ||
-    "Sin correo";
-
+    const usuario=
+        session?.user?.email || "usuario";
 
     const {error:errorHistorial}=
-
-    await clienteSupabase
-    .from("movimientos_naves")
-    .insert({
-
-        fecha:new Date().toISOString(),
-
-        nave_id:
-        primerElemento.nave_id,
-
-        cuarton_id:
-        primerElemento.cuarton_id,
-
-        nave:
-        primerElemento.nave_nombre,
-
-        cuarton:
-        primerElemento.cuarton_numero,
-
-        cuartones:
-        cuartonesTexto,
-
-        naves:
-        navesTexto,
-
-        operacion:"Salida",
-
-        cantidad:cantidadTotal,
-
-        peso_kg:peso,
-
-        usuario:
-        correoUsuario,
-
-        motivo:"Venta"
-
-    });
-
+        await clienteSupabase
+        .from("movimientos_naves")
+        .insert({
+            fecha:new Date().toISOString(),
+            nave:operaciones
+                .map(x=>x.id)
+                .join(","),
+            cuarton:operaciones
+                .map(x=>x.id)
+                .join(","),
+            operacion:"Venta por grupo",
+            cantidad:totalCantidad,
+            peso_kg:peso,
+            usuario
+        });
 
     if(errorHistorial){
 
-        for(const anterior of actualizados){
-
-            await clienteSupabase
-            .from("cuartones")
-            .update({
-
-                cantidad_cerdos:
-                anterior.cantidad_original
-
-            })
-            .eq(
-                "id",
-                anterior.id
-            );
-
-        }
-
-
-        alert(
-            "❌ Los cerdos fueron restaurados porque ocurrió un error guardando el historial:\n\n"+
-            errorHistorial.message
-        );
-
-        return;
-
+        console.error(errorHistorial);
     }
 
-
-    alert(
-
-        "✅ Venta por grupo registrada correctamente.\n\n"+
-        "Cerdos: "+cantidadTotal+
-        "\nPeso total: "+peso.toFixed(2)+" kg"+
-        "\n\n"+
-        "Cuartones: "+cuartonesTexto+
-        "\nNaves: "+navesTexto
-
-    );
-
+    mostrarMensaje("Venta por grupo registrada");
 
     cerrarPanel();
 
-    await cargarNaves();
-
+    cargarNaves();
 }
 
-
 /* ==================================================
-   MUERTES CEBA
+   MUERTE CEBA
 ================================================== */
 
 function mostrarMuerte(){
 
     ocultarTodosLosPaneles();
 
-    document
-    .getElementById("panelMuerte")
-    .classList
-    .remove("oculto");
-
+    document.getElementById("panelMuerte")
+        .classList.remove("oculto");
 }
-
 
 function mostrarMuerteTotal(){
 
     ocultarTodosLosPaneles();
 
-    document
-    .getElementById("panelMuerteTotal")
-    .classList
-    .remove("oculto");
-
+    document.getElementById("panelMuerteTotal")
+        .classList.remove("oculto");
 }
-
 
 async function procesarMuerteTotal(){
 
-    const cantidad=
-    Number(
-        document.getElementById(
-            "cantidadMuerteTotal"
-        ).value
+    const cantidad=Number(
+        document.getElementById("cantidadMuerteTotal").value
     );
 
+    if(cantidad<=0){
 
-    if(!cantidad || cantidad<=0){
-
-        alert(
-            "Introduce una cantidad válida."
-        );
+        mostrarMensaje("Cantidad inválida");
 
         return;
-
     }
 
+    const actual=
+        Number(cuartonSeleccionado.cantidad_cerdos || 0);
 
-    const {data:actual,error:errorConsulta}=
+    if(cantidad>actual){
 
-    await clienteSupabase
-    .from("cuartones")
-    .select("cantidad_cerdos")
-    .eq("id",cuartonSeleccionado.id)
-    .single();
-
-
-    if(errorConsulta){
-
-        alert(
-            "Error verificando el cuartón:\n\n"+
-            errorConsulta.message
-        );
+        mostrarMensaje("No hay suficientes cerdos");
 
         return;
-
     }
 
-
-    if(
-
-        cantidad>
-        Number(actual.cantidad_cerdos)
-
-    ){
-
-        alert(
-            "No puedes sacar más cerdos de los que hay."
-        );
-
-        return;
-
-    }
-
-
-    const nuevaCantidad=
-
-    Number(actual.cantidad_cerdos)
-    -
-    cantidad;
-
-
-    const {error}=
-
-    await clienteSupabase
-    .from("cuartones")
-    .update({
-
-        cantidad_cerdos:nuevaCantidad
-
-    })
-    .eq(
-        "id",
-        cuartonSeleccionado.id
-    );
-
+    const {error}=await clienteSupabase
+        .from("cuartones")
+        .update({
+            cantidad_cerdos:actual-cantidad
+        })
+        .eq("id",cuartonSeleccionado.id);
 
     if(error){
 
-        alert(
-            "Error registrando muerte:\n\n"+
-            error.message
-        );
+        mostrarMensaje("Error registrando muerte");
 
         return;
-
     }
 
-
     await registrarMovimiento(
-
-        "Salida",
-
-        cantidad,
-
         "Muerte total",
-
+        cantidad,
         0
-
     );
 
-
-    alert(
-        "✅ Muerte registrada correctamente."
-    );
-
+    mostrarMensaje("Muerte registrada");
 
     cerrarPanel();
 
-    await cargarNaves();
-
+    cargarNaves();
 }
-
 
 function mostrarMuerteVenta(){
 
     ocultarTodosLosPaneles();
 
-    document
-    .getElementById("panelMuerteVenta")
-    .classList
-    .remove("oculto");
-
+    document.getElementById("panelMuerteVenta")
+        .classList.remove("oculto");
 }
-
 
 async function procesarMuerteVenta(){
 
-    const cantidad=
-    Number(
-        document.getElementById(
-            "cantidadMuerteVenta"
-        ).value
+    const cantidad=Number(
+        document.getElementById("cantidadMuerteVenta").value
     );
 
-
-    const peso=
-    Number(
-        document.getElementById(
-            "pesoMuerteVenta"
-        ).value
+    const peso=Number(
+        document.getElementById("pesoMuerteVenta").value
     );
 
+    if(cantidad<=0 || peso<0){
 
-    if(!cantidad || cantidad<=0){
-
-        alert(
-            "Introduce una cantidad válida."
-        );
+        mostrarMensaje("Datos inválidos");
 
         return;
-
     }
 
+    const actual=
+        Number(cuartonSeleccionado.cantidad_cerdos || 0);
 
-    const {data:actual,error:errorConsulta}=
+    if(cantidad>actual){
 
-    await clienteSupabase
-    .from("cuartones")
-    .select("cantidad_cerdos")
-    .eq("id",cuartonSeleccionado.id)
-    .single();
-
-
-    if(errorConsulta){
-
-        alert(
-            "Error verificando el cuartón:\n\n"+
-            errorConsulta.message
-        );
+        mostrarMensaje("No hay suficientes cerdos");
 
         return;
-
     }
 
+    const {error}=await clienteSupabase
+        .from("cuartones")
+        .update({
+            cantidad_cerdos:actual-cantidad
+        })
+        .eq("id",cuartonSeleccionado.id);
 
-    if(
-
-        cantidad>
-        Number(actual.cantidad_cerdos)
-
-    ){
-
-        alert(
-            "No puedes sacar más cerdos de los que hay."
-        );
-
-        return;
-
-    }
-
-
-    if(!peso || peso<=0){
-
-        alert(
-            "Introduce el peso total en kg."
-        );
-
-        return;
-
-    }
-
-
-    const nuevaCantidad=
-
-    Number(actual.cantidad_cerdos)
-    -
-    cantidad;
-
-
-    const {error}=
-
-    await clienteSupabase
-    .from("cuartones")
-    .update({
-
-        cantidad_cerdos:nuevaCantidad
-
-    })
-    .eq(
-        "id",
-        cuartonSeleccionado.id
-    );
-
-
-    if(error){
-
-        alert(
-            "Error registrando muerte de venta:\n\n"+
-            error.message
-        );
-
-        return;
-
-    }
-
+    if(error)return;
 
     await registrarMovimiento(
-
-        "Salida",
-
-        cantidad,
-
         "Muerte de venta",
-
+        cantidad,
         peso
-
     );
 
-
-    alert(
-
-        "✅ Muerte de venta registrada.\n\n"+
-        "Cerdos: "+cantidad+
-        "\nPeso: "+peso.toFixed(2)+" kg"
-
-    );
-
+    mostrarMensaje("Muerte de venta registrada");
 
     cerrarPanel();
 
-    await cargarNaves();
-
+    cargarNaves();
 }
 
-
 /* ==================================================
-   REAGRUPACIÓN CEBA
+   REAGRUPE CEBA
 ================================================== */
 
-function mostrarReagrupeSalida(){
-
-    document.getElementById(
-        "origenReagrupeTexto"
-    ).innerText=
-
-    naveSeleccionada.nombre+
-    " - Cuartón "+
-    cuartonSeleccionado.numero+
-    " — "+
-    cuartonSeleccionado.cantidad+
-    " cerdos";
-
+function mostrarReagrupe(){
 
     ocultarTodosLosPaneles();
 
+    document.getElementById("panelReagrupeSalida")
+        .classList.remove("oculto");
 
-    document
-    .getElementById("panelReagrupeSalida")
-    .classList
-    .remove("oculto");
-
+    cargarOpcionesCuartones();
 }
 
+async function cargarOpcionesCuartones(){
 
-async function procesarReagrupe(){
-
-    const cantidad=
-    Number(
+    const selectNave=
         document.getElementById(
-            "cantidadReagrupeSalida"
-        ).value
-    );
-
-
-    const destino=
-    document.getElementById(
-        "cuartonDestinoSalida"
-    ).value;
-
-
-    if(!cantidad || cantidad<=0){
-
-        alert(
-            "Introduce una cantidad válida."
+            "selectNaveDestinoReagrupe"
         );
 
-        return;
-
-    }
-
-
-    if(!destino){
-
-        alert(
-            "Selecciona el cuartón destino."
+    const selectCuarton=
+        document.getElementById(
+            "selectCuartonDestinoReagrupe"
         );
 
-        return;
+    selectNave.innerHTML=
+        `<option value="">Seleccione nave</option>`;
 
-    }
+    selectCuarton.innerHTML=
+        `<option value="">Seleccione cuartón</option>`;
 
+    todasLasNaves.forEach(nave=>{
 
-    if(
+        const option=document.createElement("option");
 
-        String(destino)===
-        String(cuartonSeleccionado.id)
+        option.value=nave.id;
 
-    ){
+        option.textContent=nave.nombre;
 
-        alert(
-            "El cuartón destino debe ser diferente."
-        );
-
-        return;
-
-    }
-
-
-    const ids=[
-
-        cuartonSeleccionado.id,
-
-        Number(destino)
-
-    ];
-
-
-    const {
-        data:cuartones,
-        error:errorConsulta
-    }=
-
-    await clienteSupabase
-    .from("cuartones")
-    .select(
-        "id,cantidad_cerdos,nave_id,numero"
-    )
-    .in("id",ids);
-
-
-    if(errorConsulta){
-
-        alert(
-            "Error verificando los cuartones:\n\n"+
-            errorConsulta.message
-        );
-
-        return;
-
-    }
-
-
-    const origenActual=
-    cuartones.find(c=>
-
-        String(c.id)===
-        String(cuartonSeleccionado.id)
-
-    );
-
-
-    const destinoActual=
-    cuartones.find(c=>
-
-        String(c.id)===
-        String(destino)
-
-    );
-
-
-    if(!origenActual){
-
-        alert(
-            "No se encontró el cuartón de origen."
-        );
-
-        return;
-
-    }
-
-
-    if(!destinoActual){
-
-        alert(
-            "No se encontró el cuartón destino."
-        );
-
-        return;
-
-    }
-
-
-    if(
-
-        cantidad>
-        Number(
-            origenActual.cantidad_cerdos || 0
-        )
-
-    ){
-
-        alert(
-            "No puedes reagrupar más cerdos de los que hay en el cuartón de origen."
-        );
-
-        return;
-
-    }
-
-
-    const cantidadOrigenAnterior=
-
-    Number(
-        origenActual.cantidad_cerdos || 0
-    );
-
-
-    const cantidadDestinoAnterior=
-
-    Number(
-        destinoActual.cantidad_cerdos || 0
-    );
-
-
-    const cantidadOrigenNueva=
-
-    cantidadOrigenAnterior-
-    cantidad;
-
-
-    const cantidadDestinoNueva=
-
-    cantidadDestinoAnterior+
-    cantidad;
-
-
-    const {error:errorOrigen}=
-
-    await clienteSupabase
-    .from("cuartones")
-    .update({
-
-        cantidad_cerdos:
-        cantidadOrigenNueva
-
-    })
-    .eq(
-        "id",
-        origenActual.id
-    );
-
-
-    if(errorOrigen){
-
-        alert(
-            "Error restando los cerdos del origen:\n\n"+
-            errorOrigen.message
-        );
-
-        return;
-
-    }
-
-
-    const {error:errorDestino}=
-
-    await clienteSupabase
-    .from("cuartones")
-    .update({
-
-        cantidad_cerdos:
-        cantidadDestinoNueva
-
-    })
-    .eq(
-        "id",
-        destinoActual.id
-    );
-
-
-    if(errorDestino){
-
-        await clienteSupabase
-        .from("cuartones")
-        .update({
-
-            cantidad_cerdos:
-            cantidadOrigenAnterior
-
-        })
-        .eq(
-            "id",
-            origenActual.id
-        );
-
-
-        alert(
-            "❌ No se pudo completar el reagrupe.\n\n"+
-            "Los cerdos del origen fueron restaurados.\n\n"+
-            errorDestino.message
-        );
-
-        return;
-
-    }
-
-
-    alert(
-
-        "✅ Reagrupe realizado correctamente.\n\n"+
-        "Cerdos trasladados: "+cantidad+
-        "\n\nOrigen: "+
-        naveSeleccionada.nombre+
-        " - C"+
-        cuartonSeleccionado.numero+
-        "\nDestino: C"+
-        destinoActual.numero
-
-    );
-
-
-    cerrarPanel();
-
-    await cargarNaves();
-
-}
-
-
-/* ==================================================
-   REGISTRAR MOVIMIENTO CEBA
-================================================== */
-
-async function registrarMovimiento(
-
-    operacion,
-    cantidad,
-    motivo,
-    peso
-
-){
-
-    const {data:sesionData}=
-
-    await clienteSupabase
-    .auth
-    .getSession();
-
-
-    if(!sesionData.session){
-
-        window.location.href="login.html";
-
-        return;
-
-    }
-
-
-    const correoUsuario=
-
-    sesionData.session.user.email ||
-    "Sin correo";
-
-
-    const {error}=
-
-    await clienteSupabase
-    .from("movimientos_naves")
-    .insert({
-
-        fecha:new Date().toISOString(),
-
-        nave_id:
-        naveSeleccionada.id,
-
-        cuarton_id:
-        cuartonSeleccionado.id,
-
-        nave:
-        naveSeleccionada.nombre,
-
-        cuarton:
-        cuartonSeleccionado.numero,
-
-        operacion:
-        operacion,
-
-        cantidad:
-        cantidad,
-
-        peso_kg:
-        peso || 0,
-
-        usuario:
-        correoUsuario,
-
-        motivo:
-        motivo
+        selectNave.appendChild(option);
 
     });
 
+    selectNave.onchange=async()=>{
+
+        const naveId=selectNave.value;
+
+        selectCuarton.innerHTML=
+            `<option value="">Seleccione cuartón</option>`;
+
+        if(!naveId)return;
+
+        const {data,error}=await clienteSupabase
+            .from("cuartones")
+            .select("*")
+            .eq("nave_id",naveId)
+            .order("id");
+
+        if(error)return;
+
+        data.forEach(cuarton=>{
+
+            if(
+                String(cuarton.id)
+                ===String(cuartonSeleccionado.id)
+            )return;
+
+            const option=document.createElement("option");
+
+            option.value=cuarton.id;
+
+            option.textContent=
+                `Cuartón ${cuarton.numero}`;
+
+            selectCuarton.appendChild(option);
+
+        });
+
+    };
+}
+
+async function procesarReagrupe(){
+
+    const destinoId=
+        document.getElementById(
+            "selectCuartonDestinoReagrupe"
+        ).value;
+
+    const cantidad=Number(
+        document.getElementById("cantidadReagrupe").value
+    );
+
+    if(!destinoId || cantidad<=0){
+
+        mostrarMensaje("Datos inválidos");
+
+        return;
+    }
+
+    const actualOrigen=
+        Number(cuartonSeleccionado.cantidad_cerdos || 0);
+
+    if(cantidad>actualOrigen){
+
+        mostrarMensaje("No hay suficientes cerdos");
+
+        return;
+    }
+
+    const {data:destino,error:errorDestino}=
+        await clienteSupabase
+        .from("cuartones")
+        .select("*")
+        .eq("id",destinoId)
+        .single();
+
+    if(errorDestino || !destino){
+
+        mostrarMensaje("No se encontró destino");
+
+        return;
+    }
+
+    const {error:errorOrigen}=await clienteSupabase
+        .from("cuartones")
+        .update({
+            cantidad_cerdos:actualOrigen-cantidad
+        })
+        .eq("id",cuartonSeleccionado.id);
+
+    if(errorOrigen){
+
+        mostrarMensaje("Error en el reagrupe");
+
+        return;
+    }
+
+    const {error:errorActualizarDestino}=
+        await clienteSupabase
+        .from("cuartones")
+        .update({
+            cantidad_cerdos:
+                Number(destino.cantidad_cerdos || 0)
+                +cantidad
+        })
+        .eq("id",destinoId);
+
+    if(errorActualizarDestino){
+
+        mostrarMensaje("Error actualizando destino");
+
+        return;
+    }
+
+    mostrarMensaje("Reagrupe realizado");
+
+    cerrarPanel();
+
+    cargarNaves();
+}
+
+/* ==================================================
+   HISTORIAL CEBA
+================================================== */
+
+async function registrarMovimiento(
+    operacion,
+    cantidad,
+    peso
+){
+
+    const session=await verificarSesion();
+
+    if(!session)return;
+
+    const usuario=
+        session.user.email || "usuario";
+
+    const {error}=await clienteSupabase
+        .from("movimientos_naves")
+        .insert({
+            fecha:new Date().toISOString(),
+            nave:naveSeleccionada?.nombre || "",
+            cuarton:cuartonSeleccionado?.numero || "",
+            operacion,
+            cantidad,
+            peso_kg:peso,
+            usuario
+        });
 
     if(error){
 
-        alert(
-            "Error registrando movimiento:\n\n"+
-            error.message
-        );
-
+        console.error(error);
     }
-
 }
 
-
 /* ==================================================
-   DESTETE - CARGAR FILAS
+   DESTETE
 ================================================== */
 
 async function cargarDestete(){
 
-    const {
-        data,
-        error
-    }=
-
-    await clienteSupabase
-    .from("destete_filas")
-    .select("*")
-    .order("id");
-
+    let {data,error}=await clienteSupabase
+        .from("destete_filas")
+        .select("*")
+        .order("id");
 
     if(error){
 
-        document.getElementById(
-            "contenidoDesteteNave"
-        ).innerHTML=
+        mostrarMensaje("Error cargando Destete");
 
-        `
-        <div class="panel">
-
-        <h2>❌ Error cargando Destete</h2>
-
-        <p>
-
-        ${error.message}
-
-        </p>
-
-        </div>
-        `;
+        console.error(error);
 
         return;
-
     }
 
+    if(!data || !data.length){
 
-    filasDestete=data || [];
-
-
-    if(filasDestete.length===0){
-
-        const nuevasFilas=[
-
-            {
-                fila:"F1",
-                cantidad_cerdos:0,
-                cuartones:0,
-                cuartones_vacios:0
-            },
-
-            {
-                fila:"F2",
-                cantidad_cerdos:0,
-                cuartones:0,
-                cuartones_vacios:0
-            },
-
-            {
-                fila:"F3",
-                cantidad_cerdos:0,
-                cuartones:0,
-                cuartones_vacios:0
-            }
-
+        const nuevas=[
+            {fila:"F1",cantidad_cerdos:0},
+            {fila:"F2",cantidad_cerdos:0},
+            {fila:"F3",cantidad_cerdos:0}
         ];
 
-
-        const {
-            data:nuevas,
-            error:errorInsert
-        }=
-
         await clienteSupabase
-        .from("destete_filas")
-        .insert(nuevasFilas)
-        .select();
+            .from("destete_filas")
+            .insert(nuevas);
 
+        const respuesta=
+            await clienteSupabase
+            .from("destete_filas")
+            .select("*")
+            .order("id");
 
-        if(!errorInsert){
-
-            filasDestete=nuevas || [];
-
-        }
-
+        data=respuesta.data || [];
     }
 
+    filasDestete=data;
 
-    let html=`
+    const contenedor=
+        document.getElementById("contenedorDestete");
 
-    <div class="naveDestete">
+    contenedor.innerHTML="";
 
-    <h2>
-    🍼 Nave de Destete
-    </h2>
+    const nave=document.createElement("div");
 
-    <div class="estructuraDestete">
-    `;
+    nave.className="naveDestete";
 
+    nave.innerHTML=
+        `<h2>🍼 Nave Destete</h2>
+         <div class="estructuraDestete"></div>
+         <div class="totalFila">
+             Total: <span>0</span>
+         </div>`;
 
-    let totalDestete=0;
+    const estructura=
+        nave.querySelector(".estructuraDestete");
 
+    let total=0;
 
-    filasDestete.forEach(fila=>{
+    data.forEach(fila=>{
 
         const cantidad=
-        Number(
-            fila.cantidad_cerdos || 0
-        );
+            Number(fila.cantidad_cerdos || 0);
 
+        total+=cantidad;
 
-        totalDestete+=cantidad;
+        const div=document.createElement("div");
 
+        div.className="filaDestete";
 
-        html+=`
+        div.innerHTML=
+            `<div class="nombreFila">
+                ${fila.fila}
+             </div>
+             <div class="cerdosFila">
+                ${cantidad}
+             </div>
+             <div>🐷 cerdos</div>`;
 
-        <div
-        class="filaDestete"
-        onclick="seleccionarFilaDestete(${fila.id})">
+        div.onclick=()=>seleccionarFilaDestete(fila);
 
-        <div class="nombreFila">
-
-        ${fila.fila}
-
-        </div>
-
-        <div class="cerdosFila">
-
-        🐷 ${cantidad}
-
-        </div>
-
-        <div class="totalFila">
-
-        Total de la fila
-
-        </div>
-
-        </div>
-
-        `;
+        estructura.appendChild(div);
 
     });
 
+    nave.querySelector(".totalFila span")
+        .textContent=total;
 
-    html+=`
+    contenedor.appendChild(nave);
 
-    </div>
+    document.getElementById("numeroTotalDestete")
+        .textContent=total;
 
-    <div class="totalDestete">
-
-    🍼 TOTAL DEL DESTETE
-
-    <div class="numeroTotalDestete">
-
-    ${totalDestete}
-
-    🐷
-
-    </div>
-
-    </div>
-
-
-    <!-- ============================================
-         DATOS DE CUARTONES
-    ============================================= -->
-
-    <div class="datosCuartonesDestete">
-
-    <h3>
-    📊 Datos de cuartones
-    </h3>
-
-    <table class="tablaCuartonesDestete">
-
-    <thead>
-
-    <tr>
-
-    <th>Fila</th>
-
-    <th>Cuartones</th>
-
-    <th>Cuartones vacíos</th>
-
-    </tr>
-
-    </thead>
-
-    <tbody>
-
-    `;
-
-
-    filasDestete.forEach(fila=>{
-
-        const cuartones=
-        Number(
-            fila.cuartones || 0
-        );
-
-        const vacios=
-        Number(
-            fila.cuartones_vacios || 0
-        );
-
-
-        html+=`
-
-        <tr>
-
-        <td>
-        ${fila.fila}
-        </td>
-
-        <td>
-        ${cuartones}
-        </td>
-
-        <td>
-        ${vacios}
-        </td>
-
-        </tr>
-
-        `;
-
-    });
-
-
-    html+=`
-
-    </tbody>
-
-    </table>
-
-    </div>
-
-    </div>
-
-    `;
-
-
-    document.getElementById(
-        "contenidoDesteteNave"
-    ).innerHTML=html;
-
+    actualizarTotalGeneralNaves();
 }
 
+function seleccionarFilaDestete(fila){
 
-/* ==================================================
-   SELECCIONAR FILA DESTETE
-================================================== */
-
-function seleccionarFilaDestete(id){
-
-    filaDesteteSeleccionada=
-    filasDestete.find(f=>
-
-        String(f.id)===
-        String(id)
-
-    );
-
-
-    if(!filaDesteteSeleccionada){
-
-        alert(
-            "No se encontró la fila."
-        );
-
-        return;
-
-    }
-
-
-    const cantidad=
-    Number(
-        filaDesteteSeleccionada.cantidad_cerdos || 0
-    );
-
-
-    document.getElementById(
-        "tituloFilaDestete"
-    ).innerText=
-
-    "🍼 "+
-    filaDesteteSeleccionada.fila;
-
-
-    document.getElementById(
-        "cantidadFilaDestete"
-    ).innerText=
-
-    "🐷 Cerdos actuales: "+
-    cantidad;
-
+    filaDesteteSeleccionada=fila;
 
     ocultarTodosLosPaneles();
 
+    document.getElementById("tituloFilaDestete")
+        .textContent=`Fila ${fila.fila}`;
 
-    document
-    .getElementById("panelFilaDestete")
-    .classList
-    .remove("oculto");
-
+    document.getElementById("panelFilaDestete")
+        .classList.remove("oculto");
 }
-
-
-/* ==================================================
-   AGREGAR DESTETE
-================================================== */
 
 function mostrarAgregarDestete(){
 
-    document.getElementById(
-        "tituloAgregarDestete"
-    ).innerText=
-
-    "➕ Agregar cerdos a "+
-    filaDesteteSeleccionada.fila;
-
-
     ocultarTodosLosPaneles();
 
-
-    document
-    .getElementById("panelAgregarDestete")
-    .classList
-    .remove("oculto");
-
+    document.getElementById("panelAgregarDestete")
+        .classList.remove("oculto");
 }
 
+async function agregarCerdosDestete(){
 
-async function procesarAgregarDestete(){
-
-    const cantidad=
-    Number(
+    const cantidad=Number(
         document.getElementById(
             "cantidadAgregarDestete"
         ).value
     );
 
+    if(cantidad<=0){
 
-    if(!cantidad || cantidad<=0){
-
-        alert(
-            "Introduce una cantidad válida."
-        );
+        mostrarMensaje("Cantidad inválida");
 
         return;
-
     }
 
+    const nueva=
+        Number(filaDesteteSeleccionada.cantidad_cerdos || 0)
+        +cantidad;
 
-    const actual=
-    await obtenerFilaDesteteActual(
-        filaDesteteSeleccionada.id
-    );
-
-
-    if(!actual){
-
-        return;
-
-    }
-
-
-    const nuevaCantidad=
-
-    Number(
-        actual.cantidad_cerdos || 0
-    )
-    +
-    cantidad;
-
-
-    const {error}=
-
-    await clienteSupabase
-    .from("destete_filas")
-    .update({
-
-        cantidad_cerdos:
-        nuevaCantidad
-
-    })
-    .eq(
-        "id",
-        actual.id
-    );
-
+    const {error}=await clienteSupabase
+        .from("destete_filas")
+        .update({
+            cantidad_cerdos:nueva
+        })
+        .eq("id",filaDesteteSeleccionada.id);
 
     if(error){
 
-        alert(
-            "Error agregando cerdos al Destete:\n\n"+
-            error.message
-        );
+        mostrarMensaje("Error agregando");
 
         return;
-
     }
 
-
     await registrarMovimientoDestete(
-
-        actual.fila,
-
         "Entrada",
-
         cantidad
-
     );
 
-
-    alert(
-
-        "✅ Se agregaron "+
-        cantidad+
-        " cerdos a "+
-        actual.fila+
-        "."
-
-    );
-
+    mostrarMensaje("Cerdos agregados");
 
     cerrarPanel();
 
-    await cargarDestete();
-
+    cargarDestete();
 }
-
-
-/* ==================================================
-   SALIDA DESTETE PARA CEBA
-================================================== */
 
 function mostrarSalidaCebaDestete(){
 
-    const cantidad=
-    Number(
-        filaDesteteSeleccionada.cantidad_cerdos || 0
-    );
-
-
-    document.getElementById(
-        "infoSalidaCebaDestete"
-    ).innerText=
-
-    "🐷 "+
-    filaDesteteSeleccionada.fila+
-    " — "+
-    cantidad+
-    " cerdos actuales";
-
-
     ocultarTodosLosPaneles();
 
-
-    document
-    .getElementById(
+    document.getElementById(
         "panelSalidaCebaDestete"
-    )
-    .classList
-    .remove("oculto");
+    ).classList.remove("oculto");
 
+    cargarNavesParaDestete();
 }
 
+async function cargarNavesParaDestete(){
+
+    const select=document.getElementById(
+        "selectNaveCebaDestete"
+    );
+
+    select.innerHTML=
+        `<option value="">Seleccione nave</option>`;
+
+    if(!todasLasNaves.length){
+
+        const {data}=await clienteSupabase
+            .from("naves")
+            .select("*")
+            .order("id");
+
+        todasLasNaves=data || [];
+    }
+
+    todasLasNaves.forEach(nave=>{
+
+        const option=document.createElement("option");
+
+        option.value=nave.id;
+
+        option.textContent=nave.nombre;
+
+        select.appendChild(option);
+
+    });
+
+    select.onchange=async()=>{
+
+        const naveId=select.value;
+
+        const cuartones=
+            document.getElementById(
+                "selectCuartonCebaDestete"
+            );
+
+        cuartones.innerHTML=
+            `<option value="">Seleccione cuartón</option>`;
+
+        if(!naveId)return;
+
+        const {data}=await clienteSupabase
+            .from("cuartones")
+            .select("*")
+            .eq("nave_id",naveId)
+            .order("id");
+
+        (data || []).forEach(cuarton=>{
+
+            const option=document.createElement("option");
+
+            option.value=cuarton.id;
+
+            option.textContent=
+                `Cuartón ${cuarton.numero}`;
+
+            cuartones.appendChild(option);
+
+        });
+    };
+}
 
 async function procesarSalidaCebaDestete(){
 
-    const cantidad=
-    Number(
+    const cantidad=Number(
         document.getElementById(
             "cantidadSalidaCebaDestete"
         ).value
     );
 
+    const cuartonId=
+        document.getElementById(
+            "selectCuartonCebaDestete"
+        ).value;
 
-    if(!cantidad || cantidad<=0){
+    if(cantidad<=0 || !cuartonId){
 
-        alert(
-            "Introduce una cantidad válida."
-        );
+        mostrarMensaje("Datos inválidos");
 
         return;
-
     }
-
 
     const actual=
-    await obtenerFilaDesteteActual(
-        filaDesteteSeleccionada.id
-    );
+        Number(filaDesteteSeleccionada.cantidad_cerdos || 0);
 
+    if(cantidad>actual){
 
-    if(!actual){
-
-        return;
-
-    }
-
-
-    if(
-
-        cantidad>
-        Number(
-            actual.cantidad_cerdos || 0
-        )
-
-    ){
-
-        alert(
-            "No puedes sacar más cerdos de los que hay en la fila."
-        );
+        mostrarMensaje("No hay suficientes cerdos");
 
         return;
-
     }
 
+    const {data:cuarton,error}=await clienteSupabase
+        .from("cuartones")
+        .select("*")
+        .eq("id",cuartonId)
+        .single();
 
-    const nuevaCantidad=
-
-    Number(
-        actual.cantidad_cerdos || 0
-    )
-    -
-    cantidad;
-
-
-    const {error}=
+    if(error || !cuarton)return;
 
     await clienteSupabase
-    .from("destete_filas")
-    .update({
+        .from("destete_filas")
+        .update({
+            cantidad_cerdos:actual-cantidad
+        })
+        .eq("id",filaDesteteSeleccionada.id);
 
-        cantidad_cerdos:
-        nuevaCantidad
-
-    })
-    .eq(
-        "id",
-        actual.id
-    );
-
-
-    if(error){
-
-        alert(
-            "Error realizando la salida para Ceba:\n\n"+
-            error.message
-        );
-
-        return;
-
-    }
-
+    await clienteSupabase
+        .from("cuartones")
+        .update({
+            cantidad_cerdos:
+                Number(cuarton.cantidad_cerdos || 0)
+                +cantidad
+        })
+        .eq("id",cuartonId);
 
     await registrarMovimientoDestete(
-
-        actual.fila,
-
-        "Salida Ceba",
-
+        "Salida para Ceba",
         cantidad
-
     );
 
-
-    alert(
-
-        "✅ Salida para Ceba registrada.\n\n"+
-        "Fila: "+
-        actual.fila+
-        "\nCerdos: "+
-        cantidad
-
-    );
-
+    mostrarMensaje("Cerdos enviados a Ceba");
 
     cerrarPanel();
 
-    await cargarDestete();
+    cargarDestete();
 
+    actualizarTotalGeneralNaves();
 }
-
-
-/* ==================================================
-   MUERTE DESTETE
-================================================== */
 
 function mostrarMuerteDestete(){
 
-    const cantidad=
-    Number(
-        filaDesteteSeleccionada.cantidad_cerdos || 0
-    );
-
-
-    document.getElementById(
-        "infoMuerteDestete"
-    ).innerText=
-
-    "☠️ "+
-    filaDesteteSeleccionada.fila+
-    " — "+
-    cantidad+
-    " cerdos actuales";
-
-
     ocultarTodosLosPaneles();
 
-
-    document
-    .getElementById(
+    document.getElementById(
         "panelMuerteDestete"
-    )
-    .classList
-    .remove("oculto");
-
+    ).classList.remove("oculto");
 }
-
 
 async function procesarMuerteDestete(){
 
-    const cantidad=
-    Number(
+    const cantidad=Number(
         document.getElementById(
             "cantidadMuerteDestete"
         ).value
     );
 
-
-    if(!cantidad || cantidad<=0){
-
-        alert(
-            "Introduce una cantidad válida."
-        );
-
-        return;
-
-    }
-
-
     const actual=
-    await obtenerFilaDesteteActual(
-        filaDesteteSeleccionada.id
-    );
+        Number(filaDesteteSeleccionada.cantidad_cerdos || 0);
 
+    if(cantidad<=0 || cantidad>actual){
 
-    if(!actual){
-
-        return;
-
-    }
-
-
-    const cantidadActual=
-
-    Number(
-        actual.cantidad_cerdos || 0
-    );
-
-
-    if(cantidad>cantidadActual){
-
-        alert(
-            "No puedes sacar más cerdos de los que hay en la fila."
-        );
+        mostrarMensaje("Cantidad inválida");
 
         return;
-
     }
-
-
-    const nuevaCantidad=
-
-    cantidadActual-
-    cantidad;
-
-
-    const {error}=
 
     await clienteSupabase
-    .from("destete_filas")
-    .update({
-
-        cantidad_cerdos:
-        nuevaCantidad
-
-    })
-    .eq(
-        "id",
-        actual.id
-    );
-
-
-    if(error){
-
-        alert(
-            "Error registrando la muerte:\n\n"+
-            error.message
-        );
-
-        return;
-
-    }
-
+        .from("destete_filas")
+        .update({
+            cantidad_cerdos:actual-cantidad
+        })
+        .eq("id",filaDesteteSeleccionada.id);
 
     await registrarMovimientoDestete(
-
-        actual.fila,
-
         "Muerte",
-
         cantidad
-
     );
 
-
-    alert(
-
-        "✅ Muerte registrada correctamente.\n\n"+
-        "Fila: "+
-        actual.fila+
-        "\nCerdos muertos: "+
-        cantidad
-
-    );
-
+    mostrarMensaje("Muerte registrada");
 
     cerrarPanel();
 
-    await cargarDestete();
-
+    cargarDestete();
 }
-
-
-/* ==================================================
-   AGREGAR DATOS DESTETE
-================================================== */
-
-function mostrarAgregarDatosDestete(){
-
-    const fila=
-    filaDesteteSeleccionada;
-
-
-    document.getElementById(
-        "tituloAgregarDatosDestete"
-    ).innerText=
-
-    "📊 Datos de "+
-    fila.fila;
-
-
-    document.getElementById(
-        "infoAgregarDatosDestete"
-    ).innerText=
-
-    "🍼 "+
-    fila.fila+
-    " — Introduce la cantidad de cuartones y cuartones vacíos.";
-
-
-    document.getElementById(
-        "cantidadCuartonesDestete"
-    ).value=
-
-    Number(
-        fila.cuartones || 0
-    );
-
-
-    document.getElementById(
-        "cantidadCuartonesVaciosDestete"
-    ).value=
-
-    Number(
-        fila.cuartones_vacios || 0
-    );
-
-
-    ocultarTodosLosPaneles();
-
-
-    document
-    .getElementById(
-        "panelAgregarDatosDestete"
-    )
-    .classList
-    .remove("oculto");
-
-}
-
-
-async function procesarAgregarDatosDestete(){
-
-    const cuartones=
-    Number(
-        document.getElementById(
-            "cantidadCuartonesDestete"
-        ).value
-    );
-
-
-    const cuartonesVacios=
-    Number(
-        document.getElementById(
-            "cantidadCuartonesVaciosDestete"
-        ).value
-    );
-
-
-    if(
-
-        Number.isNaN(cuartones) ||
-        cuartones<0
-
-    ){
-
-        alert(
-            "Introduce una cantidad válida de cuartones."
-        );
-
-        return;
-
-    }
-
-
-    if(
-
-        Number.isNaN(cuartonesVacios) ||
-        cuartonesVacios<0
-
-    ){
-
-        alert(
-            "Introduce una cantidad válida de cuartones vacíos."
-        );
-
-        return;
-
-    }
-
-
-    if(cuartonesVacios>cuartones){
-
-        alert(
-            "Los cuartones vacíos no pueden ser mayores que el total de cuartones."
-        );
-
-        return;
-
-    }
-
-
-    const actual=
-    await obtenerFilaDesteteActual(
-        filaDesteteSeleccionada.id
-    );
-
-
-    if(!actual){
-
-        return;
-
-    }
-
-
-    const {error}=
-
-    await clienteSupabase
-    .from("destete_filas")
-    .update({
-
-        cuartones:
-        cuartones,
-
-        cuartones_vacios:
-        cuartonesVacios
-
-    })
-    .eq(
-        "id",
-        actual.id
-    );
-
-
-    if(error){
-
-        alert(
-            "Error guardando los datos:\n\n"+
-            error.message
-        );
-
-        return;
-
-    }
-
-
-    alert(
-
-        "✅ Datos guardados correctamente.\n\n"+
-        actual.fila+
-        "\nCuartones: "+
-        cuartones+
-        "\nCuartones vacíos: "+
-        cuartonesVacios
-
-    );
-
-
-    cerrarPanel();
-
-    await cargarDestete();
-
-}
-
-
-/* ==================================================
-   REAGRUPACIÓN DESTETE
-================================================== */
 
 function mostrarReagrupeDestete(){
 
-    const origen=
-    filaDesteteSeleccionada;
-
-
-    const cantidad=
-    Number(
-        origen.cantidad_cerdos || 0
-    );
-
+    ocultarTodosLosPaneles();
 
     document.getElementById(
-        "infoReagrupeDestete"
-    ).innerHTML=
-
-    "🐷 Origen: <strong>"+
-    origen.fila+
-    "</strong>"+
-    "<br><br>"+
-    "Cerdos actuales: "+
-    cantidad;
-
+        "panelReagrupeDestete"
+    ).classList.remove("oculto");
 
     const select=
-    document.getElementById(
-        "filaDestinoDestete"
-    );
+        document.getElementById(
+            "selectFilaDestinoDestete"
+        );
 
-
-    select.innerHTML=`
-
-    <option value="">
-
-    Selecciona fila destino
-
-    </option>
-
-    `;
-
+    select.innerHTML=
+        `<option value="">Seleccione fila</option>`;
 
     filasDestete.forEach(fila=>{
 
-        if(
+        if(fila.id===filaDesteteSeleccionada.id)return;
 
-            String(fila.id)!==
-            String(origen.id)
+        const option=document.createElement("option");
 
-        ){
+        option.value=fila.id;
 
-            select.innerHTML+=`
+        option.textContent=fila.fila;
 
-            <option value="${fila.id}">
-
-            🐷 ${fila.fila}
-
-            — ${Number(
-                fila.cantidad_cerdos || 0
-            )} cerdos
-
-            </option>
-
-            `;
-
-        }
+        select.appendChild(option);
 
     });
-
-
-    ocultarTodosLosPaneles();
-
-
-    document
-    .getElementById(
-        "panelReagrupeDestete"
-    )
-    .classList
-    .remove("oculto");
-
 }
-
 
 async function procesarReagrupeDestete(){
 
-    const cantidad=
-    Number(
+    const destinoId=
+        document.getElementById(
+            "selectFilaDestinoDestete"
+        ).value;
+
+    const cantidad=Number(
         document.getElementById(
             "cantidadReagrupeDestete"
         ).value
     );
 
+    if(!destinoId || cantidad<=0){
 
-    const destinoId=
-    document.getElementById(
-        "filaDestinoDestete"
-    ).value;
-
-
-    if(!cantidad || cantidad<=0){
-
-        alert(
-            "Introduce una cantidad válida."
-        );
+        mostrarMensaje("Datos inválidos");
 
         return;
-
     }
 
-
-    if(!destinoId){
-
-        alert(
-            "Selecciona la fila destino."
-        );
-
-        return;
-
-    }
-
-
-    if(
-
-        String(destinoId)===
-        String(
-            filaDesteteSeleccionada.id
-        )
-
-    ){
-
-        alert(
-            "La fila destino debe ser diferente."
-        );
-
-        return;
-
-    }
-
-
-    const origen=
-    await obtenerFilaDesteteActual(
-        filaDesteteSeleccionada.id
-    );
-
-
-    const destino=
-    await obtenerFilaDesteteActual(
-        destinoId
-    );
-
-
-    if(!origen || !destino){
-
-        return;
-
-    }
-
-
-    if(
-
-        cantidad>
+    const origenActual=
         Number(
-            origen.cantidad_cerdos || 0
-        )
-
-    ){
-
-        alert(
-            "No puedes mover más cerdos de los que hay en la fila de origen."
+            filaDesteteSeleccionada.cantidad_cerdos || 0
         );
 
-        return;
+    if(cantidad>origenActual){
 
+        mostrarMensaje("No hay suficientes cerdos");
+
+        return;
     }
 
+    const {data:destino,error}=await clienteSupabase
+        .from("destete_filas")
+        .select("*")
+        .eq("id",destinoId)
+        .single();
 
-    const cantidadOrigenAnterior=
-
-    Number(
-        origen.cantidad_cerdos || 0
-    );
-
-
-    const cantidadDestinoAnterior=
-
-    Number(
-        destino.cantidad_cerdos || 0
-    );
-
-
-    const nuevaCantidadOrigen=
-
-    cantidadOrigenAnterior-
-    cantidad;
-
-
-    const nuevaCantidadDestino=
-
-    cantidadDestinoAnterior+
-    cantidad;
-
-
-    const {error:errorOrigen}=
+    if(error || !destino)return;
 
     await clienteSupabase
-    .from("destete_filas")
-    .update({
+        .from("destete_filas")
+        .update({
+            cantidad_cerdos:origenActual-cantidad
+        })
+        .eq("id",filaDesteteSeleccionada.id);
 
-        cantidad_cerdos:
-        nuevaCantidadOrigen
+    await clienteSupabase
+        .from("destete_filas")
+        .update({
+            cantidad_cerdos:
+                Number(destino.cantidad_cerdos || 0)
+                +cantidad
+        })
+        .eq("id",destinoId);
 
-    })
-    .eq(
-        "id",
-        origen.id
+    /* NO SE REGISTRA EN HISTORIAL */
+
+    mostrarMensaje("Reagrupe realizado");
+
+    cerrarPanel();
+
+    cargarDestete();
+}
+
+async function guardarDatosDestete(){
+
+    mostrarMensaje("Datos guardados");
+
+    cerrarPanel();
+}
+
+async function registrarMovimientoDestete(
+    operacion,
+    cantidad
+){
+
+    const session=await verificarSesion();
+
+    if(!session)return;
+
+    const usuario=
+        session.user.email || "usuario";
+
+    const {error}=await clienteSupabase
+        .from("movimientos_destete")
+        .insert({
+            fecha:new Date().toISOString(),
+            fila:filaDesteteSeleccionada?.fila || "",
+            operacion,
+            cantidad,
+            usuario
+        });
+
+    if(error){
+
+        console.error(error);
+    }
+}
+
+/* ==================================================
+   MATERNIDAD
+================================================== */
+
+async function cargarMaternidad(){
+
+    let {data:naves,error:errorNaves}=
+        await clienteSupabase
+        .from("maternidad_naves")
+        .select("*")
+        .order("id");
+
+    if(errorNaves){
+
+        mostrarMensaje(
+            "Debe crear las tablas de Maternidad en Supabase"
+        );
+
+        console.error(errorNaves);
+
+        return;
+    }
+
+    if(!naves || naves.length<2){
+
+        await clienteSupabase
+            .from("maternidad_naves")
+            .insert([
+                {nombre:"Nave 1"},
+                {nombre:"Nave 2"}
+            ]);
+
+        const respuesta=
+            await clienteSupabase
+            .from("maternidad_naves")
+            .select("*")
+            .order("id");
+
+        naves=respuesta.data || [];
+    }
+
+    navesMaternidad=naves;
+
+    let {data:filas,error:errorFilas}=
+        await clienteSupabase
+        .from("maternidad_filas")
+        .select("*")
+        .order("nave_id")
+        .order("id");
+
+    if(errorFilas){
+
+        console.error(errorFilas);
+
+        mostrarMensaje("Error cargando las filas de Maternidad");
+
+        return;
+    }
+
+    for(const nave of naves){
+
+        const filasNave=(filas || [])
+            .filter(f=>String(f.nave_id)===String(nave.id));
+
+        if(filasNave.length<2){
+
+            const existentes=
+                filasNave.map(f=>f.fila);
+
+            const nuevas=[];
+
+            if(!existentes.includes("F1")){
+                nuevas.push({
+                    nave_id:nave.id,
+                    fila:"F1",
+                    cantidad_cerdos:0
+                });
+            }
+
+            if(!existentes.includes("F2")){
+                nuevas.push({
+                    nave_id:nave.id,
+                    fila:"F2",
+                    cantidad_cerdos:0
+                });
+            }
+
+            if(nuevas.length){
+
+                await clienteSupabase
+                    .from("maternidad_filas")
+                    .insert(nuevas);
+            }
+        }
+    }
+
+    const respuestaFilas=
+        await clienteSupabase
+        .from("maternidad_filas")
+        .select("*")
+        .order("nave_id")
+        .order("id");
+
+    filasMaternidad=
+        respuestaFilas.data || [];
+
+    renderizarMaternidad();
+
+    actualizarTotalGeneralNaves();
+}
+
+/* ==================================================
+   RENDERIZAR MATERNIDAD
+================================================== */
+
+function renderizarMaternidad(){
+
+    const contenedor=
+        document.getElementById(
+            "contenedorMaternidadNaves"
+        );
+
+    contenedor.innerHTML="";
+
+    let totalGeneral=0;
+
+    const estructura=
+        document.createElement("div");
+
+    estructura.className="estructuraMaternidad";
+
+    navesMaternidad.forEach(nave=>{
+
+        const naveDiv=
+            document.createElement("div");
+
+        naveDiv.className="naveMaternidad";
+
+        naveDiv.innerHTML=
+            `<div class="tituloNaveMaternidad">
+                🐖 ${nave.nombre}
+             </div>
+             <div class="filasMaternidad"></div>
+             <div class="totalNave">
+                Total: <span>0</span>
+             </div>`;
+
+        const filasDiv=
+            naveDiv.querySelector(
+                ".filasMaternidad"
+            );
+
+        const totalSpan=
+            naveDiv.querySelector(
+                ".totalNave span"
+            );
+
+        let totalNave=0;
+
+        const filasNave=
+            filasMaternidad.filter(
+                fila=>
+                    String(fila.nave_id)
+                    ===String(nave.id)
+            );
+
+        filasNave.forEach(fila=>{
+
+            const cantidad=
+                Number(fila.cantidad_cerdos || 0);
+
+            totalNave+=cantidad;
+
+            totalGeneral+=cantidad;
+
+            const div=
+                document.createElement("div");
+
+            div.className="filaMaternidad";
+
+            div.innerHTML=
+                `<div class="nombreFilaMaternidad">
+                    ${fila.fila}
+                 </div>
+                 <div class="cerdosFilaMaternidad">
+                    ${cantidad}
+                 </div>
+                 <div>🐷 cerdos</div>`;
+
+            div.onclick=()=>{
+                seleccionarFilaMaternidad(
+                    nave,
+                    fila
+                );
+            };
+
+            filasDiv.appendChild(div);
+
+        });
+
+        totalSpan.textContent=totalNave;
+
+        estructura.appendChild(naveDiv);
+
+    });
+
+    contenedor.appendChild(estructura);
+
+    document.getElementById(
+        "numeroTotalMaternidad"
+    ).textContent=totalGeneral;
+}
+
+/* ==================================================
+   SELECCIONAR FILA MATERNIDAD
+================================================== */
+
+function seleccionarFilaMaternidad(
+    nave,
+    fila
+){
+
+    naveMaternidadSeleccionada=nave;
+
+    filaMaternidadSeleccionada=fila;
+
+    ocultarTodosLosPaneles();
+
+    document.getElementById(
+        "tituloFilaMaternidad"
+    ).textContent=
+        `${nave.nombre} - ${fila.fila}`;
+
+    document.getElementById(
+        "panelFilaMaternidad"
+    ).classList.remove("oculto");
+}
+
+/* ==================================================
+   AGREGAR MATERNIDAD
+================================================== */
+
+function mostrarAgregarMaternidad(){
+
+    ocultarTodosLosPaneles();
+
+    document.getElementById(
+        "panelAgregarMaternidad"
+    ).classList.remove("oculto");
+}
+
+function mostrarAgregarDirectoMaternidad(){
+
+    ocultarTodosLosPaneles();
+
+    document.getElementById(
+        "panelAgregarDirectoMaternidad"
+    ).classList.remove("oculto");
+}
+
+async function procesarAgregarDirectoMaternidad(){
+
+    const cantidad=Number(
+        document.getElementById(
+            "cantidadAgregarDirectoMaternidad"
+        ).value
     );
 
+    if(cantidad<=0){
+
+        mostrarMensaje("Cantidad inválida");
+
+        return;
+    }
+
+    const actual=
+        Number(
+            filaMaternidadSeleccionada.cantidad_cerdos || 0
+        );
+
+    const nueva=actual+cantidad;
+
+    const {error}=await clienteSupabase
+        .from("maternidad_filas")
+        .update({
+            cantidad_cerdos:nueva
+        })
+        .eq("id",filaMaternidadSeleccionada.id);
+
+    if(error){
+
+        mostrarMensaje("Error agregando cerdos");
+
+        console.error(error);
+
+        return;
+    }
+
+    const registrado=
+        await registrarMovimientoMaternidad(
+            "Entrada",
+            cantidad,
+            0
+        );
+
+    if(!registrado){
+
+        await clienteSupabase
+            .from("maternidad_filas")
+            .update({
+                cantidad_cerdos:actual
+            })
+            .eq("id",filaMaternidadSeleccionada.id);
+
+        mostrarMensaje("No se pudo registrar el movimiento");
+
+        return;
+    }
+
+    mostrarMensaje("Cerdos agregados a Maternidad");
+
+    cerrarPanel();
+
+    cargarMaternidad();
+}
+
+/* ==================================================
+   AGREGAR DESDE CEBA
+================================================== */
+
+function mostrarAgregarDesdeCebaMaternidad(){
+
+    ocultarTodosLosPaneles();
+
+    document.getElementById(
+        "panelAgregarDesdeCebaMaternidad"
+    ).classList.remove("oculto");
+
+    cargarDatosCebaTransferencia(
+        "selectNaveOrigenMaternidad",
+        "selectCuartonOrigenMaternidad"
+    );
+}
+
+/* ==================================================
+   DATOS CEBA PARA TRANSFERENCIAS
+================================================== */
+
+async function cargarDatosCebaTransferencia(
+    idNave,
+    idCuarton
+){
+
+    const selectNave=
+        document.getElementById(idNave);
+
+    const selectCuarton=
+        document.getElementById(idCuarton);
+
+    selectNave.innerHTML=
+        `<option value="">Seleccione nave</option>`;
+
+    selectCuarton.innerHTML=
+        `<option value="">Seleccione cuartón</option>`;
+
+    const {data:naves,error}=await clienteSupabase
+        .from("naves")
+        .select("*")
+        .order("id");
+
+    if(error){
+
+        console.error(error);
+
+        return;
+    }
+
+    todasLasNaves=naves || [];
+
+    selectNave.onchange=async()=>{
+
+        const naveId=selectNave.value;
+
+        selectCuarton.innerHTML=
+            `<option value="">Seleccione cuartón</option>`;
+
+        if(!naveId)return;
+
+        const {data:cuartones,error:errorCuartones}=
+            await clienteSupabase
+            .from("cuartones")
+            .select("*")
+            .eq("nave_id",naveId)
+            .order("id");
+
+        if(errorCuartones)return;
+
+        (cuartones || []).forEach(cuarton=>{
+
+            const option=document.createElement("option");
+
+            option.value=cuarton.id;
+
+            option.textContent=
+                `Cuartón ${cuarton.numero} - ${cuarton.cantidad_cerdos || 0} cerdos`;
+
+            selectCuarton.appendChild(option);
+
+        });
+    };
+
+    naves.forEach(nave=>{
+
+        const option=document.createElement("option");
+
+        option.value=nave.id;
+
+        option.textContent=nave.nombre;
+
+        selectNave.appendChild(option);
+
+    });
+}
+
+async function procesarAgregarDesdeCebaMaternidad(){
+
+    const cuartonId=
+        document.getElementById(
+            "selectCuartonOrigenMaternidad"
+        ).value;
+
+    const cantidad=Number(
+        document.getElementById(
+            "cantidadDesdeCebaMaternidad"
+        ).value
+    );
+
+    if(!cuartonId || cantidad<=0){
+
+        mostrarMensaje("Datos inválidos");
+
+        return;
+    }
+
+    const {data:cuarton,error}=await clienteSupabase
+        .from("cuartones")
+        .select("*")
+        .eq("id",cuartonId)
+        .single();
+
+    if(error || !cuarton){
+
+        mostrarMensaje("No se encontró el cuartón");
+
+        return;
+    }
+
+    const cantidadCeba=
+        Number(cuarton.cantidad_cerdos || 0);
+
+    if(cantidad>cantidadCeba){
+
+        mostrarMensaje("No hay suficientes cerdos en Ceba");
+
+        return;
+    }
+
+    const nuevaMaternidad=
+        Number(
+            filaMaternidadSeleccionada.cantidad_cerdos || 0
+        )+cantidad;
+
+    const nuevaCeba=
+        cantidadCeba-cantidad;
+
+    const {error:errorCeba}=await clienteSupabase
+        .from("cuartones")
+        .update({
+            cantidad_cerdos:nuevaCeba
+        })
+        .eq("id",cuartonId);
+
+    if(errorCeba){
+
+        mostrarMensaje("Error descontando Ceba");
+
+        return;
+    }
+
+    const {error:errorMaternidad}=
+        await clienteSupabase
+        .from("maternidad_filas")
+        .update({
+            cantidad_cerdos:nuevaMaternidad
+        })
+        .eq("id",filaMaternidadSeleccionada.id);
+
+    if(errorMaternidad){
+
+        await clienteSupabase
+            .from("cuartones")
+            .update({
+                cantidad_cerdos:cantidadCeba
+            })
+            .eq("id",cuartonId);
+
+        mostrarMensaje("Error agregando a Maternidad");
+
+        return;
+    }
+
+    const registrado=
+        await registrarMovimientoMaternidad(
+            "Entrada desde Ceba",
+            cantidad,
+            0
+        );
+
+    if(!registrado){
+
+        await clienteSupabase
+            .from("cuartones")
+            .update({
+                cantidad_cerdos:cantidadCeba
+            })
+            .eq("id",cuartonId);
+
+        await clienteSupabase
+            .from("maternidad_filas")
+            .update({
+                cantidad_cerdos:
+                    Number(
+                        filaMaternidadSeleccionada.cantidad_cerdos
+                    )
+            })
+            .eq("id",filaMaternidadSeleccionada.id);
+
+        mostrarMensaje("No se pudo registrar el movimiento");
+
+        return;
+    }
+
+    await registrarMovimientoCebaTransferencia(
+        cuarton,
+        "Salida a Maternidad",
+        cantidad
+    );
+
+    mostrarMensaje("Cerdos enviados desde Ceba a Maternidad");
+
+    cerrarPanel();
+
+    cargarMaternidad();
+
+    actualizarTotalGeneralNaves();
+}
+
+/* ==================================================
+   SACAR MATERNIDAD PARA CEBA
+================================================== */
+
+function mostrarSalidaCebaMaternidad(){
+
+    ocultarTodosLosPaneles();
+
+    document.getElementById(
+        "panelSalidaCebaMaternidad"
+    ).classList.remove("oculto");
+
+    cargarDatosCebaTransferencia(
+        "selectNaveDestinoMaternidad",
+        "selectCuartonDestinoMaternidad"
+    );
+}
+
+async function procesarSalidaCebaMaternidad(){
+
+    const cuartonId=
+        document.getElementById(
+            "selectCuartonDestinoMaternidad"
+        ).value;
+
+    const cantidad=Number(
+        document.getElementById(
+            "cantidadSalidaCebaMaternidad"
+        ).value
+    );
+
+    if(!cuartonId || cantidad<=0){
+
+        mostrarMensaje("Datos inválidos");
+
+        return;
+    }
+
+    const actualMaternidad=
+        Number(
+            filaMaternidadSeleccionada.cantidad_cerdos || 0
+        );
+
+    if(cantidad>actualMaternidad){
+
+        mostrarMensaje("No hay suficientes cerdos");
+
+        return;
+    }
+
+    const {data:cuarton,error}=await clienteSupabase
+        .from("cuartones")
+        .select("*")
+        .eq("id",cuartonId)
+        .single();
+
+    if(error || !cuarton)return;
+
+    const nuevaMaternidad=
+        actualMaternidad-cantidad;
+
+    const nuevaCeba=
+        Number(cuarton.cantidad_cerdos || 0)+cantidad;
+
+    const {error:errorMaternidad}=
+        await clienteSupabase
+        .from("maternidad_filas")
+        .update({
+            cantidad_cerdos:nuevaMaternidad
+        })
+        .eq("id",filaMaternidadSeleccionada.id);
+
+    if(errorMaternidad){
+
+        mostrarMensaje("Error descontando Maternidad");
+
+        return;
+    }
+
+    const {error:errorCeba}=await clienteSupabase
+        .from("cuartones")
+        .update({
+            cantidad_cerdos:nuevaCeba
+        })
+        .eq("id",cuartonId);
+
+    if(errorCeba){
+
+        await clienteSupabase
+            .from("maternidad_filas")
+            .update({
+                cantidad_cerdos:actualMaternidad
+            })
+            .eq("id",filaMaternidadSeleccionada.id);
+
+        mostrarMensaje("Error agregando a Ceba");
+
+        return;
+    }
+
+    const registrado=
+        await registrarMovimientoMaternidad(
+            "Salida para Ceba",
+            cantidad,
+            0
+        );
+
+    if(!registrado){
+
+        await clienteSupabase
+            .from("maternidad_filas")
+            .update({
+                cantidad_cerdos:actualMaternidad
+            })
+            .eq("id",filaMaternidadSeleccionada.id);
+
+        await clienteSupabase
+            .from("cuartones")
+            .update({
+                cantidad_cerdos:Number(cuarton.cantidad_cerdos || 0)
+            })
+            .eq("id",cuartonId);
+
+        mostrarMensaje("No se pudo registrar el movimiento");
+
+        return;
+    }
+
+    await registrarMovimientoCebaTransferencia(
+        cuarton,
+        "Entrada desde Maternidad",
+        cantidad
+    );
+
+    mostrarMensaje("Cerdos enviados a Ceba");
+
+    cerrarPanel();
+
+    cargarMaternidad();
+
+    actualizarTotalGeneralNaves();
+}
+
+/* ==================================================
+   MUERTE MATERNIDAD
+================================================== */
+
+function mostrarMuerteMaternidad(){
+
+    ocultarTodosLosPaneles();
+
+    document.getElementById(
+        "panelMuerteMaternidad"
+    ).classList.remove("oculto");
+}
+
+function mostrarMuerteTotalMaternidad(){
+
+    ocultarTodosLosPaneles();
+
+    document.getElementById(
+        "panelMuerteTotalMaternidad"
+    ).classList.remove("oculto");
+}
+
+async function procesarMuerteTotalMaternidad(){
+
+    const cantidad=Number(
+        document.getElementById(
+            "cantidadMuerteTotalMaternidad"
+        ).value
+    );
+
+    const actual=
+        Number(
+            filaMaternidadSeleccionada.cantidad_cerdos || 0
+        );
+
+    if(cantidad<=0 || cantidad>actual){
+
+        mostrarMensaje("Cantidad inválida");
+
+        return;
+    }
+
+    await clienteSupabase
+        .from("maternidad_filas")
+        .update({
+            cantidad_cerdos:actual-cantidad
+        })
+        .eq("id",filaMaternidadSeleccionada.id);
+
+    await registrarMovimientoMaternidad(
+        "Muerte total",
+        cantidad,
+        0
+    );
+
+    mostrarMensaje("Muerte total registrada");
+
+    cerrarPanel();
+
+    cargarMaternidad();
+}
+
+function mostrarMuerteVentaMaternidad(){
+
+    ocultarTodosLosPaneles();
+
+    document.getElementById(
+        "panelMuerteVentaMaternidad"
+    ).classList.remove("oculto");
+}
+
+async function procesarMuerteVentaMaternidad(){
+
+    const cantidad=Number(
+        document.getElementById(
+            "cantidadMuerteVentaMaternidad"
+        ).value
+    );
+
+    const peso=Number(
+        document.getElementById(
+            "pesoMuerteVentaMaternidad"
+        ).value
+    );
+
+    const actual=
+        Number(
+            filaMaternidadSeleccionada.cantidad_cerdos || 0
+        );
+
+    if(
+        cantidad<=0 ||
+        peso<0 ||
+        cantidad>actual
+    ){
+
+        mostrarMensaje("Datos inválidos");
+
+        return;
+    }
+
+    await clienteSupabase
+        .from("maternidad_filas")
+        .update({
+            cantidad_cerdos:actual-cantidad
+        })
+        .eq("id",filaMaternidadSeleccionada.id);
+
+    await registrarMovimientoMaternidad(
+        "Muerte de venta",
+        cantidad,
+        peso
+    );
+
+    mostrarMensaje("Muerte de venta registrada");
+
+    cerrarPanel();
+
+    cargarMaternidad();
+}
+
+/* ==================================================
+   VENTA MATERNIDAD
+================================================== */
+
+function mostrarVentaMaternidad(){
+
+    ocultarTodosLosPaneles();
+
+    document.getElementById(
+        "panelVentaMaternidad"
+    ).classList.remove("oculto");
+}
+
+async function procesarVentaMaternidad(){
+
+    const cantidad=Number(
+        document.getElementById(
+            "cantidadVentaMaternidad"
+        ).value
+    );
+
+    const peso=Number(
+        document.getElementById(
+            "pesoVentaMaternidad"
+        ).value
+    );
+
+    const actual=
+        Number(
+            filaMaternidadSeleccionada.cantidad_cerdos || 0
+        );
+
+    if(
+        cantidad<=0 ||
+        peso<0 ||
+        cantidad>actual
+    ){
+
+        mostrarMensaje("Datos inválidos");
+
+        return;
+    }
+
+    await clienteSupabase
+        .from("maternidad_filas")
+        .update({
+            cantidad_cerdos:actual-cantidad
+        })
+        .eq("id",filaMaternidadSeleccionada.id);
+
+    await registrarMovimientoMaternidad(
+        "Venta",
+        cantidad,
+        peso
+    );
+
+    mostrarMensaje("Venta registrada");
+
+    cerrarPanel();
+
+    cargarMaternidad();
+}
+
+/* ==================================================
+   REAGRUPE MATERNIDAD
+   NO SE GUARDA EN HISTORIAL
+================================================== */
+
+function mostrarReagrupeMaternidad(){
+
+    ocultarTodosLosPaneles();
+
+    document.getElementById(
+        "panelReagrupeMaternidad"
+    ).classList.remove("oculto");
+
+    const select=
+        document.getElementById(
+            "selectDestinoReagrupeMaternidad"
+        );
+
+    select.innerHTML=
+        `<option value="">
+            Seleccione Nave / Fila
+         </option>`;
+
+    navesMaternidad.forEach(nave=>{
+
+        const filas=
+            filasMaternidad.filter(
+                fila=>
+                    String(fila.nave_id)
+                    ===String(nave.id)
+            );
+
+        filas.forEach(fila=>{
+
+            if(
+                fila.id===
+                filaMaternidadSeleccionada.id
+            )return;
+
+            const option=
+                document.createElement("option");
+
+            option.value=fila.id;
+
+            option.textContent=
+                `${nave.nombre} - ${fila.fila}`;
+
+            select.appendChild(option);
+
+        });
+
+    });
+}
+
+async function procesarReagrupeMaternidad(){
+
+    const destinoId=
+        document.getElementById(
+            "selectDestinoReagrupeMaternidad"
+        ).value;
+
+    const cantidad=Number(
+        document.getElementById(
+            "cantidadReagrupeMaternidad"
+        ).value
+    );
+
+    if(!destinoId || cantidad<=0){
+
+        mostrarMensaje("Datos inválidos");
+
+        return;
+    }
+
+    const actualOrigen=
+        Number(
+            filaMaternidadSeleccionada.cantidad_cerdos || 0
+        );
+
+    if(cantidad>actualOrigen){
+
+        mostrarMensaje("No hay suficientes cerdos");
+
+        return;
+    }
+
+    const {data:destino,error}=await clienteSupabase
+        .from("maternidad_filas")
+        .select("*")
+        .eq("id",destinoId)
+        .single();
+
+    if(error || !destino){
+
+        mostrarMensaje("No se encontró destino");
+
+        return;
+    }
+
+    const {error:errorOrigen}=
+        await clienteSupabase
+        .from("maternidad_filas")
+        .update({
+            cantidad_cerdos:actualOrigen-cantidad
+        })
+        .eq("id",filaMaternidadSeleccionada.id);
 
     if(errorOrigen){
 
-        alert(
-            "Error restando los cerdos de la fila de origen:\n\n"+
-            errorOrigen.message
-        );
+        mostrarMensaje("Error realizando reagrupe");
 
         return;
-
     }
 
-
     const {error:errorDestino}=
-
-    await clienteSupabase
-    .from("destete_filas")
-    .update({
-
-        cantidad_cerdos:
-        nuevaCantidadDestino
-
-    })
-    .eq(
-        "id",
-        destino.id
-    );
-
+        await clienteSupabase
+        .from("maternidad_filas")
+        .update({
+            cantidad_cerdos:
+                Number(destino.cantidad_cerdos || 0)
+                +cantidad
+        })
+        .eq("id",destinoId);
 
     if(errorDestino){
 
         await clienteSupabase
-        .from("destete_filas")
-        .update({
+            .from("maternidad_filas")
+            .update({
+                cantidad_cerdos:actualOrigen
+            })
+            .eq("id",filaMaternidadSeleccionada.id);
 
-            cantidad_cerdos:
-            cantidadOrigenAnterior
-
-        })
-        .eq(
-            "id",
-            origen.id
-        );
-
-
-        alert(
-
-            "❌ No se pudo completar el reagrupe.\n\n"+
-            "La fila de origen fue restaurada.\n\n"+
-            errorDestino.message
-
-        );
+        mostrarMensaje("Error actualizando destino");
 
         return;
-
     }
 
+    /*
+       IMPORTANTE:
+       EL REAGRUPAMIENTO DE MATERNIDAD
+       NO SE REGISTRA EN HISTORIAL.
+    */
 
-    alert(
-
-        "✅ Reagrupe realizado correctamente.\n\n"+
-        "Cerdos trasladados: "+
-        cantidad+
-        "\n\nOrigen: "+
-        origen.fila+
-        "\nDestino: "+
-        destino.fila
-
-    );
-
+    mostrarMensaje("Reagrupe realizado");
 
     cerrarPanel();
 
-    await cargarDestete();
-
+    cargarMaternidad();
 }
 
-
 /* ==================================================
-   OBTENER FILA ACTUAL
+   HISTORIAL MATERNIDAD
 ================================================== */
 
-async function obtenerFilaDesteteActual(id){
-
-    const {
-        data,
-        error
-    }=
-
-    await clienteSupabase
-    .from("destete_filas")
-    .select("*")
-    .eq("id",id)
-    .single();
-
-
-    if(error){
-
-        alert(
-            "Error leyendo la fila del Destete:\n\n"+
-            error.message
-        );
-
-        return null;
-
-    }
-
-
-    return data;
-
-}
-
-
-/* ==================================================
-   REGISTRAR HISTORIAL DESTETE
-================================================== */
-
-async function registrarMovimientoDestete(
-
-    fila,
+async function registrarMovimientoMaternidad(
     operacion,
-    cantidad
-
+    cantidad,
+    peso
 ){
 
-    const {
-        data:sesionData
-    }=
+    const session=await verificarSesion();
 
-    await clienteSupabase
-    .auth
-    .getSession();
+    if(!session)return false;
 
+    const usuario=
+        session.user.email || "usuario";
 
-    if(!sesionData.session){
-
-        window.location.href="login.html";
-
-        return;
-
-    }
-
-
-    const correoUsuario=
-
-    sesionData.session.user.email ||
-    "Sin correo";
-
-
-    const {error}=
-
-    await clienteSupabase
-    .from("movimientos_destete")
-    .insert({
-
-        fecha:
-        new Date().toISOString(),
-
-        fila:
-        fila,
-
-        operacion:
-        operacion,
-
-        cantidad:
-        cantidad,
-
-        usuario:
-        correoUsuario
-
-    });
-
+    const {error}=await clienteSupabase
+        .from("movimientos_maternidad")
+        .insert({
+            fecha:new Date().toISOString(),
+            nave_id:naveMaternidadSeleccionada?.id || null,
+            nave:naveMaternidadSeleccionada?.nombre || "",
+            fila:filaMaternidadSeleccionada?.fila || "",
+            operacion,
+            cantidad,
+            peso_kg:peso,
+            usuario
+        });
 
     if(error){
 
-        alert(
+        console.error(error);
 
-            "Error registrando el historial del Destete:\n\n"+
-            error.message
+        return false;
+    }
 
+    return true;
+}
+
+/* ==================================================
+   MOVIMIENTO CEBA POR TRANSFERENCIA
+================================================== */
+
+async function registrarMovimientoCebaTransferencia(
+    cuarton,
+    operacion,
+    cantidad
+){
+
+    const session=await verificarSesion();
+
+    if(!session)return;
+
+    const usuario=
+        session.user.email || "usuario";
+
+    const {data:nave}=await clienteSupabase
+        .from("naves")
+        .select("*")
+        .eq("id",cuarton.nave_id)
+        .single();
+
+    await clienteSupabase
+        .from("movimientos_naves")
+        .insert({
+            fecha:new Date().toISOString(),
+            nave:nave?.nombre || "",
+            cuarton:cuarton.numero || "",
+            operacion,
+            cantidad,
+            peso_kg:0,
+            usuario
+        });
+}
+
+/* ==================================================
+   TOTAL GENERAL
+================================================== */
+
+async function actualizarTotalGeneralNaves(){
+
+    try{
+
+        const [
+            respuestaCeba,
+            respuestaDestete,
+            respuestaMaternidad
+        ]=await Promise.all([
+
+            clienteSupabase
+                .from("cuartones")
+                .select("cantidad_cerdos"),
+
+            clienteSupabase
+                .from("destete_filas")
+                .select("cantidad_cerdos"),
+
+            clienteSupabase
+                .from("maternidad_filas")
+                .select("cantidad_cerdos")
+
+        ]);
+
+        let totalCeba=0;
+        let totalDestete=0;
+        let totalMaternidad=0;
+
+        (respuestaCeba.data || []).forEach(x=>{
+
+            totalCeba+=Number(
+                x.cantidad_cerdos || 0
+            );
+
+        });
+
+        (respuestaDestete.data || []).forEach(x=>{
+
+            totalDestete+=Number(
+                x.cantidad_cerdos || 0
+            );
+
+        });
+
+        (respuestaMaternidad.data || []).forEach(x=>{
+
+            totalMaternidad+=Number(
+                x.cantidad_cerdos || 0
+            );
+
+        });
+
+        const total=
+            totalCeba+
+            totalDestete+
+            totalMaternidad;
+
+        const ceba=
+            document.getElementById(
+                "totalGeneralCeba"
+            );
+
+        const destete=
+            document.getElementById(
+                "totalGeneralDestete"
+            );
+
+        const maternidad=
+            document.getElementById(
+                "totalGeneralMaternidad"
+            );
+
+        const general=
+            document.getElementById(
+                "totalGeneralTodasNaves"
+            );
+
+        if(ceba)
+            ceba.textContent=totalCeba;
+
+        if(destete)
+            destete.textContent=totalDestete;
+
+        if(maternidad)
+            maternidad.textContent=totalMaternidad;
+
+        if(general)
+            general.textContent=total;
+
+    }catch(error){
+
+        console.error(
+            "Error calculando total general:",
+            error
         );
 
     }
-
 }
 
-
 /* ==================================================
-   CERRAR PANEL
-================================================== */
-
-function cerrarPanel(){
-
-    ocultarTodosLosPaneles();
-
-
-    const ids=[
-
-        "cantidadAgregar",
-        "cantidadVenta",
-        "pesoVenta",
-        "cantidadMuerteTotal",
-        "cantidadMuerteVenta",
-        "pesoMuerteVenta",
-        "cantidadReagrupeSalida",
-        "cantidadGrupo",
-        "pesoGrupo",
-
-        "cantidadAgregarDestete",
-        "cantidadSalidaCebaDestete",
-        "cantidadMuerteDestete",
-        "cantidadReagrupeDestete",
-        "cantidadCuartonesDestete",
-        "cantidadCuartonesVaciosDestete"
-
-    ];
-
-
-    ids.forEach(id=>{
-
-        const elemento=
-        document.getElementById(id);
-
-
-        if(elemento){
-
-            elemento.value="";
-
-        }
-
-    });
-
-
-    ventaGrupo=[];
-
-    actualizarResumenGrupo();
-
-    tipoEntradaSeleccionado=null;
-
-}
-
-
-/* ==================================================
-   OCULTAR TODOS LOS PANELES
+   OCULTAR PANELES
 ================================================== */
 
 function ocultarTodosLosPaneles(){
@@ -4957,9 +4011,7 @@ function ocultarTodosLosPaneles(){
     const ids=[
 
         "panelCuarton",
-        "panelEntrada",
         "panelAgregar",
-        "panelMotivo",
         "panelVenta",
         "panelVentaGrupo",
         "panelMuerte",
@@ -4972,61 +4024,75 @@ function ocultarTodosLosPaneles(){
         "panelSalidaCebaDestete",
         "panelMuerteDestete",
         "panelAgregarDatosDestete",
-        "panelReagrupeDestete"
+        "panelReagrupeDestete",
+
+        "panelFilaMaternidad",
+        "panelAgregarMaternidad",
+        "panelAgregarDirectoMaternidad",
+        "panelAgregarDesdeCebaMaternidad",
+        "panelSalidaCebaMaternidad",
+        "panelMuerteMaternidad",
+        "panelMuerteTotalMaternidad",
+        "panelMuerteVentaMaternidad",
+        "panelVentaMaternidad",
+        "panelReagrupeMaternidad"
 
     ];
-
 
     ids.forEach(id=>{
 
         const elemento=
-        document.getElementById(id);
+            document.getElementById(id);
 
+        if(elemento)
+            elemento.classList.add("oculto");
 
-        if(elemento){
+    });
+}
 
-            elemento
-            .classList
-            .add("oculto");
+/* ==================================================
+   CERRAR PANEL
+================================================== */
 
-        }
+function cerrarPanel(){
+
+    ocultarTodosLosPaneles();
+
+    const inputs=document.querySelectorAll(
+        "input"
+    );
+
+    inputs.forEach(input=>{
+
+        input.value="";
 
     });
 
+    ventaGrupo=[];
+
 }
 
-
 /* ==================================================
-   INICIAR
+   INICIO
 ================================================== */
 
 async function iniciar(){
 
-    const ok=
-    await verificarSesion();
+    const session=await verificarSesion();
 
-
-    if(!ok){
-
-        return;
-
-    }
-
+    if(!session)return;
 
     /*
-       Al entrar a Naves no se abre
-       automáticamente Ceba ni Destete.
-
-       Primero aparecen los dos botones.
+       No se cambia automáticamente la vista.
+       Se mantiene el comportamiento original.
     */
 
+    actualizarTotalGeneralNaves();
 }
-
 
 iniciar();
 
 </script>
 
 </body>
-
-</html>
+    </html>
