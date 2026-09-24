@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
 <title>ElDesierto - Reportes</title>
 
 <style>
+
 *{
     box-sizing:border-box;
     margin:0;
@@ -324,6 +329,7 @@ tr:hover td{
 }
 
 @media(max-width:600px){
+
     body{
         padding:10px;
     }
@@ -344,10 +350,13 @@ tr:hover td{
     .estadistica .valor{
         font-size:20px;
     }
+
 }
+
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 </head>
 
 <body>
@@ -355,15 +364,25 @@ tr:hover td{
 <div class="contenedor">
 
 <div class="encabezado">
+
     <div class="logo">🐷</div>
+
     <h1>Reportes</h1>
-    <div class="subtitulo">Control y resumen de movimientos</div>
+
+    <div class="subtitulo">
+        Control y resumen de movimientos
+    </div>
+
 </div>
 
-<button class="btn-volver"
+<button
+class="btn-volver"
 onclick="window.location.href='menu.html'">
+
 ⬅ Volver al menú
+
 </button>
+
 
 <!-- MOVIMIENTOS ORIGINALES -->
 
@@ -372,27 +391,35 @@ onclick="window.location.href='menu.html'">
     <h2>📋 Movimientos registrados</h2>
 
     <div class="aviso">
+
         Aquí aparecen las entradas, salidas y fabricaciones.
         Puedes eliminar un registro desde la última columna.
+
     </div>
 
     <div class="tabla-contenedor">
+
         <table>
 
             <thead>
+
                 <tr>
+
                     <th>Fecha</th>
                     <th>Producto</th>
                     <th>Tipo</th>
                     <th>Cantidad</th>
                     <th>Usuario</th>
                     <th>Acción</th>
+
                 </tr>
+
             </thead>
 
             <tbody id="tablaReportes"></tbody>
 
         </table>
+
     </div>
 
 </div>
@@ -402,11 +429,16 @@ onclick="window.location.href='menu.html'">
 
 <div class="caja">
 
-    <h2 class="resumen-titulo">🏭 Estadísticas de fabricación</h2>
+    <h2 class="resumen-titulo">
+        🏭 Estadísticas de fabricación
+    </h2>
 
     <div class="resumen-subtitulo">
+
         Consumo de materias primas y producción diaria por receta
+
     </div>
+
 
     <div class="selector">
 
@@ -414,8 +446,9 @@ onclick="window.location.href='menu.html'">
             Período para estadísticas:
         </label>
 
-        <select id="periodoEstadisticas"
-                onchange="generarEstadisticas()">
+        <select
+        id="periodoEstadisticas"
+        onchange="generarEstadisticas()">
 
             <option value="dia">Hoy</option>
             <option value="semana">Últimos 7 días</option>
@@ -426,6 +459,7 @@ onclick="window.location.href='menu.html'">
 
     </div>
 
+
     <div class="tarjetas-estadistica">
 
         <div class="estadistica">
@@ -434,8 +468,12 @@ onclick="window.location.href='menu.html'">
                 Kg físicos fabricados
             </div>
 
-            <div class="valor" id="totalFabricado">
+            <div
+            class="valor"
+            id="totalFabricado">
+
                 0
+
             </div>
 
             <div class="unidad">
@@ -451,8 +489,12 @@ onclick="window.location.href='menu.html'">
                 Promedio de fabricación
             </div>
 
-            <div class="valor" id="promedioFabricado">
+            <div
+            class="valor"
+            id="promedioFabricado">
+
                 0
+
             </div>
 
             <div class="unidad">
@@ -468,8 +510,12 @@ onclick="window.location.href='menu.html'">
                 Materias primas consumidas
             </div>
 
-            <div class="valor" id="totalMaterias">
+            <div
+            class="valor"
+            id="totalMaterias">
+
                 0
+
             </div>
 
             <div class="unidad">
@@ -485,16 +531,21 @@ onclick="window.location.href='menu.html'">
         Consumo de materias primas para fabricar
     </h2>
 
+
     <div class="tabla-contenedor">
 
         <table>
 
             <thead>
+
                 <tr>
+
                     <th>Materia prima</th>
                     <th>Consumo total</th>
                     <th>Promedio diario</th>
+
                 </tr>
+
             </thead>
 
             <tbody id="tablaConsumoFabricacion"></tbody>
@@ -508,16 +559,21 @@ onclick="window.location.href='menu.html'">
         Fabricación por receta
     </h2>
 
+
     <div class="tabla-contenedor">
 
         <table>
 
             <thead>
+
                 <tr>
+
                     <th>Receta</th>
                     <th>Kg fabricados</th>
                     <th>Promedio diario</th>
+
                 </tr>
+
             </thead>
 
             <tbody id="tablaPromediosRecetas"></tbody>
@@ -527,24 +583,27 @@ onclick="window.location.href='menu.html'">
     </div>
 
 
-    <button class="boton"
-            onclick="escucharEstadisticas()">
+    <button
+    class="boton"
+    onclick="escucharEstadisticas()">
 
         🔊 Escuchar estadísticas y promedios
 
     </button>
 
 
-    <button class="boton boton-secundario"
-            onclick="detenerVoz()">
+    <button
+    class="boton boton-secundario"
+    onclick="detenerVoz()">
 
         ⏹ Detener lectura
 
     </button>
 
 
-    <div id="estadoVoz"
-         class="estado-voz">
+    <div
+    id="estadoVoz"
+    class="estado-voz">
     </div>
 
 </div>
@@ -559,7 +618,9 @@ onclick="window.location.href='menu.html'">
     </h2>
 
     <div class="resumen-subtitulo">
+
         Consulta todo lo fabricado en el período seleccionado
+
     </div>
 
 
@@ -569,8 +630,9 @@ onclick="window.location.href='menu.html'">
             Seleccionar receta:
         </label>
 
-        <select id="recetaFiltro"
-                onchange="generarResumenRecetas()">
+        <select
+        id="recetaFiltro"
+        onchange="generarResumenRecetas()">
 
             <option value="todas">
                 Todas las recetas
@@ -587,8 +649,9 @@ onclick="window.location.href='menu.html'">
             Tipo de período:
         </label>
 
-        <select id="tipoPeriodo"
-                onchange="cambiarTipoPeriodo()">
+        <select
+        id="tipoPeriodo"
+        onchange="cambiarTipoPeriodo()">
 
             <option value="dia">Día</option>
             <option value="semana">Semana</option>
@@ -599,46 +662,52 @@ onclick="window.location.href='menu.html'">
     </div>
 
 
-    <div class="selector"
-         id="selectorDia">
+    <div
+    class="selector"
+    id="selectorDia">
 
         <label for="fechaResumen">
             Seleccionar día:
         </label>
 
-        <input type="date"
-               id="fechaResumen"
-               onchange="generarResumenRecetas">
+        <input
+        type="date"
+        id="fechaResumen"
+        onchange="generarResumenRecetas()">
 
     </div>
 
 
-    <div class="selector"
-         id="selectorSemana"
-         style="display:none;">
+    <div
+    class="selector"
+    id="selectorSemana"
+    style="display:none;">
 
         <label for="fechaSemana">
             Seleccionar una fecha de la semana:
         </label>
 
-        <input type="date"
-               id="fechaSemana"
-               onchange="generarResumenRecetas()">
+        <input
+        type="date"
+        id="fechaSemana"
+        onchange="generarResumenRecetas()">
 
     </div>
 
 
-    <div class="selector"
-         id="selectorMes"
-         style="display:none;">
+    <div
+    class="selector"
+    id="selectorMes"
+    style="display:none;">
 
         <label for="mesRecetas">
             Seleccionar mes:
         </label>
 
-        <input type="month"
-               id="mesRecetas"
-               onchange="generarResumenRecetas()">
+        <input
+        type="month"
+        id="mesRecetas"
+        onchange="generarResumenRecetas()">
 
     </div>
 
@@ -651,9 +720,12 @@ onclick="window.location.href='menu.html'">
                 Kg fabricados
             </div>
 
-            <div class="valor"
-                 id="totalResumenRecetas">
+            <div
+            class="valor"
+            id="totalResumenRecetas">
+
                 0
+
             </div>
 
             <div class="unidad">
@@ -669,9 +741,12 @@ onclick="window.location.href='menu.html'">
                 Recetas fabricadas
             </div>
 
-            <div class="valor"
-                 id="cantidadRecetasResumen">
+            <div
+            class="valor"
+            id="cantidadRecetasResumen">
+
                 0
+
             </div>
 
             <div class="unidad">
@@ -686,8 +761,9 @@ onclick="window.location.href='menu.html'">
     <div id="resultadoResumenRecetas"></div>
 
 
-    <button class="boton"
-            onclick="escucharResumenRecetas()">
+    <button
+    class="boton"
+    onclick="escucharResumenRecetas()">
 
         🔊 Escuchar resumen de recetas
 
@@ -726,13 +802,15 @@ async function verificarSesion(){
 
     if(error || !data.session){
 
-        window.location.href = "login.html";
+        window.location.href =
+            "login.html";
 
         return false;
     }
 
     usuarioActual =
-        data.session.user.email || "Administrador";
+        data.session.user.email ||
+        "Administrador";
 
     return true;
 }
@@ -744,13 +822,18 @@ async function verificarSesion(){
 
 function fechaLocal(fecha = new Date()){
 
-    const y = fecha.getFullYear();
+    const y =
+        fecha.getFullYear();
 
     const m =
-        String(fecha.getMonth()+1).padStart(2,"0");
+        String(
+            fecha.getMonth()+1
+        ).padStart(2,"0");
 
     const d =
-        String(fecha.getDate()).padStart(2,"0");
+        String(
+            fecha.getDate()
+        ).padStart(2,"0");
 
     return `${y}-${m}-${d}`;
 }
@@ -758,33 +841,52 @@ function fechaLocal(fecha = new Date()){
 
 function fechaDeMovimiento(m){
 
-    return String(m.Fecha || "").slice(0,10);
+    return String(
+        m.Fecha || ""
+    ).slice(0,10);
 }
 
 
-function fechaDentroDePeriodo(fecha,tipo){
+function fechaDentroDePeriodo(
+    fecha,
+    tipo
+){
 
-    if(!fecha) return false;
+    if(!fecha)
+        return false;
 
-    const hoy = fechaLocal();
+    const hoy =
+        fechaLocal();
+
 
     if(tipo === "dia"){
+
         return fecha === hoy;
     }
 
+
     if(tipo === "semana"){
 
-        const limite = new Date();
+        const limite =
+            new Date();
 
-        limite.setHours(0,0,0,0);
+        limite.setHours(
+            0,0,0,0
+        );
 
         limite.setDate(
             limite.getDate()-6
         );
 
-        return fecha >= fechaLocal(limite)
-            && fecha <= hoy;
+        return (
+            fecha >=
+            fechaLocal(limite)
+        ) &&
+        (
+            fecha <= hoy
+        );
     }
+
 
     if(tipo === "mes"){
 
@@ -793,6 +895,7 @@ function fechaDentroDePeriodo(fecha,tipo){
         );
     }
 
+
     return true;
 }
 
@@ -800,12 +903,17 @@ function fechaDentroDePeriodo(fecha,tipo){
 function inicioSemana(fecha){
 
     const d =
-        new Date(fecha+"T12:00:00");
+        new Date(
+            fecha+"T12:00:00"
+        );
 
-    const dia = d.getDay();
+    const dia =
+        d.getDay();
 
     const diferencia =
-        dia === 0 ? -6 : 1-dia;
+        dia === 0
+            ? -6
+            : 1-dia;
 
     d.setDate(
         d.getDate()+diferencia
@@ -819,7 +927,8 @@ function finSemana(fecha){
 
     const inicio =
         new Date(
-            inicioSemana(fecha)+"T12:00:00"
+            inicioSemana(fecha)+
+            "T12:00:00"
         );
 
     inicio.setDate(
@@ -831,12 +940,81 @@ function finSemana(fecha){
 
 
 /* =====================================================
-   FORMATEAR NÚMEROS
+   NÚMEROS
 ===================================================== */
 
-function formatearNumero(numero){
+function numero(valor){
 
-    return Number(numero || 0).toLocaleString(
+    if(
+        valor === null ||
+        valor === undefined ||
+        valor === ""
+    ){
+        return 0;
+    }
+
+    if(typeof valor === "number")
+        return Number.isFinite(valor)
+            ? valor
+            : 0;
+
+    let texto =
+        String(valor)
+        .trim()
+        .replace(/\s/g,"");
+
+    /*
+       Soporta:
+
+       577.5
+       577,5
+       5.197,5
+       5,197.5
+    */
+
+    if(
+        texto.includes(",") &&
+        texto.includes(".")
+    ){
+
+        if(
+            texto.lastIndexOf(",") >
+            texto.lastIndexOf(".")
+        ){
+
+            texto =
+                texto
+                .replace(/\./g,"")
+                .replace(",",".");
+        }else{
+
+            texto =
+                texto
+                .replace(/,/g,"");
+        }
+
+    }else if(
+        texto.includes(",")
+    ){
+
+        texto =
+            texto.replace(",",".");
+    }
+
+    const n =
+        Number(texto);
+
+    return Number.isFinite(n)
+        ? n
+        : 0;
+}
+
+
+function formatearNumero(numeroValor){
+
+    return numero(
+        numeroValor
+    ).toLocaleString(
         "es-ES",
         {
             maximumFractionDigits:2
@@ -846,22 +1024,62 @@ function formatearNumero(numero){
 
 
 /* =====================================================
-   NORMALIZAR NOMBRES
+   NORMALIZAR
 ===================================================== */
 
 function normalizar(nombre){
 
-    return String(nombre || "")
-        .trim()
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g,"")
-        .replace(/\s+/g," ");
+    return String(
+        nombre || ""
+    )
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(
+        /[\u0300-\u036f]/g,
+        ""
+    )
+    .replace(
+        /\s+/g,
+        " "
+    );
 }
 
 
 /* =====================================================
-   CARGAR MOVIMIENTOS
+   IDENTIFICACIÓN SEGURA
+===================================================== */
+
+function obtenerIdMovimiento(m){
+
+    const candidatos = [
+
+        m?.Identificación,
+        m?.identificacion,
+        m?.identificación,
+        m?.id
+
+    ];
+
+    for(const valor of candidatos){
+
+        if(
+            valor !== null &&
+            valor !== undefined &&
+            String(valor).trim() !== "" &&
+            String(valor).toLowerCase() !== "null"
+        ){
+
+            return valor;
+        }
+    }
+
+    return null;
+}
+
+
+/* =====================================================
+   CARGAR REPORTES
 ===================================================== */
 
 async function cargarReportes(){
@@ -870,7 +1088,12 @@ async function cargarReportes(){
         await clienteSupabase
         .from("movimientos")
         .select("*")
-        .order("Fecha",{ascending:false});
+        .order(
+            "Fecha",
+            {
+                ascending:false
+            }
+        );
 
     if(error){
 
@@ -882,7 +1105,8 @@ async function cargarReportes(){
         return;
     }
 
-    movimientos = data || [];
+    movimientos =
+        data || [];
 
     mostrarMovimientos();
 }
@@ -901,6 +1125,7 @@ function mostrarMovimientos(){
 
     tabla.innerHTML = "";
 
+
     if(!movimientos.length){
 
         tabla.innerHTML = `
@@ -916,10 +1141,12 @@ function mostrarMovimientos(){
         return;
     }
 
+
     movimientos.forEach(m=>{
 
         const tipo =
-            String(m.Tipo || "").toLowerCase();
+            normalizar(m.Tipo);
+
 
         const clase =
             tipo === "entrada"
@@ -928,42 +1155,60 @@ function mostrarMovimientos(){
             tipo === "salida"
                 ? "salida"
                 :
-            tipo === "fabricación" ||
             tipo === "fabricacion"
                 ? "entrada"
                 : "";
 
+
         const fila =
-            document.createElement("tr");
+            document.createElement(
+                "tr"
+            );
+
 
         const valores = [
 
             m.Fecha || "",
             m.Producto || "",
             m.Tipo || "",
-            formatearNumero(m.Cantidad),
+            formatearNumero(
+                m.Cantidad
+            ),
             m.Usuario || ""
 
         ];
 
-        valores.forEach((valor,i)=>{
 
-            const td =
-                document.createElement("td");
+        valores.forEach(
+            (valor,i)=>{
 
-            td.textContent = valor;
+                const td =
+                    document.createElement(
+                        "td"
+                    );
 
-            if(i===2)
-                td.className = clase;
+                td.textContent =
+                    valor;
 
-            fila.appendChild(td);
-        });
+                if(i === 2)
+                    td.className =
+                        clase;
+
+                fila.appendChild(td);
+            }
+        );
+
 
         const tdAccion =
-            document.createElement("td");
+            document.createElement(
+                "td"
+            );
+
 
         const btn =
-            document.createElement("button");
+            document.createElement(
+                "button"
+            );
 
         btn.className =
             "boton boton-eliminar";
@@ -971,425 +1216,40 @@ function mostrarMovimientos(){
         btn.textContent =
             "🗑 Eliminar";
 
+
         btn.onclick =
             ()=>eliminarMovimiento(m);
+
 
         tdAccion.appendChild(btn);
 
         fila.appendChild(tdAccion);
 
         tabla.appendChild(fila);
+
     });
 }
 
 
 /* =====================================================
-   ELIMINAR MOVIMIENTO
-===================================================== */
-
-async function eliminarMovimiento(m){
-
-    const tipo =
-        String(m.Tipo || "").toLowerCase();
-
-    const esFabricacion =
-        tipo === "fabricación" ||
-        tipo === "fabricacion";
-
-    let texto =
-        "¿Seguro que deseas eliminar este registro?\n\n"+
-        "Producto: "+(m.Producto || "")+
-        "\nTipo: "+(m.Tipo || "")+
-        "\nCantidad: "+(m.Cantidad || 0);
-
-    if(esFabricacion){
-
-        texto +=
-            "\n\nSe intentará revertir el inventario "+
-            "de materias primas y producto elaborado "+
-            "usando la receta actual.";
-    }
-
-    if(!confirm(texto))
-        return;
-
-    if(esFabricacion){
-
-        const revertido =
-            await revertirFabricacion(m);
-
-        if(!revertido){
-
-            alert(
-                "No se eliminó el registro porque "+
-                "no se pudo revertir la fabricación "+
-                "de forma segura."
-            );
-
-            return;
-        }
-    }
-
-    const {error} =
-        await clienteSupabase
-        .from("movimientos")
-        .delete()
-        .eq(
-            "Identificación",
-            m.Identificación
-        );
-
-    if(error){
-
-        alert(
-            "Error eliminando el registro: "+
-            error.message
-        );
-
-        return;
-    }
-
-    alert(
-        "Registro eliminado correctamente."
-    );
-
-    await recargarTodo();
-}
-
-
-/* =====================================================
-   REVERSIÓN DE FABRICACIÓN
-===================================================== */
-
-async function revertirFabricacion(m){
-
-    const observacion =
-        String(m.Observación || "");
-
-    const coincidencia =
-        observacion.match(
-            /Receta:\s*(.+)/i
-        );
-
-    if(!coincidencia){
-
-        alert(
-            "No se encontró el nombre de la receta "+
-            "en Observación."
-        );
-
-        return false;
-    }
-
-    const nombreReceta =
-        coincidencia[1].trim();
-
-    const receta =
-        buscarRecetaPorNombre(nombreReceta);
-
-    if(!receta){
-
-        alert(
-            "No se encontró la receta original. "+
-            "No se modificará el inventario."
-        );
-
-        return false;
-    }
-
-    const detalle =
-        detallesRecetas[receta.id] || [];
-
-    if(!detalle.length){
-
-        alert(
-            "La receta no tiene materias primas registradas."
-        );
-
-        return false;
-    }
-
-    const cantidadFisica =
-        Number(m.Cantidad) || 0;
-
-    if(cantidadFisica <= 0)
-        return false;
-
-    const base =
-        obtenerCantidadBaseReceta(receta);
-
-    if(base <= 0){
-
-        alert(
-            "La receta no tiene una cantidad base válida."
-        );
-
-        return false;
-    }
-
-    const operaciones = [];
-
-    for(const materia of detalle){
-
-        const cantidadIngrediente =
-            Number(materia.cantidad) || 0;
-
-        const necesario =
-            calcularConsumoProporcional(
-                cantidadFisica,
-                base,
-                cantidadIngrediente
-            );
-
-        const producto =
-            productosInventario.find(p=>
-                normalizar(p.Nombre) ===
-                normalizar(materia.materia_prima)
-            );
-
-        if(!producto){
-
-            alert(
-                "No se encontró la materia prima: "+
-                materia.materia_prima
-            );
-
-            return false;
-        }
-
-        operaciones.push({
-            producto,
-            cantidad:necesario
-        });
-    }
-
-    const elaborado =
-        productosElaborados.find(p=>
-            normalizar(p.Nombre) ===
-            normalizar(receta.producto_resultado)
-        );
-
-    if(!elaborado){
-
-        alert(
-            "No se encontró el producto elaborado "+
-            "para revertir."
-        );
-
-        return false;
-    }
-
-    const cantidadUtil =
-        calcularCantidadUtil(
-            cantidadFisica,
-            detalle,
-            receta
-        );
-
-    if(Number(elaborado.Cantidad) < cantidadUtil){
-
-        alert(
-            "No se puede eliminar esta fabricación: "+
-            "el inventario actual del producto elaborado "+
-            "es menor a la cantidad que habría que descontar."
-        );
-
-        return false;
-    }
-
-    if(!confirm(
-        "La reversión añadirá las materias primas "+
-        "al inventario y descontará "+
-        formatearNumero(cantidadUtil)+
-        " kg del producto elaborado.\n\n¿Continuar?"
-    )){
-
-        return false;
-    }
-
-    for(const op of operaciones){
-
-        const nuevaCantidad =
-            Number(op.producto.Cantidad || 0) +
-            op.cantidad;
-
-        const {error} =
-            await clienteSupabase
-            .from("productos")
-            .update({
-                Cantidad:nuevaCantidad
-            })
-            .eq(
-                "Identificación",
-                op.producto.Identificación
-            );
-
-        if(error){
-
-            alert(
-                "Error restaurando "+
-                op.producto.Nombre+
-                ": "+error.message
-            );
-
-            return false;
-        }
-    }
-
-    const nuevaCantidadElaborado =
-        Number(elaborado.Cantidad) -
-        cantidadUtil;
-
-    const {error:errorElaborado} =
-        await clienteSupabase
-        .from("productos_elaborados")
-        .update({
-            Cantidad:nuevaCantidadElaborado
-        })
-        .eq("id",elaborado.id);
-
-    if(errorElaborado){
-
-        alert(
-            "Se restauraron materias primas, pero "+
-            "no se pudo actualizar el producto elaborado: "+
-            errorElaborado.message
-        );
-
-        return false;
-    }
-
-    return true;
-}
-
-
-/* =====================================================
-   CARGAR RECETAS, DETALLES E INVENTARIOS
-===================================================== */
-
-async function cargarDatosFabricacion(){
-
-    const {data:datosRecetas,error:errorRecetas} =
-        await clienteSupabase
-        .from("recetas")
-        .select("*")
-        .order("nombre");
-
-    if(errorRecetas){
-
-        alert(
-            "Error cargando recetas: "+
-            errorRecetas.message
-        );
-
-        return;
-    }
-
-    recetas =
-        datosRecetas || [];
-
-    const selector =
-        document.getElementById(
-            "recetaFiltro"
-        );
-
-    selector.innerHTML =
-        '<option value="todas">Todas las recetas</option>';
-
-    recetas.forEach(r=>{
-
-        const option =
-            document.createElement("option");
-
-        option.value = r.id;
-        option.textContent = r.nombre;
-
-        selector.appendChild(option);
-    });
-
-    detallesRecetas = {};
-
-    for(const receta of recetas){
-
-        const {data,error} =
-            await clienteSupabase
-            .from("detalle_recetas")
-            .select("*")
-            .eq(
-                "receta_id",
-                receta.id
-            );
-
-        if(error){
-
-            console.error(
-                "Error detalle receta",
-                receta.nombre,
-                error
-            );
-
-            continue;
-        }
-
-        detallesRecetas[receta.id] =
-            data || [];
-    }
-
-    const {data:productos,error:errorProductos} =
-        await clienteSupabase
-        .from("productos")
-        .select(
-            "Identificación,Nombre,Unidad,Cantidad"
-        );
-
-    if(errorProductos){
-
-        alert(
-            "Error cargando inventario: "+
-            errorProductos.message
-        );
-
-        return;
-    }
-
-    productosInventario =
-        productos || [];
-
-    const {data:elaborados,error:errorElaborados} =
-        await clienteSupabase
-        .from("productos_elaborados")
-        .select(
-            "id,Nombre,Unidad,Cantidad"
-        );
-
-    if(errorElaborados){
-
-        alert(
-            "Error cargando productos elaborados: "+
-            errorElaborados.message
-        );
-
-        return;
-    }
-
-    productosElaborados =
-        elaborados || [];
-}
-
-
-/* =====================================================
-   EXTRAER RECETA DE OBSERVACIÓN
+   OBTENER NOMBRE RECETA
 ===================================================== */
 
 function obtenerNombreReceta(m){
 
     const observacion =
-        String(m.Observación || "");
+        String(
+            m.Observación ||
+            m.observacion ||
+            ""
+        );
+
 
     const coincidencia =
         observacion.match(
-            /Receta:\s*(.+)/i
+            /Receta\s*:\s*(.+)/i
         );
+
 
     return coincidencia
         ? coincidencia[1].trim()
@@ -1397,20 +1257,29 @@ function obtenerNombreReceta(m){
 }
 
 
-function esFabricacion(m){
+/* =====================================================
+   OBTENER PRODUCTO DEL MOVIMIENTO
+===================================================== */
 
-    const tipo =
-        normalizar(m.Tipo);
+function obtenerProductoMovimiento(m){
 
-    return tipo === "fabricacion";
+    return String(
+        m.Producto ||
+        m.producto ||
+        ""
+    ).trim();
 }
 
 
-function movimientosFabricacion(){
+/* =====================================================
+   ES FABRICACIÓN
+===================================================== */
 
-    return movimientos.filter(m=>
-        esFabricacion(m) &&
-        obtenerNombreReceta(m)
+function esFabricacion(m){
+
+    return (
+        normalizar(m.Tipo) ===
+        "fabricacion"
     );
 }
 
@@ -1427,21 +1296,17 @@ function buscarRecetaPorNombre(nombre){
             normalizar(nombre)
         );
 
+
     if(!buscadas.length)
         return null;
 
-    /*
-       Si existen varias recetas con el mismo nombre,
-       se utiliza la primera coincidencia.
-       La fabricación debe tener nombres únicos.
-    */
 
     return buscadas[0];
 }
 
 
 /* =====================================================
-   CANTIDAD BASE REAL DE LA RECETA
+   CANTIDAD BASE
 ===================================================== */
 
 function obtenerCantidadBaseReceta(receta){
@@ -1449,79 +1314,771 @@ function obtenerCantidadBaseReceta(receta){
     if(!receta)
         return 0;
 
+
     const posibles = [
+
         receta.cantidad_resultado,
         receta.cantidadResultado,
         receta.cantidad_base,
         receta.cantidadBase
+
     ];
 
-    for(const valor of posibles){
 
-        const numero =
-            Number(
-                String(valor ?? "")
-                .replace(",",".")
-            );
+    for(
+        const valor of posibles
+    ){
 
-        if(Number.isFinite(numero) && numero > 0){
-            return numero;
+        const n =
+            numero(valor);
+
+        if(
+            n > 0 &&
+            Number.isFinite(n)
+        ){
+
+            return n;
         }
     }
+
 
     return 0;
 }
 
 
 /* =====================================================
-   CÁLCULO PROPORCIONAL DE INGREDIENTES
+   DETALLE DE RECETA
 ===================================================== */
 
-function calcularConsumoProporcional(
-    cantidadFabricada,
-    cantidadBase,
-    cantidadIngrediente
+function obtenerDetalleReceta(
+    receta
 ){
 
-    const fabricada =
-        Number(cantidadFabricada) || 0;
-
-    const base =
-        Number(cantidadBase) || 0;
-
-    const ingrediente =
-        Number(cantidadIngrediente) || 0;
-
-    if(
-        fabricada <= 0 ||
-        base <= 0 ||
-        ingrediente <= 0
-    ){
-        return 0;
-    }
-
-    /*
-       Fórmula:
-
-       fabricación real
-       -----------------  × ingrediente de receta
-       cantidad base
-
-       Ejemplo:
-
-       5197.5 / 577.5 × 5 = 45
-    */
+    if(!receta)
+        return [];
 
     return (
-        fabricada /
-        base *
-        ingrediente
+        detallesRecetas[
+            receta.id
+        ] || []
     );
 }
 
 
 /* =====================================================
-   ESTADÍSTICAS DE FABRICACIÓN
+   CÁLCULO DE CONSUMO
+===================================================== */
+
+function calcularConsumoIngrediente(
+    kgFabricados,
+    receta,
+    cantidadIngrediente
+){
+
+    const fabricados =
+        numero(
+            kgFabricados
+        );
+
+    const base =
+        obtenerCantidadBaseReceta(
+            receta
+        );
+
+    const ingrediente =
+        numero(
+            cantidadIngrediente
+        );
+
+
+    if(
+        fabricados <= 0 ||
+        base <= 0 ||
+        ingrediente <= 0
+    ){
+
+        return 0;
+    }
+
+
+    return (
+        fabricados /
+        base
+    ) *
+    ingrediente;
+}
+
+
+/* =====================================================
+   FABRICACIONES REALES
+===================================================== */
+
+function obtenerFabricacionesReales(){
+
+    /*
+       MUY IMPORTANTE:
+
+       Solo se considera producción el movimiento
+       cuyo Producto coincide con el producto que
+       produce la receta.
+
+       Esto evita sumar movimientos auxiliares
+       de materias primas como si fueran kg fabricados.
+    */
+
+    return movimientos.filter(m=>{
+
+        if(!esFabricacion(m))
+            return false;
+
+
+        const nombreReceta =
+            obtenerNombreReceta(m);
+
+        if(!nombreReceta)
+            return false;
+
+
+        const receta =
+            buscarRecetaPorNombre(
+                nombreReceta
+            );
+
+        if(!receta)
+            return false;
+
+
+        const productoMovimiento =
+            normalizar(
+                obtenerProductoMovimiento(m)
+            );
+
+
+        const productoReceta =
+            normalizar(
+                receta.producto_resultado
+            );
+
+
+        /*
+           Si el movimiento no trae producto,
+           se mantiene compatible con registros
+           antiguos.
+        */
+
+        if(!productoMovimiento)
+            return true;
+
+
+        return (
+            productoMovimiento ===
+            productoReceta
+        );
+
+    });
+}
+
+
+/* =====================================================
+   CARGAR DATOS DE FABRICACIÓN
+===================================================== */
+
+async function cargarDatosFabricacion(){
+
+    const {
+        data:datosRecetas,
+        error:errorRecetas
+    } =
+        await clienteSupabase
+        .from("recetas")
+        .select("*")
+        .order("nombre");
+
+
+    if(errorRecetas){
+
+        alert(
+            "Error cargando recetas: "+
+            errorRecetas.message
+        );
+
+        return;
+    }
+
+
+    recetas =
+        datosRecetas || [];
+
+
+    const selector =
+        document.getElementById(
+            "recetaFiltro"
+        );
+
+
+    selector.innerHTML =
+        '<option value="todas">Todas las recetas</option>';
+
+
+    recetas.forEach(r=>{
+
+        const option =
+            document.createElement(
+                "option"
+            );
+
+        option.value =
+            r.id;
+
+        option.textContent =
+            r.nombre;
+
+        selector.appendChild(
+            option
+        );
+
+    });
+
+
+    detallesRecetas = {};
+
+
+    for(
+        const receta of recetas
+    ){
+
+        const {
+            data,
+            error
+        } =
+            await clienteSupabase
+            .from("detalle_recetas")
+            .select("*")
+            .eq(
+                "receta_id",
+                receta.id
+            );
+
+
+        if(error){
+
+            console.error(
+                "Error detalle receta",
+                receta.nombre,
+                error
+            );
+
+            continue;
+        }
+
+
+        detallesRecetas[
+            receta.id
+        ] =
+            data || [];
+    }
+
+
+    const {
+        data:productos,
+        error:errorProductos
+    } =
+        await clienteSupabase
+        .from("productos")
+        .select(
+            "Identificación,Nombre,Unidad,Cantidad"
+        );
+
+
+    if(errorProductos){
+
+        alert(
+            "Error cargando inventario: "+
+            errorProductos.message
+        );
+
+        return;
+    }
+
+
+    productosInventario =
+        productos || [];
+
+
+    const {
+        data:elaborados,
+        error:errorElaborados
+    } =
+        await clienteSupabase
+        .from("productos_elaborados")
+        .select(
+            "id,Nombre,Unidad,Cantidad"
+        );
+
+
+    if(errorElaborados){
+
+        alert(
+            "Error cargando productos elaborados: "+
+            errorElaborados.message
+        );
+
+        return;
+    }
+
+
+    productosElaborados =
+        elaborados || [];
+}
+
+
+/* =====================================================
+   ELIMINAR MOVIMIENTO
+===================================================== */
+
+async function eliminarMovimiento(m){
+
+    const id =
+        obtenerIdMovimiento(m);
+
+
+    if(
+        id === null ||
+        id === undefined
+    ){
+
+        alert(
+            "Este registro no tiene una identificación válida. "+
+            "No se puede eliminar sin arriesgar borrar otro registro."
+        );
+
+        return;
+    }
+
+
+    const tipo =
+        normalizar(m.Tipo);
+
+
+    const esFab =
+        tipo === "fabricacion";
+
+
+    let texto =
+        "¿Seguro que deseas eliminar este registro?\n\n"+
+        "Producto: "+
+        (
+            m.Producto || ""
+        )+
+        "\nTipo: "+
+        (
+            m.Tipo || ""
+        )+
+        "\nCantidad: "+
+        (
+            m.Cantidad || 0
+        );
+
+
+    if(esFab){
+
+        texto +=
+            "\n\nSe intentará revertir el inventario "+
+            "de materias primas y producto elaborado.";
+    }
+
+
+    if(!confirm(texto))
+        return;
+
+
+    /*
+       Si es fabricación, primero se revierte.
+    */
+
+    if(esFab){
+
+        const revertido =
+            await revertirFabricacion(
+                m
+            );
+
+
+        if(!revertido){
+
+            alert(
+                "No se eliminó el registro porque "+
+                "no se pudo revertir la fabricación "+
+                "de forma segura."
+            );
+
+            return;
+        }
+    }
+
+
+    /*
+       Usamos Identificación si existe.
+       Si el registro usa id, usamos id.
+    */
+
+    let query;
+
+
+    if(
+        m.Identificación !== null &&
+        m.Identificación !== undefined &&
+        String(
+            m.Identificación
+        ).trim() !== "" &&
+        String(
+            m.Identificación
+        ).toLowerCase() !== "null"
+    ){
+
+        query =
+            clienteSupabase
+            .from("movimientos")
+            .delete()
+            .eq(
+                "Identificación",
+                m.Identificación
+            );
+
+    }else if(
+        m.id !== null &&
+        m.id !== undefined
+    ){
+
+        query =
+            clienteSupabase
+            .from("movimientos")
+            .delete()
+            .eq(
+                "id",
+                m.id
+            );
+
+    }else{
+
+        alert(
+            "No se encontró la clave primaria del movimiento."
+        );
+
+        return;
+    }
+
+
+    const {
+        error
+    } = await query;
+
+
+    if(error){
+
+        alert(
+            "Error eliminando el registro: "+
+            error.message
+        );
+
+        return;
+    }
+
+
+    alert(
+        "Registro eliminado correctamente."
+    );
+
+
+    await recargarTodo();
+}
+
+
+/* =====================================================
+   REVERTIR FABRICACIÓN
+===================================================== */
+
+async function revertirFabricacion(m){
+
+    const nombreReceta =
+        obtenerNombreReceta(m);
+
+
+    if(!nombreReceta){
+
+        alert(
+            "No se encontró la receta de esta fabricación."
+        );
+
+        return false;
+    }
+
+
+    const receta =
+        buscarRecetaPorNombre(
+            nombreReceta
+        );
+
+
+    if(!receta){
+
+        alert(
+            "No se encontró la receta original."
+        );
+
+        return false;
+    }
+
+
+    const detalle =
+        obtenerDetalleReceta(
+            receta
+        );
+
+
+    if(!detalle.length){
+
+        alert(
+            "La receta no tiene materias primas registradas."
+        );
+
+        return false;
+    }
+
+
+    const cantidadFisica =
+        numero(
+            m.Cantidad
+        );
+
+
+    if(
+        cantidadFisica <= 0
+    ){
+
+        alert(
+            "La cantidad fabricada no es válida."
+        );
+
+        return false;
+    }
+
+
+    const base =
+        obtenerCantidadBaseReceta(
+            receta
+        );
+
+
+    if(base <= 0){
+
+        alert(
+            "La receta no tiene una cantidad base válida."
+        );
+
+        return false;
+    }
+
+
+    const operaciones = [];
+
+
+    for(
+        const materia of detalle
+    ){
+
+        const cantidad =
+            calcularConsumoIngrediente(
+                cantidadFisica,
+                receta,
+                materia.cantidad
+            );
+
+
+        const producto =
+            productosInventario.find(
+                p=>
+                    normalizar(
+                        p.Nombre
+                    ) ===
+                    normalizar(
+                        materia.materia_prima
+                    )
+            );
+
+
+        if(!producto){
+
+            alert(
+                "No se encontró la materia prima: "+
+                materia.materia_prima
+            );
+
+            return false;
+        }
+
+
+        operaciones.push({
+
+            producto:producto,
+
+            cantidad:cantidad
+
+        });
+    }
+
+
+    const elaborado =
+        productosElaborados.find(
+            p=>
+                normalizar(
+                    p.Nombre
+                ) ===
+                normalizar(
+                    receta.producto_resultado
+                )
+        );
+
+
+    if(!elaborado){
+
+        alert(
+            "No se encontró el producto elaborado."
+        );
+
+        return false;
+    }
+
+
+    const cantidadUtil =
+        calcularCantidadUtil(
+            cantidadFisica,
+            detalle,
+            receta
+        );
+
+
+    if(
+        numero(
+            elaborado.Cantidad
+        ) <
+        cantidadUtil
+    ){
+
+        alert(
+            "No se puede eliminar esta fabricación: "+
+            "el inventario actual del producto elaborado "+
+            "es menor a la cantidad que habría que descontar."
+        );
+
+        return false;
+    }
+
+
+    if(!confirm(
+
+        "La reversión añadirá las materias primas "+
+        "al inventario y descontará "+
+        formatearNumero(
+            cantidadUtil
+        )+
+        " kg del producto elaborado.\n\n"+
+        "¿Continuar?"
+
+    )){
+
+        return false;
+    }
+
+
+    /*
+       RESTAURAR MATERIAS PRIMAS
+    */
+
+    for(
+        const op of operaciones
+    ){
+
+        const nuevaCantidad =
+            numero(
+                op.producto.Cantidad
+            ) +
+            op.cantidad;
+
+
+        const {
+            error
+        } =
+            await clienteSupabase
+            .from("productos")
+            .update({
+                Cantidad:
+                    nuevaCantidad
+            })
+            .eq(
+                "Identificación",
+                op.producto.Identificación
+            );
+
+
+        if(error){
+
+            alert(
+                "Error restaurando "+
+                op.producto.Nombre+
+                ": "+
+                error.message
+            );
+
+            return false;
+        }
+    }
+
+
+    /*
+       RESTAR PRODUCTO ELABORADO
+    */
+
+    const nuevaCantidadElaborado =
+        numero(
+            elaborado.Cantidad
+        ) -
+        cantidadUtil;
+
+
+    const {
+        error:errorElaborado
+    } =
+        await clienteSupabase
+        .from("productos_elaborados")
+        .update({
+            Cantidad:
+                nuevaCantidadElaborado
+        })
+        .eq(
+            "id",
+            elaborado.id
+        );
+
+
+    if(errorElaborado){
+
+        alert(
+            "Se restauraron materias primas, "+
+            "pero no se pudo actualizar el producto elaborado: "+
+            errorElaborado.message
+        );
+
+        return false;
+    }
+
+
+    return true;
+}
+
+
+/* =====================================================
+   ESTADÍSTICAS
 ===================================================== */
 
 function generarEstadisticas(){
@@ -1531,110 +2088,195 @@ function generarEstadisticas(){
             "periodoEstadisticas"
         ).value;
 
+
     const fabricaciones =
-        movimientosFabricacion().filter(m=>
-            fechaDentroDePeriodo(
-                fechaDeMovimiento(m),
-                tipoPeriodo
-            )
+        obtenerFabricacionesReales()
+        .filter(
+            m=>
+                fechaDentroDePeriodo(
+                    fechaDeMovimiento(m),
+                    tipoPeriodo
+                )
         );
+
 
     let totalFabricado = 0;
 
-    const produccionPorReceta = {};
-    const consumoPorMateria = {};
+
+    const produccionPorReceta =
+        {};
+
+
+    const consumoPorMateria =
+        {};
+
+
+    /*
+       ==================================================
+       CALCULAR CADA FABRICACIÓN
+       ==================================================
+    */
 
     fabricaciones.forEach(m=>{
 
-        const cantidad =
-            Number(m.Cantidad) || 0;
+        const cantidadFabricada =
+            numero(
+                m.Cantidad
+            );
 
-        totalFabricado += cantidad;
 
-        const nombre =
+        if(
+            cantidadFabricada <= 0
+        )
+            return;
+
+
+        const nombreReceta =
             obtenerNombreReceta(m);
 
-        if(!produccionPorReceta[nombre]){
-
-            produccionPorReceta[nombre] = 0;
-        }
-
-        produccionPorReceta[nombre] +=
-            cantidad;
 
         const receta =
-            buscarRecetaPorNombre(nombre);
+            buscarRecetaPorNombre(
+                nombreReceta
+            );
+
 
         if(!receta)
             return;
 
-        const detalle =
-            detallesRecetas[receta.id] || [];
-
-        /*
-           AQUÍ ESTÁ LA CORRECCIÓN PRINCIPAL.
-        */
 
         const base =
-            obtenerCantidadBaseReceta(receta);
+            obtenerCantidadBaseReceta(
+                receta
+            );
+
 
         if(base <= 0)
             return;
 
-        detalle.forEach(mat=>{
 
-            const nombreMateria =
-                mat.materia_prima ||
-                "Sin nombre";
+        /*
+           SOLO AHORA SE SUMA LA PRODUCCIÓN.
+        */
 
-            const cantidadIngrediente =
-                Number(mat.cantidad) || 0;
+        totalFabricado +=
+            cantidadFabricada;
 
-            const consumo =
-                calcularConsumoProporcional(
-                    cantidad,
-                    base,
-                    cantidadIngrediente
-                );
 
-            if(!consumoPorMateria[nombreMateria]){
+        if(
+            !produccionPorReceta[
+                receta.nombre
+            ]
+        ){
 
-                consumoPorMateria[nombreMateria] =
-                    0;
+            produccionPorReceta[
+                receta.nombre
+            ] = 0;
+        }
+
+
+        produccionPorReceta[
+            receta.nombre
+        ] +=
+            cantidadFabricada;
+
+
+        /*
+           CALCULAR CADA MATERIA PRIMA
+        */
+
+        const detalle =
+            obtenerDetalleReceta(
+                receta
+            );
+
+
+        detalle.forEach(
+            materia=>{
+
+                const nombreMateria =
+                    String(
+                        materia.materia_prima ||
+                        "Sin nombre"
+                    ).trim();
+
+
+                const consumo =
+                    calcularConsumoIngrediente(
+                        cantidadFabricada,
+                        receta,
+                        materia.cantidad
+                    );
+
+
+                if(
+                    !consumoPorMateria[
+                        nombreMateria
+                    ]
+                ){
+
+                    consumoPorMateria[
+                        nombreMateria
+                    ] = 0;
+                }
+
+
+                consumoPorMateria[
+                    nombreMateria
+                ] += consumo;
+
             }
-
-            consumoPorMateria[nombreMateria] +=
-                consumo;
-        });
+        );
 
     });
 
 
+    /*
+       DÍAS DEL PERÍODO
+    */
+
     const dias =
-        contarDiasPeriodo(tipoPeriodo);
+        contarDiasPeriodo(
+            tipoPeriodo
+        );
+
+
+    /*
+       PROMEDIO DE FABRICACIÓN
+    */
 
     const promedio =
         dias > 0
-            ? totalFabricado/dias
+            ? totalFabricado / dias
             : 0;
 
 
     document.getElementById(
         "totalFabricado"
     ).textContent =
-        formatearNumero(totalFabricado);
+        formatearNumero(
+            totalFabricado
+        );
 
 
     document.getElementById(
         "promedioFabricado"
     ).textContent =
-        formatearNumero(promedio);
+        formatearNumero(
+            promedio
+        );
 
+
+    /*
+       TOTAL DE MATERIAS PRIMAS
+    */
 
     const totalMaterias =
-        Object.values(consumoPorMateria)
-        .reduce(
-            (a,b)=>a+b,
+        Object.values(
+            consumoPorMateria
+        ).reduce(
+            (a,b)=>
+                a+b,
             0
         );
 
@@ -1642,17 +2284,24 @@ function generarEstadisticas(){
     document.getElementById(
         "totalMaterias"
     ).textContent =
-        formatearNumero(totalMaterias);
+        formatearNumero(
+            totalMaterias
+        );
 
 
-    /* Consumo por materia prima */
+    /*
+       TABLA CONSUMO
+    */
 
     const tablaConsumo =
         document.getElementById(
             "tablaConsumoFabricacion"
         );
 
-    tablaConsumo.innerHTML = "";
+
+    tablaConsumo.innerHTML =
+        "";
+
 
     const nombresMaterias =
         Object.keys(
@@ -1660,7 +2309,9 @@ function generarEstadisticas(){
         ).sort();
 
 
-    if(!nombresMaterias.length){
+    if(
+        !nombresMaterias.length
+    ){
 
         tablaConsumo.innerHTML = `
             <tr>
@@ -1675,46 +2326,71 @@ function generarEstadisticas(){
 
     }else{
 
-        nombresMaterias.forEach(nombre=>{
+        nombresMaterias.forEach(
+            nombre=>{
 
-            const total =
-                consumoPorMateria[nombre];
+                const total =
+                    consumoPorMateria[
+                        nombre
+                    ];
 
-            const diario =
-                dias > 0
-                    ? total/dias
-                    : 0;
 
-            const fila =
-                document.createElement("tr");
+                const diario =
+                    dias > 0
+                        ? total/dias
+                        : 0;
 
-            fila.innerHTML = `
-                <td>
-                    ${escaparHTML(nombre)}
-                </td>
 
-                <td class="salida">
-                    ${formatearNumero(total)} kg
-                </td>
+                const fila =
+                    document.createElement(
+                        "tr"
+                    );
 
-                <td>
-                    ${formatearNumero(diario)} kg/día
-                </td>
-            `;
 
-            tablaConsumo.appendChild(fila);
-        });
+                fila.innerHTML = `
+
+                    <td>
+                        ${escaparHTML(
+                            nombre
+                        )}
+                    </td>
+
+                    <td class="salida">
+                        ${formatearNumero(
+                            total
+                        )} kg
+                    </td>
+
+                    <td>
+                        ${formatearNumero(
+                            diario
+                        )} kg/día
+                    </td>
+
+                `;
+
+
+                tablaConsumo.appendChild(
+                    fila
+                );
+            }
+        );
     }
 
 
-    /* Producción promedio por receta */
+    /*
+       TABLA FABRICACIÓN POR RECETA
+    */
 
     const tablaRecetas =
         document.getElementById(
             "tablaPromediosRecetas"
         );
 
-    tablaRecetas.innerHTML = "";
+
+    tablaRecetas.innerHTML =
+        "";
+
 
     const nombresRecetas =
         Object.keys(
@@ -1722,7 +2398,9 @@ function generarEstadisticas(){
         ).sort();
 
 
-    if(!nombresRecetas.length){
+    if(
+        !nombresRecetas.length
+    ){
 
         tablaRecetas.innerHTML = `
             <tr>
@@ -1737,35 +2415,55 @@ function generarEstadisticas(){
 
     }else{
 
-        nombresRecetas.forEach(nombre=>{
+        nombresRecetas.forEach(
+            nombre=>{
 
-            const total =
-                produccionPorReceta[nombre];
+                const total =
+                    produccionPorReceta[
+                        nombre
+                    ];
 
-            const diario =
-                dias > 0
-                    ? total/dias
-                    : 0;
 
-            const fila =
-                document.createElement("tr");
+                const diario =
+                    dias > 0
+                        ? total/dias
+                        : 0;
 
-            fila.innerHTML = `
-                <td>
-                    ${escaparHTML(nombre)}
-                </td>
 
-                <td class="entrada">
-                    ${formatearNumero(total)} kg
-                </td>
+                const fila =
+                    document.createElement(
+                        "tr"
+                    );
 
-                <td>
-                    ${formatearNumero(diario)} kg/día
-                </td>
-            `;
 
-            tablaRecetas.appendChild(fila);
-        });
+                fila.innerHTML = `
+
+                    <td>
+                        ${escaparHTML(
+                            nombre
+                        )}
+                    </td>
+
+                    <td class="entrada">
+                        ${formatearNumero(
+                            total
+                        )} kg
+                    </td>
+
+                    <td>
+                        ${formatearNumero(
+                            diario
+                        )} kg/día
+                    </td>
+
+                `;
+
+
+                tablaRecetas.appendChild(
+                    fila
+                );
+            }
+        );
     }
 }
 
@@ -1776,17 +2474,21 @@ function generarEstadisticas(){
 
 function contarDiasPeriodo(tipo){
 
-    const hoy = new Date();
+    const hoy =
+        new Date();
 
     hoy.setHours(
         0,0,0,0
     );
 
+
     if(tipo === "dia")
         return 1;
 
+
     if(tipo === "semana")
         return 7;
+
 
     if(tipo === "mes"){
 
@@ -1797,27 +2499,40 @@ function contarDiasPeriodo(tipo){
         ).getDate();
     }
 
+
     if(tipo === "todo"){
 
         const fechas =
-            movimientosFabricacion()
-            .map(m=>fechaDeMovimiento(m))
+            obtenerFabricacionesReales()
+            .map(
+                m=>
+                    fechaDeMovimiento(m)
+            )
             .filter(Boolean)
             .sort();
+
 
         if(!fechas.length)
             return 1;
 
+
         const inicio =
             new Date(
-                fechas[0]+"T12:00:00"
+                fechas[0]+
+                "T12:00:00"
             );
+
 
         const diferencia =
             Math.floor(
-                (hoy-inicio) /
-                (1000*60*60*24)
+                (
+                    hoy-inicio
+                ) /
+                (
+                    1000*60*60*24
+                )
             )+1;
+
 
         return Math.max(
             1,
@@ -1825,12 +2540,13 @@ function contarDiasPeriodo(tipo){
         );
     }
 
+
     return 1;
 }
 
 
 /* =====================================================
-   RESUMEN DE RECETAS
+   RESUMEN RECETAS
 ===================================================== */
 
 function cambiarTipoPeriodo(){
@@ -1840,12 +2556,14 @@ function cambiarTipoPeriodo(){
             "tipoPeriodo"
         ).value;
 
+
     document.getElementById(
         "selectorDia"
     ).style.display =
         tipo === "dia"
             ? "flex"
             : "none";
+
 
     document.getElementById(
         "selectorSemana"
@@ -1854,12 +2572,14 @@ function cambiarTipoPeriodo(){
             ? "flex"
             : "none";
 
+
     document.getElementById(
         "selectorMes"
     ).style.display =
         tipo === "mes"
             ? "flex"
             : "none";
+
 
     generarResumenRecetas();
 }
@@ -1872,8 +2592,10 @@ function obtenerFabricacionesPeriodo(){
             "tipoPeriodo"
         ).value;
 
+
     let inicio = "";
     let fin = "";
+
 
     if(tipo === "dia"){
 
@@ -1882,38 +2604,54 @@ function obtenerFabricacionesPeriodo(){
                 "fechaResumen"
             ).value;
 
-        fin = inicio;
+        fin =
+            inicio;
 
-    }else if(tipo === "semana"){
+    }else if(
+        tipo === "semana"
+    ){
 
         const fecha =
             document.getElementById(
                 "fechaSemana"
             ).value;
 
+
         if(fecha){
 
             inicio =
-                inicioSemana(fecha);
+                inicioSemana(
+                    fecha
+                );
 
             fin =
-                finSemana(fecha);
+                finSemana(
+                    fecha
+                );
         }
 
-    }else if(tipo === "mes"){
+    }else if(
+        tipo === "mes"
+    ){
 
         const mes =
             document.getElementById(
                 "mesRecetas"
             ).value;
 
+
         if(mes){
 
             inicio =
-                mes+"-01";
+                mes+
+                "-01";
+
 
             const partes =
-                mes.split("-").map(Number);
+                mes
+                .split("-")
+                .map(Number);
+
 
             fin =
                 fechaLocal(
@@ -1926,17 +2664,26 @@ function obtenerFabricacionesPeriodo(){
         }
     }
 
-    if(!inicio || !fin)
-        return [];
 
-    return movimientosFabricacion()
+    if(
+        !inicio ||
+        !fin
+    ){
+
+        return [];
+    }
+
+
+    return obtenerFabricacionesReales()
         .filter(m=>{
 
             const fecha =
                 fechaDeMovimiento(m);
 
-            return fecha >= inicio &&
-                   fecha <= fin;
+            return (
+                fecha >= inicio &&
+                fecha <= fin
+            );
         });
 }
 
@@ -1948,32 +2695,58 @@ function generarResumenRecetas(){
             "recetaFiltro"
         ).value;
 
+
     const tabla =
         document.getElementById(
             "resultadoResumenRecetas"
         );
 
-    tabla.innerHTML = "";
+
+    tabla.innerHTML =
+        "";
+
 
     const fabricaciones =
         obtenerFabricacionesPeriodo();
 
+
     const filtradas =
-        fabricaciones.filter(m=>{
+        fabricaciones.filter(
+            m=>{
 
-            if(idReceta === "todas")
-                return true;
+                if(
+                    idReceta ===
+                    "todas"
+                ){
 
-            const nombre =
-                obtenerNombreReceta(m);
+                    return true;
+                }
 
-            const receta =
-                buscarRecetaPorNombre(nombre);
 
-            return receta &&
-                String(receta.id) ===
-                String(idReceta);
-        });
+                const nombre =
+                    obtenerNombreReceta(
+                        m
+                    );
+
+
+                const receta =
+                    buscarRecetaPorNombre(
+                        nombre
+                    );
+
+
+                return (
+                    receta &&
+                    String(
+                        receta.id
+                    ) ===
+                    String(
+                        idReceta
+                    )
+                );
+
+            }
+        );
 
 
     const resumen = {};
@@ -1981,30 +2754,46 @@ function generarResumenRecetas(){
     let totalGeneral = 0;
 
 
-    filtradas.forEach(m=>{
+    filtradas.forEach(
+        m=>{
 
-        const nombre =
-            obtenerNombreReceta(m) ||
-            "Receta desconocida";
+            const nombre =
+                obtenerNombreReceta(
+                    m
+                ) ||
+                "Receta desconocida";
 
-        const cantidad =
-            Number(m.Cantidad) || 0;
 
-        if(!resumen[nombre]){
+            const cantidad =
+                numero(
+                    m.Cantidad
+                );
 
-            resumen[nombre] = 0;
+
+            if(
+                !resumen[nombre]
+            ){
+
+                resumen[nombre] =
+                    0;
+            }
+
+
+            resumen[nombre] +=
+                cantidad;
+
+
+            totalGeneral +=
+                cantidad;
+
         }
-
-        resumen[nombre] +=
-            cantidad;
-
-        totalGeneral +=
-            cantidad;
-    });
+    );
 
 
     const nombres =
-        Object.keys(resumen).sort();
+        Object.keys(
+            resumen
+        ).sort();
 
 
     document.getElementById(
@@ -2021,7 +2810,9 @@ function generarResumenRecetas(){
         nombres.length;
 
 
-    if(!nombres.length){
+    if(
+        !nombres.length
+    ){
 
         tabla.innerHTML = `
             <div class="sin-datos">
@@ -2035,35 +2826,135 @@ function generarResumenRecetas(){
     }
 
 
-    nombres.forEach(nombre=>{
+    nombres.forEach(
+        nombre=>{
 
-        const bloque =
-            document.createElement("div");
+            const bloque =
+                document.createElement(
+                    "div"
+                );
 
-        bloque.className =
-            "bloque-receta";
 
-        const titulo =
-            document.createElement("h3");
+            bloque.className =
+                "bloque-receta";
 
-        titulo.textContent =
-            nombre;
 
-        const p =
-            document.createElement("p");
+            const titulo =
+                document.createElement(
+                    "h3"
+                );
 
-        p.textContent =
-            "Total fabricado: "+
-            formatearNumero(
-                resumen[nombre]
-            )+
-            " kg";
 
-        bloque.appendChild(titulo);
-        bloque.appendChild(p);
+            titulo.textContent =
+                nombre;
 
-        tabla.appendChild(bloque);
-    });
+
+            const p =
+                document.createElement(
+                    "p"
+                );
+
+
+            p.textContent =
+                "Total fabricado: "+
+                formatearNumero(
+                    resumen[nombre]
+                )+
+                " kg";
+
+
+            bloque.appendChild(
+                titulo
+            );
+
+            bloque.appendChild(
+                p
+            );
+
+
+            tabla.appendChild(
+                bloque
+            );
+
+        }
+    );
+}
+
+
+/* =====================================================
+   CANTIDAD ÚTIL
+===================================================== */
+
+function calcularCantidadUtil(
+    cantidadFisica,
+    detalle,
+    receta
+){
+
+    let extras = 0;
+
+
+    const componentesNoUtiles = [
+
+        "calcio",
+        "sal",
+        "vitamina",
+        "vitaminas",
+        "premezcla",
+        "premezcla vitaminica",
+        "premezcla mineral",
+        "minerales"
+
+    ];
+
+
+    detalle.forEach(
+        materia=>{
+
+            const nombre =
+                normalizar(
+                    materia.materia_prima
+                );
+
+
+            const esExtra =
+                componentesNoUtiles.includes(
+                    nombre
+                ) ||
+                nombre.includes(
+                    "calcio"
+                ) ||
+                nombre.includes(
+                    "sal"
+                ) ||
+                nombre.includes(
+                    "vitamina"
+                ) ||
+                nombre.includes(
+                    "premezcla"
+                );
+
+
+            if(esExtra){
+
+                extras +=
+                    calcularConsumoIngrediente(
+                        cantidadFisica,
+                        receta,
+                        materia.cantidad
+                    );
+            }
+
+        }
+    );
+
+
+    return Number(
+        (
+            cantidadFisica -
+            extras
+        ).toFixed(2)
+    );
 }
 
 
@@ -2073,10 +2964,14 @@ function generarResumenRecetas(){
 
 function detenerVoz(){
 
-    if("speechSynthesis" in window){
+    if(
+        "speechSynthesis"
+        in window
+    ){
 
         window.speechSynthesis.cancel();
     }
+
 
     document.getElementById(
         "estadoVoz"
@@ -2087,7 +2982,12 @@ function detenerVoz(){
 
 function hablar(texto){
 
-    if(!("speechSynthesis" in window)){
+    if(
+        !(
+            "speechSynthesis"
+            in window
+        )
+    ){
 
         alert(
             "Este navegador no admite lectura por voz."
@@ -2096,10 +2996,15 @@ function hablar(texto){
         return;
     }
 
+
     window.speechSynthesis.cancel();
 
+
     const mensaje =
-        new SpeechSynthesisUtterance(texto);
+        new SpeechSynthesisUtterance(
+            texto
+        );
+
 
     mensaje.lang =
         "es-ES";
@@ -2110,6 +3015,7 @@ function hablar(texto){
     mensaje.pitch =
         1;
 
+
     mensaje.onstart = ()=>{
 
         document.getElementById(
@@ -2117,6 +3023,7 @@ function hablar(texto){
         ).textContent =
             "🔊 Leyendo...";
     };
+
 
     mensaje.onend = ()=>{
 
@@ -2126,6 +3033,7 @@ function hablar(texto){
             "Lectura finalizada.";
     };
 
+
     mensaje.onerror = ()=>{
 
         document.getElementById(
@@ -2133,6 +3041,7 @@ function hablar(texto){
         ).textContent =
             "No se pudo realizar la lectura.";
     };
+
 
     window.speechSynthesis.speak(
         mensaje
@@ -2147,15 +3056,18 @@ function escucharEstadisticas(){
             "periodoEstadisticas"
         ).value;
 
+
     const total =
         document.getElementById(
             "totalFabricado"
         ).textContent;
 
+
     const promedio =
         document.getElementById(
             "promedioFabricado"
         ).textContent;
+
 
     const materias =
         document.getElementById(
@@ -2163,7 +3075,7 @@ function escucharEstadisticas(){
         ).textContent;
 
 
-    let textoPeriodo = {
+    const textoPeriodo = {
 
         dia:"hoy",
 
@@ -2196,32 +3108,35 @@ function escucharEstadisticas(){
         " kilogramos. ";
 
 
-    const filas =
-        document.querySelectorAll(
-            "#tablaConsumoFabricacion tr"
-        );
-
-
     texto +=
         "Consumo de materias primas. ";
 
 
-    filas.forEach(f=>{
+    document.querySelectorAll(
+        "#tablaConsumoFabricacion tr"
+    ).forEach(
+        f=>{
 
-        const celdas =
-            f.querySelectorAll("td");
+            const celdas =
+                f.querySelectorAll(
+                    "td"
+                );
 
-        if(celdas.length === 3){
 
-            texto +=
-                celdas[0].textContent+
-                ": consumo total "+
-                celdas[1].textContent+
-                ", promedio diario "+
-                celdas[2].textContent+
-                ". ";
+            if(
+                celdas.length === 3
+            ){
+
+                texto +=
+                    celdas[0].textContent+
+                    ": consumo total "+
+                    celdas[1].textContent+
+                    ", promedio diario "+
+                    celdas[2].textContent+
+                    ". ";
+            }
         }
-    });
+    );
 
 
     texto +=
@@ -2230,22 +3145,29 @@ function escucharEstadisticas(){
 
     document.querySelectorAll(
         "#tablaPromediosRecetas tr"
-    ).forEach(f=>{
+    ).forEach(
+        f=>{
 
-        const celdas =
-            f.querySelectorAll("td");
+            const celdas =
+                f.querySelectorAll(
+                    "td"
+                );
 
-        if(celdas.length === 3){
 
-            texto +=
-                celdas[0].textContent+
-                ": "+
-                celdas[1].textContent+
-                " fabricados, promedio diario "+
-                celdas[2].textContent+
-                ". ";
+            if(
+                celdas.length === 3
+            ){
+
+                texto +=
+                    celdas[0].textContent+
+                    ": "+
+                    celdas[1].textContent+
+                    " fabricados, promedio diario "+
+                    celdas[2].textContent+
+                    ". ";
+            }
         }
-    });
+    );
 
 
     hablar(texto);
@@ -2259,15 +3181,18 @@ function escucharResumenRecetas(){
             "totalResumenRecetas"
         ).textContent;
 
+
     const cantidad =
         document.getElementById(
             "cantidadRecetasResumen"
         ).textContent;
 
+
     const tipo =
         document.getElementById(
             "tipoPeriodo"
         ).value;
+
 
     let periodo = "";
 
@@ -2279,12 +3204,15 @@ function escucharResumenRecetas(){
                 "fechaResumen"
             ).value;
 
-    }else if(tipo === "semana"){
+    }else if(
+        tipo === "semana"
+    ){
 
         const f =
             document.getElementById(
                 "fechaSemana"
             ).value;
+
 
         periodo =
             f
@@ -2318,15 +3246,18 @@ function escucharResumenRecetas(){
 
     document.querySelectorAll(
         "#resultadoResumenRecetas .bloque-receta"
-    ).forEach(b=>{
+    ).forEach(
+        b=>{
 
-        texto +=
-            b.innerText.replace(
-                /\n/g,
-                ". "
-            )+
-            ". ";
-    });
+            texto +=
+                b.innerText
+                .replace(
+                    /\n/g,
+                    ". "
+                )+
+                ". ";
+        }
+    );
 
 
     hablar(texto);
@@ -2339,94 +3270,34 @@ function escucharResumenRecetas(){
 
 function escaparHTML(texto){
 
-    return String(texto ?? "")
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
-}
-
-
-/* =====================================================
-   CANTIDAD ÚTIL
-===================================================== */
-
-function calcularCantidadUtil(
-    cantidadFisica,
-    detalle,
-    receta
-){
-
-    let extras = 0;
-
-    const componentesNoUtiles = [
-
-        "calcio",
-        "sal",
-        "vitamina",
-        "vitaminas",
-        "premezcla",
-        "premezcla vitaminica",
-        "premezcla mineral",
-        "minerales"
-
-    ];
-
-
-    const base =
-        obtenerCantidadBaseReceta(
-            receta
-        );
-
-
-    if(base <= 0)
-        return 0;
-
-
-    detalle.forEach(m=>{
-
-        const nombre =
-            normalizar(
-                m.materia_prima
-            );
-
-
-        const esExtra =
-            componentesNoUtiles.includes(
-                nombre
-            ) ||
-            nombre.includes("calcio") ||
-            nombre.includes("sal") ||
-            nombre.includes("vitamina") ||
-            nombre.includes("premezcla");
-
-
-        if(esExtra){
-
-            const cantidad =
-                calcularConsumoProporcional(
-                    cantidadFisica,
-                    base,
-                    Number(m.cantidad) || 0
-                );
-
-            extras += cantidad;
-        }
-    });
-
-
-    return Number(
-        (
-            cantidadFisica -
-            extras
-        ).toFixed(2)
+    return String(
+        texto ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
     );
 }
 
 
 /* =====================================================
-   RECARGAR DATOS
+   RECARGAR
 ===================================================== */
 
 async function recargarTodo(){
@@ -2450,6 +3321,7 @@ async function iniciar(){
     const sesion =
         await verificarSesion();
 
+
     if(!sesion)
         return;
 
@@ -2470,14 +3342,10 @@ async function iniciar(){
         hoy;
 
 
-    const mesActual =
-        hoy.slice(0,7);
-
-
     document.getElementById(
         "mesRecetas"
     ).value =
-        mesActual;
+        hoy.slice(0,7);
 
 
     await cargarDatosFabricacion();
