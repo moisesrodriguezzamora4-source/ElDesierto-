@@ -1,12 +1,7 @@
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
+<!DOCTYPE html><html lang="es"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ElDesierto - Reportes</title>
-
-<style>
+<title>ElDesierto - Reportes</title><style>
 *{
     box-sizing:border-box;
     margin:0;
@@ -346,230 +341,172 @@ tr:hover td{
         font-size:20px;
     }
 }
-</style>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-</head>
-
-<body>
-
-<div class="contenedor">
-
-<div class="encabezado">
+</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><div class="contenedor"><div class="encabezado">
     <div class="logo">🐷</div>
     <h1>Reportes</h1>
     <div class="subtitulo">Control y resumen de movimientos</div>
-</div>
-
-<button class="btn-volver"
-        onclick="window.location.href='menu.html'">
-    ⬅ Volver al menú
+</div><button class="btn-volver"
+onclick="window.location.href='menu.html'">
+⬅ Volver al menú
 </button>
 
-<!-- MOVIMIENTOS ORIGINALES -->
+<!-- MOVIMIENTOS ORIGINALES --><div class="caja">
+    <h2>📋 Movimientos registrados</h2><div class="aviso">
+    Aquí aparecen las entradas, salidas y fabricaciones.
+    Puedes eliminar un registro desde la última columna.
+</div>
 
-<div class="caja">
-    <h2>📋 Movimientos registrados</h2>
+<div class="tabla-contenedor">
+    <table>
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Producto</th>
+                <th>Tipo</th>
+                <th>Cantidad</th>
+                <th>Usuario</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody id="tablaReportes"></tbody>
+    </table>
+</div>
 
-    <div class="aviso">
-        Aquí aparecen las entradas, salidas y fabricaciones.
-        Puedes eliminar un registro desde la última columna.
+</div><!-- ESTADÍSTICAS DE FABRICACIÓN --><div class="caja">
+    <h2 class="resumen-titulo">🏭 Estadísticas de fabricación</h2><div class="resumen-subtitulo">
+    Consumo de materias primas y producción diaria por receta
+</div>
+
+<div class="selector">
+    <label for="periodoEstadisticas">Período para estadísticas:</label>
+    <select id="periodoEstadisticas" onchange="generarEstadisticas()">
+        <option value="dia">Hoy</option>
+        <option value="semana">Últimos 7 días</option>
+        <option value="mes">Mes actual</option>
+        <option value="todo">Todo el historial</option>
+    </select>
+</div>
+
+<div class="tarjetas-estadistica">
+    <div class="estadistica">
+        <div class="nombre">Kg físicos fabricados</div>
+        <div class="valor" id="totalFabricado">0</div>
+        <div class="unidad">kg en el período</div>
     </div>
 
-    <div class="tabla-contenedor">
-        <table>
-            <thead>
-                <tr>
-                    <th>Fecha</th>
-                    <th>Producto</th>
-                    <th>Tipo</th>
-                    <th>Cantidad</th>
-                    <th>Usuario</th>
-                    <th>Acción</th>
-                </tr>
-            </thead>
-            <tbody id="tablaReportes"></tbody>
-        </table>
+    <div class="estadistica">
+        <div class="nombre">Promedio de fabricación</div>
+        <div class="valor" id="promedioFabricado">0</div>
+        <div class="unidad">kg por día calendario</div>
+    </div>
+
+    <div class="estadistica">
+        <div class="nombre">Materias primas consumidas</div>
+        <div class="valor" id="totalMaterias">0</div>
+        <div class="unidad">kg estimados</div>
     </div>
 </div>
 
-<!-- RESUMEN MENSUAL ORIGINAL -->
+<h2>Consumo de materias primas para fabricar</h2>
 
-<div class="caja">
-    <h2 class="resumen-titulo">📊 Resumen mensual</h2>
-    <div class="resumen-subtitulo">
-        Cantidad individual de cada producto
+<div class="tabla-contenedor">
+    <table>
+        <thead>
+            <tr>
+                <th>Materia prima</th>
+                <th>Consumo total</th>
+                <th>Promedio diario</th>
+            </tr>
+        </thead>
+        <tbody id="tablaConsumoFabricacion"></tbody>
+    </table>
+</div>
+
+<h2 style="margin-top:22px;">Fabricación por receta</h2>
+
+<div class="tabla-contenedor">
+    <table>
+        <thead>
+            <tr>
+                <th>Receta</th>
+                <th>Kg fabricados</th>
+                <th>Promedio diario</th>
+            </tr>
+        </thead>
+        <tbody id="tablaPromediosRecetas"></tbody>
+    </table>
+</div>
+
+<button class="boton" onclick="escucharEstadisticas()">
+    🔊 Escuchar estadísticas y promedios
+</button>
+
+<button class="boton boton-secundario" onclick="detenerVoz()">
+    ⏹ Detener lectura
+</button>
+
+<div id="estadoVoz" class="estado-voz"></div>
+
+</div><!-- RESUMEN DE RECETAS --><div class="caja">
+    <h2 class="resumen-titulo">📦 Resumen de recetas</h2><div class="resumen-subtitulo">
+    Consulta todo lo fabricado en el período seleccionado
+</div>
+
+<div class="selector">
+    <label for="recetaFiltro">Seleccionar receta:</label>
+    <select id="recetaFiltro" onchange="generarResumenRecetas()">
+        <option value="todas">Todas las recetas</option>
+    </select>
+</div>
+
+<div class="selector">
+    <label for="tipoPeriodo">Tipo de período:</label>
+    <select id="tipoPeriodo" onchange="cambiarTipoPeriodo()">
+        <option value="dia">Día</option>
+        <option value="semana">Semana</option>
+        <option value="mes">Mes</option>
+    </select>
+</div>
+
+<div class="selector" id="selectorDia">
+    <label for="fechaResumen">Seleccionar día:</label>
+    <input type="date" id="fechaResumen"
+           onchange="generarResumenRecetas()">
+</div>
+
+<div class="selector" id="selectorSemana" style="display:none;">
+    <label for="fechaSemana">Seleccionar una fecha de la semana:</label>
+    <input type="date" id="fechaSemana"
+           onchange="generarResumenRecetas()">
+</div>
+
+<div class="selector" id="selectorMes" style="display:none;">
+    <label for="mesRecetas">Seleccionar mes:</label>
+    <input type="month" id="mesRecetas"
+           onchange="generarResumenRecetas()">
+</div>
+
+<div class="tarjetas-estadistica">
+    <div class="estadistica">
+        <div class="nombre">Kg fabricados</div>
+        <div class="valor" id="totalResumenRecetas">0</div>
+        <div class="unidad">kg físicos registrados</div>
     </div>
 
-    <div class="selector">
-        <label for="mes">Seleccionar mes:</label>
-        <input type="month" id="mes" onchange="generarResumen()">
-    </div>
-
-    <div class="tabla-contenedor">
-        <table>
-            <thead>
-                <tr>
-                    <th>Producto</th>
-                    <th>Entradas</th>
-                    <th>Salidas</th>
-                    <th>Balance</th>
-                </tr>
-            </thead>
-            <tbody id="tablaResumen"></tbody>
-        </table>
+    <div class="estadistica">
+        <div class="nombre">Recetas fabricadas</div>
+        <div class="valor" id="cantidadRecetasResumen">0</div>
+        <div class="unidad">recetas diferentes</div>
     </div>
 </div>
 
-<!-- ESTADÍSTICAS DE FABRICACIÓN -->
+<div id="resultadoResumenRecetas"></div>
 
-<div class="caja">
-    <h2 class="resumen-titulo">🏭 Estadísticas de fabricación</h2>
+<button class="boton" onclick="escucharResumenRecetas()">
+    🔊 Escuchar resumen de recetas
+</button>
 
-    <div class="resumen-subtitulo">
-        Consumo de materias primas y producción diaria por receta
-    </div>
-
-    <div class="selector">
-        <label for="periodoEstadisticas">Período para estadísticas:</label>
-        <select id="periodoEstadisticas" onchange="generarEstadisticas()">
-            <option value="dia">Hoy</option>
-            <option value="semana">Últimos 7 días</option>
-            <option value="mes">Mes actual</option>
-            <option value="todo">Todo el historial</option>
-        </select>
-    </div>
-
-    <div class="tarjetas-estadistica">
-        <div class="estadistica">
-            <div class="nombre">Kg físicos fabricados</div>
-            <div class="valor" id="totalFabricado">0</div>
-            <div class="unidad">kg en el período</div>
-        </div>
-
-        <div class="estadistica">
-            <div class="nombre">Promedio de fabricación</div>
-            <div class="valor" id="promedioFabricado">0</div>
-            <div class="unidad">kg por día calendario</div>
-        </div>
-
-        <div class="estadistica">
-            <div class="nombre">Materias primas consumidas</div>
-            <div class="valor" id="totalMaterias">0</div>
-            <div class="unidad">kg estimados</div>
-        </div>
-    </div>
-
-    <h2>Consumo de materias primas para fabricar</h2>
-
-    <div class="tabla-contenedor">
-        <table>
-            <thead>
-                <tr>
-                    <th>Materia prima</th>
-                    <th>Consumo total</th>
-                    <th>Promedio diario</th>
-                </tr>
-            </thead>
-            <tbody id="tablaConsumoFabricacion"></tbody>
-        </table>
-    </div>
-
-    <h2 style="margin-top:22px;">Fabricación por receta</h2>
-
-    <div class="tabla-contenedor">
-        <table>
-            <thead>
-                <tr>
-                    <th>Receta</th>
-                    <th>Kg fabricados</th>
-                    <th>Promedio diario</th>
-                </tr>
-            </thead>
-            <tbody id="tablaPromediosRecetas"></tbody>
-        </table>
-    </div>
-
-    <button class="boton" onclick="escucharEstadisticas()">
-        🔊 Escuchar estadísticas y promedios
-    </button>
-
-    <button class="boton boton-secundario" onclick="detenerVoz()">
-        ⏹ Detener lectura
-    </button>
-
-    <div id="estadoVoz" class="estado-voz"></div>
-</div>
-
-<!-- RESUMEN DE RECETAS -->
-
-<div class="caja">
-    <h2 class="resumen-titulo">📦 Resumen de recetas</h2>
-
-    <div class="resumen-subtitulo">
-        Consulta todo lo fabricado en el período seleccionado
-    </div>
-
-    <div class="selector">
-        <label for="recetaFiltro">Seleccionar receta:</label>
-        <select id="recetaFiltro" onchange="generarResumenRecetas()">
-            <option value="todas">Todas las recetas</option>
-        </select>
-    </div>
-
-    <div class="selector">
-        <label for="tipoPeriodo">Tipo de período:</label>
-        <select id="tipoPeriodo" onchange="cambiarTipoPeriodo()">
-            <option value="dia">Día</option>
-            <option value="semana">Semana</option>
-            <option value="mes">Mes</option>
-        </select>
-    </div>
-
-    <div class="selector" id="selectorDia">
-        <label for="fechaResumen">Seleccionar día:</label>
-        <input type="date" id="fechaResumen"
-               onchange="generarResumenRecetas()">
-    </div>
-
-    <div class="selector" id="selectorSemana" style="display:none;">
-        <label for="fechaSemana">Seleccionar una fecha de la semana:</label>
-        <input type="date" id="fechaSemana"
-               onchange="generarResumenRecetas()">
-    </div>
-
-    <div class="selector" id="selectorMes" style="display:none;">
-        <label for="mesRecetas">Seleccionar mes:</label>
-        <input type="month" id="mesRecetas"
-               onchange="generarResumenRecetas()">
-    </div>
-
-    <div class="tarjetas-estadistica">
-        <div class="estadistica">
-            <div class="nombre">Kg fabricados</div>
-            <div class="valor" id="totalResumenRecetas">0</div>
-            <div class="unidad">kg físicos registrados</div>
-        </div>
-
-        <div class="estadistica">
-            <div class="nombre">Recetas fabricadas</div>
-            <div class="valor" id="cantidadRecetasResumen">0</div>
-            <div class="unidad">recetas diferentes</div>
-        </div>
-    </div>
-
-    <div id="resultadoResumenRecetas"></div>
-
-    <button class="boton" onclick="escucharResumenRecetas()">
-        🔊 Escuchar resumen de recetas
-    </button>
-</div>
-
-</div>
-
-<script src="supabase.js"></script>
-
-<script>
+</div></div><script src="supabase.js"></script><script>
 /* =====================================================
    VARIABLES
 ===================================================== */
@@ -911,7 +848,7 @@ async function revertirFabricacion(m){
 
         alert(
             "No se puede eliminar esta fabricación: el inventario "+
-            "actual del producto elaborado es menor que la cantidad "+
+            "actual del producto elaborado es menor a la cantidad "+
             "que habría que descontar."
         );
 
@@ -1042,96 +979,6 @@ async function cargarDatosFabricacion(){
     }
 
     productosElaborados = elaborados || [];
-}
-
-/* =====================================================
-   RESUMEN MENSUAL ORIGINAL
-===================================================== */
-
-function establecerMesActual(){
-
-    const hoy = new Date();
-
-    const año = hoy.getFullYear();
-
-    const mes = String(hoy.getMonth()+1).padStart(2,"0");
-
-    document.getElementById("mes").value = `${año}-${mes}`;
-}
-
-function generarResumen(){
-
-    const valorMes = document.getElementById("mes").value;
-
-    const tabla = document.getElementById("tablaResumen");
-
-    tabla.innerHTML = "";
-
-    if(!valorMes){
-
-        tabla.innerHTML = `
-            <tr><td colspan="4" class="sin-datos">
-            Selecciona un mes.</td></tr>`;
-
-        return;
-    }
-
-    const movimientosMes = movimientos.filter(m=>
-        fechaDeMovimiento(m).startsWith(valorMes)
-    );
-
-    const resumen = {};
-
-    movimientosMes.forEach(m=>{
-
-        const tipo = String(m.Tipo || "").toLowerCase();
-
-        /* Fabricación no es entrada de materia prima */
-        if(tipo !== "entrada" && tipo !== "salida") return;
-
-        const producto = m.Producto || "Sin producto";
-
-        const cantidad = Number(m.Cantidad) || 0;
-
-        if(!resumen[producto]){
-            resumen[producto] = {entrada:0,salida:0};
-        }
-
-        if(tipo === "entrada") resumen[producto].entrada += cantidad;
-        if(tipo === "salida") resumen[producto].salida += cantidad;
-    });
-
-    const productos = Object.keys(resumen).sort();
-
-    if(!productos.length){
-
-        tabla.innerHTML = `
-            <tr><td colspan="4" class="sin-datos">
-            No hay entradas ni salidas en este mes.</td></tr>`;
-
-        return;
-    }
-
-    productos.forEach(producto=>{
-
-        const entrada = resumen[producto].entrada;
-        const salida = resumen[producto].salida;
-        const balance = entrada-salida;
-
-        const clase = balance < 0 ?
-            "balance-negativo" : "balance-positivo";
-
-        const fila = document.createElement("tr");
-
-        fila.innerHTML = `
-            <td><strong>${escaparHTML(producto)}</strong></td>
-            <td class="entrada">${formatearNumero(entrada)} kg</td>
-            <td class="salida">${formatearNumero(salida)} kg</td>
-            <td class="${clase}">${formatearNumero(balance)} kg</td>
-        `;
-
-        tabla.appendChild(fila);
-    });
 }
 
 /* =====================================================
@@ -1719,7 +1566,6 @@ async function recargarTodo(){
 
     await cargarReportes();
 
-    generarResumen();
     generarEstadisticas();
     generarResumenRecetas();
 }
@@ -1734,8 +1580,6 @@ async function iniciar(){
 
     if(!sesion) return;
 
-    establecerMesActual();
-
     const hoy = fechaLocal();
 
     document.getElementById("fechaResumen").value = hoy;
@@ -1749,14 +1593,11 @@ async function iniciar(){
 
     await cargarReportes();
 
-    generarResumen();
     generarEstadisticas();
     generarResumenRecetas();
 }
 
 iniciar();
 
-</script>
-
-</body>
+</script></body>
 </html>
