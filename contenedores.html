@@ -495,6 +495,75 @@ input:focus{
 
 
 /* ==========================================
+   PESO DE SALIDA
+========================================== */
+
+.opcionesPeso{
+
+    display:none;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:15px;
+
+    margin-bottom:20px;
+}
+
+.opcionesPeso.visible{
+
+    display:grid;
+}
+
+.botonPeso{
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:
+    linear-gradient(145deg,#333,#101010);
+
+    color:white;
+
+    border:1px solid #444;
+
+    font-weight:bold;
+
+    font-size:15px;
+
+    cursor:pointer;
+
+    box-shadow:
+    0 5px 0 #050505;
+}
+
+.botonPeso.activo{
+
+    background:
+    linear-gradient(145deg,#ff3838,#9d0000);
+
+    border-color:#ff5555;
+
+    box-shadow:
+    0 5px 0 #500000;
+}
+
+.grupoPeso{
+
+    display:none;
+
+    margin-bottom:18px;
+}
+
+.grupoPeso.visible{
+
+    display:block;
+}
+
+
+/* ==========================================
    HISTORIAL
 ========================================== */
 
@@ -611,6 +680,11 @@ input:focus{
     }
 
     .botonesOperacion{
+
+        grid-template-columns:1fr;
+    }
+
+    .opcionesPeso{
 
         grid-template-columns:1fr;
     }
@@ -818,6 +892,52 @@ placeholder="Introduzca la cantidad">
 </div>
 
 
+<div
+id="opcionesPeso1"
+class="opcionesPeso">
+
+<button
+type="button"
+id="conPeso1"
+class="botonPeso"
+onclick="seleccionarPeso(1,true)">
+
+⚖️ Agregar peso (kg)
+
+</button>
+
+
+<button
+type="button"
+id="sinPeso1"
+class="botonPeso activo"
+onclick="seleccionarPeso(1,false)">
+
+➖ Sin peso
+
+</button>
+
+</div>
+
+
+<div
+id="grupoPeso1"
+class="grupoPeso">
+
+<label>
+Peso total (kg)
+</label>
+
+<input
+type="number"
+id="peso1"
+min="0"
+step="0.01"
+placeholder="Introduzca el peso total">
+
+</div>
+
+
 <button
 class="botonAccion"
 onclick="registrarMovimiento(1)">
@@ -959,6 +1079,52 @@ placeholder="Introduzca la cantidad">
 </div>
 
 
+<div
+id="opcionesPeso2"
+class="opcionesPeso">
+
+<button
+type="button"
+id="conPeso2"
+class="botonPeso"
+onclick="seleccionarPeso(2,true)">
+
+⚖️ Agregar peso (kg)
+
+</button>
+
+
+<button
+type="button"
+id="sinPeso2"
+class="botonPeso activo"
+onclick="seleccionarPeso(2,false)">
+
+➖ Sin peso
+
+</button>
+
+</div>
+
+
+<div
+id="grupoPeso2"
+class="grupoPeso">
+
+<label>
+Peso total (kg)
+</label>
+
+<input
+type="number"
+id="peso2"
+min="0"
+step="0.01"
+placeholder="Introduzca el peso total">
+
+</div>
+
+
 <button
 class="botonAccion"
 onclick="registrarMovimiento(2)">
@@ -1015,6 +1181,8 @@ Registro de todas las entradas y salidas de los dos contenedores.
 
 <th>🔢 Cantidad / Peso</th>
 
+<th>⚖️ Peso salida</th>
+
 <th>📏 Unidad</th>
 
 <th>👤 Usuario</th>
@@ -1031,7 +1199,7 @@ Registro de todas las entradas y salidas de los dos contenedores.
 <tr>
 
 <td
-colspan="9"
+colspan="10"
 class="mensaje">
 
 ⏳ Cargando historial...
@@ -1069,6 +1237,10 @@ let esAdministrador=false;
 let operacionContenedor1="entrada";
 
 let operacionContenedor2="entrada";
+
+let pesoContenedor1=false;
+
+let pesoContenedor2=false;
 
 let productosContenedores=[
     {
@@ -1372,6 +1544,8 @@ function actualizarUnidad(numero){
         label.innerText=
         "Cantidad";
 
+        actualizarOpcionesPeso(numero);
+
         return;
 
     }
@@ -1404,6 +1578,151 @@ function actualizarUnidad(numero){
 
         label.innerText=
         "Cantidad (unidades)";
+
+    }
+
+    actualizarOpcionesPeso(numero);
+
+}
+
+
+/* ==========================================
+   OPCIONES DE PESO
+========================================== */
+
+function actualizarOpcionesPeso(numero){
+
+    const select=
+    document.getElementById(
+        "producto"+numero
+    );
+
+    const option=
+    select.options[
+        select.selectedIndex
+    ];
+
+    const opciones=
+    document.getElementById(
+        "opcionesPeso"+numero
+    );
+
+    const grupoPeso=
+    document.getElementById(
+        "grupoPeso"+numero
+    );
+
+
+    const operacion=
+    numero===1
+    ?
+    operacionContenedor1
+    :
+    operacionContenedor2;
+
+
+    const esPieza=
+    option &&
+    option.value &&
+    option.dataset.unidad==="unidad";
+
+
+    if(
+        operacion==="salida" &&
+        esPieza
+    ){
+
+        opciones.classList.add("visible");
+
+        if(
+            numero===1
+            ?
+            pesoContenedor1
+            :
+            pesoContenedor2
+        ){
+
+            grupoPeso.classList.add("visible");
+
+        }
+
+        else{
+
+            grupoPeso.classList.remove("visible");
+
+        }
+
+    }
+
+    else{
+
+        opciones.classList.remove("visible");
+
+        grupoPeso.classList.remove("visible");
+
+    }
+
+}
+
+
+/* ==========================================
+   SELECCIONAR PESO
+========================================== */
+
+function seleccionarPeso(numero,conPeso){
+
+    if(numero===1){
+
+        pesoContenedor1=
+        conPeso;
+
+    }
+
+    else{
+
+        pesoContenedor2=
+        conPeso;
+
+    }
+
+
+    const botonConPeso=
+    document.getElementById(
+        "conPeso"+numero
+    );
+
+    const botonSinPeso=
+    document.getElementById(
+        "sinPeso"+numero
+    );
+
+    const grupoPeso=
+    document.getElementById(
+        "grupoPeso"+numero
+    );
+
+
+    if(conPeso){
+
+        botonConPeso.classList.add("activo");
+
+        botonSinPeso.classList.remove("activo");
+
+        grupoPeso.classList.add("visible");
+
+    }
+
+    else{
+
+        botonConPeso.classList.remove("activo");
+
+        botonSinPeso.classList.add("activo");
+
+        grupoPeso.classList.remove("visible");
+
+        document.getElementById(
+            "peso"+numero
+        ).value="";
 
     }
 
@@ -1475,6 +1794,9 @@ function seleccionarOperacion(
     :
     "💾 Registrar salida";
 
+
+    actualizarOpcionesPeso(numero);
+
 }
 
 
@@ -1543,6 +1865,55 @@ async function registrarMovimiento(numero){
 
     const unidad=
     option.dataset.unidad;
+
+
+    /* ==========================================
+       PESO
+    ========================================== */
+
+    let pesoKg=null;
+
+
+    const esPieza=
+    unidad==="unidad";
+
+
+    const conPeso=
+    numero===1
+    ?
+    pesoContenedor1
+    :
+    pesoContenedor2;
+
+
+    if(
+        operacion==="salida" &&
+        esPieza &&
+        conPeso
+    ){
+
+        pesoKg=
+        Number(
+            document.getElementById(
+                "peso"+numero
+            ).value
+        );
+
+
+        if(
+            !Number.isFinite(pesoKg) ||
+            pesoKg<=0
+        ){
+
+            alert(
+                "⚠️ Introduce un peso válido."
+            );
+
+            return;
+
+        }
+
+    }
 
 
     if(operacion==="salida"){
@@ -1615,6 +1986,8 @@ async function registrarMovimiento(numero){
         cantidad:cantidad,
 
         unidad:unidad,
+
+        peso_kg:pesoKg,
 
         usuario:usuario
 
@@ -1766,6 +2139,36 @@ async function registrarMovimiento(numero){
     document.getElementById(
         "producto"+numero
     ).value="";
+
+
+    document.getElementById(
+        "peso"+numero
+    ).value="";
+
+
+    pesoContenedor1=false;
+
+    pesoContenedor2=false;
+
+
+    document.getElementById(
+        "grupoPeso"+numero
+    ).classList.remove("visible");
+
+
+    document.getElementById(
+        "opcionesPeso"+numero
+    ).classList.remove("visible");
+
+
+    document.getElementById(
+        "conPeso"+numero
+    ).classList.remove("activo");
+
+
+    document.getElementById(
+        "sinPeso"+numero
+    ).classList.add("activo");
 
 
     actualizarUnidad(numero);
@@ -1925,7 +2328,7 @@ async function cargarHistorial(){
     <tr>
 
     <td
-    colspan="9"
+    colspan="10"
     class="mensaje">
 
     ⏳ Cargando historial...
@@ -1956,7 +2359,7 @@ async function cargarHistorial(){
         <tr>
 
         <td
-        colspan="9"
+        colspan="10"
         class="mensaje">
 
         ❌ Error cargando historial:
@@ -1986,7 +2389,7 @@ async function cargarHistorial(){
         <tr>
 
         <td
-        colspan="9"
+        colspan="10"
         class="mensaje">
 
         📭 No hay movimientos registrados.
@@ -2065,6 +2468,16 @@ async function cargarHistorial(){
         `;
 
 
+        const pesoTexto=
+        m.peso_kg !== null &&
+        m.peso_kg !== undefined &&
+        Number(m.peso_kg)>0
+        ?
+        Number(m.peso_kg).toFixed(2)+" kg"
+        :
+        "Sin peso";
+
+
         html+=`
 
         <tr>
@@ -2118,6 +2531,18 @@ async function cargarHistorial(){
 
         <td>
 
+        ${
+            esEntrada
+            ?
+            "—"
+            :
+            pesoTexto
+        }
+
+        </td>
+
+        <td>
+
         ${m.unidad}
 
         </td>
@@ -2163,10 +2588,28 @@ async function eliminarMovimiento(id){
     }
 
 
-    if(!confirm(
-        "⚠️ ¿Seguro que deseas eliminar este registro?\n\n"+
-        "Esta acción también corregirá el inventario del contenedor."
-    )){
+    const opcion=
+    prompt(
+        "🗑️ ELIMINAR MOVIMIENTO\n\n"+
+        "Escribe una opción:\n\n"+
+        "1 = Borrar sin revertir\n"+
+        "2 = Borrar y revertir\n\n"+
+        "Cancelar = No hacer nada"
+    );
+
+
+    if(opcion===null){
+
+        return;
+
+    }
+
+
+    if(opcion!=="1" && opcion!=="2"){
+
+        alert(
+            "⚠️ Opción no válida."
+        );
 
         return;
 
@@ -2195,94 +2638,37 @@ async function eliminarMovimiento(id){
     }
 
 
-    const {data:inventario,error:errorInventario}=
-    await clienteSupabase
-    .from("inventario_contenedores")
-    .select("*")
-    .eq(
-        "contenedor",
-        movimiento.contenedor
-    )
-    .eq(
-        "producto",
-        movimiento.producto
-    )
-    .maybeSingle();
+    /* ==========================================
+       BORRAR SIN REVERTIR
+    ========================================== */
 
+    if(opcion==="1"){
 
-    if(errorInventario){
+        if(!confirm(
+            "⚠️ Vas a borrar este movimiento SIN revertir el inventario.\n\n"+
+            "El inventario actual NO cambiará.\n\n"+
+            "¿Deseas continuar?"
+        )){
 
-        alert(
-            "❌ Error buscando inventario:\n\n"+
-            errorInventario.message
-        );
-
-        return;
-
-    }
-
-
-    if(inventario){
-
-        let cantidadActual=
-        Number(
-            inventario.cantidad || 0
-        );
-
-
-        const cantidadMovimiento=
-        Number(
-            movimiento.cantidad || 0
-        );
-
-
-        if(
-            String(
-                movimiento.operacion
-            )
-            .toLowerCase()
-            ===
-            "entrada"
-        ){
-
-            cantidadActual-=
-            cantidadMovimiento;
-
-        }
-
-        else{
-
-            cantidadActual+=
-            cantidadMovimiento;
-
-        }
-
-
-        if(cantidadActual<0){
-
-            cantidadActual=0;
+            return;
 
         }
 
 
         const {error}=
         await clienteSupabase
-        .from("inventario_contenedores")
-        .update({
-
-            cantidad:cantidadActual
-
-        })
+        .from("historial_contenedores")
+        .delete()
         .eq(
             "id",
-            inventario.id
+            id
         );
 
 
         if(error){
 
             alert(
-                "❌ Error corrigiendo inventario:\n\n"+
+                "❌ Error eliminando historial:\n\n"+
                 error.message
             );
 
@@ -2290,41 +2676,168 @@ async function eliminarMovimiento(id){
 
         }
 
-    }
-
-
-    const {error}=
-    await clienteSupabase
-    .from("historial_contenedores")
-    .delete()
-    .eq(
-        "id",
-        id
-    );
-
-
-    if(error){
 
         alert(
-            "❌ Error eliminando historial:\n\n"+
-            error.message
+            "✅ Movimiento eliminado sin revertir el inventario."
         );
+
+
+        await cargarHistorial();
 
         return;
 
     }
 
 
-    alert(
-        "✅ Movimiento eliminado y inventario corregido."
-    );
+    /* ==========================================
+       BORRAR Y REVERTIR
+    ========================================== */
+
+    if(opcion==="2"){
+
+        if(!confirm(
+            "⚠️ Vas a borrar este movimiento Y REVERTIR el inventario.\n\n"+
+            "La cantidad de este movimiento será devuelta al estado anterior.\n\n"+
+            "¿Deseas continuar?"
+        )){
+
+            return;
+
+        }
 
 
-    await cargarHistorial();
+        const {data:inventario,error:errorInventario}=
+        await clienteSupabase
+        .from("inventario_contenedores")
+        .select("*")
+        .eq(
+            "contenedor",
+            movimiento.contenedor
+        )
+        .eq(
+            "producto",
+            movimiento.producto
+        )
+        .maybeSingle();
 
-    cargarInventario(
-        movimiento.contenedor
-    );
+
+        if(errorInventario){
+
+            alert(
+                "❌ Error buscando inventario:\n\n"+
+                errorInventario.message
+            );
+
+            return;
+
+        }
+
+
+        if(inventario){
+
+            let cantidadActual=
+            Number(
+                inventario.cantidad || 0
+            );
+
+
+            const cantidadMovimiento=
+            Number(
+                movimiento.cantidad || 0
+            );
+
+
+            if(
+                String(
+                    movimiento.operacion
+                )
+                .toLowerCase()
+                ===
+                "entrada"
+            ){
+
+                cantidadActual-=
+                cantidadMovimiento;
+
+            }
+
+            else{
+
+                cantidadActual+=
+                cantidadMovimiento;
+
+            }
+
+
+            if(cantidadActual<0){
+
+                cantidadActual=0;
+
+            }
+
+
+            const {error}=
+            await clienteSupabase
+            .from("inventario_contenedores")
+            .update({
+
+                cantidad:cantidadActual
+
+            })
+            .eq(
+                "id",
+                inventario.id
+            );
+
+
+            if(error){
+
+                alert(
+                    "❌ Error corrigiendo inventario:\n\n"+
+                    error.message
+                );
+
+                return;
+
+            }
+
+        }
+
+
+        const {error}=
+        await clienteSupabase
+        .from("historial_contenedores")
+        .delete()
+        .eq(
+            "id",
+            id
+        );
+
+
+        if(error){
+
+            alert(
+                "❌ Error eliminando historial:\n\n"+
+                error.message
+            );
+
+            return;
+
+        }
+
+
+        alert(
+            "✅ Movimiento eliminado y el inventario fue revertido correctamente."
+        );
+
+
+        await cargarHistorial();
+
+        await cargarInventario(
+            movimiento.contenedor
+        );
+
+    }
 
 }
 
