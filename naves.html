@@ -1,6261 +1,3454 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>ElDesierto - Naves</title>
 
 <style>
-
 *{
-box-sizing:border-box;
+    box-sizing:border-box;
+}
+
+:root{
+    --fondo:#171717;
+    --panel:#1e1e1e;
+    --panel2:#222;
+    --rojo:#b40000;
+    --rojo2:#d00000;
+    --texto:#fff;
+    --gris:#bdbdbd;
+    --sombra1:#0b0b0b;
+    --sombra2:#292929;
 }
 
 body{
-font-family:Arial,sans-serif;
-background:
-radial-gradient(circle at top,#1d1d1d,#050505 65%);
-color:white;
-margin:0;
-padding:20px;
-text-align:center;
-min-height:100vh;
+    margin:0;
+    padding:20px;
+    font-family:Arial,sans-serif;
+    background:var(--fondo);
+    color:var(--texto);
+    min-height:100vh;
 }
 
 h1{
-color:#ff3030;
-font-size:32px;
-margin:10px 0 5px;
-text-shadow:0 0 10px rgba(255,0,0,.6);
+    text-align:center;
+    margin:5px 0 20px;
+    color:#fff;
+    text-shadow:2px 2px 4px #000;
 }
 
-h2{
-color:#ff4b4b;
+button,
+select,
+input{
+    font-family:Arial,sans-serif;
 }
 
-.boton{
-display:block;
-width:90%;
-max-width:500px;
-margin:15px auto;
-padding:16px;
-background:
-linear-gradient(145deg,#ff3838,#9d0000);
-color:white;
-border:none;
-border-radius:14px;
-font-size:17px;
-font-weight:bold;
-cursor:pointer;
-box-shadow:
-0 7px 0 #500000,
-0 12px 25px rgba(255,0,0,.18);
-transition:.2s;
+button{
+    border:none;
+    cursor:pointer;
 }
 
-.boton:active{
-transform:translateY(5px);
-box-shadow:0 2px 0 #500000;
+.boton,
+.selectorNaves button,
+.accion,
+.btnPanel{
+    background:var(--panel);
+    color:#fff;
+    border-radius:16px;
+    padding:13px 18px;
+    margin:6px;
+    font-size:15px;
+    font-weight:bold;
+    box-shadow:
+        7px 7px 14px var(--sombra1),
+        -5px -5px 12px var(--sombra2);
+    transition:.15s;
 }
 
-.nave{
-width:95%;
-max-width:850px;
-margin:25px auto;
-padding:20px;
-border-radius:20px;
-background:
-linear-gradient(145deg,#202020,#090909);
-border:1px solid #3a3a3a;
-box-shadow:
-10px 10px 25px #000,
--3px -3px 15px #252525,
-inset 0 0 15px rgba(255,0,0,.05);
+.boton:active,
+.selectorNaves button:active,
+.accion:active,
+.btnPanel:active{
+    box-shadow:
+        inset 5px 5px 10px var(--sombra1),
+        inset -4px -4px 9px var(--sombra2);
+    transform:scale(.98);
 }
 
-.nave h2{
-margin-top:0;
-color:#ff3b3b;
-text-shadow:0 0 8px rgba(255,0,0,.5);
+.selectorNaves{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    margin:10px auto 20px;
+    max-width:900px;
 }
 
-.contenedorNave{
-background:
-linear-gradient(145deg,#151515,#050505);
-border:2px solid #8f0000;
-border-radius:16px;
-padding:14px;
-display:grid;
-grid-template-columns:repeat(5,1fr);
-gap:10px;
-box-shadow:
-inset 0 0 15px black,
-0 0 12px rgba(255,0,0,.15);
+.selectorNaves button{
+    min-width:150px;
 }
 
-.cuarton{
-min-height:85px;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-cursor:pointer;
-border-radius:12px;
-background:
-linear-gradient(145deg,#292929,#101010);
-border:1px solid #4a4a4a;
-box-shadow:
-5px 5px 10px #000,
--2px -2px 6px #303030;
-transition:.2s;
+.selectorNaves button.activo{
+    background:var(--rojo);
+    box-shadow:
+        inset 4px 4px 9px #720000,
+        inset -4px -4px 9px #e00000;
 }
 
-.cuarton:hover{
-border-color:#ff2525;
-box-shadow:0 0 15px rgba(255,0,0,.6);
-transform:translateY(-2px);
+.totalGeneral{
+    max-width:500px;
+    margin:20px auto;
+    padding:22px;
+    text-align:center;
+    border-radius:22px;
+    background:var(--panel);
+    box-shadow:
+        9px 9px 18px var(--sombra1),
+        -7px -7px 15px var(--sombra2);
+    font-size:18px;
+    font-weight:bold;
 }
 
-.cuarton:active{
-transform:scale(.96);
+.numeroTotal{
+    font-size:42px;
+    color:#ff3030;
+    margin:8px;
 }
 
-.numero{
-color:#ff5555;
-font-size:13px;
-font-weight:bold;
+.contenedor{
+    max-width:1200px;
+    margin:auto;
 }
 
-.cerdos{
-font-size:22px;
-margin-top:8px;
-color:white;
+.gridNaves{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:20px;
+}
+
+.naveCard{
+    background:var(--panel);
+    border-radius:22px;
+    padding:18px;
+    box-shadow:
+        9px 9px 18px var(--sombra1),
+        -7px -7px 15px var(--sombra2);
+}
+
+.naveCard h2{
+    text-align:center;
+    margin-top:0;
+    color:#ff3838;
 }
 
 .totalNave{
-margin-top:18px;
-padding:14px;
-border-radius:12px;
-background:
-linear-gradient(145deg,#280000,#100000);
-color:#ff5555;
-font-size:18px;
-font-weight:bold;
-border:1px solid #750000;
-box-shadow:inset 0 0 10px black;
+    text-align:center;
+    font-size:20px;
+    margin:12px 0;
+}
+
+.gridCuartones{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:9px;
+}
+
+.cuarton{
+    background:var(--panel2);
+    border-radius:14px;
+    padding:10px 5px;
+    text-align:center;
+    cursor:pointer;
+    box-shadow:
+        4px 4px 8px var(--sombra1),
+        -3px -3px 7px var(--sombra2);
+}
+
+.cuarton:active{
+    box-shadow:
+        inset 4px 4px 8px var(--sombra1),
+        inset -3px -3px 7px var(--sombra2);
+}
+
+.cuarton strong{
+    display:block;
+    color:#ff4545;
+    margin-bottom:5px;
+}
+
+.cuarton span{
+    color:#fff;
+    font-size:14px;
 }
 
 .panel{
-width:90%;
-max-width:500px;
-margin:25px auto;
-padding:22px;
-border-radius:20px;
-background:
-linear-gradient(145deg,#202020,#080808);
-border:1px solid #3a3a3a;
-box-shadow:
-10px 10px 25px #000,
--3px -3px 12px #252525;
+    background:var(--panel);
+    border-radius:22px;
+    padding:20px;
+    margin:20px auto;
+    max-width:650px;
+    box-shadow:
+        9px 9px 18px var(--sombra1),
+        -7px -7px 15px var(--sombra2);
 }
 
-.panel button{
-display:block;
-width:100%;
-padding:14px;
-margin:12px 0;
-border:none;
-border-radius:12px;
-font-size:16px;
-font-weight:bold;
-color:white;
-cursor:pointer;
-background:
-linear-gradient(145deg,#e50000,#850000);
-box-shadow:
-0 5px 0 #480000,
-0 10px 18px rgba(255,0,0,.12);
+.panel h3{
+    text-align:center;
+    color:#ff3838;
+    margin-top:0;
 }
 
-.panel button:active{
-transform:translateY(4px);
-box-shadow:0 1px 0 #480000;
+.oculto{
+    display:none !important;
 }
 
 input,
 select{
-width:100%;
-padding:14px;
-box-sizing:border-box;
-margin:12px 0;
-border-radius:12px;
-font-size:16px;
-color:white;
-background:#101010;
-border:1px solid #4a4a4a;
-outline:none;
-box-shadow:inset 0 0 10px #000;
+    width:100%;
+    padding:13px;
+    margin:7px 0 12px;
+    border:none;
+    outline:none;
+    border-radius:14px;
+    background:#181818;
+    color:#fff;
+    box-shadow:
+        inset 4px 4px 8px #090909,
+        inset -3px -3px 7px #292929;
 }
 
-input:focus,
-select:focus{
-border-color:#ff3030;
-box-shadow:0 0 10px rgba(255,0,0,.4);
+label{
+    display:block;
+    margin-top:8px;
+    color:#ddd;
+    font-weight:bold;
 }
 
-.oculto{
-display:none;
+.grupoBotones{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
 }
 
-#mensaje{
-margin:20px;
-font-weight:bold;
-color:#ff5555;
+.rojo{
+    background:var(--rojo);
 }
 
-.totalGeneral{
-width:95%;
-max-width:850px;
-margin:30px auto;
-padding:25px;
-border-radius:22px;
-background:
-linear-gradient(145deg,#e60000,#750000);
-box-shadow:
-0 8px 0 #400000,
-0 15px 30px rgba(255,0,0,.25);
+.info{
+    background:#181818;
+    border-radius:14px;
+    padding:12px;
+    margin:10px 0;
+    box-shadow:inset 3px 3px 7px #090909;
+    white-space:pre-line;
 }
 
-.totalGeneral h2{
-color:white;
-margin-top:0;
+.listaGrupo{
+    margin:10px 0;
 }
 
-.numeroTotal{
-font-size:42px;
-font-weight:bold;
+.itemGrupo{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    background:#181818;
+    padding:10px;
+    border-radius:12px;
+    margin:6px 0;
 }
 
-.resumen{
-width:95%;
-max-width:850px;
-margin:25px auto;
-padding:22px;
-border-radius:20px;
-background:
-linear-gradient(145deg,#1d1d1d,#080808);
-border:1px solid #3a3a3a;
-box-shadow:8px 8px 25px #000;
+.itemGrupo button{
+    background:#8b0000;
+    color:white;
+    border-radius:10px;
+    padding:7px 10px;
 }
 
-.movimientoResumen{
-padding:13px;
-margin:8px 0;
-border-radius:10px;
-background:#111;
-border-left:4px solid #e00000;
-font-weight:bold;
+.filaCard{
+    background:var(--panel);
+    border-radius:20px;
+    padding:18px;
+    margin:12px 0;
+    box-shadow:
+        8px 8px 16px var(--sombra1),
+        -6px -6px 13px var(--sombra2);
 }
 
-.seleccionGrupo{
-margin:10px 0;
-padding:14px;
-border-radius:12px;
-background:
-linear-gradient(145deg,#252525,#101010);
-border:1px solid #444;
-text-align:left;
+.filaCard h2{
+    color:#ff3b3b;
+    margin-top:0;
 }
 
-.seleccionGrupo strong{
-color:#ff5555;
+.tablaDetalles{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:12px;
 }
 
-.botonQuitar{
-background:
-linear-gradient(145deg,#555,#222) !important;
-box-shadow:
-0 4px 0 #111 !important;
-padding:9px !important;
-margin:8px 0 0 !important;
-font-size:14px !important;
+.tablaDetalles th,
+.tablaDetalles td{
+    padding:9px;
+    border-bottom:1px solid #383838;
+    text-align:center;
 }
 
-.resumenGrupo{
-margin-top:15px;
-padding:15px;
-border-radius:12px;
-background:#100000;
-border:1px solid #700000;
-text-align:left;
+.tablaDetalles th{
+    color:#ff4040;
 }
 
-.itemDisponible{
-margin:8px 0;
-padding:12px;
-border-radius:10px;
-background:#151515;
-border:1px solid #333;
-cursor:pointer;
-}
-
-.itemDisponible:hover{
-border-color:#ff3030;
-}
-
-.selectorNaves{
-width:95%;
-max-width:850px;
-margin:25px auto;
-}
-
-.selectorNaves .boton{
-max-width:600px;
-}
-
-.naveDestete{
-width:95%;
-max-width:850px;
-margin:25px auto;
-padding:20px;
-border-radius:20px;
-background:
-linear-gradient(145deg,#202020,#090909);
-border:1px solid #3a3a3a;
-box-shadow:
-10px 10px 25px #000,
--3px -3px 15px #252525,
-inset 0 0 15px rgba(255,0,0,.05);
-}
-
-.naveDestete h2{
-margin-top:0;
-color:#ff3b3b;
-text-shadow:0 0 8px rgba(255,0,0,.5);
-}
-
-.estructuraDestete{
-width:100%;
-max-width:700px;
-margin:20px auto;
-padding:16px;
-border-radius:18px;
-background:
-linear-gradient(145deg,#151515,#050505);
-border:2px solid #8f0000;
-box-shadow:
-inset 0 0 15px black,
-0 0 12px rgba(255,0,0,.15);
-display:flex;
-flex-direction:column;
-gap:12px;
-}
-
-.filaDestete{
-min-height:115px;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-cursor:pointer;
-border-radius:14px;
-background:
-linear-gradient(145deg,#292929,#101010);
-border:2px solid #4a4a4a;
-box-shadow:
-6px 6px 12px #000,
--2px -2px 7px #303030;
-transition:.2s;
-}
-
-.filaDestete:hover{
-border-color:#ff2525;
-box-shadow:0 0 18px rgba(255,0,0,.6);
-transform:translateY(-2px);
-}
-
-.filaDestete:active{
-transform:scale(.98);
-}
-
-.nombreFila{
-color:#ff5555;
-font-size:20px;
-font-weight:bold;
-}
-
-.cerdosFila{
-font-size:28px;
-margin-top:10px;
-color:white;
-}
-
-.totalFila{
-margin-top:5px;
-color:#aaa;
-font-size:14px;
-}
-
-.totalDestete{
-margin-top:20px;
-padding:18px;
-border-radius:14px;
-background:
-linear-gradient(145deg,#280000,#100000);
-color:#ff5555;
-font-size:20px;
-font-weight:bold;
-border:1px solid #750000;
-box-shadow:inset 0 0 10px black;
-}
-
-.numeroTotalDestete{
-font-size:40px;
-color:white;
-margin-top:8px;
-}
-
-.datosCuartonesDestete{
-width:100%;
-max-width:700px;
-margin:20px auto 0;
-padding:18px;
-border-radius:18px;
-background:
-linear-gradient(145deg,#1d1d1d,#080808);
-border:1px solid #3a3a3a;
-box-shadow:
-8px 8px 20px #000,
-inset 0 0 12px rgba(255,0,0,.04);
-}
-
-.datosCuartonesDestete h3{
-margin-top:0;
-color:#ff5555;
-text-shadow:0 0 7px rgba(255,0,0,.4);
-}
-
-.tablaCuartonesDestete{
-width:100%;
-border-collapse:separate;
-border-spacing:0 8px;
-}
-
-.tablaCuartonesDestete th{
-padding:12px 8px;
-color:#ff5555;
-background:#100000;
-border-bottom:1px solid #750000;
-font-size:13px;
-}
-
-.tablaCuartonesDestete td{
-padding:13px 8px;
-background:
-linear-gradient(145deg,#292929,#101010);
-border-top:1px solid #333;
-border-bottom:1px solid #111;
-font-weight:bold;
-}
-
-.tablaCuartonesDestete td:first-child{
-color:#ff5555;
-}
-
-.tablaCuartonesDestete td:last-child{
-color:#ff9999;
-}
-
-.tablaCuartonesDestete td:first-child{
-border-left:1px solid #333;
-border-radius:10px 0 0 10px;
-}
-
-.tablaCuartonesDestete td:last-child{
-border-right:1px solid #333;
-border-radius:0 10px 10px 0;
-}
-
-.infoFilaDestete{
-padding:14px;
-margin:12px 0;
-border-radius:12px;
-background:#100000;
-border:1px solid #700000;
-font-weight:bold;
-color:#ff5555;
-}
-
-.reagrupeDestete{
-padding:14px;
-margin-top:15px;
-border-radius:12px;
-background:#111;
-border:1px solid #333;
-}
-
-.reagrupeDestete strong{
-color:#ff5555;
-}
-
-.contenedorMaternidad{
-width:95%;
-max-width:850px;
-margin:25px auto;
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:20px;
-}
-
-.naveMaternidad{
-width:100%;
-padding:18px;
-border-radius:20px;
-background:
-linear-gradient(145deg,#202020,#090909);
-border:1px solid #3a3a3a;
-box-shadow:
-10px 10px 25px #000,
--3px -3px 15px #252525,
-inset 0 0 15px rgba(255,0,0,.05);
-}
-
-.naveMaternidad h2{
-margin-top:0;
-color:#ff3b3b;
-text-shadow:0 0 8px rgba(255,0,0,.5);
-}
-
-.estructuraMaternidad{
-padding:14px;
-border-radius:16px;
-background:
-linear-gradient(145deg,#151515,#050505);
-border:2px solid #8f0000;
-box-shadow:
-inset 0 0 15px black,
-0 0 12px rgba(255,0,0,.15);
-display:flex;
-flex-direction:column;
-gap:12px;
-}
-
-.filaMaternidad{
-min-height:110px;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-cursor:pointer;
-border-radius:14px;
-background:
-linear-gradient(145deg,#292929,#101010);
-border:2px solid #4a4a4a;
-box-shadow:
-6px 6px 12px #000,
--2px -2px 7px #303030;
-transition:.2s;
-}
-
-.filaMaternidad:hover{
-border-color:#ff2525;
-box-shadow:0 0 18px rgba(255,0,0,.6);
-transform:translateY(-2px);
-}
-
-.filaMaternidad:active{
-transform:scale(.97);
-}
-
-.nombreFilaMaternidad{
-color:#ff5555;
-font-size:21px;
-font-weight:bold;
-}
-
-.cerdosFilaMaternidad{
-font-size:28px;
-margin-top:10px;
-color:white;
-}
-
-.totalMaternidadNave{
-margin-top:18px;
-padding:14px;
-border-radius:12px;
-background:
-linear-gradient(145deg,#280000,#100000);
-color:#ff5555;
-font-size:18px;
-font-weight:bold;
-border:1px solid #750000;
-box-shadow:inset 0 0 10px black;
-}
-
-.totalMaternidadGeneral{
-width:95%;
-max-width:850px;
-margin:25px auto;
-padding:20px;
-border-radius:20px;
-background:
-linear-gradient(145deg,#1d1d1d,#080808);
-border:1px solid #3a3a3a;
-box-shadow:8px 8px 25px #000;
-}
+@media(max-width:500px){
+    body{
+        padding:12px;
+    }
 
-.totalMaternidadGeneral h2{
-margin-top:0;
-color:#ff5555;
-}
-
-.numeroTotalMaternidad{
-font-size:40px;
-font-weight:bold;
-color:white;
-}
-
-.infoMaternidad{
-padding:14px;
-margin:12px 0;
-border-radius:12px;
-background:#100000;
-border:1px solid #700000;
-font-weight:bold;
-color:#ff5555;
-}
-
-.pesoBandas{
-width:100%;
-text-align:left;
-}
-
-.totalPesoBandas{
-padding:14px;
-margin:8px 0 15px;
-border-radius:12px;
-background:#100000;
-border:1px solid #700000;
-font-weight:bold;
-color:#ff5555;
-text-align:center;
-}
-
-@media(max-width:600px){
-
-body{
-padding:12px;
-}
-
-.contenedorNave{
-grid-template-columns:repeat(3,1fr);
-}
-
-.cuarton{
-min-height:75px;
-}
-
-.filaDestete{
-min-height:100px;
-}
-
-.tablaCuartonesDestete{
-font-size:13px;
-}
-
-.tablaCuartonesDestete th,
-.tablaCuartonesDestete td{
-padding:10px 5px;
-}
+    .gridCuartones{
+        grid-template-columns:repeat(5,1fr);
+        gap:6px;
+    }
 
-.contenedorMaternidad{
-grid-template-columns:1fr;
-}
-
-.naveMaternidad{
-width:100%;
-}
+    .cuarton{
+        padding:8px 2px;
+        font-size:12px;
+    }
 
+    .selectorNaves button{
+        min-width:130px;
+    }
 }
-
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
+<script src="supabase.js"></script>
 </head>
 
 <body>
 
 <h1>🐷 Naves</h1>
 
-<button class="boton" onclick="window.location.href='menu.html'">
-⬅️ Volver al menú
-</button>
-
-<div id="selectorNaves" class="selectorNaves">
-
-<button class="boton" onclick="mostrarNavesCeba()">
-🐷 Naves Ceba
-</button>
-
-<button class="boton" onclick="mostrarNavesDestete()">
-🍼 Naves Destete
-</button>
-
-<button class="boton" onclick="mostrarNavesMaternidad()">
-🐷 Naves Maternidad
-</button>
-
-<div id="totalGeneralNaves" class="totalGeneral">
-
-<h2>🐷 TOTAL GENERAL DE CERDOS</h2>
-
-<div id="numeroTotalGeneralNaves" class="numeroTotal">0</div>
-
-<div>
-Ceba + Destete + Maternidad
+<div style="text-align:center">
+    <button class="boton" onclick="window.location.href='menu.html'">
+        ⬅️ Volver al menú
+    </button>
 </div>
 
+<div class="selectorNaves">
+    <button id="btnCeba" onclick="mostrarNavesCeba()">🐷 Naves Ceba</button>
+    <button id="btnDestete" onclick="mostrarNavesDestete()">🍼 Naves Destete</button>
+    <button id="btnMaternidad" onclick="mostrarNavesMaternidad()">🐖 Maternidad</button>
 </div>
 
+<div class="totalGeneral">
+    TOTAL GENERAL
+    <div id="numeroTotalGeneralNaves" class="numeroTotal">0</div>
+    🐷 Cerdos
 </div>
 
-<div id="contenidoCeba" class="oculto">
+<div class="contenedor">
 
-<div id="contenido">
-Cargando naves...
-</div>
+    <!-- ================= CEBA ================= -->
 
-</div>
+    <div id="contenidoNaves"></div>
 
-<div id="contenidoDestete" class="oculto">
+    <div id="panelCuarton" class="panel oculto">
+        <h3 id="tituloCuarton">Cuartón</h3>
+        <div id="cantidadCuarton" class="info"></div>
 
-<div id="contenidoDesteteNave">
-Cargando destete...
-</div>
+        <div class="grupoBotones">
+            <button class="btnPanel" onclick="mostrarEntrada()">➕ Entrada</button>
+            <button class="btnPanel" onclick="mostrarVenta()">💰 Venta</button>
+            <button class="btnPanel" onclick="mostrarVentaGrupo()">💰 Venta por grupo</button>
+            <button class="btnPanel" onclick="mostrarMuerte()">☠️ Muerte</button>
+            <button class="btnPanel" onclick="mostrarReagrupeSalida()">🔄 Reagrupe</button>
+            <button class="btnPanel" onclick="cerrarPanel()">✖️ Cerrar</button>
+        </div>
+    </div>
 
-</div>
+    <div id="panelEntrada" class="panel oculto">
+        <h3>Entrada de cerdos</h3>
 
-<div id="contenidoMaternidad" class="oculto">
+        <div class="grupoBotones">
+            <button class="btnPanel" onclick="tipoEntradaSeleccionado='Entrada Destete';mostrarAgregar()">
+                🍼 Entrada Destete
+            </button>
 
-<div id="contenidoMaternidadNaves">
-Cargando maternidad...
-</div>
+            <button class="btnPanel" onclick="tipoEntradaSeleccionado='Entrada Exterior';mostrarAgregar()">
+                🚚 Entrada Exterior
+            </button>
+        </div>
 
-</div>
+        <button class="btnPanel" onclick="cerrarPanel()">⬅️ Volver</button>
+    </div>
 
-<div id="panelCuarton" class="panel oculto">
+    <div id="panelAgregar" class="panel oculto">
+        <h3>Agregar cerdos</h3>
 
-<h2 id="tituloCuarton">Cuartón</h2>
+        <label>Cantidad</label>
+        <input id="cantidadAgregar" type="number" min="1" step="1">
 
-<div id="cantidadActual">
-🐷 Cerdos actuales: 0
-</div>
+        <button class="btnPanel rojo" onclick="procesarAgregar()">✅ Agregar</button>
+        <button class="btnPanel" onclick="mostrarEntrada()">⬅️ Volver</button>
+    </div>
 
-<button onclick="mostrarAgregar()">➕ Agregar cerdos</button>
+    <div id="panelMotivo" class="panel oculto">
+        <h3>Motivo de entrada</h3>
+    </div>
 
-<button onclick="mostrarMotivoSalida()">➖ Sacar cerdos</button>
+    <div id="panelVenta" class="panel oculto">
+        <h3>💰 Venta</h3>
 
-<button onclick="cerrarPanel()">Cancelar</button>
+        <label>Cantidad de cerdos</label>
+        <input id="cantidadVenta" type="number" min="1" step="1">
 
-</div>
+        <label>Peso total (kg)</label>
+        <input id="pesoVenta" type="number" min="0" step="0.01">
 
-<div id="panelEntrada" class="panel oculto">
+        <button class="btnPanel rojo" onclick="procesarVenta()">💰 Registrar venta</button>
+        <button class="btnPanel" onclick="cerrarPanel()">⬅️ Cancelar</button>
+    </div>
 
-<h2>➕ Entrada de cerdos</h2>
+    <!-- VENTA POR GRUPO -->
 
-<p>Selecciona el tipo de entrada:</p>
+    <div id="panelVentaGrupo" class="panel oculto">
+        <h3>💰 Venta por grupo</h3>
 
-<button onclick="mostrarCantidadEntrada('Entrada Destete')">
-🍼 Entrada por destete
-</button>
+        <label>Nave</label>
+        <select id="grupoNaveSeleccionada" onchange="cargarCuartonesGrupo()">
+            <option value="">Seleccione una nave</option>
+        </select>
 
-<button onclick="mostrarCantidadEntrada('Entrada Exterior')">
-🚚 Entrada exterior
-</button>
+        <label>Cuartón</label>
+        <select id="grupoCuartonSeleccionado">
+            <option value="">Seleccione un cuartón</option>
+        </select>
 
-<button onclick="cerrarPanel()">Cancelar</button>
+        <label>Cantidad de cerdos</label>
+        <input id="cantidadGrupo" type="number" min="1" step="1">
 
-</div>
+        <button class="btnPanel" onclick="agregarCuartonGrupo()">➕ Agregar al grupo</button>
 
-<div id="panelAgregar" class="panel oculto">
+        <div id="ventaGrupoLista" class="listaGrupo"></div>
 
-<h2 id="tituloAgregar">➕ Agregar cerdos</h2>
+        <label>Peso total del grupo (kg)</label>
+        <input id="pesoGrupo" type="number" min="0" step="0.01">
 
-<input
-type="number"
-id="cantidadAgregar"
-min="1"
-placeholder="Cantidad de cerdos">
+        <div id="resumenGrupo" class="info">
+            Cantidad total: <span id="totalCantidadGrupo">0</span>
+        </div>
 
-<button onclick="agregarCerdos()">Guardar</button>
+        <button class="btnPanel rojo" onclick="procesarVentaGrupo()">
+            💰 Registrar venta del grupo
+        </button>
 
-<button onclick="cerrarPanel()">Cancelar</button>
+        <button class="btnPanel" onclick="cerrarPanel()">⬅️ Cancelar</button>
+    </div>
 
-</div>
+    <!-- MUERTE CEBA -->
 
-<div id="panelMotivo" class="panel oculto">
+    <div id="panelMuerte" class="panel oculto">
+        <h3>☠️ Muerte</h3>
 
-<h2>➖ Sacar cerdos</h2>
+        <div class="grupoBotones">
+            <button class="btnPanel" onclick="mostrarMuerteTotal()">
+                ☠️ Muerte total
+            </button>
 
-<p>Selecciona el motivo:</p>
+            <button class="btnPanel" onclick="mostrarMuerteVenta()">
+                ⚖️ Muerte de venta
+            </button>
+        </div>
 
-<button onclick="mostrarVenta()">💰 Venta</button>
+        <button class="btnPanel" onclick="cerrarPanel()">⬅️ Volver</button>
+    </div>
 
-<button onclick="mostrarMuerte()">☠️ Muerte</button>
+    <div id="panelMuerteTotal" class="panel oculto">
+        <h3>☠️ Muerte total</h3>
 
-<button onclick="mostrarReagrupeSalida()">🔄 Reagrupe</button>
+        <label>Cantidad de cerdos</label>
+        <input id="cantidadMuerteTotal" type="number" min="1" step="1">
 
-<button onclick="cerrarPanel()">Cancelar</button>
+        <button class="btnPanel rojo" onclick="procesarMuerteTotal()">☠️ Registrar</button>
+        <button class="btnPanel" onclick="mostrarMuerte()">⬅️ Volver</button>
+    </div>
 
-</div>
+    <div id="panelMuerteVenta" class="panel oculto">
+        <h3>⚖️ Muerte de venta</h3>
 
-<div id="panelVenta" class="panel oculto">
+        <label>Tipo de peso</label>
+        <select id="tipoMuerteVentaCeba" onchange="cambiarTipoMuerteVentaCeba()">
+            <option value="bandas">Por bandas</option>
+            <option value="entero">Entero</option>
+        </select>
 
-<h2>💰 Venta</h2>
+        <label>Cantidad de cerdos</label>
+        <input id="cantidadMuerteVenta" type="number" min="1" step="1">
 
-<input
-type="number"
-id="cantidadVenta"
-min="1"
-placeholder="Cantidad de cerdos">
+        <div id="camposBandasCeba">
+            <label>Peso B1 (banda 1) kg</label>
+            <input id="pesoB1MuerteVenta" type="number" min="0" step="0.01">
 
-<input
-type="number"
-id="pesoVenta"
-min="0"
-step="0.01"
-placeholder="Peso total de los cerdos (kg)">
+            <label>Peso B2 (banda 2) kg</label>
+            <input id="pesoB2MuerteVenta" type="number" min="0" step="0.01">
 
-<button onclick="procesarVenta()">Confirmar venta</button>
+            <div id="totalPesoMuerteVenta" class="info">
+                T: 0.00 kg
+            </div>
+        </div>
 
-<button onclick="mostrarVentaGrupo()">
-🐷 Vender por grupo
-</button>
+        <div id="campoEnteroCeba" class="oculto">
+            <label>Peso del cochino/cerdos enteros (kg)</label>
+            <input id="pesoEnteroMuerteVentaCeba" type="number" min="0" step="0.01">
+        </div>
 
-<button onclick="cerrarPanel()">Cancelar</button>
+        <button class="btnPanel rojo" onclick="procesarMuerteVenta()">
+            ⚖️ Registrar muerte de venta
+        </button>
 
-</div>
+        <button class="btnPanel" onclick="mostrarMuerte()">⬅️ Volver</button>
+    </div>
 
-<div id="panelVentaGrupo" class="panel oculto">
+    <div id="panelReagrupeSalida" class="panel oculto">
+        <h3>🔄 Reagrupe</h3>
 
-<h2>🐷 Vender por grupo</h2>
+        <label>Cantidad</label>
+        <input id="cantidadReagrupeSalida" type="number" min="1" step="1">
 
-<p>
-Selecciona un cuartón y la cantidad de cerdos que vas a vender.
-</p>
+        <label>Cuartón destino</label>
+        <select id="cuartonDestinoSalida"></select>
 
-<select
-id="grupoNaveSeleccionada"
-onchange="cargarCuartonesGrupo()">
+        <button class="btnPanel rojo" onclick="procesarReagrupe()">🔄 Registrar</button>
+        <button class="btnPanel" onclick="cerrarPanel()">⬅️ Cancelar</button>
+    </div>
 
-<option value="">🏠 Selecciona una nave</option>
 
-</select>
+    <!-- ================= DESTETE ================= -->
 
-<select id="grupoCuartonSeleccionado">
+    <div id="contenidoDesteteNave" class="oculto"></div>
 
-<option value="">🐷 Selecciona un cuartón</option>
+    <div id="panelFilaDestete" class="panel oculto">
+        <h3 id="tituloFilaDestete">Fila</h3>
+        <div id="cantidadFilaDestete" class="info"></div>
 
-</select>
+        <div class="grupoBotones">
+            <button class="btnPanel" onclick="mostrarAgregarDestete()">➕ Entrada</button>
+            <button class="btnPanel" onclick="mostrarSalidaCebaDestete()">➡️ Salida Ceba</button>
+            <button class="btnPanel" onclick="mostrarMuerteDestete()">☠️ Muerte</button>
+            <button class="btnPanel" onclick="mostrarAgregarDatosDestete()">⚙️ Datos</button>
+            <button class="btnPanel" onclick="mostrarReagrupeDestete()">🔄 Reagrupe</button>
+            <button class="btnPanel" onclick="cerrarPanel()">✖️ Cerrar</button>
+        </div>
+    </div>
 
-<input
-type="number"
-id="cantidadGrupo"
-min="1"
-placeholder="Cantidad de cerdos">
+    <div id="panelAgregarDestete" class="panel oculto">
+        <h3 id="tituloAgregarDestete">Entrada Destete</h3>
 
-<button onclick="agregarCuartonGrupo()">➕ Agregar</button>
+        <label>Cantidad de cerdos</label>
+        <input id="cantidadAgregarDestete" type="number" min="1" step="1">
 
-<div id="listaGrupo"></div>
+        <button class="btnPanel rojo" onclick="procesarAgregarDestete()">✅ Agregar</button>
+        <button class="btnPanel" onclick="cerrarPanel()">⬅️ Cancelar</button>
+    </div>
 
-<div class="resumenGrupo">
+    <div id="panelSalidaCebaDestete" class="panel oculto">
+        <h3>➡️ Salida a Ceba</h3>
 
-<strong>📊 Resumen de la venta</strong>
+        <div id="infoSalidaCebaDestete" class="info"></div>
 
-<div id="resumenGrupoTexto">
-No hay cuartones seleccionados.
-</div>
+        <label>Cantidad</label>
+        <input id="cantidadSalidaCebaDestete" type="number" min="1" step="1">
 
-</div>
+        <button class="btnPanel rojo" onclick="procesarSalidaCebaDestete()">➡️ Registrar salida</button>
+        <button class="btnPanel" onclick="cerrarPanel()">⬅️ Cancelar</button>
+    </div>
 
-<input
-type="number"
-id="pesoGrupo"
-min="0"
-step="0.01"
-placeholder="Peso total de todos los cerdos (kg)">
+    <div id="panelMuerteDestete" class="panel oculto">
+        <h3>☠️ Muerte Destete</h3>
 
-<button onclick="procesarVentaGrupo()">
-💰 Confirmar venta del grupo
-</button>
+        <div id="infoMuerteDestete" class="info"></div>
 
-<button onclick="cerrarPanel()">Cancelar</button>
+        <div class="grupoBotones">
+            <button class="btnPanel" onclick="mostrarMuerteTotalDestete()">
+                ☠️ Muerte total
+            </button>
 
-</div>
+            <button class="btnPanel" onclick="mostrarMuerteVentaDestete()">
+                ⚖️ Muerte de venta
+            </button>
+        </div>
 
-<div id="panelMuerte" class="panel oculto">
+        <button class="btnPanel" onclick="cerrarPanel()">⬅️ Volver</button>
+    </div>
 
-<h2>☠️ Muerte</h2>
+    <div id="panelMuerteTotalDestete" class="panel oculto">
+        <h3>☠️ Muerte total - Destete</h3>
 
-<p>Selecciona el tipo:</p>
+        <div id="infoMuerteTotalDestete" class="info"></div>
 
-<button onclick="mostrarMuerteTotal()">
-☠️ Muerte total
-</button>
+        <label>Cantidad de cerdos</label>
+        <input id="cantidadMuerteTotalDestete" type="number" min="1" step="1">
 
-<button onclick="mostrarMuerteVenta()">
-⚖️ Muerte de venta
-</button>
+        <button class="btnPanel rojo" onclick="procesarMuerteTotalDestete()">☠️ Registrar</button>
+        <button class="btnPanel" onclick="mostrarMuerteDestete()">⬅️ Volver</button>
+    </div>
 
-<button onclick="cerrarPanel()">Cancelar</button>
+    <div id="panelMuerteVentaDestete" class="panel oculto">
+        <h3>⚖️ Muerte de venta - Destete</h3>
 
-</div>
+        <div id="infoMuerteVentaDestete" class="info"></div>
 
-<div id="panelMuerteTotal" class="panel oculto">
+        <label>Tipo de peso</label>
+        <select id="tipoMuerteVentaDestete" onchange="cambiarTipoMuerteVentaDestete()">
+            <option value="bandas">Por bandas</option>
+            <option value="entero">Entero</option>
+        </select>
 
-<h2>☠️ Muerte total</h2>
+        <label>Cantidad de cerdos</label>
+        <input id="cantidadMuerteVentaDestete" type="number" min="1" step="1">
 
-<input
-type="number"
-id="cantidadMuerteTotal"
-min="1"
-placeholder="Cantidad de cerdos">
+        <div id="camposBandasDestete">
+            <label>Peso B1 (banda 1) kg</label>
+            <input id="pesoB1MuerteVentaDestete" type="number" min="0" step="0.01">
 
-<button onclick="procesarMuerteTotal()">
-Confirmar muerte
-</button>
+            <label>Peso B2 (banda 2) kg</label>
+            <input id="pesoB2MuerteVentaDestete" type="number" min="0" step="0.01">
 
-<button onclick="cerrarPanel()">Cancelar</button>
+            <div id="totalPesoMuerteVentaDestete" class="info">
+                T: 0.00 kg
+            </div>
+        </div>
 
-</div>
+        <div id="campoEnteroDestete" class="oculto">
+            <label>Peso del cochino/cerdos enteros (kg)</label>
+            <input id="pesoEnteroMuerteVentaDestete" type="number" min="0" step="0.01">
+        </div>
 
-<div id="panelMuerteVenta" class="panel oculto">
+        <button class="btnPanel rojo" onclick="procesarMuerteVentaDestete()">
+            ⚖️ Registrar muerte de venta
+        </button>
 
-<h2>⚖️ Muerte de venta</h2>
+        <button class="btnPanel" onclick="mostrarMuerteDestete()">⬅️ Volver</button>
+    </div>
 
-<input
-type="number"
-id="cantidadMuerteVenta"
-min="1"
-placeholder="Cantidad de cerdos muertos">
+    <div id="panelAgregarDatosDestete" class="panel oculto">
+        <h3 id="tituloAgregarDatosDestete">Datos del destete</h3>
 
-<div class="pesoBandas">
+        <div id="infoAgregarDatosDestete" class="info"></div>
 
-<input
-type="number"
-id="pesoB1MuerteVenta"
-min="0"
-step="0.01"
-placeholder="Peso B1 (kg)"
-oninput="calcularPesoMuerteVenta()">
+        <label>Cantidad de cuartones ocupados</label>
+        <input id="cantidadCuartonesDestete" type="number" min="0" step="1">
 
-<input
-type="number"
-id="pesoB2MuerteVenta"
-min="0"
-step="0.01"
-placeholder="Peso B2 (kg)"
-oninput="calcularPesoMuerteVenta()">
+        <label>Cantidad de cuartones vacíos</label>
+        <input id="cantidadCuartonesVaciosDestete" type="number" min="0" step="1">
 
-<div id="totalPesoMuerteVenta" class="totalPesoBandas">
-T: 0.00 kg
-</div>
+        <button class="btnPanel rojo" onclick="procesarAgregarDatosDestete()">💾 Guardar</button>
+        <button class="btnPanel" onclick="cerrarPanel()">⬅️ Cancelar</button>
+    </div>
 
-</div>
+    <div id="panelReagrupeDestete" class="panel oculto">
+        <h3>🔄 Reagrupe Destete</h3>
 
-<button onclick="procesarMuerteVenta()">
-Confirmar muerte de venta
-</button>
+        <div id="infoReagrupeDestete" class="info"></div>
 
-<button onclick="cerrarPanel()">Cancelar</button>
+        <label>Fila destino</label>
+        <select id="filaDestinoDestete">
+            <option value="">Seleccione fila</option>
+        </select>
 
-</div>
+        <label>Cantidad</label>
+        <input id="cantidadReagrupeDestete" type="number" min="1" step="1">
 
-<div id="panelReagrupeSalida" class="panel oculto">
+        <button class="btnPanel rojo" onclick="procesarReagrupeDestete()">🔄 Registrar</button>
+        <button class="btnPanel" onclick="cerrarPanel()">⬅️ Cancelar</button>
+    </div>
 
-<h2>🔄 Reagrupe</h2>
 
-<p>Cuartón de origen:</p>
+    <!-- ================= MATERNIDAD ================= -->
 
-<div
-style="
-padding:14px;
-margin:12px 0;
-border-radius:12px;
-background:#100000;
-border:1px solid #700000;
-font-weight:bold;
-color:#ff5555;
-">
+    <div id="contenidoMaternidadNaves" class="oculto"></div>
 
-🐷 <span id="origenReagrupeTexto">
-Cuartón seleccionado
-</span>
+    <div id="panelFilaMaternidad" class="panel oculto">
+        <h3 id="tituloFilaMaternidad">Maternidad</h3>
+        <div id="cantidadFilaMaternidad" class="info"></div>
 
-</div>
+        <div class="grupoBotones">
+            <button class="btnPanel" onclick="mostrarAgregarMaternidad()">➕ Entrada</button>
+            <button class="btnPanel" onclick="mostrarAgregarDesdeCeba()">➡️ Entrada Ceba</button>
+            <button class="btnPanel" onclick="mostrarSalidaMaternidad()">➡️ Salida</button>
+            <button class="btnPanel" onclick="mostrarMuerteMaternidad()">☠️ Muerte</button>
+            <button class="btnPanel" onclick="mostrarVentaMaternidad()">💰 Venta</button>
+            <button class="btnPanel" onclick="mostrarReagrupeMaternidad()">🔄 Reagrupe</button>
+            <button class="btnPanel" onclick="cerrarPanel()">✖️ Cerrar</button>
+        </div>
+    </div>
 
-<input
-type="number"
-id="cantidadReagrupeSalida"
-min="1"
-placeholder="Cantidad de cerdos">
+    <div id="panelAgregarMaternidad" class="panel oculto">
+        <h3>➕ Entrada Maternidad</h3>
 
-<select id="cuartonDestinoSalida">
+        <div id="panelCantidadAgregarMaternidad">
+            <label>Cantidad de cerdos</label>
+            <input id="cantidadAgregarMaternidad" type="number" min="1" step="1">
 
-<option value="">
-Selecciona cuartón destino
-</option>
+            <button class="btnPanel rojo" onclick="procesarAgregarMaternidad()">➕ Agregar</button>
+            <button class="btnPanel" onclick="cerrarPanel()">⬅️ Cancelar</button>
+        </div>
+    </div>
 
-</select>
+    <div id="panelAgregarDesdeCeba" class="panel oculto">
+        <h3>➡️ Entrada desde Ceba</h3>
 
-<button onclick="procesarReagrupe()">
-Confirmar reagrupe
-</button>
+        <label>Nave de Ceba origen</label>
+        <select id="maternidadNaveCebaOrigen" onchange="cargarCuartonesMaternidadOrigen()">
+            <option value="">Seleccione nave</option>
+        </select>
 
-<button onclick="cerrarPanel()">Cancelar</button>
+        <label>Cuartón origen</label>
+        <select id="maternidadCuartonCebaOrigen">
+            <option value="">Seleccione cuartón</option>
+        </select>
 
-</div>
+        <label>Cantidad</label>
+        <input id="cantidadAgregarDesdeCeba" type="number" min="1" step="1">
 
-<div id="panelFilaDestete" class="panel oculto">
+        <button class="btnPanel rojo" onclick="procesarAgregarDesdeCeba()">➡️ Registrar</button>
+        <button class="btnPanel" onclick="cerrarPanel()">⬅️ Cancelar</button>
+    </div>
 
-<h2 id="tituloFilaDestete">F1</h2>
+    <div id="panelSalidaMaternidad" class="panel oculto">
+        <h3>➡️ Salida Maternidad</h3>
 
-<div id="cantidadFilaDestete" class="infoFilaDestete">
-🐷 Cerdos actuales: 0
-</div>
+        <div class="grupoBotones">
+            <button class="btnPanel" onclick="mostrarSalidaCebaMaternidad()">
+                ➡️ Salida Ceba
+            </button>
+        </div>
 
-<button onclick="mostrarAgregarDestete()">
-➕ Agregar cerdos
-</button>
+        <button class="btnPanel" onclick="cerrarPanel()">⬅️ Volver</button>
+    </div>
 
-<button onclick="mostrarSalidaCebaDestete()">
-➡️ Sacar cerdos para la Ceba
-</button>
+    <div id="panelSalidaCebaMaternidad" class="panel oculto">
+        <h3>➡️ Salida a Ceba</h3>
 
-<button onclick="mostrarMuerteDestete()">
-☠️ Sacar cerdos por muerte
-</button>
+        <div id="infoSalidaCebaMaternidad" class="info"></div>
 
-<button onclick="mostrarReagrupeDestete()">
-🔄 Sacar cerdos para otra fila
-</button>
+        <label>Nave de Ceba destino</label>
+        <select id="maternidadNaveCebaDestino" onchange="cargarCuartonesMaternidadDestino()">
+            <option value="">Seleccione nave</option>
+        </select>
 
-<button onclick="mostrarAgregarDatosDestete()">
-📊 Agregar Datos
-</button>
+        <label>Cuartón destino</label>
+        <select id="maternidadCuartonCebaDestino">
+            <option value="">Seleccione cuartón</option>
+        </select>
 
-<button onclick="cerrarPanel()">Cancelar</button>
+        <label>Cantidad</label>
+        <input id="cantidadSalidaCebaMaternidad" type="number" min="1" step="1">
 
-</div>
+        <button class="btnPanel rojo" onclick="procesarSalidaCebaMaternidad()">➡️ Registrar</button>
+        <button class="btnPanel" onclick="mostrarSalidaMaternidad()">⬅️ Volver</button>
+    </div>
 
-<div id="panelAgregarDestete" class="panel oculto">
+    <div id="panelMuerteMaternidad" class="panel oculto">
+        <h3>☠️ Muerte Maternidad</h3>
 
-<h2 id="tituloAgregarDestete">
-➕ Agregar cerdos
-</h2>
+        <div id="infoMuerteMaternidad" class="info"></div>
 
-<input
-type="number"
-id="cantidadAgregarDestete"
-min="1"
-placeholder="Cantidad de cerdos">
+        <div class="grupoBotones">
+            <button class="btnPanel" onclick="mostrarMuerteTotalMaternidad()">
+                ☠️ Muerte total
+            </button>
 
-<button onclick="procesarAgregarDestete()">Guardar</button>
+            <button class="btnPanel" onclick="mostrarMuerteVentaMaternidad()">
+                ⚖️ Muerte de venta
+            </button>
+        </div>
 
-<button onclick="cerrarPanel()">Cancelar</button>
+        <button class="btnPanel" onclick="cerrarPanel()">⬅️ Volver</button>
+    </div>
 
-</div>
+    <div id="panelMuerteTotalMaternidad" class="panel oculto">
+        <h3>☠️ Muerte total - Maternidad</h3>
 
-<div id="panelSalidaCebaDestete" class="panel oculto">
+        <div id="infoMuerteTotalMaternidad" class="info"></div>
 
-<h2>➡️ Salida para Ceba</h2>
+        <label>Cantidad de cerdos</label>
+        <input id="cantidadMuerteMaternidad" type="number" min="1" step="1">
 
-<div id="infoSalidaCebaDestete" class="infoFilaDestete"></div>
+        <button class="btnPanel rojo" onclick="procesarMuerteMaternidad()">☠️ Registrar</button>
+        <button class="btnPanel" onclick="mostrarMuerteMaternidad()">⬅️ Volver</button>
+    </div>
 
-<input
-type="number"
-id="cantidadSalidaCebaDestete"
-min="1"
-placeholder="Cantidad de cerdos">
+    <div id="panelMuerteVentaMaternidad" class="panel oculto">
+        <h3>⚖️ Muerte de venta - Maternidad</h3>
 
-<button onclick="procesarSalidaCebaDestete()">
-Confirmar salida para Ceba
-</button>
+        <div id="infoMuerteVentaMaternidad" class="info"></div>
 
-<button onclick="cerrarPanel()">Cancelar</button>
+        <label>Tipo de peso</label>
+        <select id="tipoMuerteVentaMaternidad" onchange="cambiarTipoMuerteVentaMaternidad()">
+            <option value="bandas">Por bandas</option>
+            <option value="entero">Entero</option>
+        </select>
 
-</div>
+        <label>Cantidad de cerdos</label>
+        <input id="cantidadMuerteVentaMaternidad" type="number" min="1" step="1">
 
-<div id="panelMuerteDestete" class="panel oculto">
+        <div id="camposBandasMaternidad">
+            <label>Peso B1 (banda 1) kg</label>
+            <input id="pesoB1MuerteVentaMaternidad" type="number" min="0" step="0.01">
 
-<h2>☠️ Salida por muerte</h2>
+            <label>Peso B2 (banda 2) kg</label>
+            <input id="pesoB2MuerteVentaMaternidad" type="number" min="0" step="0.01">
 
-<div id="infoMuerteDestete" class="infoFilaDestete"></div>
+            <div id="totalPesoMuerteVentaMaternidad" class="info">
+                T: 0.00 kg
+            </div>
+        </div>
 
-<p>Selecciona el tipo:</p>
+        <div id="campoEnteroMaternidad" class="oculto">
+            <label>Peso del cochino/cerdos enteros (kg)</label>
+            <input id="pesoEnteroMuerteVentaMaternidad" type="number" min="0" step="0.01">
+        </div>
 
-<button onclick="mostrarMuerteTotalDestete()">
-☠️ Muerte total
-</button>
+        <button class="btnPanel rojo" onclick="procesarMuerteVentaMaternidad()">
+            ⚖️ Registrar muerte de venta
+        </button>
 
-<button onclick="mostrarMuerteVentaDestete()">
-⚖️ Muerte de venta
-</button>
+        <button class="btnPanel" onclick="mostrarMuerteMaternidad()">⬅️ Volver</button>
+    </div>
 
-<button onclick="cerrarPanel()">Cancelar</button>
+    <div id="panelVentaMaternidad" class="panel oculto">
+        <h3>💰 Venta Maternidad</h3>
 
-</div>
+        <div id="infoVentaMaternidad" class="info"></div>
 
-<div id="panelMuerteTotalDestete" class="panel oculto">
+        <label>Cantidad de cerdos</label>
+        <input id="cantidadVentaMaternidad" type="number" min="1" step="1">
 
-<h2>☠️ Muerte total</h2>
+        <label>Peso total (kg)</label>
+        <input id="pesoVentaMaternidad" type="number" min="0" step="0.01">
 
-<div id="infoMuerteTotalDestete" class="infoFilaDestete"></div>
+        <button class="btnPanel rojo" onclick="procesarVentaMaternidad()">💰 Registrar venta</button>
+        <button class="btnPanel" onclick="cerrarPanel()">⬅️ Cancelar</button>
+    </div>
 
-<input
-type="number"
-id="cantidadMuerteTotalDestete"
-min="1"
-placeholder="Cantidad de cerdos muertos">
+    <div id="panelReagrupeMaternidad" class="panel oculto">
+        <h3>🔄 Reagrupe Maternidad</h3>
 
-<button onclick="procesarMuerteTotalDestete()">
-Confirmar muerte
-</button>
+        <div id="infoReagrupeMaternidad" class="info"></div>
 
-<button onclick="cerrarPanel()">Cancelar</button>
+        <label>Fila destino</label>
+        <select id="filaDestinoMaternidad">
+            <option value="">Seleccione fila</option>
+        </select>
 
-</div>
+        <label>Cantidad</label>
+        <input id="cantidadReagrupeMaternidad" type="number" min="1" step="1">
 
-<div id="panelMuerteVentaDestete" class="panel oculto">
-
-<h2>⚖️ Muerte de venta</h2>
-
-<div id="infoMuerteVentaDestete" class="infoFilaDestete"></div>
-
-<input
-type="number"
-id="cantidadMuerteVentaDestete"
-min="1"
-placeholder="Cantidad de cerdos muertos">
-
-<input
-type="number"
-id="pesoB1MuerteVentaDestete"
-min="0"
-step="0.01"
-placeholder="Peso B1 (kg)"
-oninput="calcularPesoMuerteVentaDestete()">
-
-<input
-type="number"
-id="pesoB2MuerteVentaDestete"
-min="0"
-step="0.01"
-placeholder="Peso B2 (kg)"
-oninput="calcularPesoMuerteVentaDestete()">
-
-<div id="totalPesoMuerteVentaDestete" class="totalPesoBandas">
-T: 0.00 kg
-</div>
-
-<button onclick="procesarMuerteVentaDestete()">
-Confirmar muerte de venta
-</button>
-
-<button onclick="cerrarPanel()">Cancelar</button>
-
-</div>
-
-<div id="panelAgregarDatosDestete" class="panel oculto">
-
-<h2 id="tituloAgregarDatosDestete">
-📊 Agregar Datos
-</h2>
-
-<div id="infoAgregarDatosDestete" class="infoFilaDestete"></div>
-
-<input
-type="number"
-id="cantidadCuartonesDestete"
-min="0"
-placeholder="Cantidad de cuartones">
-
-<input
-type="number"
-id="cantidadCuartonesVaciosDestete"
-min="0"
-placeholder="Cantidad de cuartones vacíos">
-
-<button onclick="procesarAgregarDatosDestete()">
-💾 Guardar datos
-</button>
-
-<button onclick="cerrarPanel()">Cancelar</button>
-
-</div>
-
-<div id="panelReagrupeDestete" class="panel oculto">
-
-<h2>🔄 Reagrupe entre filas</h2>
-
-<div id="infoReagrupeDestete" class="infoFilaDestete"></div>
-
-<input
-type="number"
-id="cantidadReagrupeDestete"
-min="1"
-placeholder="Cantidad de cerdos">
-
-<select id="filaDestinoDestete">
-
-<option value="">
-Selecciona fila destino
-</option>
-
-</select>
-
-<button onclick="procesarReagrupeDestete()">
-Confirmar reagrupe
-</button>
-
-<button onclick="cerrarPanel()">Cancelar</button>
-
-</div>
-
-<div id="panelFilaMaternidad" class="panel oculto">
-
-<h2 id="tituloFilaMaternidad">F1</h2>
-
-<div id="cantidadFilaMaternidad" class="infoMaternidad">
-🐷 Cerdos actuales: 0
-</div>
-
-<button onclick="mostrarAgregarMaternidad()">
-➕ Agregar cerdos
-</button>
-
-<button onclick="mostrarSalidaMaternidad()">
-➖ Sacar cerdos
-</button>
-
-<button onclick="cerrarPanel()">Cancelar</button>
+        <button class="btnPanel rojo" onclick="procesarReagrupeMaternidad()">🔄 Registrar</button>
+        <button class="btnPanel" onclick="cerrarPanel()">⬅️ Cancelar</button>
+    </div>
 
 </div>
-
-<div id="panelAgregarMaternidad" class="panel oculto">
-
-<h2 id="tituloAgregarMaternidad">
-➕ Agregar cerdos
-</h2>
-
-<button onclick="mostrarCantidadAgregarMaternidad()">
-➕ Agregar
-</button>
-
-<button onclick="mostrarAgregarDesdeCeba()">
-🐷 Agregar desde Ceba
-</button>
-
-<button onclick="cerrarPanel()">Cancelar</button>
-
-</div>
-
-<div id="panelCantidadAgregarMaternidad" class="panel oculto">
-
-<h2>➕ Agregar cerdos</h2>
-
-<input
-type="number"
-id="cantidadAgregarMaternidad"
-min="1"
-placeholder="Cantidad de cerdos">
-
-<button onclick="procesarAgregarMaternidad()">Guardar</button>
-
-<button onclick="cerrarPanel()">Cancelar</button>
-
-</div>
-
-<div id="panelAgregarDesdeCeba" class="panel oculto">
-
-<h2>🐷 Agregar desde Ceba</h2>
-
-<select id="maternidadNaveCebaOrigen">
-<option value="">Selecciona nave de Ceba</option>
-</select>
-
-<select id="maternidadCuartonCebaOrigen">
-<option value="">Selecciona cuartón</option>
-</select>
-
-<input
-type="number"
-id="cantidadAgregarDesdeCeba"
-min="1"
-placeholder="Cantidad de cerdos">
-
-<button onclick="procesarAgregarDesdeCeba()">
-Confirmar entrada desde Ceba
-</button>
-
-<button onclick="cerrarPanel()">Cancelar</button>
-
-</div>
-
-<div id="panelSalidaMaternidad" class="panel oculto">
-
-<h2>➖ Sacar cerdos</h2>
-
-<button onclick="mostrarSalidaCebaMaternidad()">
-➡️ Sacar para Ceba
-</button>
-
-<button onclick="mostrarMuerteMaternidad()">
-☠️ Sacar por Muerte Total
-</button>
-
-<button onclick="mostrarMuerteVentaMaternidad()">
-⚖️ Muerte de venta
-</button>
-
-<button onclick="mostrarVentaMaternidad()">
-💰 Sacar por Venta
-</button>
-
-<button onclick="mostrarReagrupeMaternidad()">
-🔄 Sacar por Reagrupe
-</button>
-
-<button onclick="cerrarPanel()">Cancelar</button>
-
-</div>
-
-<div id="panelSalidaCebaMaternidad" class="panel oculto">
-
-<h2>➡️ Sacar para Ceba</h2>
-
-<div id="infoSalidaCebaMaternidad" class="infoMaternidad"></div>
-
-<select id="maternidadNaveCebaDestino">
-<option value="">Selecciona nave de Ceba</option>
-</select>
-
-<select id="maternidadCuartonCebaDestino">
-<option value="">Selecciona cuartón destino</option>
-</select>
-
-<input
-type="number"
-id="cantidadSalidaCebaMaternidad"
-min="1"
-placeholder="Cantidad de cerdos">
-
-<button onclick="procesarSalidaCebaMaternidad()">
-Confirmar salida para Ceba
-</button>
-
-<button onclick="cerrarPanel()">Cancelar</button>
-
-</div>
-
-<div id="panelMuerteMaternidad" class="panel oculto">
-
-<h2>☠️ Muerte total</h2>
-
-<div id="infoMuerteMaternidad" class="infoMaternidad"></div>
-
-<input
-type="number"
-id="cantidadMuerteMaternidad"
-min="1"
-placeholder="Cantidad de cerdos">
-
-<button onclick="procesarMuerteMaternidad()">
-Confirmar muerte
-</button>
-
-<button onclick="cerrarPanel()">Cancelar</button>
-
-</div>
-
-<div id="panelMuerteVentaMaternidad" class="panel oculto">
-
-<h2>⚖️ Muerte de venta</h2>
-
-<div id="infoMuerteVentaMaternidad" class="infoMaternidad"></div>
-
-<input
-type="number"
-id="cantidadMuerteVentaMaternidad"
-min="1"
-placeholder="Cantidad de cerdos muertos">
-
-<input
-type="number"
-id="pesoB1MuerteVentaMaternidad"
-min="0"
-step="0.01"
-placeholder="Peso B1 (kg)"
-oninput="calcularPesoMuerteVentaMaternidad()">
-
-<input
-type="number"
-id="pesoB2MuerteVentaMaternidad"
-min="0"
-step="0.01"
-placeholder="Peso B2 (kg)"
-oninput="calcularPesoMuerteVentaMaternidad()">
-
-<div id="totalPesoMuerteVentaMaternidad" class="totalPesoBandas">
-T: 0.00 kg
-</div>
-
-<button onclick="procesarMuerteVentaMaternidad()">
-Confirmar muerte de venta
-</button>
-
-<button onclick="cerrarPanel()">Cancelar</button>
-
-</div>
-
-<div id="panelVentaMaternidad" class="panel oculto">
-
-<h2>💰 Venta</h2>
-
-<div id="infoVentaMaternidad" class="infoMaternidad"></div>
-
-<input
-type="number"
-id="cantidadVentaMaternidad"
-min="1"
-placeholder="Cantidad de cerdos">
-
-<input
-type="number"
-id="pesoVentaMaternidad"
-min="0"
-step="0.01"
-placeholder="Peso total de los cerdos (kg)">
-
-<button onclick="procesarVentaMaternidad()">
-Confirmar venta
-</button>
-
-<button onclick="cerrarPanel()">Cancelar</button>
-
-</div>
-
-<div id="panelReagrupeMaternidad" class="panel oculto">
-
-<h2>🔄 Reagrupe</h2>
-
-<div id="infoReagrupeMaternidad" class="infoMaternidad"></div>
-
-<input
-type="number"
-id="cantidadReagrupeMaternidad"
-min="1"
-placeholder="Cantidad de cerdos">
-
-<select id="filaDestinoMaternidad">
-
-<option value="">
-Selecciona fila destino
-</option>
-
-</select>
-
-<button onclick="procesarReagrupeMaternidad()">
-Confirmar reagrupe
-</button>
-
-<button onclick="cerrarPanel()">Cancelar</button>
-
-</div>
-
-<div id="mensaje"></div>
-
-<script src="supabase.js"></script>
 
 <script>
-
-let naveSeleccionada=null;
-let cuartonSeleccionado=null;
-let tipoEntradaSeleccionado=null;
 let todasLasNaves=[];
 let todosLosCuartones=[];
-let ventaGrupo=[];
-
 let filasDestete=[];
 let filaDesteteSeleccionada=null;
-
 let navesMaternidad=[];
 let filasMaternidad=[];
 let filaMaternidadSeleccionada=null;
+let naveSeleccionada=null;
+let cuartonSeleccionado=null;
+let ventaGrupo=[];
+let tipoEntradaSeleccionado="Entrada Exterior";
 
+const supabaseDB =
+    window.clienteSupabase ||
+    window.supabaseClient ||
+    window.supabase;
 
-/* ==================================================
-PESO POR BANDAS
-================================================== */
-
-function calcularTotalBandas(idB1,idB2,idTotal){
-
-const b1=Number(document.getElementById(idB1)?.value || 0);
-const b2=Number(document.getElementById(idB2)?.value || 0);
-
-const total=b1+b2;
-
-const elemento=document.getElementById(idTotal);
-
-if(elemento){
-
-elemento.innerText=
-"T: "+
-total.toFixed(2)+
-" kg";
-
+function db(){
+    return window.clienteSupabase || window.supabaseClient;
 }
 
-return total;
-
+function ocultarTodosLosPaneles(){
+    document.querySelectorAll(".panel").forEach(p=>p.classList.add("oculto"));
 }
 
-function calcularPesoMuerteVenta(){
-
-calcularTotalBandas(
-"pesoB1MuerteVenta",
-"pesoB2MuerteVenta",
-"totalPesoMuerteVenta"
-);
-
+function cerrarPanel(){
+    ocultarTodosLosPaneles();
+    naveSeleccionada=null;
+    cuartonSeleccionado=null;
+    filaDesteteSeleccionada=null;
+    filaMaternidadSeleccionada=null;
 }
 
-function calcularPesoMuerteVentaDestete(){
-
-calcularTotalBandas(
-"pesoB1MuerteVentaDestete",
-"pesoB2MuerteVentaDestete",
-"totalPesoMuerteVentaDestete"
-);
-
+function activarBoton(id){
+    document.querySelectorAll(".selectorNaves button").forEach(b=>b.classList.remove("activo"));
+    const b=document.getElementById(id);
+    if(b)b.classList.add("activo");
 }
-
-function calcularPesoMuerteVentaMaternidad(){
-
-calcularTotalBandas(
-"pesoB1MuerteVentaMaternidad",
-"pesoB2MuerteVentaMaternidad",
-"totalPesoMuerteVentaMaternidad"
-);
-
-}
-
-
-/* ==================================================
-FORMATO PESO
-================================================== */
-
-function formatoPesoBandas(b1,b2){
-
-return "B1: "+
-Number(b1 || 0).toFixed(2)+
-" kg, B2: "+
-Number(b2 || 0).toFixed(2)+
-" kg, T: "+
-(
-Number(b1 || 0)+
-Number(b2 || 0)
-).toFixed(2)+
-" kg";
-
-}
-
-
-/* ==================================================
-SESIÓN
-================================================== */
 
 async function verificarSesion(){
+    const cliente=db();
+    if(!cliente)return false;
 
-const {data}=await clienteSupabase
-.auth
-.getSession();
+    const {data:{session}}=await cliente.auth.getSession();
 
-if(!data.session){
+    if(!session){
+        window.location.href="login.html";
+        return false;
+    }
 
-window.location.href="login.html";
-
-return false;
-
+    return true;
 }
-
-return true;
-
-}
-
-
-/* ==================================================
-MENÚ NAVES
-================================================== */
 
 function mostrarNavesCeba(){
+    activarBoton("btnCeba");
+    ocultarTodosLosPaneles();
 
-ocultarTodosLosPaneles();
+    document.getElementById("contenidoNaves").classList.remove("oculto");
+    document.getElementById("contenidoDesteteNave").classList.add("oculto");
+    document.getElementById("contenidoMaternidadNaves").classList.add("oculto");
 
-document.getElementById("contenidoCeba").classList.remove("oculto");
-document.getElementById("contenidoDestete").classList.add("oculto");
-document.getElementById("contenidoMaternidad").classList.add("oculto");
-
-cargarNaves();
-
+    cargarNaves();
 }
 
 function mostrarNavesDestete(){
+    activarBoton("btnDestete");
+    ocultarTodosLosPaneles();
 
-ocultarTodosLosPaneles();
+    document.getElementById("contenidoNaves").classList.add("oculto");
+    document.getElementById("contenidoDesteteNave").classList.remove("oculto");
+    document.getElementById("contenidoMaternidadNaves").classList.add("oculto");
 
-document.getElementById("contenidoCeba").classList.add("oculto");
-document.getElementById("contenidoDestete").classList.remove("oculto");
-document.getElementById("contenidoMaternidad").classList.add("oculto");
-
-cargarDestete();
-
+    cargarDestete();
 }
 
 function mostrarNavesMaternidad(){
+    activarBoton("btnMaternidad");
+    ocultarTodosLosPaneles();
 
-ocultarTodosLosPaneles();
+    document.getElementById("contenidoNaves").classList.add("oculto");
+    document.getElementById("contenidoDesteteNave").classList.add("oculto");
+    document.getElementById("contenidoMaternidadNaves").classList.remove("oculto");
 
-document.getElementById("contenidoCeba").classList.add("oculto");
-document.getElementById("contenidoDestete").classList.add("oculto");
-document.getElementById("contenidoMaternidad").classList.remove("oculto");
-
-cargarMaternidad();
-
+    cargarMaternidad();
 }
-
-
-/* ==================================================
-TOTAL GENERAL
-================================================== */
-
-async function actualizarTotalGeneralNaves(){
-
-try{
-
-let totalCeba=0;
-let totalDestete=0;
-let totalMaternidad=0;
-
-const {data:cuartones,error:errorCeba}=
-await clienteSupabase
-.from("cuartones")
-.select("cantidad_cerdos");
-
-if(!errorCeba){
-
-(cuartones || []).forEach(c=>{
-totalCeba+=Number(c.cantidad_cerdos || 0);
-});
-
-}
-
-const {data:destete,error:errorDestete}=
-await clienteSupabase
-.from("destete_filas")
-.select("cantidad_cerdos");
-
-if(!errorDestete){
-
-(destete || []).forEach(f=>{
-totalDestete+=Number(f.cantidad_cerdos || 0);
-});
-
-}
-
-const {data:maternidad,error:errorMaternidad}=
-await clienteSupabase
-.from("maternidad_filas")
-.select("cantidad_cerdos");
-
-if(!errorMaternidad){
-
-(maternidad || []).forEach(f=>{
-totalMaternidad+=Number(f.cantidad_cerdos || 0);
-});
-
-}
-
-const total=
-totalCeba+
-totalDestete+
-totalMaternidad;
-
-document.getElementById(
-"numeroTotalGeneralNaves"
-).innerText=total;
-
-}catch(error){
-
-console.error(
-"Error actualizando total general:",
-error
-);
-
-}
-
-}
-
-
-/* ==================================================
-CARGAR NAVES CEBA
-================================================== */
 
 async function cargarNaves(){
+    const cliente=db();
+    if(!cliente)return;
 
-const {data:naves,error:errorNaves}=
-await clienteSupabase
-.from("naves")
-.select("*")
-.order("id");
+    const contenido=document.getElementById("contenidoNaves");
 
-if(errorNaves){
+    const {data:naves,error:errorNaves}=await cliente
+        .from("naves")
+        .select("*")
+        .order("id");
 
-document.getElementById("contenido").innerHTML=
-"❌ Error cargando naves: "+
-errorNaves.message;
+    if(errorNaves){
+        contenido.innerHTML=`
+            <div class="panel">
+                <h3>Error cargando naves</h3>
+                <div class="info">${errorNaves.message}</div>
+            </div>`;
+        return;
+    }
 
-return;
+    const {data:cuartones,error:errorCuartones}=await cliente
+        .from("cuartones")
+        .select("*")
+        .order("id");
 
+    if(errorCuartones){
+        contenido.innerHTML=`
+            <div class="panel">
+                <h3>Error cargando cuartones</h3>
+                <div class="info">${errorCuartones.message}</div>
+            </div>`;
+        return;
+    }
+
+    todasLasNaves=naves||[];
+    todosLosCuartones=cuartones||[];
+
+    contenido.innerHTML="";
+
+    const grid=document.createElement("div");
+    grid.className="gridNaves";
+
+    todasLasNaves.forEach(nave=>{
+        const lista=todosLosCuartones.filter(c=>String(c.nave_id)===String(nave.id));
+        const total=lista.reduce((s,c)=>s+Number(c.cantidad_cerdos||0),0);
+
+        const card=document.createElement("div");
+        card.className="naveCard";
+
+        let html=`
+            <h2>🐷 ${nave.nombre||"Nave "+nave.id}</h2>
+            <div class="totalNave">
+                Total: <strong>${total}</strong> 🐷
+            </div>
+            <div class="gridCuartones">`;
+
+        lista.forEach(c=>{
+            html+=`
+                <div class="cuarton"
+                     onclick="seleccionarCuarton(${nave.id},${c.id})">
+                    <strong>C${c.numero}</strong>
+                    <span>${Number(c.cantidad_cerdos||0)} 🐷</span>
+                </div>`;
+        });
+
+        html+=`</div>`;
+        card.innerHTML=html;
+        grid.appendChild(card);
+    });
+
+    contenido.appendChild(grid);
+    actualizarTotalGeneralNaves();
 }
 
-todasLasNaves=naves || [];
-todosLosCuartones=[];
-
-let html="";
-let totalGeneral=0;
-
-for(const nave of naves){
-
-const {data:cuartones,error:errorCuartones}=
-await clienteSupabase
-.from("cuartones")
-.select("*")
-.eq("nave_id",nave.id)
-.order("numero");
-
-if(errorCuartones){
-
-document.getElementById("contenido").innerHTML=
-"❌ Error cargando cuartones: "+
-errorCuartones.message;
-
-return;
-
+function seleccionarNave(id){
+    naveSeleccionada=todasLasNaves.find(n=>String(n.id)===String(id))||null;
 }
 
-let totalNave=0;
+function seleccionarCuarton(naveId,cuartonId){
+    naveSeleccionada=todasLasNaves.find(n=>String(n.id)===String(naveId))||null;
 
-html+=`
+    cuartonSeleccionado=todosLosCuartones.find(
+        c=>String(c.id)===String(cuartonId)
+    )||null;
 
-<div class="nave">
+    if(!cuartonSeleccionado)return;
 
-<h2>🐷 ${nave.nombre}</h2>
+    ocultarTodosLosPaneles();
 
-<div class="contenedorNave">
-`;
+    document.getElementById("tituloCuarton").textContent=
+        `${naveSeleccionada?.nombre||"Nave"} - C${cuartonSeleccionado.numero}`;
 
-(cuartones || []).forEach(cuarton=>{
+    document.getElementById("cantidadCuarton").textContent=
+        `Cantidad actual: ${Number(cuartonSeleccionado.cantidad_cerdos||0)} cerdos`;
 
-totalNave+=Number(cuarton.cantidad_cerdos || 0);
-totalGeneral+=Number(cuarton.cantidad_cerdos || 0);
+    document.getElementById("panelCuarton").classList.remove("oculto");
 
-todosLosCuartones.push({
-...cuarton,
-nave_nombre:nave.nombre
-});
-
-html+=`
-
-<div
-class="cuarton"
-onclick='seleccionarCuarton(
-${nave.id},
-${cuarton.id},
-${JSON.stringify(String(nave.nombre))},
-${cuarton.numero},
-${Number(cuarton.cantidad_cerdos || 0)}
-)'>
-
-<div class="numero">
-CUARTÓN ${cuarton.numero}
-</div>
-
-<div class="cerdos">
-🐷 ${Number(cuarton.cantidad_cerdos || 0)}
-</div>
-
-</div>
-
-`;
-
-});
-
-html+=`
-
-</div>
-
-<div class="totalNave">
-🐷 Total en ${totalNave}
-</div>
-
-</div>
-
-`;
-
+    cargarCuartonesDestino();
 }
 
-html+=`
+function cargarCuartonesDestino(){
+    const select=document.getElementById("cuartonDestinoSalida");
+    if(!select)return;
 
-<div class="totalGeneral">
+    select.innerHTML='<option value="">Seleccione cuartón</option>';
 
-<h2>🐷 TOTAL DE CERDOS</h2>
-
-<div class="numeroTotal">
-${totalGeneral}
-</div>
-
-<div>
-Total de las 4 naves
-</div>
-
-</div>
-
-`;
-
-const ahora=new Date();
-
-const inicioHoy=new Date(
-ahora.getFullYear(),
-ahora.getMonth(),
-ahora.getDate()
-);
-
-const finHoy=new Date(
-ahora.getFullYear(),
-ahora.getMonth(),
-ahora.getDate()+1
-);
-
-const {data:movimientos,error:errorMovimientos}=
-await clienteSupabase
-.from("movimientos_naves")
-.select("*")
-.gte("fecha",inicioHoy.toISOString())
-.lt("fecha",finHoy.toISOString())
-.order("fecha",{ascending:false});
-
-if(!errorMovimientos){
-
-let ventas=[];
-let muertes=[];
-
-(movimientos || []).forEach(m=>{
-
-if(String(m.motivo || "").toLowerCase().includes("venta")){
-ventas.push(m);
+    todosLosCuartones
+        .filter(c=>String(c.nave_id)===String(naveSeleccionada?.id)
+              && String(c.id)!==String(cuartonSeleccionado?.id))
+        .forEach(c=>{
+            const option=document.createElement("option");
+            option.value=c.id;
+            option.textContent=`C${c.numero} (${c.cantidad_cerdos||0})`;
+            select.appendChild(option);
+        });
 }
 
-if(String(m.motivo || "").toLowerCase().includes("muerte")){
-muertes.push(m);
+function mostrarEntrada(){
+    ocultarTodosLosPaneles();
+    document.getElementById("panelEntrada").classList.remove("oculto");
 }
-
-});
-
-html+=`
-
-<div class="resumen">
-
-<h2>📊 Resumen de hoy</h2>
-
-<h3 style="color:#ff5555;">
-💰 Ventas de hoy
-</h3>
-
-`;
-
-if(ventas.length===0){
-
-html+=`<p>No hay ventas registradas hoy.</p>`;
-
-}else{
-
-ventas.forEach(v=>{
-
-const cuartonesTexto=
-v.cuartones
-?
-v.cuartones
-:
-"C"+v.cuarton;
-
-html+=`
-
-<div class="movimientoResumen">
-
-${
-v.naves
-?
-"Naves: "+v.naves
-:
-"N"+v.nave_id
-}
-
-<br>
-
-Cuartones: ${cuartonesTexto}
-
-<br>
-
-${v.cantidad} 🐷
-
-${
-Number(v.peso_kg || 0)>0
-?
-" • "+
-Number(v.peso_kg).toFixed(2)+
-" kg"
-:
-""
-}
-
-</div>
-
-`;
-
-});
-
-}
-
-html+=`
-
-<h3 style="color:#ff5555;margin-top:25px;">
-☠️ Muertes de hoy
-</h3>
-
-`;
-
-if(muertes.length===0){
-
-html+=`<p>No hay muertes registradas hoy.</p>`;
-
-}else{
-
-muertes.forEach(m=>{
-
-const tieneBandas=
-m.peso_b1 !== undefined &&
-m.peso_b1 !== null &&
-m.peso_b2 !== undefined &&
-m.peso_b2 !== null;
-
-const pesoDetalle=
-tieneBandas
-?
-"<br>"+formatoPesoBandas(m.peso_b1,m.peso_b2)
-:
-(
-Number(m.peso_kg || 0)>0
-?
-" • "+
-Number(m.peso_kg).toFixed(2)+
-" kg"
-:
-""
-);
-
-html+=`
-
-<div class="movimientoResumen">
-
-N${m.nave_id}
-
-<br>
-
-C${m.cuarton}
-
-:
-
-${m.cantidad} 🐷
-
-${pesoDetalle}
-
-<br>
-
-<span
-style="
-color:#aaa;
-font-size:13px;
-">
-
-${m.motivo}
-
-</span>
-
-</div>
-
-`;
-
-});
-
-}
-
-html+=`
-
-</div>
-
-`;
-
-}
-
-document.getElementById("contenido").innerHTML=html;
-
-cargarOpcionesCuartones(naves);
-cargarNavesVentaGrupo();
-actualizarTotalGeneralNaves();
-
-}
-
-
-/* ==================================================
-OPCIONES CUARTONES
-================================================== */
-
-async function cargarOpcionesCuartones(naves){
-
-const destinosSalida=
-document.getElementById("cuartonDestinoSalida");
-
-destinosSalida.innerHTML=`
-
-<option value="">
-Selecciona cuartón destino
-</option>
-
-`;
-
-for(const nave of naves){
-
-const {data:cuartones}=
-await clienteSupabase
-.from("cuartones")
-.select("*")
-.eq("nave_id",nave.id)
-.order("numero");
-
-(cuartones || []).forEach(c=>{
-
-const texto=
-`${nave.nombre} - Cuartón ${c.numero}`;
-
-destinosSalida.innerHTML+=`
-
-<option value="${c.id}">
-${texto}
-</option>
-
-`;
-
-});
-
-}
-
-}
-
-
-/* ==================================================
-NAVES VENTA GRUPO
-================================================== */
-
-function cargarNavesVentaGrupo(){
-
-const select=
-document.getElementById("grupoNaveSeleccionada");
-
-select.innerHTML=`
-
-<option value="">
-🏠 Selecciona una nave
-</option>
-
-`;
-
-todasLasNaves.forEach(nave=>{
-
-select.innerHTML+=`
-
-<option value="${nave.id}">
-${nave.nombre}
-</option>
-
-`;
-
-});
-
-}
-
-
-/* ==================================================
-CUARTONES VENTA GRUPO
-================================================== */
-
-function cargarCuartonesGrupo(){
-
-const naveId=
-document.getElementById("grupoNaveSeleccionada").value;
-
-const select=
-document.getElementById("grupoCuartonSeleccionado");
-
-select.innerHTML=`
-
-<option value="">
-🐷 Selecciona un cuartón
-</option>
-
-`;
-
-if(!naveId){
-return;
-}
-
-const cuartones=
-todosLosCuartones.filter(c=>
-String(c.nave_id)===String(naveId)
-);
-
-cuartones.forEach(c=>{
-
-select.innerHTML+=`
-
-<option value="${c.id}">
-C${c.numero}
-—
-${Number(c.cantidad_cerdos || 0)} cerdos disponibles
-</option>
-
-`;
-
-});
-
-}
-
-
-/* ==================================================
-SELECCIONAR CUARTÓN
-================================================== */
-
-function seleccionarCuarton(
-naveId,
-cuartonId,
-naveNombre,
-numero,
-cantidad
-){
-
-naveSeleccionada={
-id:naveId,
-nombre:naveNombre
-};
-
-cuartonSeleccionado={
-id:cuartonId,
-numero:numero,
-cantidad:Number(cantidad)
-};
-
-document.getElementById("tituloCuarton").innerText=
-"Cuartón "+numero+" - "+naveNombre;
-
-document.getElementById("cantidadActual").innerText=
-"🐷 Cerdos actuales: "+cantidad;
-
-document.getElementById("origenReagrupeTexto").innerText=
-naveNombre+
-" - Cuartón "+
-numero+
-" — "+
-cantidad+
-" cerdos";
-
-ocultarTodosLosPaneles();
-
-document
-.getElementById("panelCuarton")
-.classList
-.remove("oculto");
-
-}
-
-
-/* ==================================================
-AGREGAR CEBA
-================================================== */
 
 function mostrarAgregar(){
-
-ocultarTodosLosPaneles();
-
-document
-.getElementById("panelEntrada")
-.classList
-.remove("oculto");
-
+    ocultarTodosLosPaneles();
+    document.getElementById("panelAgregar").classList.remove("oculto");
 }
 
-function mostrarCantidadEntrada(tipo){
+async function procesarAgregar(){
+    if(!cuartonSeleccionado)return;
 
-tipoEntradaSeleccionado=tipo;
+    const cantidad=Number(document.getElementById("cantidadAgregar").value);
 
-document.getElementById("tituloAgregar").innerText=
-"➕ "+tipo;
+    if(!Number.isInteger(cantidad)||cantidad<=0){
+        alert("❌ Introduzca una cantidad válida.");
+        return;
+    }
 
-ocultarTodosLosPaneles();
+    const nuevaCantidad=
+        Number(cuartonSeleccionado.cantidad_cerdos||0)+cantidad;
 
-document
-.getElementById("panelAgregar")
-.classList
-.remove("oculto");
+    const cliente=db();
 
+    const {error}=await cliente
+        .from("cuartones")
+        .update({cantidad_cerdos:nuevaCantidad})
+        .eq("id",cuartonSeleccionado.id);
+
+    if(error){
+        alert("❌ Error: "+error.message);
+        return;
+    }
+
+    const registrado=await registrarMovimiento(
+        "Entrada",
+        cantidad,
+        tipoEntradaSeleccionado,
+        0
+    );
+
+    if(!registrado)return;
+
+    alert("✅ Entrada registrada.");
+    document.getElementById("cantidadAgregar").value="";
+    ocultarTodosLosPaneles();
+    await cargarNaves();
 }
 
-async function agregarCerdos(){
-
-const cantidad=
-Number(document.getElementById("cantidadAgregar").value);
-
-if(!cantidad || cantidad<=0){
-
-alert("Introduce una cantidad válida.");
-
-return;
-
+function mostrarMotivo(){
+    ocultarTodosLosPaneles();
+    document.getElementById("panelMotivo").classList.remove("oculto");
 }
 
-const {data:actual,error:errorConsulta}=
-await clienteSupabase
-.from("cuartones")
-.select("cantidad_cerdos")
-.eq("id",cuartonSeleccionado.id)
-.single();
-
-if(errorConsulta){
-
-alert(
-"Error leyendo el cuartón:\n\n"+
-errorConsulta.message
-);
-
-return;
-
-}
-
-const nuevaCantidad=
-Number(actual.cantidad_cerdos || 0)+cantidad;
-
-const {error}=
-await clienteSupabase
-.from("cuartones")
-.update({
-cantidad_cerdos:nuevaCantidad
-})
-.eq("id",cuartonSeleccionado.id);
-
-if(error){
-
-alert(
-"Error agregando cerdos:\n\n"+
-error.message
-);
-
-return;
-
-}
-
-await registrarMovimiento(
-"Entrada",
-cantidad,
-tipoEntradaSeleccionado,
-0
-);
-
-alert(
-"✅ Se agregaron "+
-cantidad+
-" cerdos correctamente."
-);
-
-cerrarPanel();
-
-await cargarNaves();
-
-}
-
-
-/* ==================================================
-SALIDA CEBA
-================================================== */
-
-function mostrarMotivoSalida(){
-
-ocultarTodosLosPaneles();
-
-document
-.getElementById("panelMotivo")
-.classList
-.remove("oculto");
-
+async function procesarMotivo(motivo){
+    tipoEntradaSeleccionado=motivo;
+    mostrarAgregar();
 }
 
 function mostrarVenta(){
-
-ocultarTodosLosPaneles();
-
-document
-.getElementById("panelVenta")
-.classList
-.remove("oculto");
-
-}
-
-function mostrarVentaGrupo(){
-
-ventaGrupo=[];
-
-actualizarResumenGrupo();
-
-document.getElementById("grupoNaveSeleccionada").value="";
-
-document.getElementById("grupoCuartonSeleccionado").innerHTML=`
-
-<option value="">
-🐷 Selecciona un cuartón
-</option>
-
-`;
-
-document.getElementById("cantidadGrupo").value="";
-document.getElementById("pesoGrupo").value="";
-
-ocultarTodosLosPaneles();
-
-document
-.getElementById("panelVentaGrupo")
-.classList
-.remove("oculto");
-
-}
-
-function agregarCuartonGrupo(){
-
-const cuartonId=
-document.getElementById("grupoCuartonSeleccionado").value;
-
-const cantidad=
-Number(document.getElementById("cantidadGrupo").value);
-
-if(!cuartonId){
-
-alert("Selecciona un cuartón.");
-
-return;
-
-}
-
-if(!cantidad || cantidad<=0){
-
-alert("Introduce una cantidad válida.");
-
-return;
-
-}
-
-const cuarton=
-todosLosCuartones.find(c=>
-String(c.id)===String(cuartonId)
-);
-
-if(!cuarton){
-
-alert("No se encontró el cuartón.");
-
-return;
-
-}
-
-const existente=
-ventaGrupo.find(v=>
-String(v.cuarton_id)===String(cuartonId)
-);
-
-const cantidadYaSeleccionada=
-existente
-?
-Number(existente.cantidad)
-:
-0;
-
-if(
-cantidadYaSeleccionada+
-cantidad>
-Number(cuarton.cantidad_cerdos || 0)
-){
-
-alert(
-"No puedes vender más cerdos de los que hay en ese cuartón."
-);
-
-return;
-
-}
-
-if(existente){
-
-existente.cantidad=
-cantidadYaSeleccionada+cantidad;
-
-}else{
-
-ventaGrupo.push({
-nave_id:cuarton.nave_id,
-nave_nombre:cuarton.nave_nombre,
-cuarton_id:cuarton.id,
-cuarton_numero:cuarton.numero,
-cantidad:cantidad
-});
-
-}
-
-document.getElementById("cantidadGrupo").value="";
-
-actualizarResumenGrupo();
-
-}
-
-function actualizarResumenGrupo(){
-
-const contenedor=
-document.getElementById("listaGrupo");
-
-const resumen=
-document.getElementById("resumenGrupoTexto");
-
-if(ventaGrupo.length===0){
-
-contenedor.innerHTML="";
-
-resumen.innerHTML=
-"No hay cuartones seleccionados.";
-
-return;
-
-}
-
-let html="";
-let total=0;
-
-ventaGrupo.forEach((v,index)=>{
-
-total+=Number(v.cantidad);
-
-html+=`
-
-<div class="seleccionGrupo">
-
-<strong>
-${v.nave_nombre} — C${v.cuarton_numero}
-</strong>
-
-<br>
-
-🐷 ${v.cantidad} cerdos
-
-<button
-class="botonQuitar"
-onclick="quitarCuartonGrupo(${index})">
-
-🗑️ Quitar
-
-</button>
-
-</div>
-
-`;
-
-});
-
-contenedor.innerHTML=html;
-
-resumen.innerHTML=
-"🐷 Cerdos seleccionados: "+
-"<strong>"+total+"</strong>"+
-"<br><br>"+
-"📦 Cuartones: "+
-ventaGrupo.length;
-
-}
-
-function quitarCuartonGrupo(index){
-
-ventaGrupo.splice(index,1);
-
-actualizarResumenGrupo();
-
+    ocultarTodosLosPaneles();
+    document.getElementById("panelVenta").classList.remove("oculto");
 }
 
 async function procesarVenta(){
+    if(!cuartonSeleccionado)return;
 
-const cantidad=
-Number(document.getElementById("cantidadVenta").value);
+    const cantidad=Number(document.getElementById("cantidadVenta").value);
+    const peso=Number(document.getElementById("pesoVenta").value);
 
-const peso=
-Number(document.getElementById("pesoVenta").value);
+    if(!Number.isInteger(cantidad)||cantidad<=0){
+        alert("❌ Introduzca una cantidad válida.");
+        return;
+    }
 
-if(!cantidad || cantidad<=0){
+    if(!Number.isFinite(peso)||peso<=0){
+        alert("❌ Introduzca un peso válido.");
+        return;
+    }
 
-alert("Introduce una cantidad válida.");
+    const actual=Number(cuartonSeleccionado.cantidad_cerdos||0);
 
-return;
+    if(cantidad>actual){
+        alert(`❌ No hay suficientes cerdos. Disponible: ${actual}`);
+        return;
+    }
 
+    const cliente=db();
+    const nuevaCantidad=actual-cantidad;
+
+    const {error}=await cliente
+        .from("cuartones")
+        .update({cantidad_cerdos:nuevaCantidad})
+        .eq("id",cuartonSeleccionado.id);
+
+    if(error){
+        alert("❌ Error registrando la venta: "+error.message);
+        return;
+    }
+
+    const registrado=await registrarMovimiento(
+        "Salida",
+        cantidad,
+        "Venta",
+        peso
+    );
+
+    if(!registrado){
+        await cliente
+            .from("cuartones")
+            .update({cantidad_cerdos:actual})
+            .eq("id",cuartonSeleccionado.id);
+        return;
+    }
+
+    alert("✅ Venta registrada.");
+    ocultarTodosLosPaneles();
+    await cargarNaves();
 }
 
-if(!peso || peso<=0){
+function mostrarVentaGrupo(){
+    ocultarTodosLosPaneles();
 
-alert("Introduce el peso total en kg.");
+    ventaGrupo=[];
 
-return;
+    const selectNave=document.getElementById("grupoNaveSeleccionada");
+    selectNave.innerHTML='<option value="">Seleccione una nave</option>';
 
+    todasLasNaves.forEach(n=>{
+        const option=document.createElement("option");
+        option.value=n.id;
+        option.textContent=n.nombre||`Nave ${n.id}`;
+        selectNave.appendChild(option);
+    });
+
+    document.getElementById("grupoCuartonSeleccionado").innerHTML=
+        '<option value="">Seleccione un cuartón</option>';
+
+    document.getElementById("cantidadGrupo").value="";
+    document.getElementById("pesoGrupo").value="";
+
+    actualizarResumenGrupo();
+
+    document.getElementById("panelVentaGrupo").classList.remove("oculto");
 }
 
-const {data:actual,error:errorConsulta}=
-await clienteSupabase
-.from("cuartones")
-.select("cantidad_cerdos")
-.eq("id",cuartonSeleccionado.id)
-.single();
+function cargarCuartonesGrupo(){
+    const naveId=document.getElementById("grupoNaveSeleccionada").value;
+    const select=document.getElementById("grupoCuartonSeleccionado");
 
-if(errorConsulta){
+    select.innerHTML='<option value="">Seleccione un cuartón</option>';
 
-alert(
-"Error verificando el cuartón:\n\n"+
-errorConsulta.message
-);
+    if(!naveId)return;
 
-return;
-
+    todosLosCuartones
+        .filter(c=>String(c.nave_id)===String(naveId))
+        .forEach(c=>{
+            const option=document.createElement("option");
+            option.value=c.id;
+            option.textContent=`C${c.numero} — ${c.cantidad_cerdos||0} cerdos`;
+            select.appendChild(option);
+        });
 }
 
-if(cantidad>Number(actual.cantidad_cerdos || 0)){
+function agregarCuartonGrupo(){
+    const naveId=document.getElementById("grupoNaveSeleccionada").value;
+    const cuartonId=document.getElementById("grupoCuartonSeleccionado").value;
+    const cantidad=Number(document.getElementById("cantidadGrupo").value);
 
-alert(
-"No puedes sacar más cerdos de los que hay."
-);
+    if(!naveId||!cuartonId){
+        alert("❌ Seleccione nave y cuartón.");
+        return;
+    }
 
-return;
+    if(!Number.isInteger(cantidad)||cantidad<=0){
+        alert("❌ Introduzca una cantidad válida.");
+        return;
+    }
 
+    const cuarton=todosLosCuartones.find(
+        c=>String(c.id)===String(cuartonId)
+    );
+
+    const nave=todasLasNaves.find(
+        n=>String(n.id)===String(naveId)
+    );
+
+    if(!cuarton||!nave)return;
+
+    const yaExiste=ventaGrupo.find(
+        x=>String(x.cuarton_id)===String(cuarton.id)
+    );
+
+    if(yaExiste){
+        alert("❌ Ese cuartón ya está agregado.");
+        return;
+    }
+
+    if(cantidad>Number(cuarton.cantidad_cerdos||0)){
+        alert(
+            `❌ El cuartón C${cuarton.numero} solo tiene `+
+            `${cuarton.cantidad_cerdos||0} cerdos.`
+        );
+        return;
+    }
+
+    ventaGrupo.push({
+        nave_id:nave.id,
+        nave_nombre:nave.nombre||`Nave ${nave.id}`,
+        cuarton_id:cuarton.id,
+        cuarton_numero:cuarton.numero,
+        cantidad:cantidad
+    });
+
+    document.getElementById("cantidadGrupo").value="";
+
+    actualizarResumenGrupo();
 }
 
-const nuevaCantidad=
-Number(actual.cantidad_cerdos || 0)-cantidad;
+function actualizarResumenGrupo(){
+    const lista=document.getElementById("ventaGrupoLista");
 
-const {error}=
-await clienteSupabase
-.from("cuartones")
-.update({
-cantidad_cerdos:nuevaCantidad
-})
-.eq("id",cuartonSeleccionado.id);
+    if(!ventaGrupo.length){
+        lista.innerHTML=
+            '<div class="info">No hay cuartones agregados.</div>';
+    }else{
+        lista.innerHTML=ventaGrupo.map((v,i)=>`
+            <div class="itemGrupo">
+                <span>
+                    N${v.nave_id} - C${v.cuarton_numero}
+                    — ${v.cantidad} 🐷
+                </span>
+                <button onclick="quitarCuartonGrupo(${i})">✖</button>
+            </div>
+        `).join("");
+    }
 
-if(error){
+    const total=ventaGrupo.reduce(
+        (s,v)=>s+Number(v.cantidad||0),0
+    );
 
-alert(
-"Error registrando venta:\n\n"+
-error.message
-);
-
-return;
-
+    document.getElementById("totalCantidadGrupo").textContent=total;
 }
 
-await registrarMovimiento(
-"Salida",
-cantidad,
-"Venta",
-peso
-);
-
-alert(
-"✅ Venta registrada correctamente.\n\n"+
-"Cerdos: "+cantidad+
-"\nPeso: "+peso.toFixed(2)+" kg"
-);
-
-cerrarPanel();
-
-await cargarNaves();
-
+function quitarCuartonGrupo(index){
+    ventaGrupo.splice(index,1);
+    actualizarResumenGrupo();
 }
-
-
-/* ==================================================
-VENTA POR GRUPO
-================================================== */
 
 async function procesarVentaGrupo(){
+    if(!ventaGrupo.length){
+        alert("❌ Agregue al menos un cuartón.");
+        return;
+    }
 
-if(ventaGrupo.length===0){
+    const peso=Number(document.getElementById("pesoGrupo").value);
 
-alert("Agrega al menos un cuartón.");
+    if(!Number.isFinite(peso)||peso<=0){
+        alert("❌ Introduzca el peso total del grupo.");
+        return;
+    }
 
-return;
+    const cliente=db();
+    const actualizados=[];
 
+    for(const venta of ventaGrupo){
+        const {data:actual,error:errorConsulta}=await cliente
+            .from("cuartones")
+            .select("cantidad_cerdos")
+            .eq("id",venta.cuarton_id)
+            .single();
+
+        if(errorConsulta){
+            alert("❌ Error consultando el cuartón: "+errorConsulta.message);
+            return;
+        }
+
+        const cantidadActual=Number(actual?.cantidad_cerdos||0);
+
+        if(venta.cantidad>cantidadActual){
+            alert(
+                `❌ El cuartón C${venta.cuarton_numero} `+
+                `no tiene suficientes cerdos.`
+            );
+            return;
+        }
+
+        const nuevaCantidad=cantidadActual-Number(venta.cantidad);
+
+        const {error}=await cliente
+            .from("cuartones")
+            .update({cantidad_cerdos:nuevaCantidad})
+            .eq("id",venta.cuarton_id);
+
+        if(error){
+            for(const anterior of actualizados){
+                await cliente
+                    .from("cuartones")
+                    .update({
+                        cantidad_cerdos:anterior.cantidad_original
+                    })
+                    .eq("id",anterior.id);
+            }
+
+            alert("❌ No se pudo completar la venta.\n\n"+error.message);
+            return;
+        }
+
+        actualizados.push({
+            id:venta.cuarton_id,
+            cantidad_original:cantidadActual
+        });
+    }
+
+    const cuartonesTexto=
+        ventaGrupo.map(v=>"C"+v.cuarton_numero).join(",");
+
+    const navesTexto=
+        ventaGrupo.map(v=>"N"+v.nave_id).join(",");
+
+    const primerElemento=ventaGrupo[0];
+
+    const correoUsuario=
+        (await cliente.auth.getUser()).data?.user?.email||"Usuario";
+
+    const {error:errorHistorial}=await cliente
+        .from("movimientos_naves")
+        .insert({
+            fecha:new Date().toISOString(),
+            nave_id:primerElemento.nave_id,
+            cuarton_id:primerElemento.cuarton_id,
+            nave:primerElemento.nave_nombre,
+            cuarton:primerElemento.cuarton_numero,
+            cuartones:cuartonesTexto,
+            naves:navesTexto,
+            operacion:"Salida",
+            cantidad:ventaGrupo.reduce(
+                (s,v)=>s+Number(v.cantidad||0),0
+            ),
+            peso_kg:peso,
+            usuario:correoUsuario,
+            motivo:"Venta"
+        });
+
+    if(errorHistorial){
+        for(const anterior of actualizados){
+            await cliente
+                .from("cuartones")
+                .update({
+                    cantidad_cerdos:anterior.cantidad_original
+                })
+                .eq("id",anterior.id);
+        }
+
+        alert(
+            "❌ No se pudo registrar el historial de la venta.\n\n"+
+            errorHistorial.message
+        );
+        return;
+    }
+
+    alert("✅ Venta por grupo registrada.");
+    ventaGrupo=[];
+    ocultarTodosLosPaneles();
+    await cargarNaves();
 }
-
-const peso=
-Number(document.getElementById("pesoGrupo").value);
-
-if(!peso || peso<=0){
-
-alert("Introduce el peso total del grupo.");
-
-return;
-
-}
-
-let cantidadTotal=0;
-
-ventaGrupo.forEach(v=>{
-cantidadTotal+=Number(v.cantidad);
-});
-
-const actualizados=[];
-
-for(const venta of ventaGrupo){
-
-const {
-data:actual,
-error:errorConsulta
-}=
-await clienteSupabase
-.from("cuartones")
-.select("cantidad_cerdos")
-.eq("id",venta.cuarton_id)
-.single();
-
-if(errorConsulta){
-
-for(const anterior of actualizados){
-
-await clienteSupabase
-.from("cuartones")
-.update({
-cantidad_cerdos:anterior.cantidad_original
-})
-.eq("id",anterior.id);
-
-}
-
-alert(
-"❌ Error verificando el cuartón:\n\n"+
-errorConsulta.message
-);
-
-return;
-
-}
-
-if(
-Number(venta.cantidad)>
-Number(actual.cantidad_cerdos || 0)
-){
-
-for(const anterior of actualizados){
-
-await clienteSupabase
-.from("cuartones")
-.update({
-cantidad_cerdos:anterior.cantidad_original
-})
-.eq("id",anterior.id);
-
-}
-
-alert(
-"No puedes vender más cerdos de los que hay en un cuartón."
-);
-
-return;
-
-}
-
-const nuevaCantidad=
-Number(actual.cantidad_cerdos || 0)-
-Number(venta.cantidad);
-
-const {error}=
-await clienteSupabase
-.from("cuartones")
-.update({
-cantidad_cerdos:nuevaCantidad
-})
-.eq("id",venta.cuarton_id);
-
-if(error){
-
-for(const anterior of actualizados){
-
-await clienteSupabase
-.from("cuartones")
-.update({
-cantidad_cerdos:anterior.cantidad_original
-})
-.eq("id",anterior.id);
-
-}
-
-alert(
-"❌ No se pudo completar la venta.\n\n"+
-error.message
-);
-
-return;
-
-}
-
-actualizados.push({
-id:venta.cuarton_id,
-cantidad_original:Number(actual.cantidad_cerdos || 0)
-});
-
-}
-
-const cuartonesTexto=
-ventaGrupo
-.map(v=>"C"+v.cuarton_numero)
-.join(",");
-
-const navesTexto=
-ventaGrupo
-.map(v=>"N"+v.nave_id)
-.join(",");
-
-const primerElemento=ventaGrupo[0];
-
-const {data:sesionData}=
-await clienteSupabase.auth.getSession();
-
-if(!sesionData.session){
-
-for(const anterior of actualizados){
-
-await clienteSupabase
-.from("cuartones")
-.update({
-cantidad_cerdos:anterior.cantidad_original
-})
-.eq("id",anterior.id);
-
-}
-
-window.location.href="login.html";
-
-return;
-
-}
-
-const correoUsuario=
-sesionData.session.user.email ||
-"Sin correo";
-
-const {error:errorHistorial}=
-await clienteSupabase
-.from("movimientos_naves")
-.insert({
-
-fecha:new Date().toISOString(),
-
-nave_id:primerElemento.nave_id,
-
-cuarton_id:primerElemento.cuarton_id,
-
-nave:primerElemento.nave_nombre,
-
-cuarton:primerElemento.cuarton_numero,
-
-cuartones:cuartonesTexto,
-
-naves:navesTexto,
-
-operacion:"Salida",
-
-cantidad:cantidadTotal,
-
-peso_kg:peso,
-
-usuario:correoUsuario,
-
-motivo:"Venta"
-
-});
-
-if(errorHistorial){
-
-for(const anterior of actualizados){
-
-await clienteSupabase
-.from("cuartones")
-.update({
-cantidad_cerdos:anterior.cantidad_original
-})
-.eq("id",anterior.id);
-
-}
-
-alert(
-"❌ Los cerdos fueron restaurados porque ocurrió un error guardando el historial:\n\n"+
-errorHistorial.message
-);
-
-return;
-
-}
-
-alert(
-"✅ Venta por grupo registrada correctamente.\n\n"+
-"Cerdos: "+cantidadTotal+
-"\nPeso total: "+peso.toFixed(2)+" kg"+
-"\n\n"+
-"Cuartones: "+cuartonesTexto+
-"\nNaves: "+navesTexto
-);
-
-cerrarPanel();
-
-await cargarNaves();
-
-}
-
-
-/* ==================================================
-MUERTES CEBA
-================================================== */
 
 function mostrarMuerte(){
-
-ocultarTodosLosPaneles();
-
-document
-.getElementById("panelMuerte")
-.classList
-.remove("oculto");
-
+    ocultarTodosLosPaneles();
+    document.getElementById("panelMuerte").classList.remove("oculto");
 }
 
 function mostrarMuerteTotal(){
-
-ocultarTodosLosPaneles();
-
-document
-.getElementById("panelMuerteTotal")
-.classList
-.remove("oculto");
-
+    ocultarTodosLosPaneles();
+    document.getElementById("cantidadMuerteTotal").value="";
+    document.getElementById("panelMuerteTotal").classList.remove("oculto");
 }
 
 async function procesarMuerteTotal(){
+    if(!cuartonSeleccionado)return;
 
-const cantidad=
-Number(document.getElementById("cantidadMuerteTotal").value);
+    const cantidad=Number(
+        document.getElementById("cantidadMuerteTotal").value
+    );
 
-if(!cantidad || cantidad<=0){
+    if(!Number.isInteger(cantidad)||cantidad<=0){
+        alert("❌ Introduzca una cantidad válida.");
+        return;
+    }
 
-alert("Introduce una cantidad válida.");
+    const actual=Number(cuartonSeleccionado.cantidad_cerdos||0);
 
-return;
+    if(cantidad>actual){
+        alert(`❌ Disponible: ${actual} cerdos.`);
+        return;
+    }
 
-}
+    const cliente=db();
+    const nuevaCantidad=actual-cantidad;
 
-const {data:actual,error:errorConsulta}=
-await clienteSupabase
-.from("cuartones")
-.select("cantidad_cerdos")
-.eq("id",cuartonSeleccionado.id)
-.single();
+    const {error}=await cliente
+        .from("cuartones")
+        .update({cantidad_cerdos:nuevaCantidad})
+        .eq("id",cuartonSeleccionado.id);
 
-if(errorConsulta){
+    if(error){
+        alert("❌ Error: "+error.message);
+        return;
+    }
 
-alert(
-"Error verificando el cuartón:\n\n"+
-errorConsulta.message
-);
+    const registrado=await registrarMovimiento(
+        "Salida",
+        cantidad,
+        "Muerte total",
+        0
+    );
 
-return;
+    if(!registrado){
+        await cliente
+            .from("cuartones")
+            .update({cantidad_cerdos:actual})
+            .eq("id",cuartonSeleccionado.id);
+        return;
+    }
 
-}
-
-if(cantidad>Number(actual.cantidad_cerdos || 0)){
-
-alert(
-"No puedes sacar más cerdos de los que hay."
-);
-
-return;
-
-}
-
-const nuevaCantidad=
-Number(actual.cantidad_cerdos || 0)-cantidad;
-
-const {error}=
-await clienteSupabase
-.from("cuartones")
-.update({
-cantidad_cerdos:nuevaCantidad
-})
-.eq("id",cuartonSeleccionado.id);
-
-if(error){
-
-alert(
-"Error registrando muerte:\n\n"+
-error.message
-);
-
-return;
-
-}
-
-await registrarMovimiento(
-"Salida",
-cantidad,
-"Muerte total",
-0
-);
-
-alert("✅ Muerte registrada correctamente.");
-
-cerrarPanel();
-
-await cargarNaves();
-
+    alert("✅ Muerte total registrada.");
+    ocultarTodosLosPaneles();
+    await cargarNaves();
 }
 
 function mostrarMuerteVenta(){
+    ocultarTodosLosPaneles();
 
-ocultarTodosLosPaneles();
+    document.getElementById("cantidadMuerteVenta").value="";
+    document.getElementById("pesoB1MuerteVenta").value="";
+    document.getElementById("pesoB2MuerteVenta").value="";
+    document.getElementById("pesoEnteroMuerteVentaCeba").value="";
 
-document
-.getElementById("panelMuerteVenta")
-.classList
-.remove("oculto");
+    document.getElementById("tipoMuerteVentaCeba").value="bandas";
+    cambiarTipoMuerteVentaCeba();
 
+    document.getElementById("panelMuerteVenta").classList.remove("oculto");
 }
+
+function cambiarTipoMuerteVentaCeba(){
+    const tipo=document.getElementById("tipoMuerteVentaCeba").value;
+
+    document.getElementById("camposBandasCeba")
+        .classList.toggle("oculto",tipo!=="bandas");
+
+    document.getElementById("campoEnteroCeba")
+        .classList.toggle("oculto",tipo!=="entero");
+}
+
+function actualizarTotalMuerteVentaCeba(){
+    const b1=Number(document.getElementById("pesoB1MuerteVenta").value)||0;
+    const b2=Number(document.getElementById("pesoB2MuerteVenta").value)||0;
+
+    document.getElementById("totalPesoMuerteVenta").textContent=
+        `T: ${(b1+b2).toFixed(2)} kg`;
+}
+
+document.getElementById("pesoB1MuerteVenta")
+?.addEventListener("input",actualizarTotalMuerteVentaCeba);
+
+document.getElementById("pesoB2MuerteVenta")
+?.addEventListener("input",actualizarTotalMuerteVentaCeba);
 
 async function procesarMuerteVenta(){
+    if(!cuartonSeleccionado)return;
 
-const cantidad=
-Number(document.getElementById("cantidadMuerteVenta").value);
+    const cantidad=Number(
+        document.getElementById("cantidadMuerteVenta").value
+    );
 
-const b1=
-Number(document.getElementById("pesoB1MuerteVenta").value);
+    const tipo=document.getElementById("tipoMuerteVentaCeba").value;
 
-const b2=
-Number(document.getElementById("pesoB2MuerteVenta").value);
+    let b1=0;
+    let b2=0;
+    let peso=0;
 
-const peso=b1+b2;
+    if(tipo==="bandas"){
+        b1=Number(document.getElementById("pesoB1MuerteVenta").value)||0;
+        b2=Number(document.getElementById("pesoB2MuerteVenta").value)||0;
+        peso=b1+b2;
 
-if(!cantidad || cantidad<=0){
+        if(b1<=0||b2<=0){
+            alert("❌ Introduzca el peso de B1 y B2.");
+            return;
+        }
+    }else{
+        peso=Number(
+            document.getElementById("pesoEnteroMuerteVentaCeba").value
+        );
 
-alert("Introduce una cantidad válida.");
+        if(!Number.isFinite(peso)||peso<=0){
+            alert("❌ Introduzca el peso del cochino entero.");
+            return;
+        }
+    }
 
-return;
+    if(!Number.isInteger(cantidad)||cantidad<=0){
+        alert("❌ Introduzca una cantidad válida.");
+        return;
+    }
 
+    const actual=Number(cuartonSeleccionado.cantidad_cerdos||0);
+
+    if(cantidad>actual){
+        alert(`❌ Disponible: ${actual} cerdos.`);
+        return;
+    }
+
+    const cliente=db();
+    const nuevaCantidad=actual-cantidad;
+
+    const {error}=await cliente
+        .from("cuartones")
+        .update({cantidad_cerdos:nuevaCantidad})
+        .eq("id",cuartonSeleccionado.id);
+
+    if(error){
+        alert("❌ Error: "+error.message);
+        return;
+    }
+
+    const registrado=await registrarMovimiento(
+        "Salida",
+        cantidad,
+        "Muerte de venta",
+        peso,
+        b1,
+        b2
+    );
+
+    if(!registrado){
+        await cliente
+            .from("cuartones")
+            .update({cantidad_cerdos:actual})
+            .eq("id",cuartonSeleccionado.id);
+        return;
+    }
+
+    if(tipo==="bandas"){
+        alert(
+            "✅ Muerte de venta registrada.\n\n"+
+            formatoPesoBandas(b1,b2)
+        );
+    }else{
+        alert(
+            "✅ Muerte de venta registrada.\n\n"+
+            `Entero: ${peso.toFixed(2)} kg`
+        );
+    }
+
+    ocultarTodosLosPaneles();
+    await cargarNaves();
 }
-
-if(b1<=0 || b2<=0){
-
-alert("Introduce el peso de B1 y B2.");
-
-return;
-
-}
-
-const {data:actual,error:errorConsulta}=
-await clienteSupabase
-.from("cuartones")
-.select("cantidad_cerdos")
-.eq("id",cuartonSeleccionado.id)
-.single();
-
-if(errorConsulta){
-
-alert(
-"Error verificando el cuartón:\n\n"+
-errorConsulta.message
-);
-
-return;
-
-}
-
-if(cantidad>Number(actual.cantidad_cerdos || 0)){
-
-alert(
-"No puedes sacar más cerdos de los que hay."
-);
-
-return;
-
-}
-
-const nuevaCantidad=
-Number(actual.cantidad_cerdos || 0)-cantidad;
-
-const {error}=
-await clienteSupabase
-.from("cuartones")
-.update({
-cantidad_cerdos:nuevaCantidad
-})
-.eq("id",cuartonSeleccionado.id);
-
-if(error){
-
-alert(
-"Error registrando muerte de venta:\n\n"+
-error.message
-);
-
-return;
-
-}
-
-await registrarMovimiento(
-"Salida",
-cantidad,
-"Muerte de venta",
-peso,
-b1,
-b2
-);
-
-alert(
-"✅ Muerte de venta registrada.\n\n"+
-"Cerdos: "+cantidad+
-"\n\n"+
-formatoPesoBandas(b1,b2)
-);
-
-cerrarPanel();
-
-await cargarNaves();
-
-}
-
-
-/* ==================================================
-REAGRUPACIÓN CEBA
-================================================== */
 
 function mostrarReagrupeSalida(){
-
-document.getElementById("origenReagrupeTexto").innerText=
-naveSeleccionada.nombre+
-" - Cuartón "+
-cuartonSeleccionado.numero+
-" — "+
-cuartonSeleccionado.cantidad+
-" cerdos";
-
-ocultarTodosLosPaneles();
-
-document
-.getElementById("panelReagrupeSalida")
-.classList
-.remove("oculto");
-
+    ocultarTodosLosPaneles();
+    cargarCuartonesDestino();
+    document.getElementById("panelReagrupeSalida").classList.remove("oculto");
 }
 
 async function procesarReagrupe(){
+    if(!cuartonSeleccionado)return;
 
-const cantidad=
-Number(document.getElementById("cantidadReagrupeSalida").value);
+    const cantidad=Number(
+        document.getElementById("cantidadReagrupeSalida").value
+    );
 
-const destino=
-document.getElementById("cuartonDestinoSalida").value;
+    const destinoId=document.getElementById("cuartonDestinoSalida").value;
 
-if(!cantidad || cantidad<=0){
+    if(!Number.isInteger(cantidad)||cantidad<=0){
+        alert("❌ Cantidad inválida.");
+        return;
+    }
 
-alert("Introduce una cantidad válida.");
+    if(!destinoId){
+        alert("❌ Seleccione cuartón destino.");
+        return;
+    }
 
-return;
+    const origenActual=Number(cuartonSeleccionado.cantidad_cerdos||0);
 
+    if(cantidad>origenActual){
+        alert("❌ No hay suficientes cerdos.");
+        return;
+    }
+
+    const destino=todosLosCuartones.find(
+        c=>String(c.id)===String(destinoId)
+    );
+
+    if(!destino)return;
+
+    const cliente=db();
+
+    const {error:errorOrigen}=await cliente
+        .from("cuartones")
+        .update({
+            cantidad_cerdos:origenActual-cantidad
+        })
+        .eq("id",cuartonSeleccionado.id);
+
+    if(errorOrigen){
+        alert("❌ "+errorOrigen.message);
+        return;
+    }
+
+    const {error:errorDestino}=await cliente
+        .from("cuartones")
+        .update({
+            cantidad_cerdos:
+                Number(destino.cantidad_cerdos||0)+cantidad
+        })
+        .eq("id",destino.id);
+
+    if(errorDestino){
+        await cliente
+            .from("cuartones")
+            .update({cantidad_cerdos:origenActual})
+            .eq("id",cuartonSeleccionado.id);
+
+        alert("❌ "+errorDestino.message);
+        return;
+    }
+
+    await registrarMovimiento(
+        "Salida",
+        cantidad,
+        "Reagrupe",
+        0
+    );
+
+    alert("✅ Reagrupe registrado.");
+    ocultarTodosLosPaneles();
+    await cargarNaves();
 }
 
-if(!destino){
+function formatoPesoBandas(b1,b2){
+    const total=(Number(b1)||0)+(Number(b2)||0);
 
-alert("Selecciona el cuartón destino.");
-
-return;
-
+    return `B1: ${Number(b1).toFixed(2)} kg\n`+
+           `B2: ${Number(b2).toFixed(2)} kg\n`+
+           `T: ${total.toFixed(2)} kg`;
 }
-
-if(String(destino)===String(cuartonSeleccionado.id)){
-
-alert("El cuartón destino debe ser diferente.");
-
-return;
-
-}
-
-const ids=[
-cuartonSeleccionado.id,
-Number(destino)
-];
-
-const {
-data:cuartones,
-error:errorConsulta
-}=
-await clienteSupabase
-.from("cuartones")
-.select("id,cantidad_cerdos,nave_id,numero")
-.in("id",ids);
-
-if(errorConsulta){
-
-alert(
-"Error verificando los cuartones:\n\n"+
-errorConsulta.message
-);
-
-return;
-
-}
-
-const origenActual=
-cuartones.find(c=>
-String(c.id)===String(cuartonSeleccionado.id)
-);
-
-const destinoActual=
-cuartones.find(c=>
-String(c.id)===String(destino)
-);
-
-if(!origenActual){
-
-alert("No se encontró el cuartón de origen.");
-
-return;
-
-}
-
-if(!destinoActual){
-
-alert("No se encontró el cuartón destino.");
-
-return;
-
-}
-
-if(cantidad>Number(origenActual.cantidad_cerdos || 0)){
-
-alert(
-"No puedes reagrupar más cerdos de los que hay en el cuartón de origen."
-);
-
-return;
-
-}
-
-const cantidadOrigenAnterior=
-Number(origenActual.cantidad_cerdos || 0);
-
-const cantidadDestinoAnterior=
-Number(destinoActual.cantidad_cerdos || 0);
-
-const cantidadOrigenNueva=
-cantidadOrigenAnterior-cantidad;
-
-const cantidadDestinoNueva=
-cantidadDestinoAnterior+cantidad;
-
-const {error:errorOrigen}=
-await clienteSupabase
-.from("cuartones")
-.update({
-cantidad_cerdos:cantidadOrigenNueva
-})
-.eq("id",origenActual.id);
-
-if(errorOrigen){
-
-alert(
-"Error restando los cerdos del origen:\n\n"+
-errorOrigen.message
-);
-
-return;
-
-}
-
-const {error:errorDestino}=
-await clienteSupabase
-.from("cuartones")
-.update({
-cantidad_cerdos:cantidadDestinoNueva
-})
-.eq("id",destinoActual.id);
-
-if(errorDestino){
-
-await clienteSupabase
-.from("cuartones")
-.update({
-cantidad_cerdos:cantidadOrigenAnterior
-})
-.eq("id",origenActual.id);
-
-alert(
-"❌ No se pudo completar el reagrupe.\n\n"+
-"Los cerdos del origen fueron restaurados.\n\n"+
-errorDestino.message
-);
-
-return;
-
-}
-
-alert(
-"✅ Reagrupe realizado correctamente.\n\n"+
-"Cerdos trasladados: "+cantidad+
-"\n\nOrigen: "+
-naveSeleccionada.nombre+
-" - C"+cuartonSeleccionado.numero+
-"\nDestino: C"+destinoActual.numero
-);
-
-cerrarPanel();
-
-await cargarNaves();
-
-}
-
-
-/* ==================================================
-REGISTRAR MOVIMIENTO CEBA
-================================================== */
 
 async function registrarMovimiento(
-operacion,
-cantidad,
-motivo,
-peso,
-pesoB1=0,
-pesoB2=0
+    operacion,
+    cantidad,
+    motivo,
+    peso=0,
+    pesoB1=0,
+    pesoB2=0
 ){
+    const cliente=db();
 
-const {data:sesionData}=
-await clienteSupabase.auth.getSession();
+    const {data:{user}}=await cliente.auth.getUser();
 
-if(!sesionData.session){
+    const payload={
+        fecha:new Date().toISOString(),
+        nave_id:naveSeleccionada?.id||null,
+        cuarton_id:cuartonSeleccionado?.id||null,
+        nave:naveSeleccionada?.nombre||"",
+        cuarton:cuartonSeleccionado?.numero||null,
+        operacion,
+        cantidad,
+        peso_kg:peso,
+        usuario:user?.email||"Usuario",
+        motivo
+    };
 
-window.location.href="login.html";
+    if(motivo==="Muerte de venta"){
+        payload.peso_b1=Number(pesoB1)||0;
+        payload.peso_b2=Number(pesoB2)||0;
+    }
 
-return;
+    const {error}=await cliente
+        .from("movimientos_naves")
+        .insert(payload);
 
-}
+    if(error){
+        alert("❌ Error registrando el historial:\n"+error.message);
+        return false;
+    }
 
-const correoUsuario=
-sesionData.session.user.email ||
-"Sin correo";
-
-const datosMovimiento={
-
-fecha:new Date().toISOString(),
-
-nave_id:naveSeleccionada.id,
-
-cuarton_id:cuartonSeleccionado.id,
-
-nave:naveSeleccionada.nombre,
-
-cuarton:cuartonSeleccionado.numero,
-
-operacion:operacion,
-
-cantidad:cantidad,
-
-peso_kg:peso || 0,
-
-usuario:correoUsuario,
-
-motivo:motivo
-
-};
-
-if(motivo==="Muerte de venta"){
-
-datosMovimiento.peso_b1=pesoB1;
-datosMovimiento.peso_b2=pesoB2;
-
-}
-
-const {error}=
-await clienteSupabase
-.from("movimientos_naves")
-.insert(datosMovimiento);
-
-if(error){
-
-alert(
-"Error registrando movimiento:\n\n"+
-error.message
-);
-
-}
-
+    return true;
 }
 
 
-/* ==================================================
-DESTETE - CARGAR FILAS
-================================================== */
+/* ================= DESTETE ================= */
 
 async function cargarDestete(){
+    const cliente=db();
+    if(!cliente)return;
 
-const {
-data,
-error
-}=
-await clienteSupabase
-.from("destete_filas")
-.select("*")
-.order("id");
+    const contenido=document.getElementById("contenidoDesteteNave");
 
-if(error){
+    let {data,error}=await cliente
+        .from("destete_filas")
+        .select("*")
+        .order("id");
 
-document.getElementById("contenidoDesteteNave").innerHTML=`
+    if(error){
+        contenido.innerHTML=`
+            <div class="panel">
+                <h3>Error cargando Destete</h3>
+                <div class="info">${error.message}</div>
+            </div>`;
+        return;
+    }
 
-<div class="panel">
+    if(!data||!data.length){
+        const nuevas=[
+            {fila:"F1",cantidad_cerdos:0,cuartones:0,cuartones_vacios:0},
+            {fila:"F2",cantidad_cerdos:0,cuartones:0,cuartones_vacios:0},
+            {fila:"F3",cantidad_cerdos:0,cuartones:0,cuartones_vacios:0}
+        ];
 
-<h2>❌ Error cargando Destete</h2>
+        const {error:errorInsert}=await cliente
+            .from("destete_filas")
+            .insert(nuevas);
 
-<p>${error.message}</p>
+        if(errorInsert){
+            contenido.innerHTML=`
+                <div class="panel">
+                    <h3>Error creando filas</h3>
+                    <div class="info">${errorInsert.message}</div>
+                </div>`;
+            return;
+        }
 
-</div>
+        const respuesta=await cliente
+            .from("destete_filas")
+            .select("*")
+            .order("id");
 
-`;
+        data=respuesta.data||[];
+    }
 
-return;
+    filasDestete=data||[];
+    contenido.innerHTML="";
 
+    const titulo=document.createElement("div");
+    titulo.className="panel";
+    titulo.innerHTML=`
+        <h3>🍼 Naves Destete</h3>
+        <div class="info">
+            Total Destete:
+            <strong>${filasDestete.reduce(
+                (s,f)=>s+Number(f.cantidad_cerdos||0),0
+            )}</strong> 🐷
+        </div>`;
+    contenido.appendChild(titulo);
+
+    filasDestete.forEach(fila=>{
+        const card=document.createElement("div");
+        card.className="filaCard";
+
+        card.innerHTML=`
+            <h2>🍼 ${fila.fila}</h2>
+            <div class="info">
+                Cerdos: <strong>${Number(fila.cantidad_cerdos||0)}</strong><br>
+                Cuartones ocupados: ${Number(fila.cuartones||0)}<br>
+                Cuartones vacíos: ${Number(fila.cuartones_vacios||0)}
+            </div>
+            <button class="btnPanel"
+                onclick="seleccionarFilaDestete(${fila.id})">
+                Abrir ${fila.fila}
+            </button>`;
+
+        contenido.appendChild(card);
+    });
+
+    actualizarTotalGeneralNaves();
 }
-
-filasDestete=data || [];
-
-if(filasDestete.length===0){
-
-const nuevasFilas=[
-
-{
-fila:"F1",
-cantidad_cerdos:0,
-cuartones:0,
-cuartones_vacios:0
-},
-
-{
-fila:"F2",
-cantidad_cerdos:0,
-cuartones:0,
-cuartones_vacios:0
-},
-
-{
-fila:"F3",
-cantidad_cerdos:0,
-cuartones:0,
-cuartones_vacios:0
-}
-
-];
-
-const {
-data:nuevas,
-error:errorInsert
-}=
-await clienteSupabase
-.from("destete_filas")
-.insert(nuevasFilas)
-.select();
-
-if(!errorInsert){
-
-filasDestete=nuevas || [];
-
-}
-
-}
-
-let html=`
-
-<div class="naveDestete">
-
-<h2>
-🍼 Nave de Destete
-</h2>
-
-<div class="estructuraDestete">
-`;
-
-let totalDestete=0;
-
-filasDestete.forEach(fila=>{
-
-const cantidad=
-Number(fila.cantidad_cerdos || 0);
-
-totalDestete+=cantidad;
-
-html+=`
-
-<div
-class="filaDestete"
-onclick="seleccionarFilaDestete(${fila.id})">
-
-<div class="nombreFila">
-${fila.fila}
-</div>
-
-<div class="cerdosFila">
-🐷 ${cantidad}
-</div>
-
-<div class="totalFila">
-Total de la fila
-</div>
-
-</div>
-
-`;
-
-});
-
-html+=`
-
-</div>
-
-<div class="totalDestete">
-
-🍼 TOTAL DEL DESTETE
-
-<div class="numeroTotalDestete">
-
-${totalDestete}
-🐷
-
-</div>
-
-</div>
-
-<div class="datosCuartonesDestete">
-
-<h3>
-📊 Datos de cuartones
-</h3>
-
-<table class="tablaCuartonesDestete">
-
-<thead>
-
-<tr>
-
-<th>Fila</th>
-<th>Cuartones</th>
-<th>Cuartones vacíos</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-`;
-
-filasDestete.forEach(fila=>{
-
-const cuartones=
-Number(fila.cuartones || 0);
-
-const vacios=
-Number(fila.cuartones_vacios || 0);
-
-html+=`
-
-<tr>
-
-<td>${fila.fila}</td>
-
-<td>${cuartones}</td>
-
-<td>${vacios}</td>
-
-</tr>
-
-`;
-
-});
-
-html+=`
-
-</tbody>
-
-</table>
-
-</div>
-
-</div>
-
-`;
-
-document.getElementById(
-"contenidoDesteteNave"
-).innerHTML=html;
-
-actualizarTotalGeneralNaves();
-
-}
-
-
-/* ==================================================
-SELECCIONAR FILA DESTETE
-================================================== */
 
 function seleccionarFilaDestete(id){
+    filaDesteteSeleccionada=
+        filasDestete.find(f=>String(f.id)===String(id))||null;
 
-filaDesteteSeleccionada=
-filasDestete.find(f=>
-String(f.id)===String(id)
-);
+    if(!filaDesteteSeleccionada)return;
 
-if(!filaDesteteSeleccionada){
+    ocultarTodosLosPaneles();
 
-alert("No se encontró la fila.");
+    document.getElementById("tituloFilaDestete").textContent=
+        `🍼 ${filaDesteteSeleccionada.fila}`;
 
-return;
+    document.getElementById("cantidadFilaDestete").textContent=
+        `Cantidad actual: ${Number(
+            filaDesteteSeleccionada.cantidad_cerdos||0
+        )} cerdos`;
 
+    document.getElementById("panelFilaDestete").classList.remove("oculto");
+
+    cargarFilasDestinoDestete();
 }
-
-const cantidad=
-Number(
-filaDesteteSeleccionada.cantidad_cerdos || 0
-);
-
-document.getElementById(
-"tituloFilaDestete"
-).innerText=
-"🍼 "+filaDesteteSeleccionada.fila;
-
-document.getElementById(
-"cantidadFilaDestete"
-).innerText=
-"🐷 Cerdos actuales: "+cantidad;
-
-ocultarTodosLosPaneles();
-
-document
-.getElementById("panelFilaDestete")
-.classList
-.remove("oculto");
-
-}
-
-
-/* ==================================================
-AGREGAR DESTETE
-================================================== */
 
 function mostrarAgregarDestete(){
+    ocultarTodosLosPaneles();
 
-document.getElementById(
-"tituloAgregarDestete"
-).innerText=
-"➕ Agregar cerdos a "+
-filaDesteteSeleccionada.fila;
+    document.getElementById("panelAgregarDestete").classList.remove("oculto");
 
-ocultarTodosLosPaneles();
-
-document
-.getElementById("panelAgregarDestete")
-.classList
-.remove("oculto");
-
+    document.getElementById("tituloAgregarDestete").textContent=
+        `Entrada - ${filaDesteteSeleccionada?.fila||""}`;
 }
 
 async function procesarAgregarDestete(){
+    if(!filaDesteteSeleccionada)return;
 
-const cantidad=
-Number(
-document.getElementById("cantidadAgregarDestete").value
-);
+    const cantidad=Number(
+        document.getElementById("cantidadAgregarDestete").value
+    );
 
-if(!cantidad || cantidad<=0){
+    if(!Number.isInteger(cantidad)||cantidad<=0){
+        alert("❌ Cantidad inválida.");
+        return;
+    }
 
-alert("Introduce una cantidad válida.");
+    const actual=Number(
+        filaDesteteSeleccionada.cantidad_cerdos||0
+    );
 
-return;
+    const cliente=db();
 
+    const {error}=await cliente
+        .from("destete_filas")
+        .update({cantidad_cerdos:actual+cantidad})
+        .eq("id",filaDesteteSeleccionada.id);
+
+    if(error){
+        alert("❌ "+error.message);
+        return;
+    }
+
+    const registrado=await registrarMovimientoDestete(
+        "Entrada",
+        cantidad,
+        0
+    );
+
+    if(!registrado){
+        await cliente
+            .from("destete_filas")
+            .update({cantidad_cerdos:actual})
+            .eq("id",filaDesteteSeleccionada.id);
+        return;
+    }
+
+    alert("✅ Entrada registrada.");
+    ocultarTodosLosPaneles();
+    await cargarDestete();
 }
-
-const actual=
-await obtenerFilaDesteteActual(
-filaDesteteSeleccionada.id
-);
-
-if(!actual){
-return;
-}
-
-const nuevaCantidad=
-Number(actual.cantidad_cerdos || 0)+cantidad;
-
-const {error}=
-await clienteSupabase
-.from("destete_filas")
-.update({
-cantidad_cerdos:nuevaCantidad
-})
-.eq("id",actual.id);
-
-if(error){
-
-alert(
-"Error agregando cerdos al Destete:\n\n"+
-error.message
-);
-
-return;
-
-}
-
-await registrarMovimientoDestete(
-actual.fila,
-"Entrada",
-cantidad,
-0
-);
-
-alert(
-"✅ Se agregaron "+
-cantidad+
-" cerdos a "+
-actual.fila+
-"."
-);
-
-cerrarPanel();
-
-await cargarDestete();
-
-}
-
-
-/* ==================================================
-SALIDA DESTETE PARA CEBA
-================================================== */
 
 function mostrarSalidaCebaDestete(){
+    ocultarTodosLosPaneles();
 
-const cantidad=
-Number(
-filaDesteteSeleccionada.cantidad_cerdos || 0
-);
+    document.getElementById("infoSalidaCebaDestete").textContent=
+        `Fila: ${filaDesteteSeleccionada?.fila||""}\n`+
+        `Disponible: ${Number(
+            filaDesteteSeleccionada?.cantidad_cerdos||0
+        )} cerdos`;
 
-document.getElementById(
-"infoSalidaCebaDestete"
-).innerText=
-"🐷 "+
-filaDesteteSeleccionada.fila+
-" — "+
-cantidad+
-" cerdos actuales";
-
-ocultarTodosLosPaneles();
-
-document
-.getElementById("panelSalidaCebaDestete")
-.classList
-.remove("oculto");
-
+    document.getElementById("panelSalidaCebaDestete")
+        .classList.remove("oculto");
 }
 
 async function procesarSalidaCebaDestete(){
+    if(!filaDesteteSeleccionada)return;
 
-const cantidad=
-Number(
-document.getElementById("cantidadSalidaCebaDestete").value
-);
+    const cantidad=Number(
+        document.getElementById("cantidadSalidaCebaDestete").value
+    );
 
-if(!cantidad || cantidad<=0){
+    const actual=Number(
+        filaDesteteSeleccionada.cantidad_cerdos||0
+    );
 
-alert("Introduce una cantidad válida.");
+    if(!Number.isInteger(cantidad)||cantidad<=0){
+        alert("❌ Cantidad inválida.");
+        return;
+    }
 
-return;
+    if(cantidad>actual){
+        alert("❌ No hay suficientes cerdos.");
+        return;
+    }
 
+    const cliente=db();
+
+    const {error}=await cliente
+        .from("destete_filas")
+        .update({cantidad_cerdos:actual-cantidad})
+        .eq("id",filaDesteteSeleccionada.id);
+
+    if(error){
+        alert("❌ "+error.message);
+        return;
+    }
+
+    const registrado=await registrarMovimientoDestete(
+        "Salida Ceba",
+        cantidad,
+        0
+    );
+
+    if(!registrado){
+        await cliente
+            .from("destete_filas")
+            .update({cantidad_cerdos:actual})
+            .eq("id",filaDesteteSeleccionada.id);
+        return;
+    }
+
+    alert("✅ Salida a Ceba registrada.");
+    ocultarTodosLosPaneles();
+    await cargarDestete();
 }
-
-const actual=
-await obtenerFilaDesteteActual(
-filaDesteteSeleccionada.id
-);
-
-if(!actual){
-return;
-}
-
-if(
-cantidad>
-Number(actual.cantidad_cerdos || 0)
-){
-
-alert(
-"No puedes sacar más cerdos de los que hay en la fila."
-);
-
-return;
-
-}
-
-const nuevaCantidad=
-Number(actual.cantidad_cerdos || 0)-cantidad;
-
-const {error}=
-await clienteSupabase
-.from("destete_filas")
-.update({
-cantidad_cerdos:nuevaCantidad
-})
-.eq("id",actual.id);
-
-if(error){
-
-alert(
-"Error realizando la salida para Ceba:\n\n"+
-error.message
-);
-
-return;
-
-}
-
-await registrarMovimientoDestete(
-actual.fila,
-"Salida Ceba",
-cantidad,
-0
-);
-
-alert(
-"✅ Salida para Ceba registrada.\n\n"+
-"Fila: "+actual.fila+
-"\nCerdos: "+cantidad
-);
-
-cerrarPanel();
-
-await cargarDestete();
-
-}
-
-
-/* ==================================================
-MUERTE DESTETE
-================================================== */
 
 function mostrarMuerteDestete(){
+    ocultarTodosLosPaneles();
 
-const cantidad=
-Number(
-filaDesteteSeleccionada.cantidad_cerdos || 0
-);
+    document.getElementById("infoMuerteDestete").textContent=
+        `Fila: ${filaDesteteSeleccionada?.fila||""}\n`+
+        `Disponible: ${Number(
+            filaDesteteSeleccionada?.cantidad_cerdos||0
+        )} cerdos`;
 
-document.getElementById(
-"infoMuerteDestete"
-).innerText=
-"☠️ "+
-filaDesteteSeleccionada.fila+
-" — "+
-cantidad+
-" cerdos actuales";
-
-ocultarTodosLosPaneles();
-
-document
-.getElementById("panelMuerteDestete")
-.classList
-.remove("oculto");
-
+    document.getElementById("panelMuerteDestete")
+        .classList.remove("oculto");
 }
 
 function mostrarMuerteTotalDestete(){
+    ocultarTodosLosPaneles();
 
-ocultarTodosLosPaneles();
+    document.getElementById("infoMuerteTotalDestete").textContent=
+        `Disponible: ${Number(
+            filaDesteteSeleccionada?.cantidad_cerdos||0
+        )} cerdos`;
 
-document.getElementById(
-"infoMuerteTotalDestete"
-).innerText=
-"☠️ "+
-filaDesteteSeleccionada.fila+
-" — "+
-Number(
-filaDesteteSeleccionada.cantidad_cerdos || 0
-)+
-" cerdos actuales";
+    document.getElementById("cantidadMuerteTotalDestete").value="";
 
-document
-.getElementById("panelMuerteTotalDestete")
-.classList
-.remove("oculto");
-
+    document.getElementById("panelMuerteTotalDestete")
+        .classList.remove("oculto");
 }
 
 async function procesarMuerteTotalDestete(){
+    if(!filaDesteteSeleccionada)return;
 
-const cantidad=
-Number(
-document.getElementById(
-"cantidadMuerteTotalDestete"
-).value
-);
+    const cantidad=Number(
+        document.getElementById("cantidadMuerteTotalDestete").value
+    );
 
-if(!cantidad || cantidad<=0){
+    const actual=Number(
+        filaDesteteSeleccionada.cantidad_cerdos||0
+    );
 
-alert("Introduce una cantidad válida.");
+    if(!Number.isInteger(cantidad)||cantidad<=0){
+        alert("❌ Cantidad inválida.");
+        return;
+    }
 
-return;
+    if(cantidad>actual){
+        alert("❌ No hay suficientes cerdos.");
+        return;
+    }
 
-}
+    const cliente=db();
 
-const actual=
-await obtenerFilaDesteteActual(
-filaDesteteSeleccionada.id
-);
+    const {error}=await cliente
+        .from("destete_filas")
+        .update({cantidad_cerdos:actual-cantidad})
+        .eq("id",filaDesteteSeleccionada.id);
 
-if(!actual){
-return;
-}
+    if(error){
+        alert("❌ "+error.message);
+        return;
+    }
 
-const cantidadActual=
-Number(actual.cantidad_cerdos || 0);
+    const registrado=await registrarMovimientoDestete(
+        "Muerte total",
+        cantidad,
+        0
+    );
 
-if(cantidad>cantidadActual){
+    if(!registrado){
+        await cliente
+            .from("destete_filas")
+            .update({cantidad_cerdos:actual})
+            .eq("id",filaDesteteSeleccionada.id);
+        return;
+    }
 
-alert(
-"No puedes sacar más cerdos de los que hay en la fila."
-);
-
-return;
-
-}
-
-const nuevaCantidad=
-cantidadActual-cantidad;
-
-const {error}=
-await clienteSupabase
-.from("destete_filas")
-.update({
-cantidad_cerdos:nuevaCantidad
-})
-.eq("id",actual.id);
-
-if(error){
-
-alert(
-"Error registrando la muerte:\n\n"+
-error.message
-);
-
-return;
-
-}
-
-await registrarMovimientoDestete(
-actual.fila,
-"Muerte total",
-cantidad,
-0
-);
-
-alert(
-"✅ Muerte total registrada correctamente.\n\n"+
-"Fila: "+actual.fila+
-"\nCerdos muertos: "+cantidad
-);
-
-cerrarPanel();
-
-await cargarDestete();
-
+    alert("✅ Muerte total registrada.");
+    ocultarTodosLosPaneles();
+    await cargarDestete();
 }
 
 function mostrarMuerteVentaDestete(){
+    ocultarTodosLosPaneles();
 
-ocultarTodosLosPaneles();
+    document.getElementById("infoMuerteVentaDestete").textContent=
+        `Disponible: ${Number(
+            filaDesteteSeleccionada?.cantidad_cerdos||0
+        )} cerdos`;
 
-document.getElementById(
-"infoMuerteVentaDestete"
-).innerText=
-"⚖️ "+
-filaDesteteSeleccionada.fila+
-" — "+
-Number(
-filaDesteteSeleccionada.cantidad_cerdos || 0
-)+
-" cerdos actuales";
+    document.getElementById("tipoMuerteVentaDestete").value="bandas";
+    document.getElementById("cantidadMuerteVentaDestete").value="";
+    document.getElementById("pesoB1MuerteVentaDestete").value="";
+    document.getElementById("pesoB2MuerteVentaDestete").value="";
+    document.getElementById("pesoEnteroMuerteVentaDestete").value="";
 
-document
-.getElementById("panelMuerteVentaDestete")
-.classList
-.remove("oculto");
+    cambiarTipoMuerteVentaDestete();
 
+    document.getElementById("panelMuerteVentaDestete")
+        .classList.remove("oculto");
+}
+
+function cambiarTipoMuerteVentaDestete(){
+    const tipo=
+        document.getElementById("tipoMuerteVentaDestete").value;
+
+    document.getElementById("camposBandasDestete")
+        .classList.toggle("oculto",tipo!=="bandas");
+
+    document.getElementById("campoEnteroDestete")
+        .classList.toggle("oculto",tipo!=="entero");
+}
+
+function actualizarTotalMuerteVentaDestete(){
+    const b1=Number(
+        document.getElementById("pesoB1MuerteVentaDestete").value
+    )||0;
+
+    const b2=Number(
+        document.getElementById("pesoB2MuerteVentaDestete").value
+    )||0;
+
+    document.getElementById("totalPesoMuerteVentaDestete")
+        .textContent=`T: ${(b1+b2).toFixed(2)} kg`;
 }
 
 async function procesarMuerteVentaDestete(){
+    if(!filaDesteteSeleccionada)return;
 
-const cantidad=
-Number(
-document.getElementById(
-"cantidadMuerteVentaDestete"
-).value
-);
+    const cantidad=Number(
+        document.getElementById("cantidadMuerteVentaDestete").value
+    );
 
-const b1=
-Number(
-document.getElementById(
-"pesoB1MuerteVentaDestete"
-).value
-);
+    const tipo=
+        document.getElementById("tipoMuerteVentaDestete").value;
 
-const b2=
-Number(
-document.getElementById(
-"pesoB2MuerteVentaDestete"
-).value
-);
+    let b1=0;
+    let b2=0;
+    let peso=0;
 
-const peso=b1+b2;
+    if(tipo==="bandas"){
+        b1=Number(
+            document.getElementById("pesoB1MuerteVentaDestete").value
+        )||0;
 
-if(!cantidad || cantidad<=0){
+        b2=Number(
+            document.getElementById("pesoB2MuerteVentaDestete").value
+        )||0;
 
-alert("Introduce una cantidad válida.");
+        peso=b1+b2;
 
-return;
+        if(b1<=0||b2<=0){
+            alert("❌ Introduzca B1 y B2.");
+            return;
+        }
+    }else{
+        peso=Number(
+            document.getElementById("pesoEnteroMuerteVentaDestete").value
+        );
 
+        if(!Number.isFinite(peso)||peso<=0){
+            alert("❌ Introduzca el peso del cochino entero.");
+            return;
+        }
+    }
+
+    const actual=Number(
+        filaDesteteSeleccionada.cantidad_cerdos||0
+    );
+
+    if(!Number.isInteger(cantidad)||cantidad<=0){
+        alert("❌ Cantidad inválida.");
+        return;
+    }
+
+    if(cantidad>actual){
+        alert("❌ No hay suficientes cerdos.");
+        return;
+    }
+
+    const cliente=db();
+
+    const {error}=await cliente
+        .from("destete_filas")
+        .update({cantidad_cerdos:actual-cantidad})
+        .eq("id",filaDesteteSeleccionada.id);
+
+    if(error){
+        alert("❌ "+error.message);
+        return;
+    }
+
+    const registrado=await registrarMovimientoDestete(
+        "Muerte de venta",
+        cantidad,
+        peso,
+        b1,
+        b2
+    );
+
+    if(!registrado){
+        await cliente
+            .from("destete_filas")
+            .update({cantidad_cerdos:actual})
+            .eq("id",filaDesteteSeleccionada.id);
+        return;
+    }
+
+    if(tipo==="bandas"){
+        alert(
+            "✅ Muerte de venta registrada.\n\n"+
+            formatoPesoBandas(b1,b2)
+        );
+    }else{
+        alert(
+            "✅ Muerte de venta registrada.\n\n"+
+            `Entero: ${peso.toFixed(2)} kg`
+        );
+    }
+
+    ocultarTodosLosPaneles();
+    await cargarDestete();
 }
-
-if(b1<=0 || b2<=0){
-
-alert(
-"Introduce el peso de B1 y B2."
-);
-
-return;
-
-}
-
-const actual=
-await obtenerFilaDesteteActual(
-filaDesteteSeleccionada.id
-);
-
-if(!actual){
-return;
-}
-
-const cantidadActual=
-Number(actual.cantidad_cerdos || 0);
-
-if(cantidad>cantidadActual){
-
-alert(
-"No puedes sacar más cerdos de los que hay en la fila."
-);
-
-return;
-
-}
-
-const nuevaCantidad=
-cantidadActual-cantidad;
-
-const {error}=
-await clienteSupabase
-.from("destete_filas")
-.update({
-cantidad_cerdos:nuevaCantidad
-})
-.eq("id",actual.id);
-
-if(error){
-
-alert(
-"Error registrando muerte de venta:\n\n"+
-error.message
-);
-
-return;
-
-}
-
-await registrarMovimientoDestete(
-actual.fila,
-"Muerte de venta",
-cantidad,
-peso,
-b1,
-b2
-);
-
-alert(
-"✅ Muerte de venta registrada.\n\n"+
-"Fila: "+actual.fila+
-"\nCerdos muertos: "+cantidad+
-"\n\n"+
-formatoPesoBandas(b1,b2)
-);
-
-cerrarPanel();
-
-await cargarDestete();
-
-}
-
-
-/* ==================================================
-AGREGAR DATOS DESTETE
-================================================== */
 
 function mostrarAgregarDatosDestete(){
+    ocultarTodosLosPaneles();
 
-const fila=filaDesteteSeleccionada;
+    document.getElementById("tituloAgregarDatosDestete").textContent=
+        `Datos - ${filaDesteteSeleccionada?.fila||""}`;
 
-document.getElementById(
-"tituloAgregarDatosDestete"
-).innerText=
-"📊 Datos de "+fila.fila;
+    document.getElementById("infoAgregarDatosDestete").textContent=
+        "Actualice los datos de cuartones de la fila.";
 
-document.getElementById(
-"infoAgregarDatosDestete"
-).innerText=
-"🍼 "+
-fila.fila+
-" — Introduce la cantidad de cuartones y cuartones vacíos.";
+    document.getElementById("cantidadCuartonesDestete").value=
+        Number(filaDesteteSeleccionada?.cuartones||0);
 
-document.getElementById(
-"cantidadCuartonesDestete"
-).value=
-Number(fila.cuartones || 0);
+    document.getElementById("cantidadCuartonesVaciosDestete").value=
+        Number(filaDesteteSeleccionada?.cuartones_vacios||0);
 
-document.getElementById(
-"cantidadCuartonesVaciosDestete"
-).value=
-Number(fila.cuartones_vacios || 0);
-
-ocultarTodosLosPaneles();
-
-document
-.getElementById("panelAgregarDatosDestete")
-.classList
-.remove("oculto");
-
+    document.getElementById("panelAgregarDatosDestete")
+        .classList.remove("oculto");
 }
 
 async function procesarAgregarDatosDestete(){
+    if(!filaDesteteSeleccionada)return;
 
-const cuartones=
-Number(
-document.getElementById("cantidadCuartonesDestete").value
-);
+    const cuartones=Number(
+        document.getElementById("cantidadCuartonesDestete").value
+    );
 
-const cuartonesVacios=
-Number(
-document.getElementById("cantidadCuartonesVaciosDestete").value
-);
+    const vacios=Number(
+        document.getElementById("cantidadCuartonesVaciosDestete").value
+    );
 
-if(Number.isNaN(cuartones) || cuartones<0){
+    if(cuartones<0||vacios<0){
+        alert("❌ Datos inválidos.");
+        return;
+    }
 
-alert(
-"Introduce una cantidad válida de cuartones."
-);
+    const cliente=db();
 
-return;
+    const {error}=await cliente
+        .from("destete_filas")
+        .update({
+            cuartones,
+            cuartones_vacios:vacios
+        })
+        .eq("id",filaDesteteSeleccionada.id);
 
+    if(error){
+        alert("❌ "+error.message);
+        return;
+    }
+
+    alert("✅ Datos guardados.");
+    ocultarTodosLosPaneles();
+    await cargarDestete();
 }
 
-if(Number.isNaN(cuartonesVacios) || cuartonesVacios<0){
+function cargarFilasDestinoDestete(){
+    const select=document.getElementById("filaDestinoDestete");
 
-alert(
-"Introduce una cantidad válida de cuartones vacíos."
-);
+    select.innerHTML='<option value="">Seleccione fila</option>';
 
-return;
-
+    filasDestete
+        .filter(f=>String(f.id)!==String(filaDesteteSeleccionada?.id))
+        .forEach(f=>{
+            const option=document.createElement("option");
+            option.value=f.id;
+            option.textContent=
+                `${f.fila} (${f.cantidad_cerdos||0} cerdos)`;
+            select.appendChild(option);
+        });
 }
-
-if(cuartonesVacios>cuartones){
-
-alert(
-"Los cuartones vacíos no pueden ser mayores que el total de cuartones."
-);
-
-return;
-
-}
-
-const actual=
-await obtenerFilaDesteteActual(
-filaDesteteSeleccionada.id
-);
-
-if(!actual){
-return;
-}
-
-const {error}=
-await clienteSupabase
-.from("destete_filas")
-.update({
-cuartones:cuartones,
-cuartones_vacios:cuartonesVacios
-})
-.eq("id",actual.id);
-
-if(error){
-
-alert(
-"Error guardando los datos:\n\n"+
-error.message
-);
-
-return;
-
-}
-
-alert(
-"✅ Datos guardados correctamente.\n\n"+
-actual.fila+
-"\nCuartones: "+cuartones+
-"\nCuartones vacíos: "+cuartonesVacios
-);
-
-cerrarPanel();
-
-await cargarDestete();
-
-}
-
-
-/* ==================================================
-REAGRUPACIÓN DESTETE
-================================================== */
 
 function mostrarReagrupeDestete(){
+    ocultarTodosLosPaneles();
 
-const origen=filaDesteteSeleccionada;
+    document.getElementById("infoReagrupeDestete").textContent=
+        `Origen: ${filaDesteteSeleccionada?.fila||""}\n`+
+        `Disponible: ${Number(
+            filaDesteteSeleccionada?.cantidad_cerdos||0
+        )} cerdos`;
 
-const cantidad=
-Number(origen.cantidad_cerdos || 0);
+    cargarFilasDestinoDestete();
 
-document.getElementById(
-"infoReagrupeDestete"
-).innerHTML=
-"🐷 Origen: <strong>"+
-origen.fila+
-"</strong>"+
-"<br><br>"+
-"Cerdos actuales: "+
-cantidad;
-
-const select=
-document.getElementById("filaDestinoDestete");
-
-select.innerHTML=`
-
-<option value="">
-Selecciona fila destino
-</option>
-
-`;
-
-filasDestete.forEach(fila=>{
-
-if(String(fila.id)!==String(origen.id)){
-
-select.innerHTML+=`
-
-<option value="${fila.id}">
-🐷 ${fila.fila}
-— ${Number(fila.cantidad_cerdos || 0)} cerdos
-</option>
-
-`;
-
-}
-
-});
-
-ocultarTodosLosPaneles();
-
-document
-.getElementById("panelReagrupeDestete")
-.classList
-.remove("oculto");
-
+    document.getElementById("panelReagrupeDestete")
+        .classList.remove("oculto");
 }
 
 async function procesarReagrupeDestete(){
+    if(!filaDesteteSeleccionada)return;
 
-const cantidad=
-Number(
-document.getElementById("cantidadReagrupeDestete").value
-);
+    const destinoId=document.getElementById("filaDestinoDestete").value;
+    const cantidad=Number(
+        document.getElementById("cantidadReagrupeDestete").value
+    );
 
-const destinoId=
-document.getElementById("filaDestinoDestete").value;
+    if(!destinoId||!Number.isInteger(cantidad)||cantidad<=0){
+        alert("❌ Complete los datos.");
+        return;
+    }
 
-if(!cantidad || cantidad<=0){
+    const destino=filasDestete.find(
+        f=>String(f.id)===String(destinoId)
+    );
 
-alert("Introduce una cantidad válida.");
+    if(!destino)return;
 
-return;
+    const actual=Number(
+        filaDesteteSeleccionada.cantidad_cerdos||0
+    );
 
+    if(cantidad>actual){
+        alert("❌ No hay suficientes cerdos.");
+        return;
+    }
+
+    const cliente=db();
+
+    const {error:errorOrigen}=await cliente
+        .from("destete_filas")
+        .update({cantidad_cerdos:actual-cantidad})
+        .eq("id",filaDesteteSeleccionada.id);
+
+    if(errorOrigen){
+        alert("❌ "+errorOrigen.message);
+        return;
+    }
+
+    const {error:errorDestino}=await cliente
+        .from("destete_filas")
+        .update({
+            cantidad_cerdos:
+                Number(destino.cantidad_cerdos||0)+cantidad
+        })
+        .eq("id",destino.id);
+
+    if(errorDestino){
+        await cliente
+            .from("destete_filas")
+            .update({cantidad_cerdos:actual})
+            .eq("id",filaDesteteSeleccionada.id);
+
+        alert("❌ "+errorDestino.message);
+        return;
+    }
+
+    alert("✅ Reagrupe registrado.");
+    ocultarTodosLosPaneles();
+    await cargarDestete();
 }
 
-if(!destinoId){
+async function obtenerFilaDesteteActual(){
+    if(!filaDesteteSeleccionada)return null;
 
-alert("Selecciona la fila destino.");
+    const {data,error}=await db()
+        .from("destete_filas")
+        .select("*")
+        .eq("id",filaDesteteSeleccionada.id)
+        .single();
 
-return;
+    if(error)return filaDesteteSeleccionada;
 
+    filaDesteteSeleccionada=data;
+    return data;
 }
-
-if(String(destinoId)===String(filaDesteteSeleccionada.id)){
-
-alert("La fila destino debe ser diferente.");
-
-return;
-
-}
-
-const origen=
-await obtenerFilaDesteteActual(
-filaDesteteSeleccionada.id
-);
-
-const destino=
-await obtenerFilaDesteteActual(destinoId);
-
-if(!origen || !destino){
-return;
-}
-
-if(
-cantidad>
-Number(origen.cantidad_cerdos || 0)
-){
-
-alert(
-"No puedes mover más cerdos de los que hay en la fila de origen."
-);
-
-return;
-
-}
-
-const cantidadOrigenAnterior=
-Number(origen.cantidad_cerdos || 0);
-
-const cantidadDestinoAnterior=
-Number(destino.cantidad_cerdos || 0);
-
-const nuevaCantidadOrigen=
-cantidadOrigenAnterior-cantidad;
-
-const nuevaCantidadDestino=
-cantidadDestinoAnterior+cantidad;
-
-const {error:errorOrigen}=
-await clienteSupabase
-.from("destete_filas")
-.update({
-cantidad_cerdos:nuevaCantidadOrigen
-})
-.eq("id",origen.id);
-
-if(errorOrigen){
-
-alert(
-"Error restando los cerdos de la fila de origen:\n\n"+
-errorOrigen.message
-);
-
-return;
-
-}
-
-const {error:errorDestino}=
-await clienteSupabase
-.from("destete_filas")
-.update({
-cantidad_cerdos:nuevaCantidadDestino
-})
-.eq("id",destino.id);
-
-if(errorDestino){
-
-await clienteSupabase
-.from("destete_filas")
-.update({
-cantidad_cerdos:cantidadOrigenAnterior
-})
-.eq("id",origen.id);
-
-alert(
-"❌ No se pudo completar el reagrupe.\n\n"+
-"La fila de origen fue restaurada.\n\n"+
-errorDestino.message
-);
-
-return;
-
-}
-
-alert(
-"✅ Reagrupe realizado correctamente.\n\n"+
-"Cerdos trasladados: "+cantidad+
-"\n\nOrigen: "+origen.fila+
-"\nDestino: "+destino.fila
-);
-
-cerrarPanel();
-
-await cargarDestete();
-
-}
-
-
-/* ==================================================
-OBTENER FILA ACTUAL
-================================================== */
-
-async function obtenerFilaDesteteActual(id){
-
-const {
-data,
-error
-}=
-await clienteSupabase
-.from("destete_filas")
-.select("*")
-.eq("id",id)
-.single();
-
-if(error){
-
-alert(
-"Error leyendo la fila del Destete:\n\n"+
-error.message
-);
-
-return null;
-
-}
-
-return data;
-
-}
-
-
-/* ==================================================
-REGISTRAR HISTORIAL DESTETE
-================================================== */
 
 async function registrarMovimientoDestete(
-fila,
-operacion,
-cantidad,
-peso=0,
-pesoB1=0,
-pesoB2=0
+    operacion,
+    cantidad,
+    peso=0,
+    pesoB1=0,
+    pesoB2=0
 ){
+    const cliente=db();
+    const {data:{user}}=await cliente.auth.getUser();
 
-const {
-data:sesionData
-}=
-await clienteSupabase.auth.getSession();
+    const payload={
+        fecha:new Date().toISOString(),
+        fila:filaDesteteSeleccionada?.fila||"",
+        operacion,
+        cantidad,
+        peso_kg:peso,
+        usuario:user?.email||"Usuario"
+    };
 
-if(!sesionData.session){
+    if(operacion==="Muerte de venta"){
+        payload.peso_b1=Number(pesoB1)||0;
+        payload.peso_b2=Number(pesoB2)||0;
+    }
 
-window.location.href="login.html";
+    const {error}=await cliente
+        .from("movimientos_destete")
+        .insert(payload);
 
-return;
+    if(error){
+        alert("❌ Error registrando historial:\n"+error.message);
+        return false;
+    }
 
-}
-
-const correoUsuario=
-sesionData.session.user.email ||
-"Sin correo";
-
-const datosMovimiento={
-
-fecha:new Date().toISOString(),
-
-fila:fila,
-
-operacion:operacion,
-
-cantidad:cantidad,
-
-peso_kg:peso || 0,
-
-usuario:correoUsuario
-
-};
-
-if(operacion==="Muerte de venta"){
-
-datosMovimiento.peso_b1=pesoB1;
-datosMovimiento.peso_b2=pesoB2;
-
-}
-
-const {error}=
-await clienteSupabase
-.from("movimientos_destete")
-.insert(datosMovimiento);
-
-if(error){
-
-alert(
-"Error registrando el historial del Destete:\n\n"+
-error.message
-);
-
-}
-
+    return true;
 }
 
 
-/* ==================================================
-MATERNIDAD - CARGAR NAVES
-================================================== */
+/* ================= MATERNIDAD ================= */
 
 async function cargarMaternidad(){
+    const cliente=db();
+    if(!cliente)return;
 
-const {
-data:naves,
-error:errorNaves
-}=
-await clienteSupabase
-.from("maternidad_naves")
-.select("*")
-.order("id");
+    const contenido=document.getElementById("contenidoMaternidadNaves");
 
-if(errorNaves){
+    const {data:naves,error:errorNaves}=await cliente
+        .from("maternidad_naves")
+        .select("*")
+        .order("id");
 
-document.getElementById(
-"contenidoMaternidadNaves"
-).innerHTML=`
+    if(errorNaves){
+        contenido.innerHTML=`
+            <div class="panel">
+                <h3>Error cargando Maternidad</h3>
+                <div class="info">${errorNaves.message}</div>
+            </div>`;
+        return;
+    }
 
-<div class="panel">
+    const {data:filas,error:errorFilas}=await cliente
+        .from("maternidad_filas")
+        .select("*")
+        .order("id");
 
-<h2>❌ Error cargando Maternidad</h2>
+    if(errorFilas){
+        contenido.innerHTML=`
+            <div class="panel">
+                <h3>Error cargando filas</h3>
+                <div class="info">${errorFilas.message}</div>
+            </div>`;
+        return;
+    }
 
-<p>${errorNaves.message}</p>
+    navesMaternidad=naves||[];
+    filasMaternidad=filas||[];
 
-</div>
+    contenido.innerHTML="";
 
-`;
+    navesMaternidad.forEach(nave=>{
+        const lista=filasMaternidad.filter(
+            f=>String(f.nave_id)===String(nave.id)
+        );
 
-return;
+        const card=document.createElement("div");
+        card.className="naveCard";
 
+        const total=lista.reduce(
+            (s,f)=>s+Number(f.cantidad_cerdos||0),0
+        );
+
+        let html=`
+            <h2>🐖 ${nave.nombre||"Maternidad"}</h2>
+            <div class="totalNave">
+                Total: <strong>${total}</strong> 🐷
+            </div>`;
+
+        lista.forEach(f=>{
+            html+=`
+                <div class="filaCard">
+                    <h2>${f.fila}</h2>
+                    <div class="info">
+                        Cerdos:
+                        <strong>${Number(f.cantidad_cerdos||0)}</strong>
+                    </div>
+                    <button class="btnPanel"
+                        onclick="seleccionarFilaMaternidad(${f.id})">
+                        Abrir ${f.fila}
+                    </button>
+                </div>`;
+        });
+
+        card.innerHTML=html;
+        contenido.appendChild(card);
+    });
+
+    actualizarTotalGeneralNaves();
 }
-
-navesMaternidad=naves || [];
-
-const {
-data:filas,
-error:errorFilas
-}=
-await clienteSupabase
-.from("maternidad_filas")
-.select("*")
-.order("id");
-
-if(errorFilas){
-
-document.getElementById(
-"contenidoMaternidadNaves"
-).innerHTML=`
-
-<div class="panel">
-
-<h2>❌ Error cargando filas de Maternidad</h2>
-
-<p>${errorFilas.message}</p>
-
-</div>
-
-`;
-
-return;
-
-}
-
-filasMaternidad=filas || [];
-
-let html=`
-
-<div class="contenedorMaternidad">
-
-`;
-
-let totalGeneralMaternidad=0;
-
-for(const nave of navesMaternidad){
-
-const filasNave=
-filasMaternidad.filter(f=>
-String(f.nave_id)===String(nave.id)
-);
-
-let totalNave=0;
-
-html+=`
-
-<div class="naveMaternidad">
-
-<h2>
-🐷 ${nave.nombre}
-</h2>
-
-<div class="estructuraMaternidad">
-
-`;
-
-filasNave.forEach(fila=>{
-
-const cantidad=
-Number(fila.cantidad_cerdos || 0);
-
-totalNave+=cantidad;
-totalGeneralMaternidad+=cantidad;
-
-html+=`
-
-<div
-class="filaMaternidad"
-onclick="seleccionarFilaMaternidad(${fila.id})">
-
-<div class="nombreFilaMaternidad">
-${fila.fila}
-</div>
-
-<div class="cerdosFilaMaternidad">
-🐷 ${cantidad}
-</div>
-
-</div>
-
-`;
-
-});
-
-html+=`
-
-</div>
-
-<div class="totalMaternidadNave">
-
-🐷 Total en ${totalNave}
-
-</div>
-
-</div>
-
-`;
-
-}
-
-html+=`
-
-</div>
-
-<div class="totalMaternidadGeneral">
-
-<h2>
-🐷 TOTAL MATERNIDAD
-</h2>
-
-<div class="numeroTotalMaternidad">
-
-${totalGeneralMaternidad}
-
-</div>
-
-<div>
-Nave 1 + Nave 2
-</div>
-
-</div>
-
-`;
-
-document.getElementById(
-"contenidoMaternidadNaves"
-).innerHTML=html;
-
-await cargarOpcionesMaternidadCeba();
-
-actualizarTotalGeneralNaves();
-
-}
-
-
-/* ==================================================
-SELECCIONAR FILA MATERNIDAD
-================================================== */
 
 function seleccionarFilaMaternidad(id){
+    filaMaternidadSeleccionada=
+        filasMaternidad.find(
+            f=>String(f.id)===String(id)
+        )||null;
 
-filaMaternidadSeleccionada=
-filasMaternidad.find(f=>
-String(f.id)===String(id)
-);
+    if(!filaMaternidadSeleccionada)return;
 
-if(!filaMaternidadSeleccionada){
+    ocultarTodosLosPaneles();
 
-alert("No se encontró la fila.");
+    const nave=navesMaternidad.find(
+        n=>String(n.id)===String(filaMaternidadSeleccionada.nave_id)
+    );
 
-return;
+    document.getElementById("tituloFilaMaternidad").textContent=
+        `🐖 ${nave?.nombre||"Maternidad"} - ${filaMaternidadSeleccionada.fila}`;
 
+    document.getElementById("cantidadFilaMaternidad").textContent=
+        `Cantidad actual: ${Number(
+            filaMaternidadSeleccionada.cantidad_cerdos||0
+        )} cerdos`;
+
+    document.getElementById("panelFilaMaternidad")
+        .classList.remove("oculto");
 }
-
-const cantidad=
-Number(
-filaMaternidadSeleccionada.cantidad_cerdos || 0
-);
-
-const nave=
-navesMaternidad.find(n=>
-String(n.id)===String(
-filaMaternidadSeleccionada.nave_id
-)
-);
-
-const nombreNave=
-nave?nave.nombre:"Nave";
-
-document.getElementById(
-"tituloFilaMaternidad"
-).innerText=
-"🐷 "+nombreNave+
-" - "+
-filaMaternidadSeleccionada.fila;
-
-document.getElementById(
-"cantidadFilaMaternidad"
-).innerText=
-"🐷 Cerdos actuales: "+cantidad;
-
-ocultarTodosLosPaneles();
-
-document
-.getElementById("panelFilaMaternidad")
-.classList
-.remove("oculto");
-
-}
-
-
-/* ==================================================
-AGREGAR MATERNIDAD
-================================================== */
 
 function mostrarAgregarMaternidad(){
-
-ocultarTodosLosPaneles();
-
-document
-.getElementById("panelAgregarMaternidad")
-.classList
-.remove("oculto");
-
+    ocultarTodosLosPaneles();
+    document.getElementById("panelAgregarMaternidad")
+        .classList.remove("oculto");
 }
 
 function mostrarCantidadAgregarMaternidad(){
-
-ocultarTodosLosPaneles();
-
-document
-.getElementById("panelCantidadAgregarMaternidad")
-.classList
-.remove("oculto");
-
+    mostrarAgregarMaternidad();
 }
 
 async function procesarAgregarMaternidad(){
+    if(!filaMaternidadSeleccionada)return;
 
-const cantidad=
-Number(
-document.getElementById("cantidadAgregarMaternidad").value
-);
+    const cantidad=Number(
+        document.getElementById("cantidadAgregarMaternidad").value
+    );
 
-if(!cantidad || cantidad<=0){
+    if(!Number.isInteger(cantidad)||cantidad<=0){
+        alert("❌ Cantidad inválida.");
+        return;
+    }
 
-alert("Introduce una cantidad válida.");
+    const actual=Number(
+        filaMaternidadSeleccionada.cantidad_cerdos||0
+    );
 
-return;
+    const cliente=db();
 
+    const {error}=await cliente
+        .from("maternidad_filas")
+        .update({cantidad_cerdos:actual+cantidad})
+        .eq("id",filaMaternidadSeleccionada.id);
+
+    if(error){
+        alert("❌ "+error.message);
+        return;
+    }
+
+    const registrado=await registrarMovimientoMaternidad(
+        "Entrada",
+        cantidad,
+        0
+    );
+
+    if(!registrado){
+        await cliente
+            .from("maternidad_filas")
+            .update({cantidad_cerdos:actual})
+            .eq("id",filaMaternidadSeleccionada.id);
+        return;
+    }
+
+    alert("✅ Entrada registrada.");
+    ocultarTodosLosPaneles();
+    await cargarMaternidad();
 }
-
-const actual=
-await obtenerFilaMaternidadActual(
-filaMaternidadSeleccionada.id
-);
-
-if(!actual){
-return;
-}
-
-const nuevaCantidad=
-Number(actual.cantidad_cerdos || 0)+cantidad;
-
-const {error}=
-await clienteSupabase
-.from("maternidad_filas")
-.update({
-cantidad_cerdos:nuevaCantidad
-})
-.eq("id",actual.id);
-
-if(error){
-
-alert(
-"Error agregando cerdos:\n\n"+
-error.message
-);
-
-return;
-
-}
-
-await registrarMovimientoMaternidad(
-actual,
-"Entrada",
-cantidad,
-0,
-"Agregar"
-);
-
-alert(
-"✅ Se agregaron "+
-cantidad+
-" cerdos correctamente."
-);
-
-cerrarPanel();
-
-await cargarMaternidad();
-
-}
-
-
-/* ==================================================
-CARGAR OPCIONES CEBA PARA MATERNIDAD
-================================================== */
 
 async function cargarOpcionesMaternidadCeba(){
+    const cliente=db();
 
-const selectOrigenNave=
-document.getElementById("maternidadNaveCebaOrigen");
+    const {data,error}=await cliente
+        .from("naves")
+        .select("*")
+        .order("id");
 
-const selectDestinoNave=
-document.getElementById("maternidadNaveCebaDestino");
+    const select=document.getElementById("maternidadNaveCebaOrigen");
 
-if(!selectOrigenNave || !selectDestinoNave){
-return;
+    select.innerHTML='<option value="">Seleccione nave</option>';
+
+    if(error)return;
+
+    (data||[]).forEach(nave=>{
+        const option=document.createElement("option");
+        option.value=nave.id;
+        option.textContent=nave.nombre||`Nave ${nave.id}`;
+        select.appendChild(option);
+    });
 }
 
-selectOrigenNave.innerHTML=`
+async function cargarCuartonesMaternidadOrigen(){
+    const naveId=
+        document.getElementById("maternidadNaveCebaOrigen").value;
 
-<option value="">
-Selecciona nave de Ceba
-</option>
+    const select=
+        document.getElementById("maternidadCuartonCebaOrigen");
 
-`;
+    select.innerHTML='<option value="">Seleccione cuartón</option>';
 
-selectDestinoNave.innerHTML=`
+    if(!naveId)return;
 
-<option value="">
-Selecciona nave de Ceba
-</option>
+    const {data}=await db()
+        .from("cuartones")
+        .select("*")
+        .eq("nave_id",naveId)
+        .order("numero");
 
-`;
-
-todasLasNaves.forEach(nave=>{
-
-selectOrigenNave.innerHTML+=`
-
-<option value="${nave.id}">
-${nave.nombre}
-</option>
-
-`;
-
-selectDestinoNave.innerHTML+=`
-
-<option value="${nave.id}">
-${nave.nombre}
-</option>
-
-`;
-
-});
-
-cargarCuartonesMaternidadOrigen();
-cargarCuartonesMaternidadDestino();
-
+    (data||[]).forEach(c=>{
+        const option=document.createElement("option");
+        option.value=c.id;
+        option.textContent=`C${c.numero} (${c.cantidad_cerdos||0})`;
+        select.appendChild(option);
+    });
 }
 
-function cargarCuartonesMaternidadOrigen(){
+async function cargarCuartonesMaternidadDestino(){
+    const naveId=
+        document.getElementById("maternidadNaveCebaDestino").value;
 
-const naveId=
-document.getElementById(
-"maternidadNaveCebaOrigen"
-).value;
+    const select=
+        document.getElementById("maternidadCuartonCebaDestino");
 
-const select=
-document.getElementById(
-"maternidadCuartonCebaOrigen"
-);
+    select.innerHTML='<option value="">Seleccione cuartón</option>';
 
-select.innerHTML=`
+    if(!naveId)return;
 
-<option value="">
-Selecciona cuartón
-</option>
+    const {data}=await db()
+        .from("cuartones")
+        .select("*")
+        .eq("nave_id",naveId)
+        .order("numero");
 
-`;
-
-if(!naveId){
-return;
+    (data||[]).forEach(c=>{
+        const option=document.createElement("option");
+        option.value=c.id;
+        option.textContent=`C${c.numero} (${c.cantidad_cerdos||0})`;
+        select.appendChild(option);
+    });
 }
-
-todosLosCuartones
-.filter(c=>
-String(c.nave_id)===String(naveId)
-)
-.forEach(c=>{
-
-select.innerHTML+=`
-
-<option value="${c.id}">
-C${c.numero}
-—
-${Number(c.cantidad_cerdos || 0)} cerdos
-</option>
-
-`;
-
-});
-
-}
-
-function cargarCuartonesMaternidadDestino(){
-
-const naveId=
-document.getElementById(
-"maternidadNaveCebaDestino"
-).value;
-
-const select=
-document.getElementById(
-"maternidadCuartonCebaDestino"
-);
-
-select.innerHTML=`
-
-<option value="">
-Selecciona cuartón destino
-</option>
-
-`;
-
-if(!naveId){
-return;
-}
-
-todosLosCuartones
-.filter(c=>
-String(c.nave_id)===String(naveId)
-)
-.forEach(c=>{
-
-select.innerHTML+=`
-
-<option value="${c.id}">
-C${c.numero}
-—
-${Number(c.cantidad_cerdos || 0)} cerdos
-</option>
-
-`;
-
-});
-
-}
-
-document.addEventListener(
-"change",
-function(e){
-
-if(e.target.id==="maternidadNaveCebaOrigen"){
-cargarCuartonesMaternidadOrigen();
-}
-
-if(e.target.id==="maternidadNaveCebaDestino"){
-cargarCuartonesMaternidadDestino();
-}
-
-}
-);
-
-
-/* ==================================================
-AGREGAR DESDE CEBA
-================================================== */
 
 function mostrarAgregarDesdeCeba(){
+    ocultarTodosLosPaneles();
+    cargarOpcionesMaternidadCeba();
 
-cargarOpcionesMaternidadCeba();
-
-ocultarTodosLosPaneles();
-
-document
-.getElementById("panelAgregarDesdeCeba")
-.classList
-.remove("oculto");
-
+    document.getElementById("panelAgregarDesdeCeba")
+        .classList.remove("oculto");
 }
 
 async function procesarAgregarDesdeCeba(){
+    if(!filaMaternidadSeleccionada)return;
 
-const cuartonId=
-document.getElementById(
-"maternidadCuartonCebaOrigen"
-).value;
+    const naveId=
+        document.getElementById("maternidadNaveCebaOrigen").value;
 
-const cantidad=
-Number(
-document.getElementById(
-"cantidadAgregarDesdeCeba"
-).value
-);
+    const cuartonId=
+        document.getElementById("maternidadCuartonCebaOrigen").value;
 
-if(!cuartonId){
+    const cantidad=Number(
+        document.getElementById("cantidadAgregarDesdeCeba").value
+    );
 
-alert("Selecciona el cuartón de origen.");
+    if(!naveId||!cuartonId||!Number.isInteger(cantidad)||cantidad<=0){
+        alert("❌ Complete los datos.");
+        return;
+    }
 
-return;
+    const cliente=db();
 
+    const {data:cuarton,error:errorConsulta}=await cliente
+        .from("cuartones")
+        .select("*")
+        .eq("id",cuartonId)
+        .single();
+
+    if(errorConsulta){
+        alert("❌ "+errorConsulta.message);
+        return;
+    }
+
+    const actualCeba=Number(cuarton.cantidad_cerdos||0);
+
+    if(cantidad>actualCeba){
+        alert("❌ No hay suficientes cerdos en Ceba.");
+        return;
+    }
+
+    const actualMaternidad=
+        Number(filaMaternidadSeleccionada.cantidad_cerdos||0);
+
+    const {error:errorCeba}=await cliente
+        .from("cuartones")
+        .update({
+            cantidad_cerdos:actualCeba-cantidad
+        })
+        .eq("id",cuartonId);
+
+    if(errorCeba){
+        alert("❌ "+errorCeba.message);
+        return;
+    }
+
+    const {error:errorMat}=await cliente
+        .from("maternidad_filas")
+        .update({
+            cantidad_cerdos:actualMaternidad+cantidad
+        })
+        .eq("id",filaMaternidadSeleccionada.id);
+
+    if(errorMat){
+        await cliente
+            .from("cuartones")
+            .update({cantidad_cerdos:actualCeba})
+            .eq("id",cuartonId);
+
+        alert("❌ "+errorMat.message);
+        return;
+    }
+
+    const movimientoMaternidad=
+        await registrarMovimientoMaternidad(
+            "Entrada Ceba",
+            cantidad,
+            0
+        );
+
+    if(!movimientoMaternidad){
+        await cliente
+            .from("cuartones")
+            .update({cantidad_cerdos:actualCeba})
+            .eq("id",cuartonId);
+
+        await cliente
+            .from("maternidad_filas")
+            .update({cantidad_cerdos:actualMaternidad})
+            .eq("id",filaMaternidadSeleccionada.id);
+
+        return;
+    }
+
+    const naveOrigen=
+        (await cliente.from("naves").select("*").eq("id",naveId).single()).data;
+
+    await registrarMovimientoCebaDesdeMaternidad(
+        "Entrada Maternidad",
+        cantidad,
+        naveOrigen,
+        cuarton
+    );
+
+    alert("✅ Entrada desde Ceba registrada.");
+    ocultarTodosLosPaneles();
+    await cargarMaternidad();
 }
-
-if(!cantidad || cantidad<=0){
-
-alert("Introduce una cantidad válida.");
-
-return;
-
-}
-
-const {data:cuarton,error:errorCuarton}=
-await clienteSupabase
-.from("cuartones")
-.select("*")
-.eq("id",cuartonId)
-.single();
-
-if(errorCuarton){
-
-alert(
-"Error leyendo el cuartón:\n\n"+
-errorCuarton.message
-);
-
-return;
-
-}
-
-if(
-cantidad>
-Number(cuarton.cantidad_cerdos || 0)
-){
-
-alert(
-"No puedes sacar más cerdos de los que hay en el cuartón."
-);
-
-return;
-
-}
-
-const actual=
-await obtenerFilaMaternidadActual(
-filaMaternidadSeleccionada.id
-);
-
-if(!actual){
-return;
-}
-
-const nuevaCantidadCeba=
-Number(cuarton.cantidad_cerdos || 0)-cantidad;
-
-const nuevaCantidadMaternidad=
-Number(actual.cantidad_cerdos || 0)+cantidad;
-
-const {error:errorSalida}=
-await clienteSupabase
-.from("cuartones")
-.update({
-cantidad_cerdos:nuevaCantidadCeba
-})
-.eq("id",cuarton.id);
-
-if(errorSalida){
-
-alert(
-"Error sacando los cerdos de Ceba:\n\n"+
-errorSalida.message
-);
-
-return;
-
-}
-
-const {error:errorEntrada}=
-await clienteSupabase
-.from("maternidad_filas")
-.update({
-cantidad_cerdos:nuevaCantidadMaternidad
-})
-.eq("id",actual.id);
-
-if(errorEntrada){
-
-await clienteSupabase
-.from("cuartones")
-.update({
-cantidad_cerdos:cuarton.cantidad_cerdos
-})
-.eq("id",cuarton.id);
-
-alert(
-"❌ No se pudo completar la entrada desde Ceba.\n\n"+
-errorEntrada.message
-);
-
-return;
-
-}
-
-await registrarMovimientoMaternidad(
-actual,
-"Entrada Ceba",
-cantidad,
-0,
-"Entrada desde Ceba"
-);
-
-await registrarMovimientoCebaDesdeMaternidad(
-cuarton,
-cantidad,
-"Salida Maternidad"
-);
-
-alert(
-"✅ Cerdos trasladados correctamente.\n\n"+
-"Cerdos: "+cantidad+
-"\nOrigen: C"+cuarton.numero+
-"\nDestino: "+actual.fila
-);
-
-cerrarPanel();
-
-await cargarMaternidad();
-
-}
-
-
-/* ==================================================
-SALIDA MATERNIDAD
-================================================== */
 
 function mostrarSalidaMaternidad(){
+    ocultarTodosLosPaneles();
 
-ocultarTodosLosPaneles();
-
-document
-.getElementById("panelSalidaMaternidad")
-.classList
-.remove("oculto");
-
+    document.getElementById("panelSalidaMaternidad")
+        .classList.remove("oculto");
 }
 
 function mostrarSalidaCebaMaternidad(){
+    ocultarTodosLosPaneles();
 
-const cantidad=
-Number(
-filaMaternidadSeleccionada.cantidad_cerdos || 0
-);
+    document.getElementById("infoSalidaCebaMaternidad").textContent=
+        `Disponible: ${Number(
+            filaMaternidadSeleccionada?.cantidad_cerdos||0
+        )} cerdos`;
 
-document.getElementById(
-"infoSalidaCebaMaternidad"
-).innerText=
-"🐷 "+
-filaMaternidadSeleccionada.fila+
-" — "+
-cantidad+
-" cerdos actuales";
+    cargarOpcionesMaternidadDestino();
 
-cargarOpcionesMaternidadCeba();
+    document.getElementById("panelSalidaCebaMaternidad")
+        .classList.remove("oculto");
+}
 
-ocultarTodosLosPaneles();
+async function cargarOpcionesMaternidadDestino(){
+    const {data}=await db()
+        .from("naves")
+        .select("*")
+        .order("id");
 
-document
-.getElementById("panelSalidaCebaMaternidad")
-.classList
-.remove("oculto");
+    const select=
+        document.getElementById("maternidadNaveCebaDestino");
 
+    select.innerHTML='<option value="">Seleccione nave</option>';
+
+    (data||[]).forEach(nave=>{
+        const option=document.createElement("option");
+        option.value=nave.id;
+        option.textContent=nave.nombre||`Nave ${nave.id}`;
+        select.appendChild(option);
+    });
 }
 
 async function procesarSalidaCebaMaternidad(){
+    if(!filaMaternidadSeleccionada)return;
 
-const cantidad=
-Number(
-document.getElementById(
-"cantidadSalidaCebaMaternidad"
-).value
-);
+    const naveId=
+        document.getElementById("maternidadNaveCebaDestino").value;
 
-const cuartonId=
-document.getElementById(
-"maternidadCuartonCebaDestino"
-).value;
+    const cuartonId=
+        document.getElementById("maternidadCuartonCebaDestino").value;
 
-if(!cuartonId){
+    const cantidad=Number(
+        document.getElementById("cantidadSalidaCebaMaternidad").value
+    );
 
-alert("Selecciona el cuartón destino.");
+    if(!naveId||!cuartonId||!Number.isInteger(cantidad)||cantidad<=0){
+        alert("❌ Complete los datos.");
+        return;
+    }
 
-return;
+    const actualMaternidad=
+        Number(filaMaternidadSeleccionada.cantidad_cerdos||0);
 
+    if(cantidad>actualMaternidad){
+        alert("❌ No hay suficientes cerdos.");
+        return;
+    }
+
+    const cliente=db();
+
+    const {data:cuarton,error:errorCuarton}=await cliente
+        .from("cuartones")
+        .select("*")
+        .eq("id",cuartonId)
+        .single();
+
+    if(errorCuarton){
+        alert("❌ "+errorCuarton.message);
+        return;
+    }
+
+    const cantidadDestino=
+        Number(cuarton.cantidad_cerdos||0);
+
+    const {error:errorSalida}=await cliente
+        .from("maternidad_filas")
+        .update({
+            cantidad_cerdos:actualMaternidad-cantidad
+        })
+        .eq("id",filaMaternidadSeleccionada.id);
+
+    if(errorSalida){
+        alert("❌ "+errorSalida.message);
+        return;
+    }
+
+    const {error:errorEntrada}=await cliente
+        .from("cuartones")
+        .update({
+            cantidad_cerdos:cantidadDestino+cantidad
+        })
+        .eq("id",cuartonId);
+
+    if(errorEntrada){
+        await cliente
+            .from("maternidad_filas")
+            .update({
+                cantidad_cerdos:actualMaternidad
+            })
+            .eq("id",filaMaternidadSeleccionada.id);
+
+        alert("❌ "+errorEntrada.message);
+        return;
+    }
+
+    const movimiento=
+        await registrarMovimientoMaternidad(
+            "Salida Ceba",
+            cantidad,
+            0
+        );
+
+    if(!movimiento){
+        await cliente
+            .from("maternidad_filas")
+            .update({
+                cantidad_cerdos:actualMaternidad
+            })
+            .eq("id",filaMaternidadSeleccionada.id);
+
+        await cliente
+            .from("cuartones")
+            .update({
+                cantidad_cerdos:cantidadDestino
+            })
+            .eq("id",cuartonId);
+
+        return;
+    }
+
+    const {data:naveDestino}=await cliente
+        .from("naves")
+        .select("*")
+        .eq("id",naveId)
+        .single();
+
+    await registrarMovimientoCebaDesdeMaternidad(
+        "Salida Maternidad",
+        cantidad,
+        naveDestino,
+        cuarton
+    );
+
+    alert("✅ Salida a Ceba registrada.");
+    ocultarTodosLosPaneles();
+    await cargarMaternidad();
 }
-
-if(!cantidad || cantidad<=0){
-
-alert("Introduce una cantidad válida.");
-
-return;
-
-}
-
-const actual=
-await obtenerFilaMaternidadActual(
-filaMaternidadSeleccionada.id
-);
-
-if(!actual){
-return;
-}
-
-if(
-cantidad>
-Number(actual.cantidad_cerdos || 0)
-){
-
-alert(
-"No puedes sacar más cerdos de los que hay en la fila."
-);
-
-return;
-
-}
-
-const {
-data:cuarton,
-error:errorCuarton
-}=
-await clienteSupabase
-.from("cuartones")
-.select("*")
-.eq("id",cuartonId)
-.single();
-
-if(errorCuarton){
-
-alert(
-"Error leyendo el cuartón destino:\n\n"+
-errorCuarton.message
-);
-
-return;
-
-}
-
-const cantidadMaternidadAnterior=
-Number(actual.cantidad_cerdos || 0);
-
-const cantidadCuartonAnterior=
-Number(cuarton.cantidad_cerdos || 0);
-
-const nuevaMaternidad=
-cantidadMaternidadAnterior-cantidad;
-
-const nuevoCuarton=
-cantidadCuartonAnterior+cantidad;
-
-const {error:errorMaternidad}=
-await clienteSupabase
-.from("maternidad_filas")
-.update({
-cantidad_cerdos:nuevaMaternidad
-})
-.eq("id",actual.id);
-
-if(errorMaternidad){
-
-alert(
-"Error sacando los cerdos de Maternidad:\n\n"+
-errorMaternidad.message
-);
-
-return;
-
-}
-
-const {error:errorCeba}=
-await clienteSupabase
-.from("cuartones")
-.update({
-cantidad_cerdos:nuevoCuarton
-})
-.eq("id",cuarton.id);
-
-if(errorCeba){
-
-await clienteSupabase
-.from("maternidad_filas")
-.update({
-cantidad_cerdos:cantidadMaternidadAnterior
-})
-.eq("id",actual.id);
-
-alert(
-"❌ No se pudo completar la salida para Ceba.\n\n"+
-"Los cerdos de Maternidad fueron restaurados.\n\n"+
-errorCeba.message
-);
-
-return;
-
-}
-
-await registrarMovimientoMaternidad(
-actual,
-"Salida Ceba",
-cantidad,
-0,
-"Salida para Ceba"
-);
-
-await registrarMovimientoCebaDesdeMaternidad(
-cuarton,
-cantidad,
-"Entrada Maternidad"
-);
-
-alert(
-"✅ Salida para Ceba registrada.\n\n"+
-"Cerdos: "+cantidad+
-"\nFila: "+actual.fila+
-"\nCuartón destino: C"+cuarton.numero
-);
-
-cerrarPanel();
-
-await cargarMaternidad();
-
-}
-
-
-/* ==================================================
-MUERTE MATERNIDAD
-================================================== */
 
 function mostrarMuerteMaternidad(){
+    ocultarTodosLosPaneles();
 
-const cantidad=
-Number(
-filaMaternidadSeleccionada.cantidad_cerdos || 0
-);
+    document.getElementById("infoMuerteMaternidad").textContent=
+        `Disponible: ${Number(
+            filaMaternidadSeleccionada?.cantidad_cerdos||0
+        )} cerdos`;
 
-document.getElementById(
-"infoMuerteMaternidad"
-).innerText=
-"☠️ "+
-filaMaternidadSeleccionada.fila+
-" — "+
-cantidad+
-" cerdos actuales";
+    document.getElementById("panelMuerteMaternidad")
+        .classList.remove("oculto");
+}
 
-ocultarTodosLosPaneles();
+function mostrarMuerteTotalMaternidad(){
+    ocultarTodosLosPaneles();
 
-document
-.getElementById("panelMuerteMaternidad")
-.classList
-.remove("oculto");
-
+    document.getElementById("panelMuerteTotalMaternidad")
+        .classList.remove("oculto");
 }
 
 async function procesarMuerteMaternidad(){
+    if(!filaMaternidadSeleccionada)return;
 
-const cantidad=
-Number(
-document.getElementById(
-"cantidadMuerteMaternidad"
-).value
-);
+    const cantidad=Number(
+        document.getElementById("cantidadMuerteMaternidad").value
+    );
 
-if(!cantidad || cantidad<=0){
+    const actual=
+        Number(filaMaternidadSeleccionada.cantidad_cerdos||0);
 
-alert("Introduce una cantidad válida.");
+    if(!Number.isInteger(cantidad)||cantidad<=0){
+        alert("❌ Cantidad inválida.");
+        return;
+    }
 
-return;
+    if(cantidad>actual){
+        alert("❌ No hay suficientes cerdos.");
+        return;
+    }
 
+    const cliente=db();
+
+    const {error}=await cliente
+        .from("maternidad_filas")
+        .update({cantidad_cerdos:actual-cantidad})
+        .eq("id",filaMaternidadSeleccionada.id);
+
+    if(error){
+        alert("❌ "+error.message);
+        return;
+    }
+
+    const registrado=await registrarMovimientoMaternidad(
+        "Muerte total",
+        cantidad,
+        0
+    );
+
+    if(!registrado){
+        await cliente
+            .from("maternidad_filas")
+            .update({cantidad_cerdos:actual})
+            .eq("id",filaMaternidadSeleccionada.id);
+        return;
+    }
+
+    alert("✅ Muerte total registrada.");
+    ocultarTodosLosPaneles();
+    await cargarMaternidad();
 }
-
-const actual=
-await obtenerFilaMaternidadActual(
-filaMaternidadSeleccionada.id
-);
-
-if(!actual){
-return;
-}
-
-const cantidadActual=
-Number(actual.cantidad_cerdos || 0);
-
-if(cantidad>cantidadActual){
-
-alert(
-"No puedes sacar más cerdos de los que hay."
-);
-
-return;
-
-}
-
-const nuevaCantidad=
-cantidadActual-cantidad;
-
-const {error}=
-await clienteSupabase
-.from("maternidad_filas")
-.update({
-cantidad_cerdos:nuevaCantidad
-})
-.eq("id",actual.id);
-
-if(error){
-
-alert(
-"Error registrando muerte:\n\n"+
-error.message
-);
-
-return;
-
-}
-
-await registrarMovimientoMaternidad(
-actual,
-"Muerte total",
-cantidad,
-0,
-"Muerte total"
-);
-
-alert("✅ Muerte registrada correctamente.");
-
-cerrarPanel();
-
-await cargarMaternidad();
-
-}
-
-
-/* ==================================================
-MUERTE DE VENTA MATERNIDAD
-================================================== */
 
 function mostrarMuerteVentaMaternidad(){
+    ocultarTodosLosPaneles();
 
-const cantidad=
-Number(
-filaMaternidadSeleccionada.cantidad_cerdos || 0
-);
+    document.getElementById("infoMuerteVentaMaternidad").textContent=
+        `Disponible: ${Number(
+            filaMaternidadSeleccionada?.cantidad_cerdos||0
+        )} cerdos`;
 
-document.getElementById(
-"infoMuerteVentaMaternidad"
-).innerText=
-"⚖️ "+
-filaMaternidadSeleccionada.fila+
-" — "+
-cantidad+
-" cerdos actuales";
+    document.getElementById("tipoMuerteVentaMaternidad").value="bandas";
+    document.getElementById("cantidadMuerteVentaMaternidad").value="";
+    document.getElementById("pesoB1MuerteVentaMaternidad").value="";
+    document.getElementById("pesoB2MuerteVentaMaternidad").value="";
+    document.getElementById("pesoEnteroMuerteVentaMaternidad").value="";
 
-ocultarTodosLosPaneles();
+    cambiarTipoMuerteVentaMaternidad();
 
-document
-.getElementById("panelMuerteVentaMaternidad")
-.classList
-.remove("oculto");
+    document.getElementById("panelMuerteVentaMaternidad")
+        .classList.remove("oculto");
+}
 
+function cambiarTipoMuerteVentaMaternidad(){
+    const tipo=
+        document.getElementById("tipoMuerteVentaMaternidad").value;
+
+    document.getElementById("camposBandasMaternidad")
+        .classList.toggle("oculto",tipo!=="bandas");
+
+    document.getElementById("campoEnteroMaternidad")
+        .classList.toggle("oculto",tipo!=="entero");
 }
 
 async function procesarMuerteVentaMaternidad(){
+    if(!filaMaternidadSeleccionada)return;
 
-const cantidad=
-Number(
-document.getElementById(
-"cantidadMuerteVentaMaternidad"
-).value
-);
+    const cantidad=Number(
+        document.getElementById("cantidadMuerteVentaMaternidad").value
+    );
 
-const b1=
-Number(
-document.getElementById(
-"pesoB1MuerteVentaMaternidad"
-).value
-);
+    const tipo=
+        document.getElementById("tipoMuerteVentaMaternidad").value;
 
-const b2=
-Number(
-document.getElementById(
-"pesoB2MuerteVentaMaternidad"
-).value
-);
+    let b1=0;
+    let b2=0;
+    let peso=0;
 
-const peso=b1+b2;
+    if(tipo==="bandas"){
+        b1=Number(
+            document.getElementById("pesoB1MuerteVentaMaternidad").value
+        )||0;
 
-if(!cantidad || cantidad<=0){
+        b2=Number(
+            document.getElementById("pesoB2MuerteVentaMaternidad").value
+        )||0;
 
-alert("Introduce una cantidad válida.");
+        peso=b1+b2;
 
-return;
+        if(b1<=0||b2<=0){
+            alert("❌ Introduzca B1 y B2.");
+            return;
+        }
+    }else{
+        peso=Number(
+            document.getElementById("pesoEnteroMuerteVentaMaternidad").value
+        );
 
+        if(!Number.isFinite(peso)||peso<=0){
+            alert("❌ Introduzca el peso del cochino entero.");
+            return;
+        }
+    }
+
+    const actual=
+        Number(filaMaternidadSeleccionada.cantidad_cerdos||0);
+
+    if(!Number.isInteger(cantidad)||cantidad<=0){
+        alert("❌ Cantidad inválida.");
+        return;
+    }
+
+    if(cantidad>actual){
+        alert("❌ No hay suficientes cerdos.");
+        return;
+    }
+
+    const cliente=db();
+
+    const {error}=await cliente
+        .from("maternidad_filas")
+        .update({cantidad_cerdos:actual-cantidad})
+        .eq("id",filaMaternidadSeleccionada.id);
+
+    if(error){
+        alert("❌ "+error.message);
+        return;
+    }
+
+    const registrado=
+        await registrarMovimientoMaternidad(
+            "Muerte de venta",
+            cantidad,
+            peso,
+            b1,
+            b2
+        );
+
+    if(!registrado){
+        await cliente
+            .from("maternidad_filas")
+            .update({cantidad_cerdos:actual})
+            .eq("id",filaMaternidadSeleccionada.id);
+        return;
+    }
+
+    if(tipo==="bandas"){
+        alert(
+            "✅ Muerte de venta registrada.\n\n"+
+            formatoPesoBandas(b1,b2)
+        );
+    }else{
+        alert(
+            "✅ Muerte de venta registrada.\n\n"+
+            `Entero: ${peso.toFixed(2)} kg`
+        );
+    }
+
+    ocultarTodosLosPaneles();
+    await cargarMaternidad();
 }
-
-if(b1<=0 || b2<=0){
-
-alert(
-"Introduce el peso de B1 y B2."
-);
-
-return;
-
-}
-
-const actual=
-await obtenerFilaMaternidadActual(
-filaMaternidadSeleccionada.id
-);
-
-if(!actual){
-return;
-}
-
-if(
-cantidad>
-Number(actual.cantidad_cerdos || 0)
-){
-
-alert(
-"No puedes sacar más cerdos de los que hay."
-);
-
-return;
-
-}
-
-const nuevaCantidad=
-Number(actual.cantidad_cerdos || 0)-cantidad;
-
-const {error}=
-await clienteSupabase
-.from("maternidad_filas")
-.update({
-cantidad_cerdos:nuevaCantidad
-})
-.eq("id",actual.id);
-
-if(error){
-
-alert(
-"Error registrando muerte de venta:\n\n"+
-error.message
-);
-
-return;
-
-}
-
-await registrarMovimientoMaternidad(
-actual,
-"Muerte de venta",
-cantidad,
-peso,
-"Muerte de venta",
-b1,
-b2
-);
-
-alert(
-"✅ Muerte de venta registrada.\n\n"+
-"Cerdos: "+cantidad+
-"\n\n"+
-formatoPesoBandas(b1,b2)
-);
-
-cerrarPanel();
-
-await cargarMaternidad();
-
-}
-
-
-/* ==================================================
-VENTA MATERNIDAD
-================================================== */
 
 function mostrarVentaMaternidad(){
+    ocultarTodosLosPaneles();
 
-const cantidad=
-Number(
-filaMaternidadSeleccionada.cantidad_cerdos || 0
-);
+    document.getElementById("infoVentaMaternidad").textContent=
+        `Disponible: ${Number(
+            filaMaternidadSeleccionada?.cantidad_cerdos||0
+        )} cerdos`;
 
-document.getElementById(
-"infoVentaMaternidad"
-).innerText=
-"💰 "+
-filaMaternidadSeleccionada.fila+
-" — "+
-cantidad+
-" cerdos actuales";
-
-ocultarTodosLosPaneles();
-
-document
-.getElementById("panelVentaMaternidad")
-.classList
-.remove("oculto");
-
+    document.getElementById("panelVentaMaternidad")
+        .classList.remove("oculto");
 }
 
 async function procesarVentaMaternidad(){
+    if(!filaMaternidadSeleccionada)return;
 
-const cantidad=
-Number(
-document.getElementById(
-"cantidadVentaMaternidad"
-).value
-);
+    const cantidad=Number(
+        document.getElementById("cantidadVentaMaternidad").value
+    );
 
-const peso=
-Number(
-document.getElementById(
-"pesoVentaMaternidad"
-).value
-);
+    const peso=Number(
+        document.getElementById("pesoVentaMaternidad").value
+    );
 
-if(!cantidad || cantidad<=0){
+    const actual=
+        Number(filaMaternidadSeleccionada.cantidad_cerdos||0);
 
-alert("Introduce una cantidad válida.");
+    if(!Number.isInteger(cantidad)||cantidad<=0){
+        alert("❌ Cantidad inválida.");
+        return;
+    }
 
-return;
+    if(!Number.isFinite(peso)||peso<=0){
+        alert("❌ Peso inválido.");
+        return;
+    }
 
+    if(cantidad>actual){
+        alert("❌ No hay suficientes cerdos.");
+        return;
+    }
+
+    const cliente=db();
+
+    const {error}=await cliente
+        .from("maternidad_filas")
+        .update({cantidad_cerdos:actual-cantidad})
+        .eq("id",filaMaternidadSeleccionada.id);
+
+    if(error){
+        alert("❌ "+error.message);
+        return;
+    }
+
+    const registrado=
+        await registrarMovimientoMaternidad(
+            "Venta",
+            cantidad,
+            peso
+        );
+
+    if(!registrado){
+        await cliente
+            .from("maternidad_filas")
+            .update({cantidad_cerdos:actual})
+            .eq("id",filaMaternidadSeleccionada.id);
+        return;
+    }
+
+    alert("✅ Venta registrada.");
+    ocultarTodosLosPaneles();
+    await cargarMaternidad();
 }
 
-if(!peso || peso<=0){
+function cargarFilasDestinoMaternidad(){
+    const select=document.getElementById("filaDestinoMaternidad");
 
-alert("Introduce el peso total en kg.");
+    select.innerHTML='<option value="">Seleccione fila</option>';
 
-return;
+    const naveId=filaMaternidadSeleccionada?.nave_id;
 
+    filasMaternidad
+        .filter(f=>
+            String(f.nave_id)===String(naveId)&&
+            String(f.id)!==String(filaMaternidadSeleccionada?.id)
+        )
+        .forEach(f=>{
+            const option=document.createElement("option");
+            option.value=f.id;
+            option.textContent=
+                `${f.fila} (${f.cantidad_cerdos||0} cerdos)`;
+            select.appendChild(option);
+        });
 }
-
-const actual=
-await obtenerFilaMaternidadActual(
-filaMaternidadSeleccionada.id
-);
-
-if(!actual){
-return;
-}
-
-if(
-cantidad>
-Number(actual.cantidad_cerdos || 0)
-){
-
-alert(
-"No puedes sacar más cerdos de los que hay."
-);
-
-return;
-
-}
-
-const nuevaCantidad=
-Number(actual.cantidad_cerdos || 0)-cantidad;
-
-const {error}=
-await clienteSupabase
-.from("maternidad_filas")
-.update({
-cantidad_cerdos:nuevaCantidad
-})
-.eq("id",actual.id);
-
-if(error){
-
-alert(
-"Error realizando la venta:\n\n"+
-error.message
-);
-
-return;
-
-}
-
-await registrarMovimientoMaternidad(
-actual,
-"Venta",
-cantidad,
-peso,
-"Venta"
-);
-
-alert(
-"✅ Venta registrada correctamente.\n\n"+
-"Cerdos: "+cantidad+
-"\nPeso: "+peso.toFixed(2)+" kg"
-);
-
-cerrarPanel();
-
-await cargarMaternidad();
-
-}
-
-
-/* ==================================================
-REAGRUPACIÓN MATERNIDAD
-================================================== */
 
 function mostrarReagrupeMaternidad(){
+    ocultarTodosLosPaneles();
 
-const origen=filaMaternidadSeleccionada;
+    document.getElementById("infoReagrupeMaternidad").textContent=
+        `Disponible: ${Number(
+            filaMaternidadSeleccionada?.cantidad_cerdos||0
+        )} cerdos`;
 
-const naveOrigen=
-navesMaternidad.find(n=>
-String(n.id)===String(origen.nave_id)
-);
+    cargarFilasDestinoMaternidad();
 
-document.getElementById(
-"infoReagrupeMaternidad"
-).innerHTML=
-"🐷 Origen: <strong>"+
-(naveOrigen ? naveOrigen.nombre : "")+
-" - "+
-origen.fila+
-"</strong>"+
-"<br><br>"+
-"Cerdos actuales: "+
-Number(origen.cantidad_cerdos || 0);
-
-const select=
-document.getElementById("filaDestinoMaternidad");
-
-select.innerHTML=`
-
-<option value="">
-Selecciona fila destino
-</option>
-
-`;
-
-filasMaternidad.forEach(fila=>{
-
-if(String(fila.id)!==String(origen.id)){
-
-const nave=
-navesMaternidad.find(n=>
-String(n.id)===String(fila.nave_id)
-);
-
-select.innerHTML+=`
-
-<option value="${fila.id}">
-🐷 ${nave ? nave.nombre : ""} - ${fila.fila}
-— ${Number(fila.cantidad_cerdos || 0)} cerdos
-</option>
-
-`;
-
-}
-
-});
-
-ocultarTodosLosPaneles();
-
-document
-.getElementById("panelReagrupeMaternidad")
-.classList
-.remove("oculto");
-
+    document.getElementById("panelReagrupeMaternidad")
+        .classList.remove("oculto");
 }
 
 async function procesarReagrupeMaternidad(){
+    if(!filaMaternidadSeleccionada)return;
 
-const cantidad=
-Number(
-document.getElementById(
-"cantidadReagrupeMaternidad"
-).value
-);
+    const destinoId=
+        document.getElementById("filaDestinoMaternidad").value;
 
-const destinoId=
-document.getElementById(
-"filaDestinoMaternidad"
-).value;
+    const cantidad=Number(
+        document.getElementById("cantidadReagrupeMaternidad").value
+    );
 
-if(!cantidad || cantidad<=0){
+    if(!destinoId||!Number.isInteger(cantidad)||cantidad<=0){
+        alert("❌ Complete los datos.");
+        return;
+    }
 
-alert("Introduce una cantidad válida.");
+    const destino=filasMaternidad.find(
+        f=>String(f.id)===String(destinoId)
+    );
 
-return;
+    if(!destino)return;
 
+    const actual=
+        Number(filaMaternidadSeleccionada.cantidad_cerdos||0);
+
+    if(cantidad>actual){
+        alert("❌ No hay suficientes cerdos.");
+        return;
+    }
+
+    const cliente=db();
+
+    const {error:errorOrigen}=await cliente
+        .from("maternidad_filas")
+        .update({cantidad_cerdos:actual-cantidad})
+        .eq("id",filaMaternidadSeleccionada.id);
+
+    if(errorOrigen){
+        alert("❌ "+errorOrigen.message);
+        return;
+    }
+
+    const {error:errorDestino}=await cliente
+        .from("maternidad_filas")
+        .update({
+            cantidad_cerdos:
+                Number(destino.cantidad_cerdos||0)+cantidad
+        })
+        .eq("id",destino.id);
+
+    if(errorDestino){
+        await cliente
+            .from("maternidad_filas")
+            .update({cantidad_cerdos:actual})
+            .eq("id",filaMaternidadSeleccionada.id);
+
+        alert("❌ "+errorDestino.message);
+        return;
+    }
+
+    alert("✅ Reagrupe registrado.");
+    ocultarTodosLosPaneles();
+    await cargarMaternidad();
 }
 
-if(!destinoId){
+async function obtenerFilaMaternidadActual(){
+    if(!filaMaternidadSeleccionada)return null;
 
-alert("Selecciona la fila destino.");
+    const {data,error}=await db()
+        .from("maternidad_filas")
+        .select("*")
+        .eq("id",filaMaternidadSeleccionada.id)
+        .single();
 
-return;
+    if(!error){
+        filaMaternidadSeleccionada=data;
+    }
 
+    return filaMaternidadSeleccionada;
 }
-
-if(
-String(destinoId)===
-String(filaMaternidadSeleccionada.id)
-){
-
-alert("La fila destino debe ser diferente.");
-
-return;
-
-}
-
-const origen=
-await obtenerFilaMaternidadActual(
-filaMaternidadSeleccionada.id
-);
-
-const destino=
-await obtenerFilaMaternidadActual(destinoId);
-
-if(!origen || !destino){
-return;
-}
-
-if(
-cantidad>
-Number(origen.cantidad_cerdos || 0)
-){
-
-alert(
-"No puedes mover más cerdos de los que hay en la fila de origen."
-);
-
-return;
-
-}
-
-const cantidadOrigenAnterior=
-Number(origen.cantidad_cerdos || 0);
-
-const cantidadDestinoAnterior=
-Number(destino.cantidad_cerdos || 0);
-
-const nuevaCantidadOrigen=
-cantidadOrigenAnterior-cantidad;
-
-const nuevaCantidadDestino=
-cantidadDestinoAnterior+cantidad;
-
-const {error:errorOrigen}=
-await clienteSupabase
-.from("maternidad_filas")
-.update({
-cantidad_cerdos:nuevaCantidadOrigen
-})
-.eq("id",origen.id);
-
-if(errorOrigen){
-
-alert(
-"Error restando los cerdos del origen:\n\n"+
-errorOrigen.message
-);
-
-return;
-
-}
-
-const {error:errorDestino}=
-await clienteSupabase
-.from("maternidad_filas")
-.update({
-cantidad_cerdos:nuevaCantidadDestino
-})
-.eq("id",destino.id);
-
-if(errorDestino){
-
-await clienteSupabase
-.from("maternidad_filas")
-.update({
-cantidad_cerdos:cantidadOrigenAnterior
-})
-.eq("id",origen.id);
-
-alert(
-"❌ No se pudo completar el reagrupe.\n\n"+
-"La fila de origen fue restaurada.\n\n"+
-errorDestino.message
-);
-
-return;
-
-}
-
-const naveOrigen=
-navesMaternidad.find(n=>
-String(n.id)===String(origen.nave_id)
-);
-
-const naveDestino=
-navesMaternidad.find(n=>
-String(n.id)===String(destino.nave_id)
-);
-
-alert(
-"✅ Reagrupe realizado correctamente.\n\n"+
-"Cerdos trasladados: "+cantidad+
-"\n\nOrigen: "+
-(naveOrigen ? naveOrigen.nombre : "")+
-" - "+origen.fila+
-"\nDestino: "+
-(naveDestino ? naveDestino.nombre : "")+
-" - "+destino.fila
-);
-
-cerrarPanel();
-
-await cargarMaternidad();
-
-}
-
-
-/* ==================================================
-OBTENER FILA MATERNIDAD ACTUAL
-================================================== */
-
-async function obtenerFilaMaternidadActual(id){
-
-const {
-data,
-error
-}=
-await clienteSupabase
-.from("maternidad_filas")
-.select("*")
-.eq("id",id)
-.single();
-
-if(error){
-
-alert(
-"Error leyendo la fila de Maternidad:\n\n"+
-error.message
-);
-
-return null;
-
-}
-
-return data;
-
-}
-
-
-/* ==================================================
-REGISTRAR HISTORIAL MATERNIDAD
-================================================== */
 
 async function registrarMovimientoMaternidad(
-fila,
-operacion,
-cantidad,
-peso,
-motivo,
-pesoB1=0,
-pesoB2=0
+    operacion,
+    cantidad,
+    peso=0,
+    pesoB1=0,
+    pesoB2=0
 ){
+    const cliente=db();
 
-const {
-data:sesionData
-}=
-await clienteSupabase.auth.getSession();
+    const {data:{user}}=await cliente.auth.getUser();
 
-if(!sesionData.session){
+    const nave=navesMaternidad.find(
+        n=>String(n.id)===
+           String(filaMaternidadSeleccionada?.nave_id)
+    );
 
-window.location.href="login.html";
+    const payload={
+        fecha:new Date().toISOString(),
+        nave_id:filaMaternidadSeleccionada?.nave_id||null,
+        fila_id:filaMaternidadSeleccionada?.id||null,
+        nave:nave?.nombre||"",
+        fila:filaMaternidadSeleccionada?.fila||"",
+        operacion,
+        cantidad,
+        peso_kg:peso,
+        usuario:user?.email||"Usuario"
+    };
 
-return;
+    if(operacion==="Muerte de venta"){
+        payload.peso_b1=Number(pesoB1)||0;
+        payload.peso_b2=Number(pesoB2)||0;
+    }
 
+    const {error}=await cliente
+        .from("movimientos_maternidad")
+        .insert(payload);
+
+    if(error){
+        alert(
+            "❌ Error registrando el historial de Maternidad:\n"+
+            error.message
+        );
+        return false;
+    }
+
+    return true;
 }
-
-const correoUsuario=
-sesionData.session.user.email ||
-"Sin correo";
-
-const nave=
-navesMaternidad.find(n=>
-String(n.id)===String(fila.nave_id)
-);
-
-const datosMovimiento={
-
-fecha:new Date().toISOString(),
-
-nave_id:fila.nave_id,
-
-fila_id:fila.id,
-
-nave:nave ? nave.nombre : "",
-
-fila:fila.fila,
-
-operacion:operacion,
-
-cantidad:cantidad,
-
-peso_kg:peso || 0,
-
-usuario:correoUsuario,
-
-motivo:motivo
-
-};
-
-if(operacion==="Muerte de venta"){
-
-datosMovimiento.peso_b1=pesoB1;
-datosMovimiento.peso_b2=pesoB2;
-
-}
-
-const {error}=
-await clienteSupabase
-.from("movimientos_maternidad")
-.insert(datosMovimiento);
-
-if(error){
-
-alert(
-"Error registrando el historial de Maternidad:\n\n"+
-error.message
-);
-
-}
-
-}
-
-
-/* ==================================================
-REGISTRAR MOVIMIENTO CEBA DESDE MATERNIDAD
-================================================== */
 
 async function registrarMovimientoCebaDesdeMaternidad(
-cuarton,
-cantidad,
-motivo
+    motivo,
+    cantidad,
+    nave,
+    cuarton
 ){
+    const cliente=db();
 
-const {
-data:sesionData
-}=
-await clienteSupabase.auth.getSession();
+    const {data:{user}}=await cliente.auth.getUser();
 
-if(!sesionData.session){
+    const operacion=
+        motivo.includes("Entrada") ? "Entrada" : "Salida";
 
-window.location.href="login.html";
+    const {error}=await cliente
+        .from("movimientos_naves")
+        .insert({
+            fecha:new Date().toISOString(),
+            nave_id:nave?.id||null,
+            cuarton_id:cuarton?.id||null,
+            nave:nave?.nombre||"",
+            cuarton:cuarton?.numero||null,
+            operacion,
+            cantidad,
+            peso_kg:0,
+            usuario:user?.email||"Usuario",
+            motivo
+        });
 
-return;
+    if(error){
+        console.error(error);
+        return false;
+    }
 
+    return true;
 }
 
-const correoUsuario=
-sesionData.session.user.email ||
-"Sin correo";
 
-const nave=
-todasLasNaves.find(n=>
-String(n.id)===String(cuarton.nave_id)
-);
+/* ================= TOTAL GENERAL ================= */
 
-const {error}=
-await clienteSupabase
-.from("movimientos_naves")
-.insert({
+async function actualizarTotalGeneralNaves(){
+    let total=0;
 
-fecha:new Date().toISOString(),
+    total+=todosLosCuartones.reduce(
+        (s,c)=>s+Number(c.cantidad_cerdos||0),0
+    );
 
-nave_id:cuarton.nave_id,
+    total+=filasDestete.reduce(
+        (s,f)=>s+Number(f.cantidad_cerdos||0),0
+    );
 
-cuarton_id:cuarton.id,
+    total+=filasMaternidad.reduce(
+        (s,f)=>s+Number(f.cantidad_cerdos||0),0
+    );
 
-nave:nave ? nave.nombre : "",
+    document.getElementById("numeroTotalGeneralNaves")
+        .textContent=total;
+}
 
-cuarton:cuarton.numero,
 
-operacion:motivo.includes("Entrada")
-?
-"Entrada"
-:
-"Salida",
+/* ================= EVENTOS DE PESO ================= */
 
-cantidad:cantidad,
+document.addEventListener("input",e=>{
+    if(
+        e.target?.id==="pesoB1MuerteVenta"||
+        e.target?.id==="pesoB2MuerteVenta"
+    ){
+        actualizarTotalMuerteVentaCeba();
+    }
 
-peso_kg:0,
+    if(
+        e.target?.id==="pesoB1MuerteVentaDestete"||
+        e.target?.id==="pesoB2MuerteVentaDestete"
+    ){
+        actualizarTotalMuerteVentaDestete();
+    }
 
-usuario:correoUsuario,
+    if(
+        e.target?.id==="pesoB1MuerteVentaMaternidad"||
+        e.target?.id==="pesoB2MuerteVentaMaternidad"
+    ){
+        const b1=Number(
+            document.getElementById("pesoB1MuerteVentaMaternidad").value
+        )||0;
 
-motivo:motivo
+        const b2=Number(
+            document.getElementById("pesoB2MuerteVentaMaternidad").value
+        )||0;
 
+        document.getElementById(
+            "totalPesoMuerteVentaMaternidad"
+        ).textContent=
+            `T: ${(b1+b2).toFixed(2)} kg`;
+    }
 });
 
-if(error){
 
-console.error(
-"Error registrando movimiento de Ceba:",
-error
-);
-
-}
-
-}
-
-
-/* ==================================================
-CERRAR PANEL
-================================================== */
-
-function cerrarPanel(){
-
-ocultarTodosLosPaneles();
-
-const ids=[
-
-"cantidadAgregar",
-"cantidadVenta",
-"pesoVenta",
-"cantidadMuerteTotal",
-"cantidadMuerteVenta",
-"pesoB1MuerteVenta",
-"pesoB2MuerteVenta",
-"cantidadReagrupeSalida",
-"cantidadGrupo",
-"pesoGrupo",
-
-"cantidadAgregarDestete",
-"cantidadSalidaCebaDestete",
-"cantidadMuerteDestete",
-"cantidadMuerteTotalDestete",
-"cantidadMuerteVentaDestete",
-"pesoB1MuerteVentaDestete",
-"pesoB2MuerteVentaDestete",
-"cantidadReagrupeDestete",
-"cantidadCuartonesDestete",
-"cantidadCuartonesVaciosDestete",
-
-"cantidadAgregarMaternidad",
-"cantidadAgregarDesdeCeba",
-"cantidadSalidaCebaMaternidad",
-"cantidadMuerteMaternidad",
-"cantidadMuerteVentaMaternidad",
-"pesoB1MuerteVentaMaternidad",
-"pesoB2MuerteVentaMaternidad",
-"cantidadVentaMaternidad",
-"pesoVentaMaternidad",
-"cantidadReagrupeMaternidad"
-
-];
-
-ids.forEach(id=>{
-
-const elemento=
-document.getElementById(id);
-
-if(elemento){
-elemento.value="";
-}
-
-});
-
-document.getElementById(
-"totalPesoMuerteVenta"
-).innerText="T: 0.00 kg";
-
-document.getElementById(
-"totalPesoMuerteVentaDestete"
-).innerText="T: 0.00 kg";
-
-document.getElementById(
-"totalPesoMuerteVentaMaternidad"
-).innerText="T: 0.00 kg";
-
-ventaGrupo=[];
-
-actualizarResumenGrupo();
-
-tipoEntradaSeleccionado=null;
-
-}
-
-
-/* ==================================================
-OCULTAR TODOS LOS PANELES
-================================================== */
-
-function ocultarTodosLosPaneles(){
-
-const ids=[
-
-"panelCuarton",
-"panelEntrada",
-"panelAgregar",
-"panelMotivo",
-"panelVenta",
-"panelVentaGrupo",
-"panelMuerte",
-"panelMuerteTotal",
-"panelMuerteVenta",
-"panelReagrupeSalida",
-
-"panelFilaDestete",
-"panelAgregarDestete",
-"panelSalidaCebaDestete",
-"panelMuerteDestete",
-"panelMuerteTotalDestete",
-"panelMuerteVentaDestete",
-"panelAgregarDatosDestete",
-"panelReagrupeDestete",
-
-"panelFilaMaternidad",
-"panelAgregarMaternidad",
-"panelCantidadAgregarMaternidad",
-"panelAgregarDesdeCeba",
-"panelSalidaMaternidad",
-"panelSalidaCebaMaternidad",
-"panelMuerteMaternidad",
-"panelMuerteVentaMaternidad",
-"panelVentaMaternidad",
-"panelReagrupeMaternidad"
-
-];
-
-ids.forEach(id=>{
-
-const elemento=
-document.getElementById(id);
-
-if(elemento){
-
-elemento
-.classList
-.add("oculto");
-
-}
-
-});
-
-}
-
-
-/* ==================================================
-INICIAR
-================================================== */
+/* ================= INICIO ================= */
 
 async function iniciar(){
+    const ok=await verificarSesion();
+    if(!ok)return;
 
-const ok=
-await verificarSesion();
+    await cargarNaves();
+    await cargarDestete();
+    await cargarMaternidad();
 
-if(!ok){
-return;
+    mostrarNavesCeba();
 }
 
-await actualizarTotalGeneralNaves();
-
-}
-
-iniciar();
-
+window.addEventListener("load",iniciar);
 </script>
 
 </body>
-
-    </html>
+</html>
