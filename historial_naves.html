@@ -475,6 +475,18 @@ tbody tr:hover td{
     font-weight:bold;
 }
 
+.pesoBandas{
+
+    line-height:1.7;
+
+    white-space:nowrap;
+}
+
+.pesoBandas b{
+
+    color:#ff5555;
+}
+
 
 /* ==========================================
    DESTETE
@@ -638,12 +650,7 @@ onclick="window.location.href='naves.html'">
 </button>
 
 
-<!-- ==========================================
-     BOTONES DE HISTORIALES
-========================================== -->
-
 <div class="botonesHistorial">
-
 
 <button
 id="botonHistorialCeba"
@@ -674,7 +681,6 @@ onclick="cambiarHistorialMaternidad()">
 
 </button>
 
-
 </div>
 
 
@@ -688,7 +694,6 @@ class="seccionHistorial activa">
 
 
 <div class="estadisticas">
-
 
 <div class="estadistica">
 
@@ -886,7 +891,7 @@ onclick="limpiarFiltros()">
 
 <th>🔢 Cantidad</th>
 
-<th>⚖️ Peso kg</th>
+<th>⚖️ Peso</th>
 
 <th>📋 Motivo</th>
 
@@ -938,14 +943,12 @@ class="seccionHistorial">
 </h2>
 
 <p>
-Registro de entradas y salidas de las filas
-F1, F2 y F3 del área de Destete.
+Registro de entradas, salidas, ventas y muertes
+de las filas F1, F2 y F3 del área de Destete.
 </p>
 
 </div>
 
-
-<!-- ESTADÍSTICAS DESTETE -->
 
 <div class="estadisticas">
 
@@ -990,6 +993,44 @@ id="totalSalidasDestete">
 
 <div class="estadistica">
 
+<div class="icono">☠️</div>
+
+<div class="titulo">
+MUERTES
+</div>
+
+<div
+class="numero"
+id="totalMuertesDestete">
+
+0
+
+</div>
+
+</div>
+
+
+<div class="estadistica">
+
+<div class="icono">⚖️</div>
+
+<div class="titulo">
+MUERTES DE VENTA
+</div>
+
+<div
+class="numero"
+id="totalMuertesVentaDestete">
+
+0
+
+</div>
+
+</div>
+
+
+<div class="estadistica">
+
 <div class="icono">📊</div>
 
 <div class="titulo">
@@ -1009,8 +1050,6 @@ id="totalMovimientosDestete">
 
 </div>
 
-
-<!-- FILTROS DESTETE -->
 
 <div class="filtros">
 
@@ -1057,6 +1096,14 @@ F3
 🚚 Salida Ceba
 </option>
 
+<option value="Muerte total">
+☠️ Muerte total
+</option>
+
+<option value="Muerte de venta">
+⚖️ Muerte de venta
+</option>
+
 </select>
 
 
@@ -1090,8 +1137,6 @@ onclick="limpiarFiltrosDestete()">
 </div>
 
 
-<!-- TABLA DESTETE -->
-
 <div class="caja">
 
 <table>
@@ -1110,6 +1155,8 @@ onclick="limpiarFiltrosDestete()">
 
 <th>🔢 Cantidad</th>
 
+<th>⚖️ Peso</th>
+
 <th>👤 Usuario</th>
 
 <th>⚙️ Acción</th>
@@ -1124,7 +1171,7 @@ onclick="limpiarFiltrosDestete()">
 <tr>
 
 <td
-colspan="7"
+colspan="8"
 class="mensaje">
 
 ⏳ Cargando historial de Destete...
@@ -1164,8 +1211,6 @@ ventas y muertes del área de Maternidad.
 
 </div>
 
-
-<!-- ESTADÍSTICAS MATERNIDAD -->
 
 <div class="estadisticas">
 
@@ -1207,6 +1252,8 @@ id="totalSalidasMaternidad">
 
 </div>
 
+
+<div class="estadistica">
 
 <div class="estadistica">
 
@@ -1286,8 +1333,6 @@ id="totalMovimientosMaternidad">
 
 </div>
 
-
-<!-- FILTROS MATERNIDAD -->
 
 <div class="filtros">
 
@@ -1377,8 +1422,6 @@ onclick="limpiarFiltrosMaternidad()">
 </div>
 
 
-<!-- TABLA MATERNIDAD -->
-
 <div class="caja">
 
 <table>
@@ -1399,7 +1442,7 @@ onclick="limpiarFiltrosMaternidad()">
 
 <th>🔢 Cantidad</th>
 
-<th>⚖️ Peso kg</th>
+<th>⚖️ Peso</th>
 
 <th>📋 Motivo</th>
 
@@ -1435,10 +1478,6 @@ class="mensaje">
 </div>
 
 
-<!-- ==========================================
-     VOLVER AL MENÚ
-========================================== -->
-
 <button
 class="boton"
 onclick="window.location.href='menu.html'">
@@ -1463,90 +1502,67 @@ let todosLosMovimientosMaternidad=[];
 
 
 /* ==========================================
-   CAMBIAR A HISTORIAL CEBA
+   CAMBIAR HISTORIAL CEBA
 ========================================== */
 
 function mostrarHistorialCeba(){
 
     document
     .getElementById("seccionCeba")
-    .classList
-    .add("activa");
-
+    .classList.add("activa");
 
     document
     .getElementById("seccionDestete")
-    .classList
-    .remove("activa");
-
+    .classList.remove("activa");
 
     document
     .getElementById("seccionMaternidad")
-    .classList
-    .remove("activa");
-
+    .classList.remove("activa");
 
     document
     .getElementById("botonHistorialCeba")
-    .classList
-    .add("activo");
-
+    .classList.add("activo");
 
     document
     .getElementById("botonHistorialDestete")
-    .classList
-    .remove("activo");
-
+    .classList.remove("activo");
 
     document
     .getElementById("botonHistorialMaternidad")
-    .classList
-    .remove("activo");
+    .classList.remove("activo");
 
 }
 
 
 /* ==========================================
-   CAMBIAR A HISTORIAL DESTETE
+   CAMBIAR HISTORIAL DESTETE
 ========================================== */
 
 async function cambiarHistorialDestete(){
 
     document
     .getElementById("seccionCeba")
-    .classList
-    .remove("activa");
-
+    .classList.remove("activa");
 
     document
     .getElementById("seccionDestete")
-    .classList
-    .add("activa");
-
+    .classList.add("activa");
 
     document
     .getElementById("seccionMaternidad")
-    .classList
-    .remove("activa");
-
+    .classList.remove("activa");
 
     document
     .getElementById("botonHistorialCeba")
-    .classList
-    .remove("activo");
-
+    .classList.remove("activo");
 
     document
     .getElementById("botonHistorialDestete")
-    .classList
-    .add("activo");
-
+    .classList.add("activo");
 
     document
     .getElementById("botonHistorialMaternidad")
-    .classList
-    .remove("activo");
-
+    .classList.remove("activo");
 
     await cargarHistorialDestete();
 
@@ -1554,46 +1570,34 @@ async function cambiarHistorialDestete(){
 
 
 /* ==========================================
-   CAMBIAR A HISTORIAL MATERNIDAD
+   CAMBIAR HISTORIAL MATERNIDAD
 ========================================== */
 
 async function cambiarHistorialMaternidad(){
 
     document
     .getElementById("seccionCeba")
-    .classList
-    .remove("activa");
-
+    .classList.remove("activa");
 
     document
     .getElementById("seccionDestete")
-    .classList
-    .remove("activa");
-
+    .classList.remove("activa");
 
     document
     .getElementById("seccionMaternidad")
-    .classList
-    .add("activa");
-
+    .classList.add("activa");
 
     document
     .getElementById("botonHistorialCeba")
-    .classList
-    .remove("activo");
-
+    .classList.remove("activo");
 
     document
     .getElementById("botonHistorialDestete")
-    .classList
-    .remove("activo");
-
+    .classList.remove("activo");
 
     document
     .getElementById("botonHistorialMaternidad")
-    .classList
-    .add("activo");
-
+    .classList.add("activo");
 
     await cargarHistorialMaternidad();
 
@@ -1611,7 +1615,6 @@ async function verificarSesion(){
     .auth
     .getSession();
 
-
     if(error || !data.session){
 
         window.location.href="login.html";
@@ -1620,10 +1623,8 @@ async function verificarSesion(){
 
     }
 
-
     const usuarioId=
     data.session.user.id;
-
 
     const {data:perfil,error:errorPerfil}=
     await clienteSupabase
@@ -1631,7 +1632,6 @@ async function verificarSesion(){
     .select("id,rol")
     .eq("id",usuarioId)
     .maybeSingle();
-
 
     if(errorPerfil){
 
@@ -1644,7 +1644,6 @@ async function verificarSesion(){
 
     }
 
-
     if(!perfil){
 
         alert(
@@ -1655,14 +1654,12 @@ async function verificarSesion(){
 
     }
 
-
     esAdministrador=
     String(perfil.rol || "")
     .trim()
     .toLowerCase()
     ===
     "administrador";
-
 
     return true;
 
@@ -1681,7 +1678,6 @@ async function cargarNavesFiltro(){
     .select("*")
     .order("id");
 
-
     if(error){
 
         console.log(error);
@@ -1690,10 +1686,8 @@ async function cargarNavesFiltro(){
 
     }
 
-
     const select=
     document.getElementById("filtroNave");
-
 
     data.forEach(nave=>{
 
@@ -1723,7 +1717,6 @@ async function cargarHistorial(){
         "tablaHistorial"
     );
 
-
     tabla.innerHTML=`
 
     <tr>
@@ -1740,7 +1733,6 @@ async function cargarHistorial(){
 
     `;
 
-
     const {data,error}=
     await clienteSupabase
     .from("movimientos_naves")
@@ -1751,7 +1743,6 @@ async function cargarHistorial(){
             ascending:false
         }
     );
-
 
     if(error){
 
@@ -1779,10 +1770,8 @@ async function cargarHistorial(){
 
     }
 
-
     todosLosMovimientos=
     data || [];
-
 
     mostrarHistorial(
         todosLosMovimientos
@@ -1802,11 +1791,9 @@ function mostrarHistorial(movimientos){
         "tablaHistorial"
     );
 
-
     actualizarEstadisticas(
         movimientos
     );
-
 
     if(
         !movimientos ||
@@ -1833,20 +1820,16 @@ function mostrarHistorial(movimientos){
 
     }
 
-
     let html="";
-
 
     movimientos.forEach(m=>{
 
         const fechaCompleta=
         new Date(m.fecha);
 
-
         const fecha=
         fechaCompleta
         .toLocaleDateString("es-ES");
-
 
         const hora=
         fechaCompleta
@@ -1858,18 +1841,15 @@ function mostrarHistorial(movimientos){
             }
         );
 
-
         const esGrupo=
         Boolean(
             m.cuartones ||
             m.naves
         );
 
-
         let navesMostrar="";
 
         let cuartonesMostrar="";
-
 
         if(esGrupo){
 
@@ -1882,7 +1862,6 @@ function mostrarHistorial(movimientos){
                 :
                 "N"+m.nave_id
             );
-
 
             cuartonesMostrar=
             m.cuartones ||
@@ -1900,7 +1879,6 @@ function mostrarHistorial(movimientos){
             m.nave ||
             "N"+m.nave_id;
 
-
             cuartonesMostrar=
             m.cuarton
             ?
@@ -1911,8 +1889,78 @@ function mostrarHistorial(movimientos){
         }
 
 
+        const esMuerteVenta=
+        String(
+            m.motivo || ""
+        )
+        .trim()
+        .toLowerCase()
+        ===
+        "muerte de venta";
+
+
         const peso=
         Number(m.peso_kg || 0);
+
+
+        const pesoB1=
+        Number(
+            m.peso_b1 ??
+            m.b1 ??
+            0
+        );
+
+
+        const pesoB2=
+        Number(
+            m.peso_b2 ??
+            m.b2 ??
+            0
+        );
+
+
+        const pesoTotal=
+        peso>0
+        ?
+        peso
+        :
+        pesoB1+pesoB2;
+
+
+        let pesoMostrar="—";
+
+
+        if(esMuerteVenta){
+
+            pesoMostrar=`
+
+            <div class="pesoBandas">
+
+            <b>B1:</b>
+            ${pesoB1.toFixed(2)} kg
+
+            <br>
+
+            <b>B2:</b>
+            ${pesoB2.toFixed(2)} kg
+
+            <br>
+
+            <b>T:</b>
+            ${pesoTotal.toFixed(2)} kg
+
+            </div>
+
+            `;
+
+        }
+
+        else if(peso>0){
+
+            pesoMostrar=
+            peso.toFixed(2);
+
+        }
 
 
         const botonEliminar=
@@ -1994,13 +2042,7 @@ function mostrarHistorial(movimientos){
 
         <td>
 
-        ${
-            peso>0
-            ?
-            peso.toFixed(2)
-            :
-            "—"
-        }
+        ${pesoMostrar}
 
         </td>
 
@@ -2028,7 +2070,6 @@ function mostrarHistorial(movimientos){
 
     });
 
-
     tabla.innerHTML=html;
 
 }
@@ -2041,25 +2082,19 @@ function mostrarHistorial(movimientos){
 function actualizarEstadisticas(movimientos){
 
     let entradas=0;
-
     let ventas=0;
-
     let muertes=0;
-
     let muertesVenta=0;
-
 
     movimientos.forEach(m=>{
 
         const cantidad=
         Number(m.cantidad || 0);
 
-
         const motivo=
         String(m.motivo || "")
         .trim()
         .toLowerCase();
-
 
         if(
             motivo==="entrada destete" ||
@@ -2070,20 +2105,17 @@ function actualizarEstadisticas(movimientos){
 
         }
 
-
         if(motivo==="venta"){
 
             ventas+=cantidad;
 
         }
 
-
         if(motivo==="muerte total"){
 
             muertes+=cantidad;
 
         }
-
 
         if(motivo==="muerte de venta"){
 
@@ -2093,26 +2125,21 @@ function actualizarEstadisticas(movimientos){
 
     });
 
-
     document
     .getElementById("totalEntradas")
     .innerText=entradas;
-
 
     document
     .getElementById("totalVentas")
     .innerText=ventas;
 
-
     document
     .getElementById("totalMuertes")
     .innerText=muertes;
 
-
     document
     .getElementById("totalMuertesVenta")
     .innerText=muertesVenta;
-
 
     document
     .getElementById("totalMovimientos")
@@ -2133,22 +2160,18 @@ function aplicarFiltros(){
         "filtroNave"
     ).value;
 
-
     const motivo=
     document.getElementById(
         "filtroMotivo"
     ).value;
-
 
     const fecha=
     document.getElementById(
         "filtroFecha"
     ).value;
 
-
     let resultado=
     [...todosLosMovimientos];
-
 
     if(nave){
 
@@ -2161,7 +2184,6 @@ function aplicarFiltros(){
                 String(m.naves)
                 .split(",");
 
-
                 return lista.some(n=>
 
                     String(n)
@@ -2173,7 +2195,6 @@ function aplicarFiltros(){
 
             }
 
-
             return String(m.nave_id)
             ===
             String(nave);
@@ -2181,7 +2202,6 @@ function aplicarFiltros(){
         });
 
     }
-
 
     if(motivo){
 
@@ -2197,7 +2217,6 @@ function aplicarFiltros(){
 
     }
 
-
     if(fecha){
 
         resultado=
@@ -2205,7 +2224,6 @@ function aplicarFiltros(){
 
             const d=
             new Date(m.fecha);
-
 
             const local=
 
@@ -2223,13 +2241,11 @@ function aplicarFiltros(){
                 d.getDate()
             ).padStart(2,"0");
 
-
             return local===fecha;
 
         });
 
     }
-
 
     mostrarHistorial(resultado);
 
@@ -2246,16 +2262,13 @@ function limpiarFiltros(){
     .getElementById("filtroNave")
     .value="";
 
-
     document
     .getElementById("filtroMotivo")
     .value="";
 
-
     document
     .getElementById("filtroFecha")
     .value="";
-
 
     mostrarHistorial(
         todosLosMovimientos
@@ -2280,7 +2293,6 @@ async function eliminarMovimiento(id){
 
     }
 
-
     if(!confirm(
         "⚠️ ¿Seguro que deseas eliminar este registro?\n\n"+
         "Esta acción no se puede deshacer."
@@ -2290,13 +2302,11 @@ async function eliminarMovimiento(id){
 
     }
 
-
     const {error}=
     await clienteSupabase
     .from("movimientos_naves")
     .delete()
     .eq("id",id);
-
 
     if(error){
 
@@ -2309,11 +2319,9 @@ async function eliminarMovimiento(id){
 
     }
 
-
     alert(
         "✅ Registro eliminado correctamente."
     );
-
 
     await cargarHistorial();
 
@@ -2324,11 +2332,6 @@ async function eliminarMovimiento(id){
    HISTORIAL DESTETE
 ================================================== */
 
-
-/* ==========================================
-   CARGAR HISTORIAL DESTETE
-========================================== */
-
 async function cargarHistorialDestete(){
 
     const tabla=
@@ -2336,13 +2339,12 @@ async function cargarHistorialDestete(){
         "tablaHistorialDestete"
     );
 
-
     tabla.innerHTML=`
 
     <tr>
 
     <td
-    colspan="7"
+    colspan="8"
     class="mensaje">
 
     ⏳ Cargando historial de Destete...
@@ -2352,7 +2354,6 @@ async function cargarHistorialDestete(){
     </tr>
 
     `;
-
 
     const {data,error}=
     await clienteSupabase
@@ -2365,7 +2366,6 @@ async function cargarHistorialDestete(){
         }
     );
 
-
     if(error){
 
         tabla.innerHTML=`
@@ -2373,7 +2373,7 @@ async function cargarHistorialDestete(){
         <tr>
 
         <td
-        colspan="7"
+        colspan="8"
         class="mensaje">
 
         ❌ Error cargando historial de Destete:
@@ -2392,10 +2392,8 @@ async function cargarHistorialDestete(){
 
     }
 
-
     todosLosMovimientosDestete=
     data || [];
-
 
     mostrarHistorialDestete(
         todosLosMovimientosDestete
@@ -2415,11 +2413,9 @@ function mostrarHistorialDestete(movimientos){
         "tablaHistorialDestete"
     );
 
-
     actualizarEstadisticasDestete(
         movimientos
     );
-
 
     if(
         !movimientos ||
@@ -2431,7 +2427,7 @@ function mostrarHistorialDestete(movimientos){
         <tr>
 
         <td
-        colspan="7"
+        colspan="8"
         class="mensaje">
 
         📭 No hay movimientos de Destete para mostrar.
@@ -2446,22 +2442,16 @@ function mostrarHistorialDestete(movimientos){
 
     }
 
-
     let html="";
-
 
     movimientos.forEach(m=>{
 
         const fechaCompleta=
         new Date(m.fecha);
 
-
         const fecha=
         fechaCompleta
-        .toLocaleDateString(
-            "es-ES"
-        );
-
+        .toLocaleDateString("es-ES");
 
         const hora=
         fechaCompleta
@@ -2473,15 +2463,100 @@ function mostrarHistorialDestete(movimientos){
             }
         );
 
-
         const cantidad=
         Number(m.cantidad || 0);
-
 
         const operacion=
         String(
             m.operacion || ""
         );
+
+        const motivo=
+        String(
+            m.motivo || ""
+        );
+
+        const operacionNormalizada=
+        operacion
+        .trim()
+        .toLowerCase();
+
+
+        const motivoNormalizado=
+        motivo
+        .trim()
+        .toLowerCase();
+
+
+        const esMuerteTotal=
+        operacionNormalizada==="muerte total" ||
+        motivoNormalizado==="muerte total";
+
+
+        const esMuerteVenta=
+        operacionNormalizada==="muerte de venta" ||
+        motivoNormalizado==="muerte de venta";
+
+
+        const peso=
+        Number(m.peso_kg || 0);
+
+        const pesoB1=
+        Number(
+            m.peso_b1 ??
+            m.b1 ??
+            0
+        );
+
+        const pesoB2=
+        Number(
+            m.peso_b2 ??
+            m.b2 ??
+            0
+        );
+
+        const pesoTotal=
+        peso>0
+        ?
+        peso
+        :
+        pesoB1+pesoB2;
+
+
+        let pesoMostrar="—";
+
+
+        if(esMuerteVenta){
+
+            pesoMostrar=`
+
+            <div class="pesoBandas">
+
+            <b>B1:</b>
+            ${pesoB1.toFixed(2)} kg
+
+            <br>
+
+            <b>B2:</b>
+            ${pesoB2.toFixed(2)} kg
+
+            <br>
+
+            <b>T:</b>
+            ${pesoTotal.toFixed(2)} kg
+
+            </div>
+
+            `;
+
+        }
+
+        else if(peso>0){
+
+            pesoMostrar=
+            peso.toFixed(2);
+
+        }
 
 
         const botonEliminar=
@@ -2515,6 +2590,43 @@ function mostrarHistorialDestete(movimientos){
         `;
 
 
+        let operacionMostrar=
+        operacion;
+
+
+        if(
+            operacionNormalizada==="entrada"
+        ){
+
+            operacionMostrar=
+            "➕ Entrada";
+
+        }
+
+        else if(
+            operacionNormalizada==="salida ceba"
+        ){
+
+            operacionMostrar=
+            "🚚 Salida Ceba";
+
+        }
+
+        else if(esMuerteTotal){
+
+            operacionMostrar=
+            "☠️ Muerte total";
+
+        }
+
+        else if(esMuerteVenta){
+
+            operacionMostrar=
+            "⚖️ Muerte de venta";
+
+        }
+
+
         html+=`
 
         <tr>
@@ -2525,13 +2637,11 @@ function mostrarHistorialDestete(movimientos){
 
         </td>
 
-
         <td>
 
         ${hora}
 
         </td>
-
 
         <td class="grupo">
 
@@ -2539,23 +2649,11 @@ function mostrarHistorialDestete(movimientos){
 
         </td>
 
-
         <td>
 
-        ${
-            operacion==="Entrada"
-            ?
-            "➕ Entrada"
-            :
-            operacion==="Salida Ceba"
-            ?
-            "🚚 Salida Ceba"
-            :
-            operacion
-        }
+        ${operacionMostrar}
 
         </td>
-
 
         <td>
 
@@ -2567,13 +2665,17 @@ function mostrarHistorialDestete(movimientos){
 
         </td>
 
+        <td>
+
+        ${pesoMostrar}
+
+        </td>
 
         <td>
 
         ${m.usuario || "—"}
 
         </td>
-
 
         <td>
 
@@ -2586,7 +2688,6 @@ function mostrarHistorialDestete(movimientos){
         `;
 
     });
-
 
     tabla.innerHTML=html;
 
@@ -2605,16 +2706,26 @@ function actualizarEstadisticasDestete(
 
     let salidas=0;
 
+    let muertes=0;
+
+    let muertesVenta=0;
+
 
     movimientos.forEach(m=>{
 
         const cantidad=
         Number(m.cantidad || 0);
 
-
         const operacion=
         String(
             m.operacion || ""
+        )
+        .trim()
+        .toLowerCase();
+
+        const motivo=
+        String(
+            m.motivo || ""
         )
         .trim()
         .toLowerCase();
@@ -2637,6 +2748,26 @@ function actualizarEstadisticasDestete(
 
         }
 
+
+        if(
+            operacion==="muerte total" ||
+            motivo==="muerte total"
+        ){
+
+            muertes+=cantidad;
+
+        }
+
+
+        if(
+            operacion==="muerte de venta" ||
+            motivo==="muerte de venta"
+        ){
+
+            muertesVenta+=cantidad;
+
+        }
+
     });
 
 
@@ -2652,6 +2783,20 @@ function actualizarEstadisticasDestete(
         "totalSalidasDestete"
     )
     .innerText=salidas;
+
+
+    document
+    .getElementById(
+        "totalMuertesDestete"
+    )
+    .innerText=muertes;
+
+
+    document
+    .getElementById(
+        "totalMuertesVentaDestete"
+    )
+    .innerText=muertesVenta;
 
 
     document
@@ -2675,18 +2820,15 @@ function aplicarFiltrosDestete(){
         "filtroFilaDestete"
     ).value;
 
-
     const operacion=
     document.getElementById(
         "filtroOperacionDestete"
     ).value;
 
-
     const fecha=
     document.getElementById(
         "filtroFechaDestete"
     ).value;
-
 
     let resultado=
     [...todosLosMovimientosDestete];
@@ -2711,14 +2853,19 @@ function aplicarFiltrosDestete(){
     if(operacion){
 
         resultado=
-        resultado.filter(m=>
+        resultado.filter(m=>{
 
-            String(m.operacion || "")
-            .trim()
-            ===
-            operacion
+            const op=
+            String(
+                m.operacion ||
+                m.motivo ||
+                ""
+            )
+            .trim();
 
-        );
+            return op===operacion;
+
+        });
 
     }
 
@@ -2730,7 +2877,6 @@ function aplicarFiltrosDestete(){
 
             const d=
             new Date(m.fecha);
-
 
             const local=
 
@@ -2747,7 +2893,6 @@ function aplicarFiltrosDestete(){
             String(
                 d.getDate()
             ).padStart(2,"0");
-
 
             return local===fecha;
 
@@ -2857,18 +3002,12 @@ async function eliminarMovimientoDestete(id){
    HISTORIAL MATERNIDAD
 ================================================== */
 
-
-/* ==========================================
-   CARGAR HISTORIAL MATERNIDAD
-========================================== */
-
 async function cargarHistorialMaternidad(){
 
     const tabla=
     document.getElementById(
         "tablaHistorialMaternidad"
     );
-
 
     tabla.innerHTML=`
 
@@ -3154,10 +3293,90 @@ function mostrarHistorialMaternidad(
         );
 
 
+        const pesoB1=
+        Number(
+            m.peso_b1 ??
+            m.b1 ??
+            0
+        );
+
+
+        const pesoB2=
+        Number(
+            m.peso_b2 ??
+            m.b2 ??
+            0
+        );
+
+
+        const pesoTotal=
+        peso>0
+        ?
+        peso
+        :
+        pesoB1+pesoB2;
+
+
         const operacion=
         String(
             m.operacion || ""
         );
+
+
+        const motivo=
+        String(
+            m.motivo || ""
+        );
+
+
+        const esMuerteVenta=
+        operacion
+        .trim()
+        .toLowerCase()
+        ===
+        "muerte de venta"
+        ||
+        motivo
+        .trim()
+        .toLowerCase()
+        ===
+        "muerte de venta";
+
+
+        let pesoMostrar="—";
+
+
+        if(esMuerteVenta){
+
+            pesoMostrar=`
+
+            <div class="pesoBandas">
+
+            <b>B1:</b>
+            ${pesoB1.toFixed(2)} kg
+
+            <br>
+
+            <b>B2:</b>
+            ${pesoB2.toFixed(2)} kg
+
+            <br>
+
+            <b>T:</b>
+            ${pesoTotal.toFixed(2)} kg
+
+            </div>
+
+            `;
+
+        }
+
+        else if(peso>0){
+
+            pesoMostrar=
+            peso.toFixed(2);
+
+        }
 
 
         const botonEliminar=
@@ -3298,13 +3517,7 @@ function mostrarHistorialMaternidad(
 
         <td>
 
-        ${
-            peso>0
-            ?
-            peso.toFixed(2)
-            :
-            "—"
-        }
+        ${pesoMostrar}
 
         </td>
 
@@ -3378,6 +3591,14 @@ function actualizarEstadisticasMaternidad(
         .toLowerCase();
 
 
+        const motivo=
+        String(
+            m.motivo || ""
+        )
+        .trim()
+        .toLowerCase();
+
+
         if(
             operacion==="entrada"
         ){
@@ -3406,7 +3627,8 @@ function actualizarEstadisticasMaternidad(
 
 
         if(
-            operacion==="muerte total"
+            operacion==="muerte total" ||
+            motivo==="muerte total"
         ){
 
             muertes+=cantidad;
@@ -3415,7 +3637,8 @@ function actualizarEstadisticasMaternidad(
 
 
         if(
-            operacion==="muerte de venta"
+            operacion==="muerte de venta" ||
+            motivo==="muerte de venta"
         ){
 
             muertesVenta+=cantidad;
@@ -3550,16 +3773,19 @@ function aplicarFiltrosMaternidad(){
     if(operacion){
 
         resultado=
-        resultado.filter(m=>
+        resultado.filter(m=>{
 
+            const op=
             String(
-                m.operacion || ""
+                m.operacion ||
+                m.motivo ||
+                ""
             )
-            .trim()
-            ===
-            operacion
+            .trim();
 
-        );
+            return op===operacion;
+
+        });
 
     }
 
