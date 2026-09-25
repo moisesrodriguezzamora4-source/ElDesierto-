@@ -5,8 +5,7 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>ElDesierto - Naves</title>
 
@@ -413,9 +412,7 @@ padding:12px;
 
 <h1>🐷 Naves</h1>
 
-<button
-class="boton"
-onclick="window.location.href='menu.html'">
+<button class="boton" onclick="window.location.href='menu.html'">
 ⬅️ Volver al menú
 </button>
 
@@ -439,9 +436,7 @@ onclick="window.location.href='menu.html'">
 
 TOTAL GENERAL
 
-<div
-id="numeroTotalGeneralNaves"
-class="numeroTotal">
+<div id="numeroTotalGeneralNaves" class="numeroTotal">
 0
 </div>
 
@@ -449,371 +444,139 @@ class="numeroTotal">
 
 </div>
 
-
-<!-- ==================================================
-CEBA
-================================================== -->
-
 <div id="contenidoCeba">
-
 <div id="contenidoNaves"></div>
-
 </div>
 
-
-<!-- ==================================================
-DESTETE
-================================================== -->
-
-<div
-id="contenidoDestete"
-class="oculto">
-
+<div id="contenidoDestete" class="oculto">
 <div id="contenidoDesteteNave"></div>
-
 </div>
 
-
-<!-- ==================================================
-MATERNIDAD
-================================================== -->
-
-<div
-id="contenidoMaternidad"
-class="oculto">
-
+<div id="contenidoMaternidad" class="oculto">
 <div id="contenidoMaternidadNaves"></div>
-
 </div>
 
-
-<!-- ==================================================
-PANEL CUARTÓN
-================================================== -->
-
-<div
-id="panelCuarton"
-class="panel oculto">
-
-<h2 id="tituloCuarton">
-Cuartón
-</h2>
-
-<p id="cantidadActual">
-🐷 Cerdos actuales: 0
-</p>
-
-<button onclick="mostrarAgregar()">
-➕ Agregar cerdos
-</button>
-
-<button onclick="mostrarMotivoSalida()">
-📤 Sacar cerdos
-</button>
-
-<button onclick="cerrarPanel()">
-❌ Cancelar
-</button>
-
+<div id="panelCuarton" class="panel oculto">
+<h2 id="tituloCuarton">Cuartón</h2>
+<p id="cantidadActual">🐷 Cerdos actuales: 0</p>
+<button onclick="mostrarAgregar()">➕ Agregar cerdos</button>
+<button onclick="mostrarMotivoSalida()">📤 Sacar cerdos</button>
+<button onclick="cerrarPanel()">❌ Cancelar</button>
 </div>
 
-
-<!-- ==================================================
-ENTRADA CEBA
-================================================== -->
-
-<div
-id="panelEntrada"
-class="panel oculto">
-
+<div id="panelEntrada" class="panel oculto">
 <h2>📥 Entrada de cerdos</h2>
-
-<button
-onclick="mostrarCantidadEntrada('Entrada Destete')">
-🍼 Entrada Destete
-</button>
-
-<button
-onclick="mostrarCantidadEntrada('Entrada Exterior')">
-🚚 Entrada Exterior
-</button>
-
-<button onclick="cerrarPanel()">
-❌ Cancelar
-</button>
-
+<button onclick="mostrarCantidadEntrada('Entrada Destete')">🍼 Entrada Destete</button>
+<button onclick="mostrarCantidadEntrada('Entrada Exterior')">🚚 Entrada Exterior</button>
+<button onclick="cerrarPanel()">❌ Cancelar</button>
 </div>
 
-
-<!-- ==================================================
-AGREGAR CEBA
-================================================== -->
-
-<div
-id="panelAgregar"
-class="panel oculto">
-
+<div id="panelAgregar" class="panel oculto">
 <h2>➕ Agregar cerdos</h2>
-
-<input
-id="cantidadAgregar"
-type="number"
-min="1"
-placeholder="Cantidad de cerdos">
-
-<button onclick="agregarCerdos()">
-Confirmar
-</button>
-
-<button onclick="cerrarPanel()">
-❌ Cancelar
-</button>
-
+<input id="cantidadAgregar" type="number" min="1" placeholder="Cantidad de cerdos">
+<button onclick="agregarCerdos()">Confirmar</button>
+<button onclick="cerrarPanel()">❌ Cancelar</button>
 </div>
 
-
-<!-- ==================================================
-MOTIVO SALIDA CEBA
-================================================== -->
-
-<div
-id="panelMotivo"
-class="panel oculto">
-
+<div id="panelMotivo" class="panel oculto">
 <h2>📤 Motivo de salida</h2>
-
-<button onclick="mostrarVenta()">
-💰 Venta
-</button>
-
-<button onclick="mostrarMuerte()">
-☠️ Muerte
-</button>
-
-<button onclick="mostrarReagrupeSalida()">
-🔄 Reagrupe
-</button>
-
-<button onclick="cerrarPanel()">
-❌ Cancelar
-</button>
-
+<button onclick="mostrarVenta()">💰 Venta</button>
+<button onclick="mostrarMuerte()">☠️ Muerte</button>
+<button onclick="mostrarReagrupeSalida()">🔄 Reagrupe</button>
+<button onclick="cerrarPanel()">❌ Cancelar</button>
 </div>
 
-
-<!-- ==================================================
-VENTA CEBA
-================================================== -->
-
-<div
-id="panelVenta"
-class="panel oculto">
-
+<div id="panelVenta" class="panel oculto">
 <h2>💰 Venta</h2>
-
-<input
-id="cantidadVenta"
-type="number"
-min="1"
-placeholder="Cantidad de cerdos">
-
-<input
-id="pesoVenta"
-type="number"
-min="0"
-step="0.01"
-placeholder="Peso total (kg)">
-
-<button onclick="procesarVenta()">
-Confirmar venta
-</button>
-
-<button onclick="mostrarVentaGrupo()">
-👥 Vender por grupo
-</button>
-
-<button onclick="cerrarPanel()">
-❌ Cancelar
-</button>
-
+<input id="cantidadVenta" type="number" min="1" placeholder="Cantidad de cerdos">
+<input id="pesoVenta" type="number" min="0" step="0.01" placeholder="Peso total (kg)">
+<button onclick="procesarVenta()">Confirmar venta</button>
+<button onclick="mostrarVentaGrupo()">👥 Vender por grupo</button>
+<button onclick="cerrarPanel()">❌ Cancelar</button>
 </div>
 
-
-<!-- ==================================================
-VENTA POR GRUPO
-================================================== -->
-
-<div
-id="panelVentaGrupo"
-class="panel oculto">
-
+<div id="panelVentaGrupo" class="panel oculto">
 <h2>👥 Vender por grupo</h2>
 
-<select
-id="grupoNaveSeleccionada"
-onchange="cargarCuartonesGrupo()">
-
-<option value="">
-Selecciona nave
-</option>
-
+<select id="grupoNaveSeleccionada" onchange="cargarCuartonesGrupo()">
+<option value="">Selecciona nave</option>
 </select>
 
 <select id="grupoCuartonSeleccionado">
-
-<option value="">
-Selecciona cuartón
-</option>
-
+<option value="">Selecciona cuartón</option>
 </select>
 
-<input
-id="cantidadGrupo"
-type="number"
-min="1"
-placeholder="Cantidad de cerdos">
+<input id="cantidadGrupo" type="number" min="1" placeholder="Cantidad de cerdos">
 
-<button onclick="agregarCuartonGrupo()">
-➕ Agregar cuartón
-</button>
+<button onclick="agregarCuartonGrupo()">➕ Agregar cuartón</button>
 
-<div
-id="listaGrupo"
-class="resumenGrupo">
-</div>
+<div id="listaGrupo" class="resumenGrupo"></div>
 
-<div
-id="resumenGrupoTexto"
-class="resumenGrupo">
+<div id="resumenGrupoTexto" class="resumenGrupo">
 Cerdos: 0
 </div>
 
-<input
-id="pesoGrupo"
-type="number"
-min="0"
-step="0.01"
-placeholder="Peso total del grupo (kg)">
+<input id="pesoGrupo" type="number" min="0" step="0.01" placeholder="Peso total del grupo (kg)">
 
-<button onclick="procesarVentaGrupo()">
-Confirmar venta por grupo
-</button>
+<button onclick="procesarVentaGrupo()">Confirmar venta por grupo</button>
 
-<button onclick="cerrarPanel()">
-❌ Cancelar
-</button>
-
+<button onclick="cerrarPanel()">❌ Cancelar</button>
 </div>
 
-
-<!-- ==================================================
-MUERTE CEBA
-================================================== -->
-
-<div
-id="panelMuerte"
-class="panel oculto">
-
+<div id="panelMuerte" class="panel oculto">
 <h2>☠️ Muerte</h2>
-
-<button onclick="mostrarMuerteTotal()">
-☠️ Muerte total
-</button>
-
-<button onclick="mostrarMuerteVenta()">
-⚖️ Muerte de venta
-</button>
-
-<button onclick="cerrarPanel()">
-❌ Cancelar
-</button>
-
+<button onclick="mostrarMuerteTotal()">☠️ Muerte total</button>
+<button onclick="mostrarMuerteVenta()">⚖️ Muerte de venta</button>
+<button onclick="cerrarPanel()">❌ Cancelar</button>
 </div>
 
-
-<div
-id="panelMuerteTotal"
-class="panel oculto">
-
+<div id="panelMuerteTotal" class="panel oculto">
 <h2>☠️ Muerte total</h2>
-
-<input
-id="cantidadMuerteTotal"
-type="number"
-min="1"
-placeholder="Cantidad de cerdos">
-
-<button onclick="procesarMuerteTotal()">
-Confirmar muerte total
-</button>
-
-<button onclick="cerrarPanel()">
-❌ Cancelar
-</button>
-
+<input id="cantidadMuerteTotal" type="number" min="1" placeholder="Cantidad de cerdos">
+<button onclick="procesarMuerteTotal()">Confirmar muerte total</button>
+<button onclick="cerrarPanel()">❌ Cancelar</button>
 </div>
 
-
-<div
-id="panelMuerteVenta"
-class="panel oculto">
-
+<div id="panelMuerteVenta" class="panel oculto">
 <h2>⚖️ Muerte de venta</h2>
 
-<input
-id="cantidadMuerteVenta"
-type="number"
-min="1"
-placeholder="Cantidad de cerdos">
+<input id="cantidadMuerteVenta" type="number" min="1" placeholder="Cantidad de cerdos">
 
 <p>Selecciona el tipo:</p>
 
-<button
-onclick="seleccionarTipoMuerteVentaCeba('bandas')">
+<button onclick="seleccionarTipoMuerteVentaCeba('bandas')">
 ⚖️ Por bandas
 </button>
 
-<button
-onclick="seleccionarTipoMuerteVentaCeba('entero')">
+<button onclick="seleccionarTipoMuerteVentaCeba('entero')">
 🐷 Entero
 </button>
 
+<div id="panelBandasMuerteVentaCeba" class="pesoBandas">
 
-<div
-id="panelBandasMuerteVentaCeba"
-class="pesoBandas">
-
-<input
-id="pesoB1MuerteVenta"
+<input id="pesoB1MuerteVenta"
 type="number"
 min="0"
 step="0.01"
 placeholder="Peso B1 (kg)"
 oninput="calcularPesoMuerteVenta()">
 
-<input
-id="pesoB2MuerteVenta"
+<input id="pesoB2MuerteVenta"
 type="number"
 min="0"
 step="0.01"
 placeholder="Peso B2 (kg)"
 oninput="calcularPesoMuerteVenta()">
 
-<div
-id="totalPesoMuerteVenta"
-class="totalPesoBandas">
+<div id="totalPesoMuerteVenta" class="totalPesoBandas">
 T: 0.00 kg
 </div>
 
 </div>
 
+<div id="panelEnteroMuerteVentaCeba" class="pesoBandas oculto">
 
-<div
-id="panelEnteroMuerteVentaCeba"
-class="pesoBandas oculto">
-
-<input
-id="pesoEnteroMuerteVenta"
+<input id="pesoEnteroMuerteVenta"
 type="number"
 min="0"
 step="0.01"
@@ -821,66 +584,40 @@ placeholder="Peso del cochino entero (kg)">
 
 </div>
 
-
 <button onclick="procesarMuerteVenta()">
 Confirmar muerte de venta
 </button>
 
-<button onclick="cerrarPanel()">
-❌ Cancelar
-</button>
+<button onclick="cerrarPanel()">❌ Cancelar</button>
 
 </div>
 
-
-<!-- ==================================================
-REAGRUPACIÓN CEBA
-================================================== -->
-
-<div
-id="panelReagrupeSalida"
-class="panel oculto">
+<div id="panelReagrupeSalida" class="panel oculto">
 
 <h2>🔄 Reagrupe</h2>
 
 <p id="origenReagrupeTexto"></p>
 
-<input
-id="cantidadReagrupeSalida"
+<input id="cantidadReagrupeSalida"
 type="number"
 min="1"
 placeholder="Cantidad de cerdos">
 
 <select id="cuartonDestinoSalida">
-
-<option value="">
-Selecciona cuartón destino
-</option>
-
+<option value="">Selecciona cuartón destino</option>
 </select>
 
 <button onclick="procesarReagrupe()">
 Confirmar reagrupe
 </button>
 
-<button onclick="cerrarPanel()">
-❌ Cancelar
-</button>
+<button onclick="cerrarPanel()">❌ Cancelar</button>
 
 </div>
 
+<div id="panelFilaDestete" class="panel oculto">
 
-<!-- ==================================================
-DESTETE
-================================================== -->
-
-<div
-id="panelFilaDestete"
-class="panel oculto">
-
-<h2 id="tituloFilaDestete">
-Fila
-</h2>
+<h2 id="tituloFilaDestete">Fila</h2>
 
 <p id="cantidadFilaDestete">
 🐷 Cerdos actuales: 0
@@ -912,17 +649,11 @@ Fila
 
 </div>
 
+<div id="panelAgregarDestete" class="panel oculto">
 
-<div
-id="panelAgregarDestete"
-class="panel oculto">
+<h2 id="tituloAgregarDestete">➕ Agregar</h2>
 
-<h2 id="tituloAgregarDestete">
-➕ Agregar
-</h2>
-
-<input
-id="cantidadAgregarDestete"
+<input id="cantidadAgregarDestete"
 type="number"
 min="1"
 placeholder="Cantidad de cerdos">
@@ -937,17 +668,13 @@ Confirmar
 
 </div>
 
-
-<div
-id="panelSalidaCebaDestete"
-class="panel oculto">
+<div id="panelSalidaCebaDestete" class="panel oculto">
 
 <h2>📤 Salida para Ceba</h2>
 
 <p id="infoSalidaCebaDestete"></p>
 
-<input
-id="cantidadSalidaCebaDestete"
+<input id="cantidadSalidaCebaDestete"
 type="number"
 min="1"
 placeholder="Cantidad de cerdos">
@@ -962,10 +689,7 @@ Confirmar salida
 
 </div>
 
-
-<div
-id="panelMuerteDestete"
-class="panel oculto">
+<div id="panelMuerteDestete" class="panel oculto">
 
 <h2>☠️ Muerte</h2>
 
@@ -985,17 +709,13 @@ class="panel oculto">
 
 </div>
 
-
-<div
-id="panelMuerteTotalDestete"
-class="panel oculto">
+<div id="panelMuerteTotalDestete" class="panel oculto">
 
 <h2>☠️ Muerte total</h2>
 
 <p id="infoMuerteTotalDestete"></p>
 
-<input
-id="cantidadMuerteTotalDestete"
+<input id="cantidadMuerteTotalDestete"
 type="number"
 min="1"
 placeholder="Cantidad de cerdos">
@@ -1010,74 +730,58 @@ Confirmar muerte total
 
 </div>
 
-
-<div
-id="panelMuerteVentaDestete"
-class="panel oculto">
+<div id="panelMuerteVentaDestete" class="panel oculto">
 
 <h2>⚖️ Muerte de venta</h2>
 
 <p id="infoMuerteVentaDestete"></p>
 
-<input
-id="cantidadMuerteVentaDestete"
+<input id="cantidadMuerteVentaDestete"
 type="number"
 min="1"
 placeholder="Cantidad de cerdos">
 
-<button
-onclick="seleccionarTipoMuerteVentaDestete('bandas')">
+<button onclick="seleccionarTipoMuerteVentaDestete('bandas')">
 ⚖️ Por bandas
 </button>
 
-<button
-onclick="seleccionarTipoMuerteVentaDestete('entero')">
+<button onclick="seleccionarTipoMuerteVentaDestete('entero')">
 🐷 Entero
 </button>
 
+<div id="panelBandasMuerteVentaDestete" class="pesoBandas">
 
-<div
-id="panelBandasMuerteVentaDestete"
-class="pesoBandas">
-
-<input
-id="pesoB1MuerteVentaDestete"
+<input id="pesoB1MuerteVentaDestete"
 type="number"
 min="0"
 step="0.01"
 placeholder="Peso B1 (kg)"
 oninput="calcularPesoMuerteVentaDestete()">
 
-<input
-id="pesoB2MuerteVentaDestete"
+<input id="pesoB2MuerteVentaDestete"
 type="number"
 min="0"
 step="0.01"
 placeholder="Peso B2 (kg)"
 oninput="calcularPesoMuerteVentaDestete()">
 
-<div
-id="totalPesoMuerteVentaDestete"
+<div id="totalPesoMuerteVentaDestete"
 class="totalPesoBandas">
 T: 0.00 kg
 </div>
 
 </div>
 
-
-<div
-id="panelEnteroMuerteVentaDestete"
+<div id="panelEnteroMuerteVentaDestete"
 class="pesoBandas oculto">
 
-<input
-id="pesoEnteroMuerteVentaDestete"
+<input id="pesoEnteroMuerteVentaDestete"
 type="number"
 min="0"
 step="0.01"
 placeholder="Peso del cochino entero (kg)">
 
 </div>
-
 
 <button onclick="procesarMuerteVentaDestete()">
 Confirmar muerte de venta
@@ -1089,10 +793,7 @@ Confirmar muerte de venta
 
 </div>
 
-
-<div
-id="panelAgregarDatosDestete"
-class="panel oculto">
+<div id="panelAgregarDatosDestete" class="panel oculto">
 
 <h2 id="tituloAgregarDatosDestete">
 📊 Datos
@@ -1100,14 +801,12 @@ class="panel oculto">
 
 <p id="infoAgregarDatosDestete"></p>
 
-<input
-id="cantidadCuartonesDestete"
+<input id="cantidadCuartonesDestete"
 type="number"
 min="0"
 placeholder="Cantidad de cuartones">
 
-<input
-id="cantidadCuartonesVaciosDestete"
+<input id="cantidadCuartonesVaciosDestete"
 type="number"
 min="0"
 placeholder="Cuartones vacíos">
@@ -1122,27 +821,19 @@ Guardar datos
 
 </div>
 
-
-<div
-id="panelReagrupeDestete"
-class="panel oculto">
+<div id="panelReagrupeDestete" class="panel oculto">
 
 <h2>🔄 Reagrupe Destete</h2>
 
 <p id="infoReagrupeDestete"></p>
 
-<input
-id="cantidadReagrupeDestete"
+<input id="cantidadReagrupeDestete"
 type="number"
 min="1"
 placeholder="Cantidad de cerdos">
 
 <select id="filaDestinoDestete">
-
-<option value="">
-Selecciona fila destino
-</option>
-
+<option value="">Selecciona fila destino</option>
 </select>
 
 <button onclick="procesarReagrupeDestete()">
@@ -1155,14 +846,7 @@ Confirmar reagrupe
 
 </div>
 
-
-<!-- ==================================================
-MATERNIDAD
-================================================== -->
-
-<div
-id="panelFilaMaternidad"
-class="panel oculto">
+<div id="panelFilaMaternidad" class="panel oculto">
 
 <h2 id="tituloFilaMaternidad">
 Fila
@@ -1186,10 +870,7 @@ Fila
 
 </div>
 
-
-<div
-id="panelAgregarMaternidad"
-class="panel oculto">
+<div id="panelAgregarMaternidad" class="panel oculto">
 
 <h2>➕ Agregar cerdos</h2>
 
@@ -1207,15 +888,11 @@ class="panel oculto">
 
 </div>
 
-
-<div
-id="panelCantidadAgregarMaternidad"
-class="panel oculto">
+<div id="panelCantidadAgregarMaternidad" class="panel oculto">
 
 <h2>➕ Agregar cerdos</h2>
 
-<input
-id="cantidadAgregarMaternidad"
+<input id="cantidadAgregarMaternidad"
 type="number"
 min="1"
 placeholder="Cantidad de cerdos">
@@ -1230,31 +907,19 @@ Confirmar
 
 </div>
 
-
-<div
-id="panelAgregarDesdeCeba"
-class="panel oculto">
+<div id="panelAgregarDesdeCeba" class="panel oculto">
 
 <h2>🐷 Desde Ceba</h2>
 
 <select id="maternidadNaveCebaOrigen">
-
-<option value="">
-Selecciona nave de Ceba
-</option>
-
+<option value="">Selecciona nave de Ceba</option>
 </select>
 
 <select id="maternidadCuartonCebaOrigen">
-
-<option value="">
-Selecciona cuartón
-</option>
-
+<option value="">Selecciona cuartón</option>
 </select>
 
-<input
-id="cantidadAgregarDesdeCeba"
+<input id="cantidadAgregarDesdeCeba"
 type="number"
 min="1"
 placeholder="Cantidad de cerdos">
@@ -1269,10 +934,7 @@ Confirmar entrada
 
 </div>
 
-
-<div
-id="panelSalidaMaternidad"
-class="panel oculto">
+<div id="panelSalidaMaternidad" class="panel oculto">
 
 <h2>📤 Salida</h2>
 
@@ -1302,33 +964,21 @@ class="panel oculto">
 
 </div>
 
-
-<div
-id="panelSalidaCebaMaternidad"
-class="panel oculto">
+<div id="panelSalidaCebaMaternidad" class="panel oculto">
 
 <h2>📤 Salida para Ceba</h2>
 
 <p id="infoSalidaCebaMaternidad"></p>
 
 <select id="maternidadNaveCebaDestino">
-
-<option value="">
-Selecciona nave de Ceba
-</option>
-
+<option value="">Selecciona nave de Ceba</option>
 </select>
 
 <select id="maternidadCuartonCebaDestino">
-
-<option value="">
-Selecciona cuartón destino
-</option>
-
+<option value="">Selecciona cuartón destino</option>
 </select>
 
-<input
-id="cantidadSalidaCebaMaternidad"
+<input id="cantidadSalidaCebaMaternidad"
 type="number"
 min="1"
 placeholder="Cantidad de cerdos">
@@ -1343,17 +993,13 @@ Confirmar salida
 
 </div>
 
-
-<div
-id="panelMuerteMaternidad"
-class="panel oculto">
+<div id="panelMuerteMaternidad" class="panel oculto">
 
 <h2>☠️ Muerte total</h2>
 
 <p id="infoMuerteMaternidad"></p>
 
-<input
-id="cantidadMuerteMaternidad"
+<input id="cantidadMuerteMaternidad"
 type="number"
 min="1"
 placeholder="Cantidad de cerdos">
@@ -1368,74 +1014,58 @@ Confirmar muerte
 
 </div>
 
-
-<div
-id="panelMuerteVentaMaternidad"
-class="panel oculto">
+<div id="panelMuerteVentaMaternidad" class="panel oculto">
 
 <h2>⚖️ Muerte de venta</h2>
 
 <p id="infoMuerteVentaMaternidad"></p>
 
-<input
-id="cantidadMuerteVentaMaternidad"
+<input id="cantidadMuerteVentaMaternidad"
 type="number"
 min="1"
 placeholder="Cantidad de cerdos">
 
-<button
-onclick="seleccionarTipoMuerteVentaMaternidad('bandas')">
+<button onclick="seleccionarTipoMuerteVentaMaternidad('bandas')">
 ⚖️ Por bandas
 </button>
 
-<button
-onclick="seleccionarTipoMuerteVentaMaternidad('entero')">
+<button onclick="seleccionarTipoMuerteVentaMaternidad('entero')">
 🐷 Entero
 </button>
 
+<div id="panelBandasMuerteVentaMaternidad" class="pesoBandas">
 
-<div
-id="panelBandasMuerteVentaMaternidad"
-class="pesoBandas">
-
-<input
-id="pesoB1MuerteVentaMaternidad"
+<input id="pesoB1MuerteVentaMaternidad"
 type="number"
 min="0"
 step="0.01"
 placeholder="Peso B1 (kg)"
 oninput="calcularPesoMuerteVentaMaternidad()">
 
-<input
-id="pesoB2MuerteVentaMaternidad"
+<input id="pesoB2MuerteVentaMaternidad"
 type="number"
 min="0"
 step="0.01"
 placeholder="Peso B2 (kg)"
 oninput="calcularPesoMuerteVentaMaternidad()">
 
-<div
-id="totalPesoMuerteVentaMaternidad"
+<div id="totalPesoMuerteVentaMaternidad"
 class="totalPesoBandas">
 T: 0.00 kg
 </div>
 
 </div>
 
-
-<div
-id="panelEnteroMuerteVentaMaternidad"
+<div id="panelEnteroMuerteVentaMaternidad"
 class="pesoBandas oculto">
 
-<input
-id="pesoEnteroMuerteVentaMaternidad"
+<input id="pesoEnteroMuerteVentaMaternidad"
 type="number"
 min="0"
 step="0.01"
 placeholder="Peso del cochino entero (kg)">
 
 </div>
-
 
 <button onclick="procesarMuerteVentaMaternidad()">
 Confirmar muerte de venta
@@ -1447,23 +1077,18 @@ Confirmar muerte de venta
 
 </div>
 
-
-<div
-id="panelVentaMaternidad"
-class="panel oculto">
+<div id="panelVentaMaternidad" class="panel oculto">
 
 <h2>💰 Venta</h2>
 
 <p id="infoVentaMaternidad"></p>
 
-<input
-id="cantidadVentaMaternidad"
+<input id="cantidadVentaMaternidad"
 type="number"
 min="1"
 placeholder="Cantidad de cerdos">
 
-<input
-id="pesoVentaMaternidad"
+<input id="pesoVentaMaternidad"
 type="number"
 min="0"
 step="0.01"
@@ -1479,27 +1104,19 @@ Confirmar venta
 
 </div>
 
-
-<div
-id="panelReagrupeMaternidad"
-class="panel oculto">
+<div id="panelReagrupeMaternidad" class="panel oculto">
 
 <h2>🔄 Reagrupe Maternidad</h2>
 
 <p id="infoReagrupeMaternidad"></p>
 
-<input
-id="cantidadReagrupeMaternidad"
+<input id="cantidadReagrupeMaternidad"
 type="number"
 min="1"
 placeholder="Cantidad de cerdos">
 
 <select id="filaDestinoMaternidad">
-
-<option value="">
-Selecciona fila destino
-</option>
-
+<option value="">Selecciona fila destino</option>
 </select>
 
 <button onclick="procesarReagrupeMaternidad()">
@@ -1512,63 +1129,38 @@ Confirmar reagrupe
 
 </div>
 
-
 <div id="mensaje"></div>
-
 
 <script src="supabase.js"></script>
 
 <script>
 
-/* ==================================================
-VARIABLES
-================================================== */
+/* VARIABLES */
 
 let naveSeleccionada=null;
 let cuartonSeleccionado=null;
-
 let tipoEntradaSeleccionado=null;
-
 let todasLasNaves=[];
 let todosLosCuartones=[];
-
 let ventaGrupo=[];
-
 let filasDestete=[];
 let filaDesteteSeleccionada=null;
-
 let navesMaternidad=[];
 let filasMaternidad=[];
 let filaMaternidadSeleccionada=null;
-
-
-/* ==================================================
-TIPO MUERTE DE VENTA
-================================================== */
 
 let tipoMuerteVentaCeba="bandas";
 let tipoMuerteVentaDestete="bandas";
 let tipoMuerteVentaMaternidad="bandas";
 
+function calcularTotalBandas(idB1,idB2,idTotal){
 
-/* ==================================================
-PESOS
-================================================== */
-
-function calcularTotalBandas(
-idB1,
-idB2,
-idTotal
-){
-
-const b1=
-Number(
-document.getElementById(idB1)?.value || 0
+const b1=Number(
+document.getElementById(idB1)?.value||0
 );
 
-const b2=
-Number(
-document.getElementById(idB2)?.value || 0
+const b2=Number(
+document.getElementById(idB2)?.value||0
 );
 
 const total=b1+b2;
@@ -1577,10 +1169,8 @@ const elemento=
 document.getElementById(idTotal);
 
 if(elemento){
-
 elemento.innerText=
 "T: "+total.toFixed(2)+" kg";
-
 }
 
 return total;
@@ -1617,10 +1207,7 @@ return calcularTotalBandas(
 
 }
 
-function formatoPesoBandas(
-b1,
-b2
-){
+function formatoPesoBandas(b1,b2){
 
 return "B1: "+
 Number(b1||0).toFixed(2)+
@@ -1635,11 +1222,6 @@ Number(b2||0)
 
 }
 
-
-/* ==================================================
-SELECCIONAR TIPO CEBA
-================================================== */
-
 function seleccionarTipoMuerteVentaCeba(tipo){
 
 tipoMuerteVentaCeba=tipo;
@@ -1647,25 +1229,14 @@ tipoMuerteVentaCeba=tipo;
 document
 .getElementById("panelBandasMuerteVentaCeba")
 .classList
-.toggle(
-"oculto",
-tipo!=="bandas"
-);
+.toggle("oculto",tipo!=="bandas");
 
 document
 .getElementById("panelEnteroMuerteVentaCeba")
 .classList
-.toggle(
-"oculto",
-tipo!=="entero"
-);
+.toggle("oculto",tipo!=="entero");
 
 }
-
-
-/* ==================================================
-SELECCIONAR TIPO DESTETE
-================================================== */
 
 function seleccionarTipoMuerteVentaDestete(tipo){
 
@@ -1674,25 +1245,14 @@ tipoMuerteVentaDestete=tipo;
 document
 .getElementById("panelBandasMuerteVentaDestete")
 .classList
-.toggle(
-"oculto",
-tipo!=="bandas"
-);
+.toggle("oculto",tipo!=="bandas");
 
 document
 .getElementById("panelEnteroMuerteVentaDestete")
 .classList
-.toggle(
-"oculto",
-tipo!=="entero"
-);
+.toggle("oculto",tipo!=="entero");
 
 }
-
-
-/* ==================================================
-SELECCIONAR TIPO MATERNIDAD
-================================================== */
 
 function seleccionarTipoMuerteVentaMaternidad(tipo){
 
@@ -1701,32 +1261,18 @@ tipoMuerteVentaMaternidad=tipo;
 document
 .getElementById("panelBandasMuerteVentaMaternidad")
 .classList
-.toggle(
-"oculto",
-tipo!=="bandas"
-);
+.toggle("oculto",tipo!=="bandas");
 
 document
 .getElementById("panelEnteroMuerteVentaMaternidad")
 .classList
-.toggle(
-"oculto",
-tipo!=="entero"
-);
+.toggle("oculto",tipo!=="entero");
 
 }
 
-
-/* ==================================================
-SESION
-================================================== */
-
 async function verificarSesion(){
 
-const {
-data
-}=
-await clienteSupabase.auth.getSession();
+const {data}=await clienteSupabase.auth.getSession();
 
 if(!data.session){
 
@@ -1739,11 +1285,6 @@ return false;
 return true;
 
 }
-
-
-/* ==================================================
-MOSTRAR CEBA
-================================================== */
 
 function mostrarNavesCeba(){
 
@@ -1768,11 +1309,6 @@ cargarNaves();
 
 }
 
-
-/* ==================================================
-MOSTRAR DESTETE
-================================================== */
-
 function mostrarNavesDestete(){
 
 ocultarTodosLosPaneles();
@@ -1795,11 +1331,6 @@ document
 cargarDestete();
 
 }
-
-
-/* ==================================================
-MOSTRAR MATERNIDAD
-================================================== */
 
 function mostrarNavesMaternidad(){
 
@@ -1824,32 +1355,21 @@ cargarMaternidad();
 
 }
 
-
-/* ==================================================
-TOTAL GENERAL
-================================================== */
-
 async function actualizarTotalGeneralNaves(){
 
 let total=0;
 
-const {
-data:cuartones
-}=
+const {data:cuartones}=
 await clienteSupabase
 .from("cuartones")
 .select("cantidad_cerdos");
 
-const {
-data:destete
-}=
+const {data:destete}=
 await clienteSupabase
 .from("destete_filas")
 .select("cantidad_cerdos");
 
-const {
-data:maternidad
-}=
+const {data:maternidad}=
 await clienteSupabase
 .from("maternidad_filas")
 .select("cantidad_cerdos");
@@ -1866,16 +1386,11 @@ total+=Number(f.cantidad_cerdos||0);
 total+=Number(f.cantidad_cerdos||0);
 });
 
-document.getElementById(
-"numeroTotalGeneralNaves"
-).innerText=total;
+document
+.getElementById("numeroTotalGeneralNaves")
+.innerText=total;
 
 }
-
-
-/* ==================================================
-CARGAR CEBA
-================================================== */
 
 async function cargarNaves(){
 
@@ -1890,14 +1405,16 @@ await clienteSupabase
 
 if(errorNaves){
 
-document.getElementById(
-"contenidoNaves"
-).innerHTML=
-`
+document.getElementById("contenidoNaves").innerHTML=`
+
 <div class="panel">
+
 <h2>❌ Error cargando Naves</h2>
+
 <p>${errorNaves.message}</p>
+
 </div>
+
 `;
 
 return;
@@ -1905,6 +1422,7 @@ return;
 }
 
 todasLasNaves=naves||[];
+
 todosLosCuartones=[];
 
 let html="";
@@ -1924,6 +1442,7 @@ await clienteSupabase
 if(error){
 
 console.error(error);
+
 continue;
 
 }
@@ -1937,6 +1456,7 @@ html+=`
 <h2>🐷 ${nave.nombre}</h2>
 
 <div class="cuartones">
+
 `;
 
 let totalNave=0;
@@ -1968,6 +1488,7 @@ C${c.numero}
 </div>
 
 </div>
+
 `;
 
 });
@@ -1983,13 +1504,14 @@ html+=`
 </div>
 
 </div>
+
 `;
 
 }
 
-document.getElementById(
-"contenidoNaves"
-).innerHTML=html;
+document
+.getElementById("contenidoNaves")
+.innerHTML=html;
 
 await cargarResumenMovimientos();
 
@@ -2000,11 +1522,6 @@ cargarNavesVentaGrupo();
 await actualizarTotalGeneralNaves();
 
 }
-
-
-/* ==================================================
-RESUMEN MOVIMIENTOS
-================================================== */
 
 async function cargarResumenMovimientos(){
 
@@ -2019,23 +1536,18 @@ error
 await clienteSupabase
 .from("movimientos_naves")
 .select("*")
-.gte(
-"fecha",
-inicio.toISOString()
-)
-.order(
-"fecha",
-{ascending:false}
-);
+.gte("fecha",inicio.toISOString())
+.order("fecha",{ascending:false});
 
 if(error){
 
 console.error(error);
+
 return;
 
 }
 
-if(!data || data.length===0){
+if(!data||data.length===0){
 return;
 }
 
@@ -2044,6 +1556,7 @@ let html=`
 <div class="resumen">
 
 <h2>📋 Movimientos de hoy</h2>
+
 `;
 
 data.forEach(v=>{
@@ -2053,17 +1566,14 @@ String(v.motivo||"");
 
 let pesoTexto="";
 
-if(
-motivo==="Muerte de venta"
-){
+if(motivo==="Muerte de venta"){
 
 const b1=Number(v.peso_b1||0);
 const b2=Number(v.peso_b2||0);
 
-if(b1>0 || b2>0){
+if(b1>0||b2>0){
 
-pesoTexto=
-formatoPesoBandas(b1,b2);
+pesoTexto=formatoPesoBandas(b1,b2);
 
 }else if(Number(v.peso_kg||0)>0){
 
@@ -2084,20 +1594,18 @@ Number(v.peso_kg).toFixed(2)+
 }
 
 const naveTexto=
-v.naves ||
-(v.nave ? v.nave : "N"+v.nave_id);
+v.naves||
+(v.nave?v.nave:"N"+v.nave_id);
 
 const cuartonTexto=
-v.cuartones ||
-(v.cuarton ? "C"+v.cuarton : "");
+v.cuartones||
+(v.cuarton?"C"+v.cuarton:"");
 
 html+=`
 
 <div class="movimientoResumen">
 
-<strong>
-${v.operacion||""}
-</strong>
+<strong>${v.operacion||""}</strong>
 
 <br>
 
@@ -2111,31 +1619,25 @@ ${motivo}
 
 ${naveTexto}
 
-${cuartonTexto
-? " — "+cuartonTexto
-: ""}
+${cuartonTexto?
+" — "+cuartonTexto:""}
 
-${pesoTexto
-? "<br>⚖️ "+pesoTexto
-: ""}
+${pesoTexto?
+"<br>⚖️ "+pesoTexto:""}
 
 </div>
+
 `;
 
 });
 
 html+=`</div>`;
 
-document.getElementById(
-"contenidoNaves"
-).innerHTML+=html;
+document
+.getElementById("contenidoNaves")
+.innerHTML+=html;
 
 }
-
-
-/* ==================================================
-OPCIONES CUARTONES
-================================================== */
 
 function cargarOpcionesCuartones(naves){
 
@@ -2157,9 +1659,8 @@ Selecciona cuartón destino
 naves.forEach(nave=>{
 
 const cuartones=
-todosLosCuartones.filter(c=>
-String(c.nave_id)===
-String(nave.id)
+todosLosCuartones.filter(
+c=>String(c.nave_id)===String(nave.id)
 );
 
 cuartones.forEach(c=>{
@@ -2171,8 +1672,7 @@ option.value=c.id;
 
 option.textContent=
 nave.nombre+
-" - C"+
-c.numero+
+" - C"+c.numero+
 " — "+
 Number(c.cantidad_cerdos||0)+
 " cerdos";
@@ -2184,11 +1684,6 @@ select.appendChild(option);
 });
 
 }
-
-
-/* ==================================================
-VENTA GRUPO - NAVES
-================================================== */
 
 function cargarNavesVentaGrupo(){
 
@@ -2213,6 +1708,7 @@ const option=
 document.createElement("option");
 
 option.value=nave.id;
+
 option.textContent=nave.nombre;
 
 select.appendChild(option);
@@ -2222,11 +1718,6 @@ select.appendChild(option);
 cargarCuartonesGrupo();
 
 }
-
-
-/* ==================================================
-VENTA GRUPO - CUARTONES
-================================================== */
 
 function cargarCuartonesGrupo(){
 
@@ -2274,32 +1765,20 @@ select.appendChild(option);
 
 }
 
-
-/* ==================================================
-SELECCIONAR CUARTÓN
-================================================== */
-
-function seleccionarCuarton(
-naveId,
-cuartonId
-){
+function seleccionarCuarton(naveId,cuartonId){
 
 naveSeleccionada=
-todasLasNaves.find(n=>
-String(n.id)===
-String(naveId)
+todasLasNaves.find(
+n=>String(n.id)===String(naveId)
 );
 
 cuartonSeleccionado=
-todosLosCuartones.find(c=>
-String(c.id)===
-String(cuartonId)
+todosLosCuartones.find(
+c=>String(c.id)===String(cuartonId)
 );
 
-if(
-!naveSeleccionada ||
-!cuartonSeleccionado
-){
+if(!naveSeleccionada||
+!cuartonSeleccionado){
 
 alert("No se encontró el cuartón.");
 
@@ -2324,16 +1803,12 @@ cuartonSeleccionado.cantidad_cerdos||0
 
 ocultarTodosLosPaneles();
 
-document.getElementById(
-"panelCuarton"
-).classList.remove("oculto");
+document
+.getElementById("panelCuarton")
+.classList
+.remove("oculto");
 
 }
-
-
-/* ==================================================
-AGREGAR
-================================================== */
 
 function mostrarAgregar(){
 
@@ -2345,11 +1820,6 @@ document
 .remove("oculto");
 
 }
-
-
-/* ==================================================
-ENTRADA
-================================================== */
 
 function mostrarCantidadEntrada(tipo){
 
@@ -2368,11 +1838,6 @@ document.getElementById(
 
 }
 
-
-/* ==================================================
-AGREGAR CEBA
-================================================== */
-
 async function agregarCerdos(){
 
 const cantidad=
@@ -2382,7 +1847,7 @@ document.getElementById(
 ).value
 );
 
-if(!cantidad || cantidad<=0){
+if(!cantidad||cantidad<=0){
 
 alert("Introduce una cantidad válida.");
 
@@ -2412,7 +1877,8 @@ return;
 }
 
 const nuevaCantidad=
-Number(actual.cantidad_cerdos||0)+cantidad;
+Number(actual.cantidad_cerdos||0)+
+cantidad;
 
 const {error}=
 await clienteSupabase
@@ -2453,11 +1919,6 @@ await cargarNaves();
 
 }
 
-
-/* ==================================================
-MOTIVO SALIDA
-================================================== */
-
 function mostrarMotivoSalida(){
 
 ocultarTodosLosPaneles();
@@ -2469,11 +1930,6 @@ document
 
 }
 
-
-/* ==================================================
-VENTA
-================================================== */
-
 function mostrarVenta(){
 
 ocultarTodosLosPaneles();
@@ -2484,11 +1940,6 @@ document
 .remove("oculto");
 
 }
-
-
-/* ==================================================
-VENTA GRUPO
-================================================== */
 
 function mostrarVentaGrupo(){
 
@@ -2506,11 +1957,6 @@ document
 .remove("oculto");
 
 }
-
-
-/* ==================================================
-AGREGAR CUARTÓN GRUPO
-================================================== */
 
 function agregarCuartonGrupo(){
 
@@ -2547,7 +1993,7 @@ return;
 
 }
 
-if(!cantidad || cantidad<=0){
+if(!cantidad||cantidad<=0){
 
 alert("Introduce una cantidad válida.");
 
@@ -2556,18 +2002,16 @@ return;
 }
 
 const cuarton=
-todosLosCuartones.find(c=>
-String(c.id)===
-String(cuartonId)
+todosLosCuartones.find(
+c=>String(c.id)===String(cuartonId)
 );
 
 const nave=
-todasLasNaves.find(n=>
-String(n.id)===
-String(naveId)
+todasLasNaves.find(
+n=>String(n.id)===String(naveId)
 );
 
-if(!cuarton || !nave){
+if(!cuarton||!nave){
 
 alert("No se encontró el cuartón.");
 
@@ -2589,8 +2033,8 @@ return;
 }
 
 const existente=
-ventaGrupo.find(v=>
-String(v.cuarton_id)===
+ventaGrupo.find(
+v=>String(v.cuarton_id)===
 String(cuarton.id)
 );
 
@@ -2622,20 +2066,19 @@ actualizarResumenGrupo();
 
 }
 
-
-/* ==================================================
-RESUMEN GRUPO
-================================================== */
-
 function actualizarResumenGrupo(){
 
 const lista=
-document.getElementById("listaGrupo");
+document.getElementById(
+"listaGrupo"
+);
 
 const resumen=
-document.getElementById("resumenGrupoTexto");
+document.getElementById(
+"resumenGrupoTexto"
+);
 
-if(!lista || !resumen){
+if(!lista||!resumen){
 return;
 }
 
@@ -2644,8 +2087,7 @@ if(ventaGrupo.length===0){
 lista.innerHTML=
 "<p>No hay cuartones agregados.</p>";
 
-resumen.innerText=
-"Cerdos: 0";
+resumen.innerText="Cerdos: 0";
 
 return;
 
@@ -2668,9 +2110,9 @@ div.className=
 div.innerHTML=
 "<strong>"+
 v.nave_nombre+
-" - C"+v.cuarton_numero+
-"</strong><br>"+
-"🐷 "+
+" - C"+
+v.cuarton_numero+
+"</strong><br>🐷 "+
 v.cantidad+
 " cerdos";
 
@@ -2680,8 +2122,7 @@ document.createElement("button");
 boton.className=
 "botonQuitar";
 
-boton.innerText=
-"Quitar";
+boton.innerText="Quitar";
 
 boton.onclick=()=>{
 quitarCuartonGrupo(index);
@@ -2698,11 +2139,6 @@ resumen.innerText=
 
 }
 
-
-/* ==================================================
-QUITAR GRUPO
-================================================== */
-
 function quitarCuartonGrupo(index){
 
 ventaGrupo.splice(index,1);
@@ -2710,11 +2146,6 @@ ventaGrupo.splice(index,1);
 actualizarResumenGrupo();
 
 }
-
-
-/* ==================================================
-PROCESAR VENTA
-================================================== */
 
 async function procesarVenta(){
 
@@ -2732,7 +2163,7 @@ document.getElementById(
 ).value
 );
 
-if(!cantidad || cantidad<=0){
+if(!cantidad||cantidad<=0){
 
 alert("Introduce una cantidad válida.");
 
@@ -2740,9 +2171,11 @@ return;
 
 }
 
-if(!peso || peso<=0){
+if(!peso||peso<=0){
 
-alert("Introduce el peso total en kg.");
+alert(
+"Introduce el peso total en kg."
+);
 
 return;
 
@@ -2783,7 +2216,8 @@ return;
 }
 
 const nuevaCantidad=
-Number(actual.cantidad_cerdos||0)-cantidad;
+Number(actual.cantidad_cerdos||0)-
+cantidad;
 
 const {error}=
 await clienteSupabase
@@ -2824,11 +2258,6 @@ await cargarNaves();
 
 }
 
-
-/* ==================================================
-PROCESAR VENTA GRUPO
-================================================== */
-
 async function procesarVentaGrupo(){
 
 if(ventaGrupo.length===0){
@@ -2848,7 +2277,7 @@ document.getElementById(
 ).value
 );
 
-if(!peso || peso<=0){
+if(!peso||peso<=0){
 
 alert(
 "Introduce el peso total del grupo."
@@ -2870,7 +2299,7 @@ for(const venta of ventaGrupo){
 
 const {
 data:actual,
-error:errorConsulta
+error
 }=
 await clienteSupabase
 .from("cuartones")
@@ -2878,7 +2307,7 @@ await clienteSupabase
 .eq("id",venta.cuarton_id)
 .single();
 
-if(errorConsulta){
+if(error){
 
 for(const anterior of actualizados){
 
@@ -2894,7 +2323,7 @@ anterior.cantidad_original
 
 alert(
 "❌ No se pudo completar la venta.\n\n"+
-errorConsulta.message
+error.message
 );
 
 return;
@@ -2919,10 +2348,7 @@ anterior.cantidad_original
 }
 
 alert(
-"No puedes vender más cerdos de los disponibles en "+
-venta.nave_nombre+
-" - C"+
-venta.cuarton_numero
+"No puedes sacar más cerdos de los que hay."
 );
 
 return;
@@ -2933,7 +2359,6 @@ const nuevaCantidad=
 Number(actual.cantidad_cerdos||0)-
 Number(venta.cantidad);
 
-const {error}=
 await clienteSupabase
 .from("cuartones")
 .update({
@@ -2988,7 +2413,8 @@ ventaGrupo[0];
 const {
 data:sesionData
 }=
-await clienteSupabase.auth.getSession();
+await clienteSupabase
+.auth.getSession();
 
 if(!sesionData.session){
 
@@ -3081,11 +2507,6 @@ await cargarNaves();
 
 }
 
-
-/* ==================================================
-MUERTES CEBA
-================================================== */
-
 function mostrarMuerte(){
 
 ocultarTodosLosPaneles();
@@ -3117,7 +2538,7 @@ document.getElementById(
 ).value
 );
 
-if(!cantidad || cantidad<=0){
+if(!cantidad||cantidad<=0){
 
 alert("Introduce una cantidad válida.");
 
@@ -3198,11 +2619,6 @@ await cargarNaves();
 
 }
 
-
-/* ==================================================
-MUERTE DE VENTA CEBA
-================================================== */
-
 function mostrarMuerteVenta(){
 
 tipoMuerteVentaCeba="bandas";
@@ -3220,7 +2636,6 @@ seleccionarTipoMuerteVentaCeba(
 
 }
 
-
 async function procesarMuerteVenta(){
 
 const cantidad=
@@ -3230,7 +2645,7 @@ document.getElementById(
 ).value
 );
 
-if(!cantidad || cantidad<=0){
+if(!cantidad||cantidad<=0){
 
 alert("Introduce una cantidad válida.");
 
@@ -3258,7 +2673,7 @@ document.getElementById(
 ).value
 );
 
-if(b1<=0 || b2<=0){
+if(b1<=0||b2<=0){
 
 alert(
 "Introduce el peso de B1 y B2."
@@ -3371,8 +2786,7 @@ formatoPesoBandas(b1,b2)
 alert(
 "✅ Muerte de venta registrada.\n\n"+
 "Cerdos: "+cantidad+
-"\n\n"+
-"Entero: "+
+"\n\nEntero: "+
 peso.toFixed(2)+
 " kg"
 );
@@ -3384,11 +2798,6 @@ cerrarPanel();
 await cargarNaves();
 
 }
-
-
-/* ==================================================
-REAGRUPACIÓN CEBA
-================================================== */
 
 function mostrarReagrupeSalida(){
 
@@ -3427,7 +2836,7 @@ document.getElementById(
 "cuartonDestinoSalida"
 ).value;
 
-if(!cantidad || cantidad<=0){
+if(!cantidad||cantidad<=0){
 
 alert("Introduce una cantidad válida.");
 
@@ -3617,11 +3026,6 @@ await cargarNaves();
 
 }
 
-
-/* ==================================================
-REGISTRAR MOVIMIENTO CEBA
-================================================== */
-
 async function registrarMovimiento(
 operacion,
 cantidad,
@@ -3634,7 +3038,8 @@ pesoB2=0
 const {
 data:sesionData
 }=
-await clienteSupabase.auth.getSession();
+await clienteSupabase
+.auth.getSession();
 
 if(!sesionData.session){
 
@@ -3686,8 +3091,11 @@ if(
 motivo==="Muerte de venta"
 ){
 
-datosMovimiento.peso_b1=b1Seguro(pesoB1);
-datosMovimiento.peso_b2=b1Seguro(pesoB2);
+datosMovimiento.peso_b1=
+b1Seguro(pesoB1);
+
+datosMovimiento.peso_b2=
+b1Seguro(pesoB2);
 
 }
 
@@ -3715,11 +3123,6 @@ return Number(valor||0);
 
 }
 
-
-/* ==================================================
-DESTETE - CARGAR
-================================================== */
-
 async function cargarDestete(){
 
 const {
@@ -3744,6 +3147,7 @@ document.getElementById(
 <p>${error.message}</p>
 
 </div>
+
 `;
 
 return;
@@ -3805,6 +3209,7 @@ let html=`
 </h2>
 
 <div class="estructuraDestete">
+
 `;
 
 let totalDestete=0;
@@ -3835,6 +3240,7 @@ Total de la fila
 </div>
 
 </div>
+
 `;
 
 });
@@ -3877,6 +3283,7 @@ ${totalDestete}
 </thead>
 
 <tbody>
+
 `;
 
 filasDestete.forEach(fila=>{
@@ -3898,6 +3305,7 @@ html+=`
 <td>${vacios}</td>
 
 </tr>
+
 `;
 
 });
@@ -3911,6 +3319,7 @@ html+=`
 </div>
 
 </div>
+
 `;
 
 document.getElementById(
@@ -3920,11 +3329,6 @@ document.getElementById(
 actualizarTotalGeneralNaves();
 
 }
-
-
-/* ==================================================
-SELECCIONAR DESTETE
-================================================== */
 
 function seleccionarFilaDestete(id){
 
@@ -3968,11 +3372,6 @@ document
 
 }
 
-
-/* ==================================================
-AGREGAR DESTETE
-================================================== */
-
 function mostrarAgregarDestete(){
 
 document.getElementById(
@@ -3999,7 +3398,7 @@ document.getElementById(
 ).value
 );
 
-if(!cantidad || cantidad<=0){
+if(!cantidad||cantidad<=0){
 
 alert("Introduce una cantidad válida.");
 
@@ -4017,7 +3416,8 @@ return;
 }
 
 const nuevaCantidad=
-Number(actual.cantidad_cerdos||0)+cantidad;
+Number(actual.cantidad_cerdos||0)+
+cantidad;
 
 const {
 error
@@ -4062,11 +3462,6 @@ await cargarDestete();
 
 }
 
-
-/* ==================================================
-SALIDA DESTETE
-================================================== */
-
 function mostrarSalidaCebaDestete(){
 
 const cantidad=
@@ -4101,7 +3496,7 @@ document.getElementById(
 ).value
 );
 
-if(!cantidad || cantidad<=0){
+if(!cantidad||cantidad<=0){
 
 alert("Introduce una cantidad válida.");
 
@@ -4132,7 +3527,8 @@ return;
 }
 
 const nuevaCantidad=
-Number(actual.cantidad_cerdos||0)-cantidad;
+Number(actual.cantidad_cerdos||0)-
+cantidad;
 
 const {
 error
@@ -4174,11 +3570,6 @@ cerrarPanel();
 await cargarDestete();
 
 }
-
-
-/* ==================================================
-MUERTE DESTETE
-================================================== */
 
 function mostrarMuerteDestete(){
 
@@ -4236,7 +3627,7 @@ document.getElementById(
 ).value
 );
 
-if(!cantidad || cantidad<=0){
+if(!cantidad||cantidad<=0){
 
 alert("Introduce una cantidad válida.");
 
@@ -4310,11 +3701,6 @@ await cargarDestete();
 
 }
 
-
-/* ==================================================
-MUERTE DE VENTA DESTETE
-================================================== */
-
 function mostrarMuerteVentaDestete(){
 
 tipoMuerteVentaDestete="bandas";
@@ -4352,7 +3738,7 @@ document.getElementById(
 ).value
 );
 
-if(!cantidad || cantidad<=0){
+if(!cantidad||cantidad<=0){
 
 alert("Introduce una cantidad válida.");
 
@@ -4383,7 +3769,7 @@ document.getElementById(
 ).value
 );
 
-if(b1<=0 || b2<=0){
+if(b1<=0||b2<=0){
 
 alert(
 "Introduce el peso de B1 y B2."
@@ -4502,11 +3888,6 @@ cerrarPanel();
 await cargarDestete();
 
 }
-
-
-/* ==================================================
-DATOS DESTETE
-================================================== */
 
 function mostrarAgregarDatosDestete(){
 
@@ -4642,11 +4023,6 @@ await cargarDestete();
 
 }
 
-
-/* ==================================================
-REAGRUPACIÓN DESTETE
-================================================== */
-
 function mostrarReagrupeDestete(){
 
 const origen=
@@ -4677,6 +4053,7 @@ select.innerHTML=`
 <option value="">
 Selecciona fila destino
 </option>
+
 `;
 
 filasDestete.forEach(fila=>{
@@ -4694,6 +4071,7 @@ select.innerHTML+=`
 fila.cantidad_cerdos||0
 )} cerdos
 </option>
+
 `;
 
 }
@@ -4723,7 +4101,7 @@ document.getElementById(
 "filaDestinoDestete"
 ).value;
 
-if(!cantidad || cantidad<=0){
+if(!cantidad||cantidad<=0){
 
 alert("Introduce una cantidad válida.");
 
@@ -4764,7 +4142,7 @@ await obtenerFilaDesteteActual(
 destinoId
 );
 
-if(!origen || !destino){
+if(!origen||!destino){
 return;
 }
 
@@ -4859,11 +4237,6 @@ await cargarDestete();
 
 }
 
-
-/* ==================================================
-OBTENER FILA DESTETE
-================================================== */
-
 async function obtenerFilaDesteteActual(id){
 
 const {
@@ -4891,11 +4264,6 @@ return data;
 
 }
 
-
-/* ==================================================
-HISTORIAL DESTETE
-================================================== */
-
 async function registrarMovimientoDestete(
 fila,
 operacion,
@@ -4908,7 +4276,8 @@ pesoB2=0
 const {
 data:sesionData
 }=
-await clienteSupabase.auth.getSession();
+await clienteSupabase
+.auth.getSession();
 
 if(!sesionData.session){
 
@@ -4973,11 +4342,6 @@ error.message
 
 }
 
-
-/* ==================================================
-MATERNIDAD - CARGAR
-================================================== */
-
 async function cargarMaternidad(){
 
 const {
@@ -5002,6 +4366,7 @@ document.getElementById(
 <p>${errorNaves.message}</p>
 
 </div>
+
 `;
 
 return;
@@ -5033,6 +4398,7 @@ document.getElementById(
 <p>${errorFilas.message}</p>
 
 </div>
+
 `;
 
 return;
@@ -5045,6 +4411,7 @@ filas||[];
 let html=`
 
 <div class="contenedorMaternidad">
+
 `;
 
 let totalGeneralMaternidad=0;
@@ -5054,8 +4421,8 @@ const nave of navesMaternidad
 ){
 
 const filasNave=
-filasMaternidad.filter(f=>
-String(f.nave_id)===
+filasMaternidad.filter(
+f=>String(f.nave_id)===
 String(nave.id)
 );
 
@@ -5070,6 +4437,7 @@ html+=`
 </h2>
 
 <div class="estructuraMaternidad">
+
 `;
 
 filasNave.forEach(fila=>{
@@ -5078,6 +4446,7 @@ const cantidad=
 Number(fila.cantidad_cerdos||0);
 
 totalNave+=cantidad;
+
 totalGeneralMaternidad+=cantidad;
 
 html+=`
@@ -5095,6 +4464,7 @@ ${fila.fila}
 </div>
 
 </div>
+
 `;
 
 });
@@ -5110,6 +4480,7 @@ html+=`
 </div>
 
 </div>
+
 `;
 
 }
@@ -5135,6 +4506,7 @@ Nave 1 + Nave 2
 </div>
 
 </div>
+
 `;
 
 document.getElementById(
@@ -5146,11 +4518,6 @@ await cargarOpcionesMaternidadCeba();
 actualizarTotalGeneralNaves();
 
 }
-
-
-/* ==================================================
-SELECCIONAR MATERNIDAD
-================================================== */
 
 function seleccionarFilaMaternidad(id){
 
@@ -5209,11 +4576,6 @@ document
 
 }
 
-
-/* ==================================================
-AGREGAR MATERNIDAD
-================================================== */
-
 function mostrarAgregarMaternidad(){
 
 ocultarTodosLosPaneles();
@@ -5245,7 +4607,7 @@ document.getElementById(
 ).value
 );
 
-if(!cantidad || cantidad<=0){
+if(!cantidad||cantidad<=0){
 
 alert(
 "Introduce una cantidad válida."
@@ -5309,11 +4671,6 @@ await cargarMaternidad();
 
 }
 
-
-/* ==================================================
-OPCIONES CEBA MATERNIDAD
-================================================== */
-
 async function cargarOpcionesMaternidadCeba(){
 
 const selectOrigenNave=
@@ -5340,6 +4697,7 @@ selectOrigenNave.innerHTML=`
 <option value="">
 Selecciona nave de Ceba
 </option>
+
 `;
 
 selectDestinoNave.innerHTML=`
@@ -5347,6 +4705,7 @@ selectDestinoNave.innerHTML=`
 <option value="">
 Selecciona nave de Ceba
 </option>
+
 `;
 
 todasLasNaves.forEach(nave=>{
@@ -5356,6 +4715,7 @@ selectOrigenNave.innerHTML+=`
 <option value="${nave.id}">
 ${nave.nombre}
 </option>
+
 `;
 
 selectDestinoNave.innerHTML+=`
@@ -5363,6 +4723,7 @@ selectDestinoNave.innerHTML+=`
 <option value="${nave.id}">
 ${nave.nombre}
 </option>
+
 `;
 
 });
@@ -5372,7 +4733,6 @@ cargarCuartonesMaternidadOrigen();
 cargarCuartonesMaternidadDestino();
 
 }
-
 
 function cargarCuartonesMaternidadOrigen(){
 
@@ -5391,6 +4751,7 @@ select.innerHTML=`
 <option value="">
 Selecciona cuartón
 </option>
+
 `;
 
 if(!naveId){
@@ -5411,12 +4772,12 @@ C${c.numero}
 —
 ${c.cantidad_cerdos} cerdos
 </option>
+
 `;
 
 });
 
 }
-
 
 function cargarCuartonesMaternidadDestino(){
 
@@ -5435,6 +4796,7 @@ select.innerHTML=`
 <option value="">
 Selecciona cuartón destino
 </option>
+
 `;
 
 if(!naveId){
@@ -5455,12 +4817,12 @@ C${c.numero}
 —
 ${c.cantidad_cerdos} cerdos
 </option>
+
 `;
 
 });
 
 }
-
 
 document.addEventListener(
 "change",
@@ -5484,13 +4846,7 @@ cargarCuartonesMaternidadDestino();
 
 }
 
-}
-);
-
-
-/* ==================================================
-AGREGAR DESDE CEBA
-================================================== */
+});
 
 function mostrarAgregarDesdeCeba(){
 
@@ -5529,7 +4885,7 @@ return;
 
 }
 
-if(!cantidad || cantidad<=0){
+if(!cantidad||cantidad<=0){
 
 alert(
 "Introduce una cantidad válida."
@@ -5669,11 +5025,6 @@ await cargarMaternidad();
 
 }
 
-
-/* ==================================================
-SALIDA MATERNIDAD
-================================================== */
-
 function mostrarSalidaMaternidad(){
 
 ocultarTodosLosPaneles();
@@ -5736,7 +5087,7 @@ return;
 
 }
 
-if(!cantidad || cantidad<=0){
+if(!cantidad||cantidad<=0){
 
 alert(
 "Introduce una cantidad válida."
@@ -5881,11 +5232,6 @@ await cargarMaternidad();
 
 }
 
-
-/* ==================================================
-MUERTE MATERNIDAD
-================================================== */
-
 function mostrarMuerteMaternidad(){
 
 const cantidad=
@@ -5920,7 +5266,7 @@ document.getElementById(
 ).value
 );
 
-if(!cantidad || cantidad<=0){
+if(!cantidad||cantidad<=0){
 
 alert(
 "Introduce una cantidad válida."
@@ -5995,11 +5341,6 @@ await cargarMaternidad();
 
 }
 
-
-/* ==================================================
-MUERTE DE VENTA MATERNIDAD
-================================================== */
-
 function mostrarMuerteVentaMaternidad(){
 
 tipoMuerteVentaMaternidad="bandas";
@@ -6040,7 +5381,7 @@ document.getElementById(
 ).value
 );
 
-if(!cantidad || cantidad<=0){
+if(!cantidad||cantidad<=0){
 
 alert(
 "Introduce una cantidad válida."
@@ -6073,7 +5414,7 @@ document.getElementById(
 ).value
 );
 
-if(b1<=0 || b2<=0){
+if(b1<=0||b2<=0){
 
 alert(
 "Introduce el peso de B1 y B2."
@@ -6193,402 +5534,6 @@ await cargarMaternidad();
 
 }
 
-
-/* ==================================================
-VENTA MATERNIDAD
-================================================== */
-
-function mostrarVentaMaternidad(){
-
-const cantidad=
-Number(
-filaMaternidadSeleccionada.cantidad_cerdos||0
-);
-
-document.getElementById(
-"infoVentaMaternidad"
-).innerText=
-"💰 "+
-filaMaternidadSeleccionada.fila+
-" — "+
-cantidad+
-" cerdos actuales";
-
-ocultarTodosLosPaneles();
-
-document
-.getElementById("panelVentaMaternidad")
-.classList
-.remove("oculto");
-
-}
-
-async function procesarVentaMaternidad(){
-
-const cantidad=
-Number(
-document.getElementById(
-"cantidadVentaMaternidad"
-).value
-);
-
-const peso=
-Number(
-document.getElementById(
-"pesoVentaMaternidad"
-).value
-);
-
-if(!cantidad || cantidad<=0){
-
-alert(
-"Introduce una cantidad válida."
-);
-
-return;
-
-}
-
-if(!peso || peso<=0){
-
-alert(
-"Introduce el peso total en kg."
-);
-
-return;
-
-}
-
-const actual=
-await obtenerFilaMaternidadActual(
-filaMaternidadSeleccionada.id
-);
-
-if(!actual){
-return;
-}
-
-if(
-cantidad>
-Number(actual.cantidad_cerdos||0)
-){
-
-alert(
-"No puedes sacar más cerdos de los que hay."
-);
-
-return;
-
-}
-
-const nuevaCantidad=
-Number(actual.cantidad_cerdos||0)-
-cantidad;
-
-const {
-error
-}=
-await clienteSupabase
-.from("maternidad_filas")
-.update({
-cantidad_cerdos:
-nuevaCantidad
-})
-.eq("id",actual.id);
-
-if(error){
-
-alert(
-"Error realizando la venta:\n\n"+
-error.message
-);
-
-return;
-
-}
-
-await registrarMovimientoMaternidad(
-actual,
-"Venta",
-cantidad,
-peso,
-"Venta"
-);
-
-alert(
-"✅ Venta registrada correctamente.\n\n"+
-"Cerdos: "+cantidad+
-"\nPeso: "+
-peso.toFixed(2)+" kg"
-);
-
-cerrarPanel();
-
-await cargarMaternidad();
-
-}
-
-
-/* ==================================================
-REAGRUPACIÓN MATERNIDAD
-================================================== */
-
-function mostrarReagrupeMaternidad(){
-
-const origen=
-filaMaternidadSeleccionada;
-
-const naveOrigen=
-navesMaternidad.find(n=>
-String(n.id)===
-String(origen.nave_id)
-);
-
-document.getElementById(
-"infoReagrupeMaternidad"
-).innerHTML=
-"🐷 Origen: <strong>"+
-(naveOrigen?
-naveOrigen.nombre:
-"")+
-" - "+
-origen.fila+
-"</strong>"+
-"<br><br>"+
-"Cerdos actuales: "+
-Number(
-origen.cantidad_cerdos||0
-);
-
-const select=
-document.getElementById(
-"filaDestinoMaternidad"
-);
-
-select.innerHTML=`
-
-<option value="">
-Selecciona fila destino
-</option>
-`;
-
-filasMaternidad.forEach(fila=>{
-
-if(
-String(fila.id)!==
-String(origen.id)
-){
-
-const nave=
-navesMaternidad.find(n=>
-String(n.id)===
-String(fila.nave_id)
-);
-
-select.innerHTML+=`
-
-<option value="${fila.id}">
-🐷 ${fila.fila}
-— ${Number(
-fila.cantidad_cerdos||0
-)} cerdos
-</option>
-`;
-
-}
-
-});
-
-ocultarTodosLosPaneles();
-
-document
-.getElementById("panelReagrupeMaternidad")
-.classList
-.remove("oculto");
-
-}
-
-async function procesarReagrupeMaternidad(){
-
-const cantidad=
-Number(
-document.getElementById(
-"cantidadReagrupeMaternidad"
-).value
-);
-
-const destinoId=
-document.getElementById(
-"filaDestinoMaternidad"
-).value;
-
-if(!cantidad || cantidad<=0){
-
-alert(
-"Introduce una cantidad válida."
-);
-
-return;
-
-}
-
-if(!destinoId){
-
-alert(
-"Selecciona la fila destino."
-);
-
-return;
-
-}
-
-if(
-String(destinoId)===
-String(
-filaMaternidadSeleccionada.id
-)
-){
-
-alert(
-"La fila destino debe ser diferente."
-);
-
-return;
-
-}
-
-const origen=
-await obtenerFilaMaternidadActual(
-filaMaternidadSeleccionada.id
-);
-
-const destino=
-await obtenerFilaMaternidadActual(
-destinoId
-);
-
-if(!origen || !destino){
-return;
-}
-
-if(
-cantidad>
-Number(origen.cantidad_cerdos||0)
-){
-
-alert(
-"No puedes mover más cerdos de los que hay en la fila de origen."
-);
-
-return;
-
-}
-
-const cantidadOrigenAnterior=
-Number(origen.cantidad_cerdos||0);
-
-const cantidadDestinoAnterior=
-Number(destino.cantidad_cerdos||0);
-
-const nuevaCantidadOrigen=
-cantidadOrigenAnterior-cantidad;
-
-const nuevaCantidadDestino=
-cantidadDestinoAnterior+cantidad;
-
-const {
-error:errorOrigen
-}=
-await clienteSupabase
-.from("maternidad_filas")
-.update({
-cantidad_cerdos:
-nuevaCantidadOrigen
-})
-.eq("id",origen.id);
-
-if(errorOrigen){
-
-alert(
-"Error restando los cerdos del origen:\n\n"+
-errorOrigen.message
-);
-
-return;
-
-}
-
-const {
-error:errorDestino
-}=
-await clienteSupabase
-.from("maternidad_filas")
-.update({
-cantidad_cerdos:
-nuevaCantidadDestino
-})
-.eq("id",destino.id);
-
-if(errorDestino){
-
-await clienteSupabase
-.from("maternidad_filas")
-.update({
-cantidad_cerdos:
-cantidadOrigenAnterior
-})
-.eq("id",origen.id);
-
-alert(
-"❌ No se pudo completar el reagrupe.\n\n"+
-"La fila de origen fue restaurada.\n\n"+
-errorDestino.message
-);
-
-return;
-
-}
-
-const naveOrigen=
-navesMaternidad.find(n=>
-String(n.id)===
-String(origen.nave_id)
-);
-
-const naveDestino=
-navesMaternidad.find(n=>
-String(n.id)===
-String(destino.nave_id)
-);
-
-alert(
-"✅ Reagrupe realizado correctamente.\n\n"+
-"Cerdos trasladados: "+cantidad+
-"\n\nOrigen: "+
-(naveOrigen?
-naveOrigen.nombre:
-"")+
-" - "+
-origen.fila+
-"\nDestino: "+
-(naveDestino?
-naveDestino.nombre:
-"")+
-" - "+
-destino.fila
-);
-
-cerrarPanel();
-
-await cargarMaternidad();
-
-}
-
-
-/* ==================================================
-OBTENER FILA MATERNIDAD
-================================================== */
-
 async function obtenerFilaMaternidadActual(id){
 
 const {
@@ -6616,11 +5561,6 @@ return data;
 
 }
 
-
-/* ==================================================
-HISTORIAL MATERNIDAD
-================================================== */
-
 async function registrarMovimientoMaternidad(
 fila,
 operacion,
@@ -6634,7 +5574,8 @@ pesoB2=0
 const {
 data:sesionData
 }=
-await clienteSupabase.auth.getSession();
+await clienteSupabase
+.auth.getSession();
 
 if(!sesionData.session){
 
@@ -6718,11 +5659,6 @@ error.message
 
 }
 
-
-/* ==================================================
-CEBA DESDE MATERNIDAD
-================================================== */
-
 async function registrarMovimientoCebaDesdeMaternidad(
 cuarton,
 cantidad,
@@ -6732,7 +5668,8 @@ motivo
 const {
 data:sesionData
 }=
-await clienteSupabase.auth.getSession();
+await clienteSupabase
+.auth.getSession();
 
 if(!sesionData.session){
 
@@ -6804,11 +5741,6 @@ error
 }
 
 }
-
-
-/* ==================================================
-CERRAR PANEL
-================================================== */
 
 function cerrarPanel(){
 
@@ -6894,11 +5826,6 @@ tipoMuerteVentaMaternidad="bandas";
 
 }
 
-
-/* ==================================================
-OCULTAR TODOS
-================================================== */
-
 function ocultarTodosLosPaneles(){
 
 const ids=[
@@ -6952,11 +5879,6 @@ elemento
 });
 
 }
-
-
-/* ==================================================
-INICIAR
-================================================== */
 
 async function iniciar(){
 
