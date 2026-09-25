@@ -17,387 +17,667 @@ box-sizing:border-box;
 
 body{
 font-family:Arial,sans-serif;
-background:radial-gradient(circle at top,#2a0000,#080808 70%);
+background:
+radial-gradient(circle at top,#1d1d1d,#050505 65%);
 color:white;
-padding:20px;
 margin:0;
+padding:20px;
 text-align:center;
+min-height:100vh;
 }
 
 h1{
-color:#ff2b2b;
-margin-bottom:20px;
+color:#ff3030;
+font-size:32px;
+margin:10px 0 5px;
+text-shadow:0 0 10px rgba(255,0,0,.6);
 }
 
 h2{
-color:#ff3333;
-}
-
-h3{
-color:#ff5555;
+color:#ff4b4b;
 }
 
 .boton{
 display:block;
 width:90%;
 max-width:500px;
-margin:12px auto;
+margin:15px auto;
 padding:16px;
-border:none;
-border-radius:12px;
-background:linear-gradient(145deg,#ff2020,#8b0000);
+background:
+linear-gradient(145deg,#ff3838,#9d0000);
 color:white;
-font-size:18px;
+border:none;
+border-radius:14px;
+font-size:17px;
 font-weight:bold;
 cursor:pointer;
-box-shadow:0 4px 12px rgba(255,0,0,.35);
+box-shadow:
+0 7px 0 #500000,
+0 12px 25px rgba(255,0,0,.18);
+transition:.2s;
 }
 
 .boton:active{
-transform:scale(.98);
+transform:translateY(5px);
+box-shadow:0 2px 0 #500000;
 }
 
 .nave{
+width:95%;
+max-width:850px;
 margin:25px auto;
-max-width:700px;
+padding:20px;
+border-radius:20px;
+background:
+linear-gradient(145deg,#202020,#090909);
+border:1px solid #3a3a3a;
+box-shadow:
+10px 10px 25px #000,
+-3px -3px 15px #252525,
+inset 0 0 15px rgba(255,0,0,.05);
+}
+
+.nave h2{
+margin-top:0;
+color:#ff3b3b;
+text-shadow:0 0 8px rgba(255,0,0,.5);
 }
 
 .contenedorNave{
-background:rgba(20,20,20,.92);
-border:1px solid #700000;
+background:
+linear-gradient(145deg,#151515,#050505);
+border:2px solid #8f0000;
 border-radius:16px;
-padding:15px;
-margin-bottom:25px;
-box-shadow:0 0 15px rgba(255,0,0,.15);
-}
-
-.cuartones{
+padding:14px;
 display:grid;
 grid-template-columns:repeat(5,1fr);
-gap:8px;
+gap:10px;
+box-shadow:
+inset 0 0 15px black,
+0 0 12px rgba(255,0,0,.15);
 }
 
 .cuarton{
-background:linear-gradient(145deg,#250000,#111);
-border:1px solid #700000;
-border-radius:10px;
-padding:12px 5px;
-cursor:pointer;
 min-height:85px;
 display:flex;
 flex-direction:column;
 justify-content:center;
+align-items:center;
+cursor:pointer;
+border-radius:12px;
+background:
+linear-gradient(145deg,#292929,#101010);
+border:1px solid #4a4a4a;
+box-shadow:
+5px 5px 10px #000,
+-2px -2px 6px #303030;
+transition:.2s;
 }
 
 .cuarton:hover{
-border-color:#ff2222;
+border-color:#ff2525;
+box-shadow:0 0 15px rgba(255,0,0,.6);
+transform:translateY(-2px);
+}
+
+.cuarton:active{
+transform:scale(.96);
 }
 
 .numero{
-font-size:18px;
+color:#ff5555;
+font-size:13px;
 font-weight:bold;
-color:#ff4444;
 }
 
 .cerdos{
-font-size:15px;
-margin-top:7px;
+font-size:22px;
+margin-top:8px;
+color:white;
 }
 
 .totalNave{
-margin-top:15px;
-padding:12px;
-background:#160000;
-border-radius:10px;
+margin-top:18px;
+padding:14px;
+border-radius:12px;
+background:
+linear-gradient(145deg,#280000,#100000);
+color:#ff5555;
+font-size:18px;
 font-weight:bold;
-}
-
-.totalGeneral{
-margin:20px auto;
-max-width:500px;
-padding:20px;
-background:linear-gradient(145deg,#240000,#0b0b0b);
-border:1px solid #850000;
-border-radius:15px;
-}
-
-.numeroTotal{
-font-size:34px;
-font-weight:bold;
-color:#ff3333;
-margin-top:8px;
+border:1px solid #750000;
+box-shadow:inset 0 0 10px black;
 }
 
 .panel{
+width:90%;
 max-width:500px;
-margin:20px auto;
-padding:20px;
-background:linear-gradient(145deg,#220000,#0b0b0b);
-border:1px solid #850000;
-border-radius:15px;
-box-shadow:0 0 18px rgba(255,0,0,.2);
+margin:25px auto;
+padding:22px;
+border-radius:20px;
+background:
+linear-gradient(145deg,#202020,#080808);
+border:1px solid #3a3a3a;
+box-shadow:
+10px 10px 25px #000,
+-3px -3px 12px #252525;
 }
 
 .panel button{
 display:block;
 width:100%;
-margin:10px 0;
 padding:14px;
+margin:12px 0;
 border:none;
-border-radius:10px;
-background:linear-gradient(145deg,#d71919,#710000);
-color:white;
+border-radius:12px;
 font-size:16px;
 font-weight:bold;
+color:white;
 cursor:pointer;
+background:
+linear-gradient(145deg,#e50000,#850000);
+box-shadow:
+0 5px 0 #480000,
+0 10px 18px rgba(255,0,0,.12);
+}
+
+.panel button:active{
+transform:translateY(4px);
+box-shadow:0 1px 0 #480000;
 }
 
 input,
 select{
 width:100%;
-padding:13px;
-margin:8px 0;
-border-radius:9px;
-border:1px solid #7d0000;
-background:#111;
-color:white;
+padding:14px;
+box-sizing:border-box;
+margin:12px 0;
+border-radius:12px;
 font-size:16px;
+color:white;
+background:#101010;
+border:1px solid #4a4a4a;
+outline:none;
+box-shadow:inset 0 0 10px #000;
+}
+
+input:focus,
+select:focus{
+border-color:#ff3030;
+box-shadow:0 0 10px rgba(255,0,0,.4);
 }
 
 .oculto{
-display:none !important;
+display:none;
 }
 
 #mensaje{
-margin:20px auto;
-max-width:500px;
+margin:20px;
+font-weight:bold;
+color:#ff5555;
+}
+
+.totalGeneral{
+width:95%;
+max-width:850px;
+margin:30px auto;
+padding:25px;
+border-radius:22px;
+background:
+linear-gradient(145deg,#e60000,#750000);
+box-shadow:
+0 8px 0 #400000,
+0 15px 30px rgba(255,0,0,.25);
+}
+
+.totalGeneral h2{
+color:white;
+margin-top:0;
+}
+
+.numeroTotal{
+font-size:42px;
 font-weight:bold;
 }
 
-.movimientoResumen{
-max-width:700px;
-margin:15px auto;
-padding:15px;
-background:#111;
-border:1px solid #500000;
-border-radius:10px;
-text-align:left;
+.resumen{
+width:95%;
+max-width:850px;
+margin:25px auto;
+padding:22px;
+border-radius:20px;
+background:
+linear-gradient(145deg,#1d1d1d,#080808);
+border:1px solid #3a3a3a;
+box-shadow:8px 8px 25px #000;
 }
 
-.resumen{
-max-width:700px;
-margin:20px auto;
+.movimientoResumen{
+padding:13px;
+margin:8px 0;
+border-radius:10px;
+background:#111;
+border-left:4px solid #e00000;
+font-weight:bold;
 }
 
 .seleccionGrupo{
 margin:10px 0;
-padding:10px;
-border:1px solid #650000;
-border-radius:10px;
-background:#120000;
+padding:14px;
+border-radius:12px;
+background:
+linear-gradient(145deg,#252525,#101010);
+border:1px solid #444;
+text-align:left;
+}
+
+.seleccionGrupo strong{
+color:#ff5555;
 }
 
 .botonQuitar{
-background:#660000 !important;
+background:
+linear-gradient(145deg,#555,#222) !important;
+box-shadow:
+0 4px 0 #111 !important;
+padding:9px !important;
+margin:8px 0 0 !important;
 font-size:14px !important;
-padding:8px !important;
 }
 
 .resumenGrupo{
 margin-top:15px;
 padding:15px;
-border-radius:10px;
-background:#190000;
-border:1px solid #650000;
+border-radius:12px;
+background:#100000;
+border:1px solid #700000;
+text-align:left;
 }
 
 .itemDisponible{
-padding:10px;
-margin:6px 0;
-border-radius:8px;
-background:#181818;
+margin:8px 0;
+padding:12px;
+border-radius:10px;
+background:#151515;
+border:1px solid #333;
+cursor:pointer;
+}
+
+.itemDisponible:hover{
+border-color:#ff3030;
 }
 
 .selectorNaves{
-display:flex;
-gap:10px;
-justify-content:center;
-flex-wrap:wrap;
-margin-bottom:20px;
+width:95%;
+max-width:850px;
+margin:25px auto;
 }
 
-.selectorNaves button{
-padding:14px 22px;
-border:none;
-border-radius:10px;
-background:linear-gradient(145deg,#d71919,#710000);
-color:white;
-font-weight:bold;
-font-size:16px;
-cursor:pointer;
+.selectorNaves .boton{
+max-width:600px;
 }
 
 .naveDestete{
-max-width:700px;
-margin:auto;
+width:95%;
+max-width:850px;
+margin:25px auto;
+padding:20px;
+border-radius:20px;
+background:
+linear-gradient(145deg,#202020,#090909);
+border:1px solid #3a3a3a;
+box-shadow:
+10px 10px 25px #000,
+-3px -3px 15px #252525,
+inset 0 0 15px rgba(255,0,0,.05);
+}
+
+.naveDestete h2{
+margin-top:0;
+color:#ff3b3b;
+text-shadow:0 0 8px rgba(255,0,0,.5);
 }
 
 .estructuraDestete{
+width:100%;
+max-width:700px;
+margin:20px auto;
+padding:16px;
+border-radius:18px;
+background:
+linear-gradient(145deg,#151515,#050505);
+border:2px solid #8f0000;
+box-shadow:
+inset 0 0 15px black,
+0 0 12px rgba(255,0,0,.15);
 display:flex;
 flex-direction:column;
-gap:10px;
+gap:12px;
 }
 
 .filaDestete{
-background:linear-gradient(145deg,#250000,#111);
-border:1px solid #700000;
-border-radius:12px;
-padding:18px;
+min-height:115px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
 cursor:pointer;
+border-radius:14px;
+background:
+linear-gradient(145deg,#292929,#101010);
+border:2px solid #4a4a4a;
+box-shadow:
+6px 6px 12px #000,
+-2px -2px 7px #303030;
+transition:.2s;
+}
+
+.filaDestete:hover{
+border-color:#ff2525;
+box-shadow:0 0 18px rgba(255,0,0,.6);
+transform:translateY(-2px);
+}
+
+.filaDestete:active{
+transform:scale(.98);
 }
 
 .nombreFila{
-font-size:21px;
+color:#ff5555;
+font-size:20px;
 font-weight:bold;
-color:#ff4444;
 }
 
 .cerdosFila{
-font-size:18px;
-margin-top:8px;
+font-size:28px;
+margin-top:10px;
+color:white;
 }
 
 .totalFila{
-margin-top:8px;
-font-size:13px;
+margin-top:5px;
 color:#aaa;
+font-size:14px;
 }
 
 .totalDestete{
 margin-top:20px;
 padding:18px;
-background:#160000;
-border-radius:12px;
+border-radius:14px;
+background:
+linear-gradient(145deg,#280000,#100000);
+color:#ff5555;
+font-size:20px;
+font-weight:bold;
+border:1px solid #750000;
+box-shadow:inset 0 0 10px black;
 }
 
 .numeroTotalDestete{
-font-size:34px;
-font-weight:bold;
-color:#ff3333;
+font-size:40px;
+color:white;
+margin-top:8px;
 }
 
 .datosCuartonesDestete{
-margin-top:20px;
+width:100%;
+max-width:700px;
+margin:20px auto 0;
+padding:18px;
+border-radius:18px;
+background:
+linear-gradient(145deg,#1d1d1d,#080808);
+border:1px solid #3a3a3a;
+box-shadow:
+8px 8px 20px #000,
+inset 0 0 12px rgba(255,0,0,.04);
+}
+
+.datosCuartonesDestete h3{
+margin-top:0;
+color:#ff5555;
+text-shadow:0 0 7px rgba(255,0,0,.4);
 }
 
 .tablaCuartonesDestete{
 width:100%;
-border-collapse:collapse;
-}
-
-.tablaCuartonesDestete th,
-.tablaCuartonesDestete td{
-padding:10px;
-border:1px solid #550000;
+border-collapse:separate;
+border-spacing:0 8px;
 }
 
 .tablaCuartonesDestete th{
-background:#300000;
-color:#ff4444;
+padding:12px 8px;
+color:#ff5555;
+background:#100000;
+border-bottom:1px solid #750000;
+font-size:13px;
 }
 
-.infoFilaDestete,
+.tablaCuartonesDestete td{
+padding:13px 8px;
+background:
+linear-gradient(145deg,#292929,#101010);
+border-top:1px solid #333;
+border-bottom:1px solid #111;
+font-weight:bold;
+}
+
+.tablaCuartonesDestete td:first-child{
+color:#ff5555;
+}
+
+.tablaCuartonesDestete td:last-child{
+color:#ff9999;
+}
+
+.tablaCuartonesDestete td:first-child{
+border-left:1px solid #333;
+border-radius:10px 0 0 10px;
+}
+
+.tablaCuartonesDestete td:last-child{
+border-right:1px solid #333;
+border-radius:0 10px 10px 0;
+}
+
+.infoFilaDestete{
+padding:14px;
+margin:12px 0;
+border-radius:12px;
+background:#100000;
+border:1px solid #700000;
+font-weight:bold;
+color:#ff5555;
+}
+
 .reagrupeDestete{
-margin-bottom:15px;
+padding:14px;
+margin-top:15px;
+border-radius:12px;
+background:#111;
+border:1px solid #333;
+}
+
+.reagrupeDestete strong{
+color:#ff5555;
 }
 
 .contenedorMaternidad{
-max-width:800px;
-margin:auto;
+width:95%;
+max-width:850px;
+margin:25px auto;
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:20px;
 }
 
 .naveMaternidad{
-background:#111;
-border:1px solid #650000;
-border-radius:15px;
-padding:15px;
-margin:20px 0;
+width:100%;
+padding:18px;
+border-radius:20px;
+background:
+linear-gradient(145deg,#202020,#090909);
+border:1px solid #3a3a3a;
+box-shadow:
+10px 10px 25px #000,
+-3px -3px 15px #252525,
+inset 0 0 15px rgba(255,0,0,.05);
+}
+
+.naveMaternidad h2{
+margin-top:0;
+color:#ff3b3b;
+text-shadow:0 0 8px rgba(255,0,0,.5);
 }
 
 .estructuraMaternidad{
+padding:14px;
+border-radius:16px;
+background:
+linear-gradient(145deg,#151515,#050505);
+border:2px solid #8f0000;
+box-shadow:
+inset 0 0 15px black,
+0 0 12px rgba(255,0,0,.15);
 display:flex;
 flex-direction:column;
-gap:10px;
+gap:12px;
 }
 
 .filaMaternidad{
-background:linear-gradient(145deg,#250000,#111);
-border:1px solid #700000;
-border-radius:12px;
-padding:18px;
+min-height:110px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
 cursor:pointer;
+border-radius:14px;
+background:
+linear-gradient(145deg,#292929,#101010);
+border:2px solid #4a4a4a;
+box-shadow:
+6px 6px 12px #000,
+-2px -2px 7px #303030;
+transition:.2s;
+}
+
+.filaMaternidad:hover{
+border-color:#ff2525;
+box-shadow:0 0 18px rgba(255,0,0,.6);
+transform:translateY(-2px);
+}
+
+.filaMaternidad:active{
+transform:scale(.97);
 }
 
 .nombreFilaMaternidad{
-font-size:20px;
+color:#ff5555;
+font-size:21px;
 font-weight:bold;
-color:#ff4444;
 }
 
 .cerdosFilaMaternidad{
-font-size:18px;
-margin-top:8px;
+font-size:28px;
+margin-top:10px;
+color:white;
 }
 
 .totalMaternidadNave{
-margin-top:15px;
-padding:12px;
-background:#180000;
-border-radius:10px;
+margin-top:18px;
+padding:14px;
+border-radius:12px;
+background:
+linear-gradient(145deg,#280000,#100000);
+color:#ff5555;
+font-size:18px;
 font-weight:bold;
+border:1px solid #750000;
+box-shadow:inset 0 0 10px black;
 }
 
 .totalMaternidadGeneral{
-margin:20px auto;
+width:95%;
+max-width:850px;
+margin:25px auto;
 padding:20px;
-background:#160000;
-border:1px solid #700000;
-border-radius:15px;
+border-radius:20px;
+background:
+linear-gradient(145deg,#1d1d1d,#080808);
+border:1px solid #3a3a3a;
+box-shadow:8px 8px 25px #000;
+}
+
+.totalMaternidadGeneral h2{
+margin-top:0;
+color:#ff5555;
 }
 
 .numeroTotalMaternidad{
-font-size:34px;
+font-size:40px;
 font-weight:bold;
-color:#ff3333;
+color:white;
 }
 
 .infoMaternidad{
-margin-bottom:15px;
+padding:14px;
+margin:12px 0;
+border-radius:12px;
+background:#100000;
+border:1px solid #700000;
+font-weight:bold;
+color:#ff5555;
 }
 
 .pesoBandas{
-padding:10px;
-margin-top:10px;
-border:1px solid #650000;
-border-radius:10px;
-background:#130000;
+width:100%;
+text-align:left;
 }
 
 .totalPesoBandas{
-font-size:20px;
+padding:14px;
+margin:8px 0 15px;
+border-radius:12px;
+background:#100000;
+border:1px solid #700000;
 font-weight:bold;
-color:#ff4444;
-padding:10px;
+color:#ff5555;
+text-align:center;
 }
 
 @media(max-width:600px){
 
-.cuartones{
+body{
+padding:12px;
+}
+
+.contenedorNave{
 grid-template-columns:repeat(3,1fr);
 }
 
-body{
-padding:12px;
+.cuarton{
+min-height:75px;
+}
+
+.filaDestete{
+min-height:100px;
+}
+
+.tablaCuartonesDestete{
+font-size:13px;
+}
+
+.tablaCuartonesDestete th,
+.tablaCuartonesDestete td{
+padding:10px 5px;
+}
+
+.contenedorMaternidad{
+grid-template-columns:1fr;
+}
+
+.naveMaternidad{
+width:100%;
 }
 
 }
@@ -416,153 +696,267 @@ padding:12px;
 ⬅️ Volver al menú
 </button>
 
-<div class="selectorNaves">
+<div id="selectorNaves" class="selectorNaves">
 
-<button onclick="mostrarNavesCeba()">
+<button class="boton" onclick="mostrarNavesCeba()">
 🐷 Naves Ceba
 </button>
 
-<button onclick="mostrarNavesDestete()">
+<button class="boton" onclick="mostrarNavesDestete()">
 🍼 Naves Destete
 </button>
 
-<button onclick="mostrarNavesMaternidad()">
-🐖 Maternidad
+<button class="boton" onclick="mostrarNavesMaternidad()">
+🐷 Naves Maternidad
 </button>
 
+<div id="totalGeneralNaves" class="totalGeneral">
+
+<h2>🐷 TOTAL GENERAL DE CERDOS</h2>
+
+<div id="numeroTotalGeneralNaves" class="numeroTotal">0</div>
+
+<div>
+Ceba + Destete + Maternidad
 </div>
 
-<div class="totalGeneral">
-
-TOTAL GENERAL
-
-<div id="numeroTotalGeneralNaves" class="numeroTotal">
-0
 </div>
-
-🐷 Cerdos
 
 </div>
 
-<div id="contenidoCeba">
-<div id="contenidoNaves"></div>
+<div id="contenidoCeba" class="oculto">
+
+<div id="contenido">
+Cargando naves...
+</div>
+
 </div>
 
 <div id="contenidoDestete" class="oculto">
-<div id="contenidoDesteteNave"></div>
+
+<div id="contenidoDesteteNave">
+Cargando destete...
+</div>
+
 </div>
 
 <div id="contenidoMaternidad" class="oculto">
-<div id="contenidoMaternidadNaves"></div>
+
+<div id="contenidoMaternidadNaves">
+Cargando maternidad...
+</div>
+
 </div>
 
 <div id="panelCuarton" class="panel oculto">
+
 <h2 id="tituloCuarton">Cuartón</h2>
-<p id="cantidadActual">🐷 Cerdos actuales: 0</p>
+
+<div id="cantidadActual">
+🐷 Cerdos actuales: 0
+</div>
+
 <button onclick="mostrarAgregar()">➕ Agregar cerdos</button>
-<button onclick="mostrarMotivoSalida()">📤 Sacar cerdos</button>
-<button onclick="cerrarPanel()">❌ Cancelar</button>
+
+<button onclick="mostrarMotivoSalida()">➖ Sacar cerdos</button>
+
+<button onclick="cerrarPanel()">Cancelar</button>
+
 </div>
 
 <div id="panelEntrada" class="panel oculto">
-<h2>📥 Entrada de cerdos</h2>
-<button onclick="mostrarCantidadEntrada('Entrada Destete')">🍼 Entrada Destete</button>
-<button onclick="mostrarCantidadEntrada('Entrada Exterior')">🚚 Entrada Exterior</button>
-<button onclick="cerrarPanel()">❌ Cancelar</button>
+
+<h2>➕ Entrada de cerdos</h2>
+
+<p>Selecciona el tipo de entrada:</p>
+
+<button onclick="mostrarCantidadEntrada('Entrada Destete')">
+🍼 Entrada por destete
+</button>
+
+<button onclick="mostrarCantidadEntrada('Entrada Exterior')">
+🚚 Entrada exterior
+</button>
+
+<button onclick="cerrarPanel()">Cancelar</button>
+
 </div>
 
 <div id="panelAgregar" class="panel oculto">
-<h2>➕ Agregar cerdos</h2>
-<input id="cantidadAgregar" type="number" min="1" placeholder="Cantidad de cerdos">
-<button onclick="agregarCerdos()">Confirmar</button>
-<button onclick="cerrarPanel()">❌ Cancelar</button>
+
+<h2 id="tituloAgregar">➕ Agregar cerdos</h2>
+
+<input
+type="number"
+id="cantidadAgregar"
+min="1"
+placeholder="Cantidad de cerdos">
+
+<button onclick="agregarCerdos()">Guardar</button>
+
+<button onclick="cerrarPanel()">Cancelar</button>
+
 </div>
 
 <div id="panelMotivo" class="panel oculto">
-<h2>📤 Motivo de salida</h2>
+
+<h2>➖ Sacar cerdos</h2>
+
+<p>Selecciona el motivo:</p>
+
 <button onclick="mostrarVenta()">💰 Venta</button>
+
 <button onclick="mostrarMuerte()">☠️ Muerte</button>
+
 <button onclick="mostrarReagrupeSalida()">🔄 Reagrupe</button>
-<button onclick="cerrarPanel()">❌ Cancelar</button>
+
+<button onclick="cerrarPanel()">Cancelar</button>
+
 </div>
 
 <div id="panelVenta" class="panel oculto">
+
 <h2>💰 Venta</h2>
-<input id="cantidadVenta" type="number" min="1" placeholder="Cantidad de cerdos">
-<input id="pesoVenta" type="number" min="0" step="0.01" placeholder="Peso total (kg)">
+
+<input
+type="number"
+id="cantidadVenta"
+min="1"
+placeholder="Cantidad de cerdos">
+
+<input
+type="number"
+id="pesoVenta"
+min="0"
+step="0.01"
+placeholder="Peso total de los cerdos (kg)">
+
 <button onclick="procesarVenta()">Confirmar venta</button>
-<button onclick="mostrarVentaGrupo()">👥 Vender por grupo</button>
-<button onclick="cerrarPanel()">❌ Cancelar</button>
+
+<button onclick="mostrarVentaGrupo()">
+🐷 Vender por grupo
+</button>
+
+<button onclick="cerrarPanel()">Cancelar</button>
+
 </div>
 
 <div id="panelVentaGrupo" class="panel oculto">
-<h2>👥 Vender por grupo</h2>
 
-<select id="grupoNaveSeleccionada" onchange="cargarCuartonesGrupo()">
-<option value="">Selecciona nave</option>
+<h2>🐷 Vender por grupo</h2>
+
+<p>
+Selecciona un cuartón y la cantidad de cerdos que vas a vender.
+</p>
+
+<select
+id="grupoNaveSeleccionada"
+onchange="cargarCuartonesGrupo()">
+
+<option value="">🏠 Selecciona una nave</option>
+
 </select>
 
 <select id="grupoCuartonSeleccionado">
-<option value="">Selecciona cuartón</option>
+
+<option value="">🐷 Selecciona un cuartón</option>
+
 </select>
 
-<input id="cantidadGrupo" type="number" min="1" placeholder="Cantidad de cerdos">
+<input
+type="number"
+id="cantidadGrupo"
+min="1"
+placeholder="Cantidad de cerdos">
 
-<button onclick="agregarCuartonGrupo()">➕ Agregar cuartón</button>
+<button onclick="agregarCuartonGrupo()">➕ Agregar</button>
 
-<div id="listaGrupo" class="resumenGrupo"></div>
+<div id="listaGrupo"></div>
 
-<div id="resumenGrupoTexto" class="resumenGrupo">
-Cerdos: 0
+<div class="resumenGrupo">
+
+<strong>📊 Resumen de la venta</strong>
+
+<div id="resumenGrupoTexto">
+No hay cuartones seleccionados.
 </div>
 
-<input id="pesoGrupo" type="number" min="0" step="0.01" placeholder="Peso total del grupo (kg)">
+</div>
 
-<button onclick="procesarVentaGrupo()">Confirmar venta por grupo</button>
+<input
+type="number"
+id="pesoGrupo"
+min="0"
+step="0.01"
+placeholder="Peso total de todos los cerdos (kg)">
 
-<button onclick="cerrarPanel()">❌ Cancelar</button>
+<button onclick="procesarVentaGrupo()">
+💰 Confirmar venta del grupo
+</button>
+
+<button onclick="cerrarPanel()">Cancelar</button>
+
 </div>
 
 <div id="panelMuerte" class="panel oculto">
+
 <h2>☠️ Muerte</h2>
-<button onclick="mostrarMuerteTotal()">☠️ Muerte total</button>
-<button onclick="mostrarMuerteVenta()">⚖️ Muerte de venta</button>
-<button onclick="cerrarPanel()">❌ Cancelar</button>
-</div>
-
-<div id="panelMuerteTotal" class="panel oculto">
-<h2>☠️ Muerte total</h2>
-<input id="cantidadMuerteTotal" type="number" min="1" placeholder="Cantidad de cerdos">
-<button onclick="procesarMuerteTotal()">Confirmar muerte total</button>
-<button onclick="cerrarPanel()">❌ Cancelar</button>
-</div>
-
-<div id="panelMuerteVenta" class="panel oculto">
-<h2>⚖️ Muerte de venta</h2>
-
-<input id="cantidadMuerteVenta" type="number" min="1" placeholder="Cantidad de cerdos">
 
 <p>Selecciona el tipo:</p>
 
-<button onclick="seleccionarTipoMuerteVentaCeba('bandas')">
-⚖️ Por bandas
+<button onclick="mostrarMuerteTotal()">
+☠️ Muerte total
 </button>
 
-<button onclick="seleccionarTipoMuerteVentaCeba('entero')">
-🐷 Entero
+<button onclick="mostrarMuerteVenta()">
+⚖️ Muerte de venta
 </button>
 
-<div id="panelBandasMuerteVentaCeba" class="pesoBandas">
+<button onclick="cerrarPanel()">Cancelar</button>
 
-<input id="pesoB1MuerteVenta"
+</div>
+
+<div id="panelMuerteTotal" class="panel oculto">
+
+<h2>☠️ Muerte total</h2>
+
+<input
 type="number"
+id="cantidadMuerteTotal"
+min="1"
+placeholder="Cantidad de cerdos">
+
+<button onclick="procesarMuerteTotal()">
+Confirmar muerte
+</button>
+
+<button onclick="cerrarPanel()">Cancelar</button>
+
+</div>
+
+<div id="panelMuerteVenta" class="panel oculto">
+
+<h2>⚖️ Muerte de venta</h2>
+
+<input
+type="number"
+id="cantidadMuerteVenta"
+min="1"
+placeholder="Cantidad de cerdos muertos">
+
+<div class="pesoBandas">
+
+<input
+type="number"
+id="pesoB1MuerteVenta"
 min="0"
 step="0.01"
 placeholder="Peso B1 (kg)"
 oninput="calcularPesoMuerteVenta()">
 
-<input id="pesoB2MuerteVenta"
+<input
 type="number"
+id="pesoB2MuerteVenta"
 min="0"
 step="0.01"
 placeholder="Peso B2 (kg)"
@@ -574,21 +968,11 @@ T: 0.00 kg
 
 </div>
 
-<div id="panelEnteroMuerteVentaCeba" class="pesoBandas oculto">
-
-<input id="pesoEnteroMuerteVenta"
-type="number"
-min="0"
-step="0.01"
-placeholder="Peso del cochino entero (kg)">
-
-</div>
-
 <button onclick="procesarMuerteVenta()">
 Confirmar muerte de venta
 </button>
 
-<button onclick="cerrarPanel()">❌ Cancelar</button>
+<button onclick="cerrarPanel()">Cancelar</button>
 
 </div>
 
@@ -596,104 +980,124 @@ Confirmar muerte de venta
 
 <h2>🔄 Reagrupe</h2>
 
-<p id="origenReagrupeTexto"></p>
+<p>Cuartón de origen:</p>
 
-<input id="cantidadReagrupeSalida"
+<div
+style="
+padding:14px;
+margin:12px 0;
+border-radius:12px;
+background:#100000;
+border:1px solid #700000;
+font-weight:bold;
+color:#ff5555;
+">
+
+🐷 <span id="origenReagrupeTexto">
+Cuartón seleccionado
+</span>
+
+</div>
+
+<input
 type="number"
+id="cantidadReagrupeSalida"
 min="1"
 placeholder="Cantidad de cerdos">
 
 <select id="cuartonDestinoSalida">
-<option value="">Selecciona cuartón destino</option>
+
+<option value="">
+Selecciona cuartón destino
+</option>
+
 </select>
 
 <button onclick="procesarReagrupe()">
 Confirmar reagrupe
 </button>
 
-<button onclick="cerrarPanel()">❌ Cancelar</button>
+<button onclick="cerrarPanel()">Cancelar</button>
 
 </div>
 
 <div id="panelFilaDestete" class="panel oculto">
 
-<h2 id="tituloFilaDestete">Fila</h2>
+<h2 id="tituloFilaDestete">F1</h2>
 
-<p id="cantidadFilaDestete">
+<div id="cantidadFilaDestete" class="infoFilaDestete">
 🐷 Cerdos actuales: 0
-</p>
+</div>
 
 <button onclick="mostrarAgregarDestete()">
 ➕ Agregar cerdos
 </button>
 
 <button onclick="mostrarSalidaCebaDestete()">
-📤 Salida para Ceba
+➡️ Sacar cerdos para la Ceba
 </button>
 
 <button onclick="mostrarMuerteDestete()">
-☠️ Muerte
+☠️ Sacar cerdos por muerte
 </button>
 
 <button onclick="mostrarReagrupeDestete()">
-🔄 Reagrupe
+🔄 Sacar cerdos para otra fila
 </button>
 
 <button onclick="mostrarAgregarDatosDestete()">
-📊 Datos de cuartones
+📊 Agregar Datos
 </button>
 
-<button onclick="cerrarPanel()">
-❌ Cancelar
-</button>
+<button onclick="cerrarPanel()">Cancelar</button>
 
 </div>
 
 <div id="panelAgregarDestete" class="panel oculto">
 
-<h2 id="tituloAgregarDestete">➕ Agregar</h2>
+<h2 id="tituloAgregarDestete">
+➕ Agregar cerdos
+</h2>
 
-<input id="cantidadAgregarDestete"
+<input
 type="number"
+id="cantidadAgregarDestete"
 min="1"
 placeholder="Cantidad de cerdos">
 
-<button onclick="procesarAgregarDestete()">
-Confirmar
-</button>
+<button onclick="procesarAgregarDestete()">Guardar</button>
 
-<button onclick="cerrarPanel()">
-❌ Cancelar
-</button>
+<button onclick="cerrarPanel()">Cancelar</button>
 
 </div>
 
 <div id="panelSalidaCebaDestete" class="panel oculto">
 
-<h2>📤 Salida para Ceba</h2>
+<h2>➡️ Salida para Ceba</h2>
 
-<p id="infoSalidaCebaDestete"></p>
+<div id="infoSalidaCebaDestete" class="infoFilaDestete"></div>
 
-<input id="cantidadSalidaCebaDestete"
+<input
 type="number"
+id="cantidadSalidaCebaDestete"
 min="1"
 placeholder="Cantidad de cerdos">
 
 <button onclick="procesarSalidaCebaDestete()">
-Confirmar salida
+Confirmar salida para Ceba
 </button>
 
-<button onclick="cerrarPanel()">
-❌ Cancelar
-</button>
+<button onclick="cerrarPanel()">Cancelar</button>
 
 </div>
 
 <div id="panelMuerteDestete" class="panel oculto">
 
-<h2>☠️ Muerte</h2>
+<h2>☠️ Salida por muerte</h2>
 
-<p id="infoMuerteDestete"></p>
+<div id="infoMuerteDestete" class="infoFilaDestete"></div>
+
+<p>Selecciona el tipo:</p>
 
 <button onclick="mostrarMuerteTotalDestete()">
 ☠️ Muerte total
@@ -703,9 +1107,7 @@ Confirmar salida
 ⚖️ Muerte de venta
 </button>
 
-<button onclick="cerrarPanel()">
-❌ Cancelar
-</button>
+<button onclick="cerrarPanel()">Cancelar</button>
 
 </div>
 
@@ -713,20 +1115,19 @@ Confirmar salida
 
 <h2>☠️ Muerte total</h2>
 
-<p id="infoMuerteTotalDestete"></p>
+<div id="infoMuerteTotalDestete" class="infoFilaDestete"></div>
 
-<input id="cantidadMuerteTotalDestete"
+<input
 type="number"
+id="cantidadMuerteTotalDestete"
 min="1"
-placeholder="Cantidad de cerdos">
+placeholder="Cantidad de cerdos muertos">
 
 <button onclick="procesarMuerteTotalDestete()">
-Confirmar muerte total
+Confirmar muerte
 </button>
 
-<button onclick="cerrarPanel()">
-❌ Cancelar
-</button>
+<button onclick="cerrarPanel()">Cancelar</button>
 
 </div>
 
@@ -734,157 +1135,133 @@ Confirmar muerte total
 
 <h2>⚖️ Muerte de venta</h2>
 
-<p id="infoMuerteVentaDestete"></p>
+<div id="infoMuerteVentaDestete" class="infoFilaDestete"></div>
 
-<input id="cantidadMuerteVentaDestete"
+<input
 type="number"
+id="cantidadMuerteVentaDestete"
 min="1"
-placeholder="Cantidad de cerdos">
+placeholder="Cantidad de cerdos muertos">
 
-<button onclick="seleccionarTipoMuerteVentaDestete('bandas')">
-⚖️ Por bandas
-</button>
-
-<button onclick="seleccionarTipoMuerteVentaDestete('entero')">
-🐷 Entero
-</button>
-
-<div id="panelBandasMuerteVentaDestete" class="pesoBandas">
-
-<input id="pesoB1MuerteVentaDestete"
+<input
 type="number"
+id="pesoB1MuerteVentaDestete"
 min="0"
 step="0.01"
 placeholder="Peso B1 (kg)"
 oninput="calcularPesoMuerteVentaDestete()">
 
-<input id="pesoB2MuerteVentaDestete"
+<input
 type="number"
+id="pesoB2MuerteVentaDestete"
 min="0"
 step="0.01"
 placeholder="Peso B2 (kg)"
 oninput="calcularPesoMuerteVentaDestete()">
 
-<div id="totalPesoMuerteVentaDestete"
-class="totalPesoBandas">
+<div id="totalPesoMuerteVentaDestete" class="totalPesoBandas">
 T: 0.00 kg
-</div>
-
-</div>
-
-<div id="panelEnteroMuerteVentaDestete"
-class="pesoBandas oculto">
-
-<input id="pesoEnteroMuerteVentaDestete"
-type="number"
-min="0"
-step="0.01"
-placeholder="Peso del cochino entero (kg)">
-
 </div>
 
 <button onclick="procesarMuerteVentaDestete()">
 Confirmar muerte de venta
 </button>
 
-<button onclick="cerrarPanel()">
-❌ Cancelar
-</button>
+<button onclick="cerrarPanel()">Cancelar</button>
 
 </div>
 
 <div id="panelAgregarDatosDestete" class="panel oculto">
 
 <h2 id="tituloAgregarDatosDestete">
-📊 Datos
+📊 Agregar Datos
 </h2>
 
-<p id="infoAgregarDatosDestete"></p>
+<div id="infoAgregarDatosDestete" class="infoFilaDestete"></div>
 
-<input id="cantidadCuartonesDestete"
+<input
 type="number"
+id="cantidadCuartonesDestete"
 min="0"
 placeholder="Cantidad de cuartones">
 
-<input id="cantidadCuartonesVaciosDestete"
+<input
 type="number"
+id="cantidadCuartonesVaciosDestete"
 min="0"
-placeholder="Cuartones vacíos">
+placeholder="Cantidad de cuartones vacíos">
 
 <button onclick="procesarAgregarDatosDestete()">
-Guardar datos
+💾 Guardar datos
 </button>
 
-<button onclick="cerrarPanel()">
-❌ Cancelar
-</button>
+<button onclick="cerrarPanel()">Cancelar</button>
 
 </div>
 
 <div id="panelReagrupeDestete" class="panel oculto">
 
-<h2>🔄 Reagrupe Destete</h2>
+<h2>🔄 Reagrupe entre filas</h2>
 
-<p id="infoReagrupeDestete"></p>
+<div id="infoReagrupeDestete" class="infoFilaDestete"></div>
 
-<input id="cantidadReagrupeDestete"
+<input
 type="number"
+id="cantidadReagrupeDestete"
 min="1"
 placeholder="Cantidad de cerdos">
 
 <select id="filaDestinoDestete">
-<option value="">Selecciona fila destino</option>
+
+<option value="">
+Selecciona fila destino
+</option>
+
 </select>
 
 <button onclick="procesarReagrupeDestete()">
 Confirmar reagrupe
 </button>
 
-<button onclick="cerrarPanel()">
-❌ Cancelar
-</button>
+<button onclick="cerrarPanel()">Cancelar</button>
 
 </div>
 
 <div id="panelFilaMaternidad" class="panel oculto">
 
-<h2 id="tituloFilaMaternidad">
-Fila
-</h2>
+<h2 id="tituloFilaMaternidad">F1</h2>
 
-<p id="cantidadFilaMaternidad">
+<div id="cantidadFilaMaternidad" class="infoMaternidad">
 🐷 Cerdos actuales: 0
-</p>
+</div>
 
 <button onclick="mostrarAgregarMaternidad()">
 ➕ Agregar cerdos
 </button>
 
 <button onclick="mostrarSalidaMaternidad()">
-📤 Sacar cerdos
+➖ Sacar cerdos
 </button>
 
-<button onclick="cerrarPanel()">
-❌ Cancelar
-</button>
+<button onclick="cerrarPanel()">Cancelar</button>
 
 </div>
 
 <div id="panelAgregarMaternidad" class="panel oculto">
 
-<h2>➕ Agregar cerdos</h2>
+<h2 id="tituloAgregarMaternidad">
+➕ Agregar cerdos
+</h2>
 
 <button onclick="mostrarCantidadAgregarMaternidad()">
-➕ Agregar manualmente
+➕ Agregar
 </button>
 
 <button onclick="mostrarAgregarDesdeCeba()">
 🐷 Agregar desde Ceba
 </button>
 
-<button onclick="cerrarPanel()">
-❌ Cancelar
-</button>
+<button onclick="cerrarPanel()">Cancelar</button>
 
 </div>
 
@@ -892,24 +1269,21 @@ Fila
 
 <h2>➕ Agregar cerdos</h2>
 
-<input id="cantidadAgregarMaternidad"
+<input
 type="number"
+id="cantidadAgregarMaternidad"
 min="1"
 placeholder="Cantidad de cerdos">
 
-<button onclick="procesarAgregarMaternidad()">
-Confirmar
-</button>
+<button onclick="procesarAgregarMaternidad()">Guardar</button>
 
-<button onclick="cerrarPanel()">
-❌ Cancelar
-</button>
+<button onclick="cerrarPanel()">Cancelar</button>
 
 </div>
 
 <div id="panelAgregarDesdeCeba" class="panel oculto">
 
-<h2>🐷 Desde Ceba</h2>
+<h2>🐷 Agregar desde Ceba</h2>
 
 <select id="maternidadNaveCebaOrigen">
 <option value="">Selecciona nave de Ceba</option>
@@ -919,31 +1293,30 @@ Confirmar
 <option value="">Selecciona cuartón</option>
 </select>
 
-<input id="cantidadAgregarDesdeCeba"
+<input
 type="number"
+id="cantidadAgregarDesdeCeba"
 min="1"
 placeholder="Cantidad de cerdos">
 
 <button onclick="procesarAgregarDesdeCeba()">
-Confirmar entrada
+Confirmar entrada desde Ceba
 </button>
 
-<button onclick="cerrarPanel()">
-❌ Cancelar
-</button>
+<button onclick="cerrarPanel()">Cancelar</button>
 
 </div>
 
 <div id="panelSalidaMaternidad" class="panel oculto">
 
-<h2>📤 Salida</h2>
+<h2>➖ Sacar cerdos</h2>
 
 <button onclick="mostrarSalidaCebaMaternidad()">
-🐷 Salida para Ceba
+➡️ Sacar para Ceba
 </button>
 
 <button onclick="mostrarMuerteMaternidad()">
-☠️ Muerte total
+☠️ Sacar por Muerte Total
 </button>
 
 <button onclick="mostrarMuerteVentaMaternidad()">
@@ -951,24 +1324,22 @@ Confirmar entrada
 </button>
 
 <button onclick="mostrarVentaMaternidad()">
-💰 Venta
+💰 Sacar por Venta
 </button>
 
 <button onclick="mostrarReagrupeMaternidad()">
-🔄 Reagrupe
+🔄 Sacar por Reagrupe
 </button>
 
-<button onclick="cerrarPanel()">
-❌ Cancelar
-</button>
+<button onclick="cerrarPanel()">Cancelar</button>
 
 </div>
 
 <div id="panelSalidaCebaMaternidad" class="panel oculto">
 
-<h2>📤 Salida para Ceba</h2>
+<h2>➡️ Sacar para Ceba</h2>
 
-<p id="infoSalidaCebaMaternidad"></p>
+<div id="infoSalidaCebaMaternidad" class="infoMaternidad"></div>
 
 <select id="maternidadNaveCebaDestino">
 <option value="">Selecciona nave de Ceba</option>
@@ -978,18 +1349,17 @@ Confirmar entrada
 <option value="">Selecciona cuartón destino</option>
 </select>
 
-<input id="cantidadSalidaCebaMaternidad"
+<input
 type="number"
+id="cantidadSalidaCebaMaternidad"
 min="1"
 placeholder="Cantidad de cerdos">
 
 <button onclick="procesarSalidaCebaMaternidad()">
-Confirmar salida
+Confirmar salida para Ceba
 </button>
 
-<button onclick="cerrarPanel()">
-❌ Cancelar
-</button>
+<button onclick="cerrarPanel()">Cancelar</button>
 
 </div>
 
@@ -997,10 +1367,11 @@ Confirmar salida
 
 <h2>☠️ Muerte total</h2>
 
-<p id="infoMuerteMaternidad"></p>
+<div id="infoMuerteMaternidad" class="infoMaternidad"></div>
 
-<input id="cantidadMuerteMaternidad"
+<input
 type="number"
+id="cantidadMuerteMaternidad"
 min="1"
 placeholder="Cantidad de cerdos">
 
@@ -1008,9 +1379,7 @@ placeholder="Cantidad de cerdos">
 Confirmar muerte
 </button>
 
-<button onclick="cerrarPanel()">
-❌ Cancelar
-</button>
+<button onclick="cerrarPanel()">Cancelar</button>
 
 </div>
 
@@ -1018,62 +1387,39 @@ Confirmar muerte
 
 <h2>⚖️ Muerte de venta</h2>
 
-<p id="infoMuerteVentaMaternidad"></p>
+<div id="infoMuerteVentaMaternidad" class="infoMaternidad"></div>
 
-<input id="cantidadMuerteVentaMaternidad"
+<input
 type="number"
+id="cantidadMuerteVentaMaternidad"
 min="1"
-placeholder="Cantidad de cerdos">
+placeholder="Cantidad de cerdos muertos">
 
-<button onclick="seleccionarTipoMuerteVentaMaternidad('bandas')">
-⚖️ Por bandas
-</button>
-
-<button onclick="seleccionarTipoMuerteVentaMaternidad('entero')">
-🐷 Entero
-</button>
-
-<div id="panelBandasMuerteVentaMaternidad" class="pesoBandas">
-
-<input id="pesoB1MuerteVentaMaternidad"
+<input
 type="number"
+id="pesoB1MuerteVentaMaternidad"
 min="0"
 step="0.01"
 placeholder="Peso B1 (kg)"
 oninput="calcularPesoMuerteVentaMaternidad()">
 
-<input id="pesoB2MuerteVentaMaternidad"
+<input
 type="number"
+id="pesoB2MuerteVentaMaternidad"
 min="0"
 step="0.01"
 placeholder="Peso B2 (kg)"
 oninput="calcularPesoMuerteVentaMaternidad()">
 
-<div id="totalPesoMuerteVentaMaternidad"
-class="totalPesoBandas">
+<div id="totalPesoMuerteVentaMaternidad" class="totalPesoBandas">
 T: 0.00 kg
-</div>
-
-</div>
-
-<div id="panelEnteroMuerteVentaMaternidad"
-class="pesoBandas oculto">
-
-<input id="pesoEnteroMuerteVentaMaternidad"
-type="number"
-min="0"
-step="0.01"
-placeholder="Peso del cochino entero (kg)">
-
 </div>
 
 <button onclick="procesarMuerteVentaMaternidad()">
 Confirmar muerte de venta
 </button>
 
-<button onclick="cerrarPanel()">
-❌ Cancelar
-</button>
+<button onclick="cerrarPanel()">Cancelar</button>
 
 </div>
 
@@ -1081,51 +1427,54 @@ Confirmar muerte de venta
 
 <h2>💰 Venta</h2>
 
-<p id="infoVentaMaternidad"></p>
+<div id="infoVentaMaternidad" class="infoMaternidad"></div>
 
-<input id="cantidadVentaMaternidad"
+<input
 type="number"
+id="cantidadVentaMaternidad"
 min="1"
 placeholder="Cantidad de cerdos">
 
-<input id="pesoVentaMaternidad"
+<input
 type="number"
+id="pesoVentaMaternidad"
 min="0"
 step="0.01"
-placeholder="Peso total (kg)">
+placeholder="Peso total de los cerdos (kg)">
 
 <button onclick="procesarVentaMaternidad()">
 Confirmar venta
 </button>
 
-<button onclick="cerrarPanel()">
-❌ Cancelar
-</button>
+<button onclick="cerrarPanel()">Cancelar</button>
 
 </div>
 
 <div id="panelReagrupeMaternidad" class="panel oculto">
 
-<h2>🔄 Reagrupe Maternidad</h2>
+<h2>🔄 Reagrupe</h2>
 
-<p id="infoReagrupeMaternidad"></p>
+<div id="infoReagrupeMaternidad" class="infoMaternidad"></div>
 
-<input id="cantidadReagrupeMaternidad"
+<input
 type="number"
+id="cantidadReagrupeMaternidad"
 min="1"
 placeholder="Cantidad de cerdos">
 
 <select id="filaDestinoMaternidad">
-<option value="">Selecciona fila destino</option>
+
+<option value="">
+Selecciona fila destino
+</option>
+
 </select>
 
 <button onclick="procesarReagrupeMaternidad()">
 Confirmar reagrupe
 </button>
 
-<button onclick="cerrarPanel()">
-❌ Cancelar
-</button>
+<button onclick="cerrarPanel()">Cancelar</button>
 
 </div>
 
@@ -1135,42 +1484,41 @@ Confirmar reagrupe
 
 <script>
 
-/* VARIABLES */
-
 let naveSeleccionada=null;
 let cuartonSeleccionado=null;
 let tipoEntradaSeleccionado=null;
 let todasLasNaves=[];
 let todosLosCuartones=[];
 let ventaGrupo=[];
+
 let filasDestete=[];
 let filaDesteteSeleccionada=null;
+
 let navesMaternidad=[];
 let filasMaternidad=[];
 let filaMaternidadSeleccionada=null;
 
-let tipoMuerteVentaCeba="bandas";
-let tipoMuerteVentaDestete="bandas";
-let tipoMuerteVentaMaternidad="bandas";
+
+/* ==================================================
+PESO POR BANDAS
+================================================== */
 
 function calcularTotalBandas(idB1,idB2,idTotal){
 
-const b1=Number(
-document.getElementById(idB1)?.value||0
-);
-
-const b2=Number(
-document.getElementById(idB2)?.value||0
-);
+const b1=Number(document.getElementById(idB1)?.value || 0);
+const b2=Number(document.getElementById(idB2)?.value || 0);
 
 const total=b1+b2;
 
-const elemento=
-document.getElementById(idTotal);
+const elemento=document.getElementById(idTotal);
 
 if(elemento){
+
 elemento.innerText=
-"T: "+total.toFixed(2)+" kg";
+"T: "+
+total.toFixed(2)+
+" kg";
+
 }
 
 return total;
@@ -1179,7 +1527,7 @@ return total;
 
 function calcularPesoMuerteVenta(){
 
-return calcularTotalBandas(
+calcularTotalBandas(
 "pesoB1MuerteVenta",
 "pesoB2MuerteVenta",
 "totalPesoMuerteVenta"
@@ -1189,7 +1537,7 @@ return calcularTotalBandas(
 
 function calcularPesoMuerteVentaDestete(){
 
-return calcularTotalBandas(
+calcularTotalBandas(
 "pesoB1MuerteVentaDestete",
 "pesoB2MuerteVentaDestete",
 "totalPesoMuerteVentaDestete"
@@ -1199,7 +1547,7 @@ return calcularTotalBandas(
 
 function calcularPesoMuerteVentaMaternidad(){
 
-return calcularTotalBandas(
+calcularTotalBandas(
 "pesoB1MuerteVentaMaternidad",
 "pesoB2MuerteVentaMaternidad",
 "totalPesoMuerteVentaMaternidad"
@@ -1207,72 +1555,36 @@ return calcularTotalBandas(
 
 }
 
+
+/* ==================================================
+FORMATO PESO
+================================================== */
+
 function formatoPesoBandas(b1,b2){
 
 return "B1: "+
-Number(b1||0).toFixed(2)+
+Number(b1 || 0).toFixed(2)+
 " kg, B2: "+
-Number(b2||0).toFixed(2)+
+Number(b2 || 0).toFixed(2)+
 " kg, T: "+
 (
-Number(b1||0)+
-Number(b2||0)
+Number(b1 || 0)+
+Number(b2 || 0)
 ).toFixed(2)+
 " kg";
 
 }
 
-function seleccionarTipoMuerteVentaCeba(tipo){
 
-tipoMuerteVentaCeba=tipo;
-
-document
-.getElementById("panelBandasMuerteVentaCeba")
-.classList
-.toggle("oculto",tipo!=="bandas");
-
-document
-.getElementById("panelEnteroMuerteVentaCeba")
-.classList
-.toggle("oculto",tipo!=="entero");
-
-}
-
-function seleccionarTipoMuerteVentaDestete(tipo){
-
-tipoMuerteVentaDestete=tipo;
-
-document
-.getElementById("panelBandasMuerteVentaDestete")
-.classList
-.toggle("oculto",tipo!=="bandas");
-
-document
-.getElementById("panelEnteroMuerteVentaDestete")
-.classList
-.toggle("oculto",tipo!=="entero");
-
-}
-
-function seleccionarTipoMuerteVentaMaternidad(tipo){
-
-tipoMuerteVentaMaternidad=tipo;
-
-document
-.getElementById("panelBandasMuerteVentaMaternidad")
-.classList
-.toggle("oculto",tipo!=="bandas");
-
-document
-.getElementById("panelEnteroMuerteVentaMaternidad")
-.classList
-.toggle("oculto",tipo!=="entero");
-
-}
+/* ==================================================
+SESIÓN
+================================================== */
 
 async function verificarSesion(){
 
-const {data}=await clienteSupabase.auth.getSession();
+const {data}=await clienteSupabase
+.auth
+.getSession();
 
 if(!data.session){
 
@@ -1286,24 +1598,18 @@ return true;
 
 }
 
+
+/* ==================================================
+MENÚ NAVES
+================================================== */
+
 function mostrarNavesCeba(){
 
 ocultarTodosLosPaneles();
 
-document
-.getElementById("contenidoCeba")
-.classList
-.remove("oculto");
-
-document
-.getElementById("contenidoDestete")
-.classList
-.add("oculto");
-
-document
-.getElementById("contenidoMaternidad")
-.classList
-.add("oculto");
+document.getElementById("contenidoCeba").classList.remove("oculto");
+document.getElementById("contenidoDestete").classList.add("oculto");
+document.getElementById("contenidoMaternidad").classList.add("oculto");
 
 cargarNaves();
 
@@ -1313,20 +1619,9 @@ function mostrarNavesDestete(){
 
 ocultarTodosLosPaneles();
 
-document
-.getElementById("contenidoCeba")
-.classList
-.add("oculto");
-
-document
-.getElementById("contenidoDestete")
-.classList
-.remove("oculto");
-
-document
-.getElementById("contenidoMaternidad")
-.classList
-.add("oculto");
+document.getElementById("contenidoCeba").classList.add("oculto");
+document.getElementById("contenidoDestete").classList.remove("oculto");
+document.getElementById("contenidoMaternidad").classList.add("oculto");
 
 cargarDestete();
 
@@ -1336,68 +1631,94 @@ function mostrarNavesMaternidad(){
 
 ocultarTodosLosPaneles();
 
-document
-.getElementById("contenidoCeba")
-.classList
-.add("oculto");
-
-document
-.getElementById("contenidoDestete")
-.classList
-.add("oculto");
-
-document
-.getElementById("contenidoMaternidad")
-.classList
-.remove("oculto");
+document.getElementById("contenidoCeba").classList.add("oculto");
+document.getElementById("contenidoDestete").classList.add("oculto");
+document.getElementById("contenidoMaternidad").classList.remove("oculto");
 
 cargarMaternidad();
 
 }
 
+
+/* ==================================================
+TOTAL GENERAL
+================================================== */
+
 async function actualizarTotalGeneralNaves(){
 
-let total=0;
+try{
 
-const {data:cuartones}=
+let totalCeba=0;
+let totalDestete=0;
+let totalMaternidad=0;
+
+const {data:cuartones,error:errorCeba}=
 await clienteSupabase
 .from("cuartones")
 .select("cantidad_cerdos");
 
-const {data:destete}=
+if(!errorCeba){
+
+(cuartones || []).forEach(c=>{
+totalCeba+=Number(c.cantidad_cerdos || 0);
+});
+
+}
+
+const {data:destete,error:errorDestete}=
 await clienteSupabase
 .from("destete_filas")
 .select("cantidad_cerdos");
 
-const {data:maternidad}=
+if(!errorDestete){
+
+(destete || []).forEach(f=>{
+totalDestete+=Number(f.cantidad_cerdos || 0);
+});
+
+}
+
+const {data:maternidad,error:errorMaternidad}=
 await clienteSupabase
 .from("maternidad_filas")
 .select("cantidad_cerdos");
 
-(cuartones||[]).forEach(c=>{
-total+=Number(c.cantidad_cerdos||0);
-});
+if(!errorMaternidad){
 
-(destete||[]).forEach(f=>{
-total+=Number(f.cantidad_cerdos||0);
+(maternidad || []).forEach(f=>{
+totalMaternidad+=Number(f.cantidad_cerdos || 0);
 });
-
-(maternidad||[]).forEach(f=>{
-total+=Number(f.cantidad_cerdos||0);
-});
-
-document
-.getElementById("numeroTotalGeneralNaves")
-.innerText=total;
 
 }
 
+const total=
+totalCeba+
+totalDestete+
+totalMaternidad;
+
+document.getElementById(
+"numeroTotalGeneralNaves"
+).innerText=total;
+
+}catch(error){
+
+console.error(
+"Error actualizando total general:",
+error
+);
+
+}
+
+}
+
+
+/* ==================================================
+CARGAR NAVES CEBA
+================================================== */
+
 async function cargarNaves(){
 
-const {
-data:naves,
-error:errorNaves
-}=
+const {data:naves,error:errorNaves}=
 await clienteSupabase
 .from("naves")
 .select("*")
@@ -1405,71 +1726,57 @@ await clienteSupabase
 
 if(errorNaves){
 
-document.getElementById("contenidoNaves").innerHTML=`
-
-<div class="panel">
-
-<h2>❌ Error cargando Naves</h2>
-
-<p>${errorNaves.message}</p>
-
-</div>
-
-`;
+document.getElementById("contenido").innerHTML=
+"❌ Error cargando naves: "+
+errorNaves.message;
 
 return;
 
 }
 
-todasLasNaves=naves||[];
-
+todasLasNaves=naves || [];
 todosLosCuartones=[];
 
 let html="";
+let totalGeneral=0;
 
-for(const nave of todasLasNaves){
+for(const nave of naves){
 
-const {
-data:cuartones,
-error
-}=
+const {data:cuartones,error:errorCuartones}=
 await clienteSupabase
 .from("cuartones")
 .select("*")
 .eq("nave_id",nave.id)
 .order("numero");
 
-if(error){
+if(errorCuartones){
 
-console.error(error);
+document.getElementById("contenido").innerHTML=
+"❌ Error cargando cuartones: "+
+errorCuartones.message;
 
-continue;
+return;
 
 }
+
+let totalNave=0;
 
 html+=`
 
 <div class="nave">
 
-<div class="contenedorNave">
-
 <h2>🐷 ${nave.nombre}</h2>
 
-<div class="cuartones">
-
+<div class="contenedorNave">
 `;
 
-let totalNave=0;
+(cuartones || []).forEach(cuarton=>{
 
-(cuartones||[]).forEach(c=>{
-
-const cantidad=
-Number(c.cantidad_cerdos||0);
-
-totalNave+=cantidad;
+totalNave+=Number(cuarton.cantidad_cerdos || 0);
+totalGeneral+=Number(cuarton.cantidad_cerdos || 0);
 
 todosLosCuartones.push({
-...c,
+...cuarton,
 nave_nombre:nave.nombre
 });
 
@@ -1477,14 +1784,20 @@ html+=`
 
 <div
 class="cuarton"
-onclick="seleccionarCuarton(${nave.id},${c.id})">
+onclick='seleccionarCuarton(
+${nave.id},
+${cuarton.id},
+${JSON.stringify(String(nave.nombre))},
+${cuarton.numero},
+${Number(cuarton.cantidad_cerdos || 0)}
+)'>
 
 <div class="numero">
-C${c.numero}
+CUARTÓN ${cuarton.numero}
 </div>
 
 <div class="cerdos">
-🐷 ${cantidad}
+🐷 ${Number(cuarton.cantidad_cerdos || 0)}
 </div>
 
 </div>
@@ -1498,9 +1811,7 @@ html+=`
 </div>
 
 <div class="totalNave">
-🐷 Total: ${totalNave}
-</div>
-
+🐷 Total en ${totalNave}
 </div>
 
 </div>
@@ -1509,121 +1820,119 @@ html+=`
 
 }
 
-document
-.getElementById("contenidoNaves")
-.innerHTML=html;
+html+=`
 
-await cargarResumenMovimientos();
+<div class="totalGeneral">
 
-cargarOpcionesCuartones(todasLasNaves);
+<h2>🐷 TOTAL DE CERDOS</h2>
 
-cargarNavesVentaGrupo();
+<div class="numeroTotal">
+${totalGeneral}
+</div>
 
-await actualizarTotalGeneralNaves();
+<div>
+Total de las 4 naves
+</div>
 
-}
+</div>
 
-async function cargarResumenMovimientos(){
+`;
 
-const inicio=new Date();
+const ahora=new Date();
 
-inicio.setHours(0,0,0,0);
+const inicioHoy=new Date(
+ahora.getFullYear(),
+ahora.getMonth(),
+ahora.getDate()
+);
 
-const {
-data,
-error
-}=
+const finHoy=new Date(
+ahora.getFullYear(),
+ahora.getMonth(),
+ahora.getDate()+1
+);
+
+const {data:movimientos,error:errorMovimientos}=
 await clienteSupabase
 .from("movimientos_naves")
 .select("*")
-.gte("fecha",inicio.toISOString())
+.gte("fecha",inicioHoy.toISOString())
+.lt("fecha",finHoy.toISOString())
 .order("fecha",{ascending:false});
 
-if(error){
+if(!errorMovimientos){
 
-console.error(error);
+let ventas=[];
+let muertes=[];
 
-return;
+(movimientos || []).forEach(m=>{
 
+if(String(m.motivo || "").toLowerCase().includes("venta")){
+ventas.push(m);
 }
 
-if(!data||data.length===0){
-return;
+if(String(m.motivo || "").toLowerCase().includes("muerte")){
+muertes.push(m);
 }
 
-let html=`
+});
+
+html+=`
 
 <div class="resumen">
 
-<h2>📋 Movimientos de hoy</h2>
+<h2>📊 Resumen de hoy</h2>
+
+<h3 style="color:#ff5555;">
+💰 Ventas de hoy
+</h3>
 
 `;
 
-data.forEach(v=>{
+if(ventas.length===0){
 
-const motivo=
-String(v.motivo||"");
+html+=`<p>No hay ventas registradas hoy.</p>`;
 
-let pesoTexto="";
+}else{
 
-if(motivo==="Muerte de venta"){
+ventas.forEach(v=>{
 
-const b1=Number(v.peso_b1||0);
-const b2=Number(v.peso_b2||0);
-
-if(b1>0||b2>0){
-
-pesoTexto=formatoPesoBandas(b1,b2);
-
-}else if(Number(v.peso_kg||0)>0){
-
-pesoTexto=
-"Entero: "+
-Number(v.peso_kg).toFixed(2)+
-" kg";
-
-}
-
-}else if(Number(v.peso_kg||0)>0){
-
-pesoTexto=
-"Peso: "+
-Number(v.peso_kg).toFixed(2)+
-" kg";
-
-}
-
-const naveTexto=
-v.naves||
-(v.nave?v.nave:"N"+v.nave_id);
-
-const cuartonTexto=
-v.cuartones||
-(v.cuarton?"C"+v.cuarton:"");
+const cuartonesTexto=
+v.cuartones
+?
+v.cuartones
+:
+"C"+v.cuarton;
 
 html+=`
 
 <div class="movimientoResumen">
 
-<strong>${v.operacion||""}</strong>
+${
+v.naves
+?
+"Naves: "+v.naves
+:
+"N"+v.nave_id
+}
 
 <br>
 
-${motivo}
+Cuartones: ${cuartonesTexto}
 
 <br>
 
-🐷 ${v.cantidad||0}
+${v.cantidad} 🐷
 
-<br>
-
-${naveTexto}
-
-${cuartonTexto?
-" — "+cuartonTexto:""}
-
-${pesoTexto?
-"<br>⚖️ "+pesoTexto:""}
+${
+Number(v.peso_kg || 0)>0
+?
+" • "+
+Number(v.peso_kg).toFixed(2)+
+" kg"
+:
+""
+}
 
 </div>
 
@@ -1631,175 +1940,258 @@ ${pesoTexto?
 
 });
 
-html+=`</div>`;
-
-document
-.getElementById("contenidoNaves")
-.innerHTML+=html;
-
 }
 
-function cargarOpcionesCuartones(naves){
+html+=`
 
-const select=
-document.getElementById(
-"cuartonDestinoSalida"
+<h3 style="color:#ff5555;margin-top:25px;">
+☠️ Muertes de hoy
+</h3>
+
+`;
+
+if(muertes.length===0){
+
+html+=`<p>No hay muertes registradas hoy.</p>`;
+
+}else{
+
+muertes.forEach(m=>{
+
+const tieneBandas=
+m.peso_b1 !== undefined &&
+m.peso_b1 !== null &&
+m.peso_b2 !== undefined &&
+m.peso_b2 !== null;
+
+const pesoDetalle=
+tieneBandas
+?
+"<br>"+formatoPesoBandas(m.peso_b1,m.peso_b2)
+:
+(
+Number(m.peso_kg || 0)>0
+?
+" • "+
+Number(m.peso_kg).toFixed(2)+
+" kg"
+:
+""
 );
 
-if(!select){
-return;
+html+=`
+
+<div class="movimientoResumen">
+
+N${m.nave_id}
+
+<br>
+
+C${m.cuarton}
+
+:
+
+${m.cantidad} 🐷
+
+${pesoDetalle}
+
+<br>
+
+<span
+style="
+color:#aaa;
+font-size:13px;
+">
+
+${m.motivo}
+
+</span>
+
+</div>
+
+`;
+
+});
+
 }
 
-select.innerHTML=`
+html+=`
+
+</div>
+
+`;
+
+}
+
+document.getElementById("contenido").innerHTML=html;
+
+cargarOpcionesCuartones(naves);
+cargarNavesVentaGrupo();
+actualizarTotalGeneralNaves();
+
+}
+
+
+/* ==================================================
+OPCIONES CUARTONES
+================================================== */
+
+async function cargarOpcionesCuartones(naves){
+
+const destinosSalida=
+document.getElementById("cuartonDestinoSalida");
+
+destinosSalida.innerHTML=`
+
 <option value="">
 Selecciona cuartón destino
 </option>
+
 `;
 
-naves.forEach(nave=>{
+for(const nave of naves){
 
-const cuartones=
-todosLosCuartones.filter(
-c=>String(c.nave_id)===String(nave.id)
-);
+const {data:cuartones}=
+await clienteSupabase
+.from("cuartones")
+.select("*")
+.eq("nave_id",nave.id)
+.order("numero");
 
-cuartones.forEach(c=>{
+(cuartones || []).forEach(c=>{
 
-const option=
-document.createElement("option");
+const texto=
+`${nave.nombre} - Cuartón ${c.numero}`;
 
-option.value=c.id;
+destinosSalida.innerHTML+=`
 
-option.textContent=
-nave.nombre+
-" - C"+c.numero+
-" — "+
-Number(c.cantidad_cerdos||0)+
-" cerdos";
+<option value="${c.id}">
+${texto}
+</option>
 
-select.appendChild(option);
-
-});
+`;
 
 });
 
 }
+
+}
+
+
+/* ==================================================
+NAVES VENTA GRUPO
+================================================== */
 
 function cargarNavesVentaGrupo(){
 
 const select=
-document.getElementById(
-"grupoNaveSeleccionada"
-);
-
-if(!select){
-return;
-}
+document.getElementById("grupoNaveSeleccionada");
 
 select.innerHTML=`
+
 <option value="">
-Selecciona nave
+🏠 Selecciona una nave
 </option>
+
 `;
 
 todasLasNaves.forEach(nave=>{
 
-const option=
-document.createElement("option");
+select.innerHTML+=`
 
-option.value=nave.id;
+<option value="${nave.id}">
+${nave.nombre}
+</option>
 
-option.textContent=nave.nombre;
-
-select.appendChild(option);
+`;
 
 });
 
-cargarCuartonesGrupo();
-
 }
+
+
+/* ==================================================
+CUARTONES VENTA GRUPO
+================================================== */
 
 function cargarCuartonesGrupo(){
 
 const naveId=
-document.getElementById(
-"grupoNaveSeleccionada"
-).value;
+document.getElementById("grupoNaveSeleccionada").value;
 
 const select=
-document.getElementById(
-"grupoCuartonSeleccionado"
-);
+document.getElementById("grupoCuartonSeleccionado");
 
 select.innerHTML=`
+
 <option value="">
-Selecciona cuartón
+🐷 Selecciona un cuartón
 </option>
+
 `;
 
 if(!naveId){
 return;
 }
 
-todosLosCuartones
-.filter(c=>
-String(c.nave_id)===
-String(naveId)
-)
-.forEach(c=>{
+const cuartones=
+todosLosCuartones.filter(c=>
+String(c.nave_id)===String(naveId)
+);
 
-const option=
-document.createElement("option");
+cuartones.forEach(c=>{
 
-option.value=c.id;
+select.innerHTML+=`
 
-option.textContent=
-"C"+c.numero+
-" — "+
-Number(c.cantidad_cerdos||0)+
-" cerdos";
+<option value="${c.id}">
+C${c.numero}
+—
+${Number(c.cantidad_cerdos || 0)} cerdos disponibles
+</option>
 
-select.appendChild(option);
+`;
 
 });
 
 }
 
-function seleccionarCuarton(naveId,cuartonId){
 
-naveSeleccionada=
-todasLasNaves.find(
-n=>String(n.id)===String(naveId)
-);
+/* ==================================================
+SELECCIONAR CUARTÓN
+================================================== */
 
-cuartonSeleccionado=
-todosLosCuartones.find(
-c=>String(c.id)===String(cuartonId)
-);
+function seleccionarCuarton(
+naveId,
+cuartonId,
+naveNombre,
+numero,
+cantidad
+){
 
-if(!naveSeleccionada||
-!cuartonSeleccionado){
+naveSeleccionada={
+id:naveId,
+nombre:naveNombre
+};
 
-alert("No se encontró el cuartón.");
+cuartonSeleccionado={
+id:cuartonId,
+numero:numero,
+cantidad:Number(cantidad)
+};
 
-return;
+document.getElementById("tituloCuarton").innerText=
+"Cuartón "+numero+" - "+naveNombre;
 
-}
+document.getElementById("cantidadActual").innerText=
+"🐷 Cerdos actuales: "+cantidad;
 
-document.getElementById(
-"tituloCuarton"
-).innerText=
-naveSeleccionada.nombre+
-" - C"+
-cuartonSeleccionado.numero;
-
-document.getElementById(
-"cantidadActual"
-).innerText=
-"🐷 Cerdos actuales: "+
-Number(
-cuartonSeleccionado.cantidad_cerdos||0
-);
+document.getElementById("origenReagrupeTexto").innerText=
+naveNombre+
+" - Cuartón "+
+numero+
+" — "+
+cantidad+
+" cerdos";
 
 ocultarTodosLosPaneles();
 
@@ -1810,12 +2202,17 @@ document
 
 }
 
+
+/* ==================================================
+AGREGAR CEBA
+================================================== */
+
 function mostrarAgregar(){
 
 ocultarTodosLosPaneles();
 
 document
-.getElementById("panelAgregar")
+.getElementById("panelEntrada")
 .classList
 .remove("oculto");
 
@@ -1825,6 +2222,9 @@ function mostrarCantidadEntrada(tipo){
 
 tipoEntradaSeleccionado=tipo;
 
+document.getElementById("tituloAgregar").innerText=
+"➕ "+tipo;
+
 ocultarTodosLosPaneles();
 
 document
@@ -1832,22 +2232,14 @@ document
 .classList
 .remove("oculto");
 
-document.getElementById(
-"cantidadAgregar"
-).value="";
-
 }
 
 async function agregarCerdos(){
 
 const cantidad=
-Number(
-document.getElementById(
-"cantidadAgregar"
-).value
-);
+Number(document.getElementById("cantidadAgregar").value);
 
-if(!cantidad||cantidad<=0){
+if(!cantidad || cantidad<=0){
 
 alert("Introduce una cantidad válida.");
 
@@ -1855,10 +2247,7 @@ return;
 
 }
 
-const {
-data:actual,
-error:errorConsulta
-}=
+const {data:actual,error:errorConsulta}=
 await clienteSupabase
 .from("cuartones")
 .select("cantidad_cerdos")
@@ -1868,7 +2257,7 @@ await clienteSupabase
 if(errorConsulta){
 
 alert(
-"Error verificando el cuartón:\n\n"+
+"Error leyendo el cuartón:\n\n"+
 errorConsulta.message
 );
 
@@ -1877,8 +2266,7 @@ return;
 }
 
 const nuevaCantidad=
-Number(actual.cantidad_cerdos||0)+
-cantidad;
+Number(actual.cantidad_cerdos || 0)+cantidad;
 
 const {error}=
 await clienteSupabase
@@ -1902,8 +2290,7 @@ return;
 await registrarMovimiento(
 "Entrada",
 cantidad,
-tipoEntradaSeleccionado||
-"Entrada Exterior",
+tipoEntradaSeleccionado,
 0
 );
 
@@ -1918,6 +2305,11 @@ cerrarPanel();
 await cargarNaves();
 
 }
+
+
+/* ==================================================
+SALIDA CEBA
+================================================== */
 
 function mostrarMotivoSalida(){
 
@@ -1947,7 +2339,18 @@ ventaGrupo=[];
 
 actualizarResumenGrupo();
 
-cargarNavesVentaGrupo();
+document.getElementById("grupoNaveSeleccionada").value="";
+
+document.getElementById("grupoCuartonSeleccionado").innerHTML=`
+
+<option value="">
+🐷 Selecciona un cuartón
+</option>
+
+`;
+
+document.getElementById("cantidadGrupo").value="";
+document.getElementById("pesoGrupo").value="";
 
 ocultarTodosLosPaneles();
 
@@ -1960,30 +2363,11 @@ document
 
 function agregarCuartonGrupo(){
 
-const naveId=
-document.getElementById(
-"grupoNaveSeleccionada"
-).value;
-
 const cuartonId=
-document.getElementById(
-"grupoCuartonSeleccionado"
-).value;
+document.getElementById("grupoCuartonSeleccionado").value;
 
 const cantidad=
-Number(
-document.getElementById(
-"cantidadGrupo"
-).value
-);
-
-if(!naveId){
-
-alert("Selecciona una nave.");
-
-return;
-
-}
+Number(document.getElementById("cantidadGrupo").value);
 
 if(!cuartonId){
 
@@ -1993,7 +2377,7 @@ return;
 
 }
 
-if(!cantidad||cantidad<=0){
+if(!cantidad || cantidad<=0){
 
 alert("Introduce una cantidad válida.");
 
@@ -2002,16 +2386,11 @@ return;
 }
 
 const cuarton=
-todosLosCuartones.find(
-c=>String(c.id)===String(cuartonId)
+todosLosCuartones.find(c=>
+String(c.id)===String(cuartonId)
 );
 
-const nave=
-todasLasNaves.find(
-n=>String(n.id)===String(naveId)
-);
-
-if(!cuarton||!nave){
+if(!cuarton){
 
 alert("No se encontró el cuartón.");
 
@@ -2019,48 +2398,50 @@ return;
 
 }
 
+const existente=
+ventaGrupo.find(v=>
+String(v.cuarton_id)===String(cuartonId)
+);
+
+const cantidadYaSeleccionada=
+existente
+?
+Number(existente.cantidad)
+:
+0;
+
 if(
+cantidadYaSeleccionada+
 cantidad>
-Number(cuarton.cantidad_cerdos||0)
+Number(cuarton.cantidad_cerdos || 0)
 ){
 
 alert(
-"No puedes seleccionar más cerdos de los que hay."
+"No puedes vender más cerdos de los que hay en ese cuartón."
 );
 
 return;
 
 }
-
-const existente=
-ventaGrupo.find(
-v=>String(v.cuarton_id)===
-String(cuarton.id)
-);
 
 if(existente){
 
-alert(
-"Este cuartón ya está agregado."
-);
+existente.cantidad=
+cantidadYaSeleccionada+cantidad;
 
-return;
-
-}
+}else{
 
 ventaGrupo.push({
-
-nave_id:nave.id,
-nave_nombre:nave.nombre,
+nave_id:cuarton.nave_id,
+nave_nombre:cuarton.nave_nombre,
 cuarton_id:cuarton.id,
 cuarton_numero:cuarton.numero,
 cantidad:cantidad
-
 });
 
-document.getElementById(
-"cantidadGrupo"
-).value="";
+}
+
+document.getElementById("cantidadGrupo").value="";
 
 actualizarResumenGrupo();
 
@@ -2068,74 +2449,64 @@ actualizarResumenGrupo();
 
 function actualizarResumenGrupo(){
 
-const lista=
-document.getElementById(
-"listaGrupo"
-);
+const contenedor=
+document.getElementById("listaGrupo");
 
 const resumen=
-document.getElementById(
-"resumenGrupoTexto"
-);
-
-if(!lista||!resumen){
-return;
-}
+document.getElementById("resumenGrupoTexto");
 
 if(ventaGrupo.length===0){
 
-lista.innerHTML=
-"<p>No hay cuartones agregados.</p>";
+contenedor.innerHTML="";
 
-resumen.innerText="Cerdos: 0";
+resumen.innerHTML=
+"No hay cuartones seleccionados.";
 
 return;
 
 }
 
-lista.innerHTML="";
-
+let html="";
 let total=0;
 
 ventaGrupo.forEach((v,index)=>{
 
 total+=Number(v.cantidad);
 
-const div=
-document.createElement("div");
+html+=`
 
-div.className=
-"seleccionGrupo";
+<div class="seleccionGrupo">
 
-div.innerHTML=
-"<strong>"+
-v.nave_nombre+
-" - C"+
-v.cuarton_numero+
-"</strong><br>🐷 "+
-v.cantidad+
-" cerdos";
+<strong>
+${v.nave_nombre} — C${v.cuarton_numero}
+</strong>
 
-const boton=
-document.createElement("button");
+<br>
 
-boton.className=
-"botonQuitar";
+🐷 ${v.cantidad} cerdos
 
-boton.innerText="Quitar";
+<button
+class="botonQuitar"
+onclick="quitarCuartonGrupo(${index})">
 
-boton.onclick=()=>{
-quitarCuartonGrupo(index);
-};
+🗑️ Quitar
 
-div.appendChild(boton);
+</button>
 
-lista.appendChild(div);
+</div>
+
+`;
 
 });
 
-resumen.innerText=
-"Cerdos: "+total;
+contenedor.innerHTML=html;
+
+resumen.innerHTML=
+"🐷 Cerdos seleccionados: "+
+"<strong>"+total+"</strong>"+
+"<br><br>"+
+"📦 Cuartones: "+
+ventaGrupo.length;
 
 }
 
@@ -2150,20 +2521,12 @@ actualizarResumenGrupo();
 async function procesarVenta(){
 
 const cantidad=
-Number(
-document.getElementById(
-"cantidadVenta"
-).value
-);
+Number(document.getElementById("cantidadVenta").value);
 
 const peso=
-Number(
-document.getElementById(
-"pesoVenta"
-).value
-);
+Number(document.getElementById("pesoVenta").value);
 
-if(!cantidad||cantidad<=0){
+if(!cantidad || cantidad<=0){
 
 alert("Introduce una cantidad válida.");
 
@@ -2171,20 +2534,15 @@ return;
 
 }
 
-if(!peso||peso<=0){
+if(!peso || peso<=0){
 
-alert(
-"Introduce el peso total en kg."
-);
+alert("Introduce el peso total en kg.");
 
 return;
 
 }
 
-const {
-data:actual,
-error:errorConsulta
-}=
+const {data:actual,error:errorConsulta}=
 await clienteSupabase
 .from("cuartones")
 .select("cantidad_cerdos")
@@ -2202,10 +2560,7 @@ return;
 
 }
 
-if(
-cantidad>
-Number(actual.cantidad_cerdos||0)
-){
+if(cantidad>Number(actual.cantidad_cerdos || 0)){
 
 alert(
 "No puedes sacar más cerdos de los que hay."
@@ -2216,8 +2571,7 @@ return;
 }
 
 const nuevaCantidad=
-Number(actual.cantidad_cerdos||0)-
-cantidad;
+Number(actual.cantidad_cerdos || 0)-cantidad;
 
 const {error}=
 await clienteSupabase
@@ -2230,7 +2584,7 @@ cantidad_cerdos:nuevaCantidad
 if(error){
 
 alert(
-"Error registrando la venta:\n\n"+
+"Error registrando venta:\n\n"+
 error.message
 );
 
@@ -2248,8 +2602,7 @@ peso
 alert(
 "✅ Venta registrada correctamente.\n\n"+
 "Cerdos: "+cantidad+
-"\nPeso total: "+
-peso.toFixed(2)+" kg"
+"\nPeso: "+peso.toFixed(2)+" kg"
 );
 
 cerrarPanel();
@@ -2258,30 +2611,27 @@ await cargarNaves();
 
 }
 
+
+/* ==================================================
+VENTA POR GRUPO
+================================================== */
+
 async function procesarVentaGrupo(){
 
 if(ventaGrupo.length===0){
 
-alert(
-"Agrega al menos un cuartón."
-);
+alert("Agrega al menos un cuartón.");
 
 return;
 
 }
 
 const peso=
-Number(
-document.getElementById(
-"pesoGrupo"
-).value
-);
+Number(document.getElementById("pesoGrupo").value);
 
-if(!peso||peso<=0){
+if(!peso || peso<=0){
 
-alert(
-"Introduce el peso total del grupo."
-);
+alert("Introduce el peso total del grupo.");
 
 return;
 
@@ -2299,7 +2649,7 @@ for(const venta of ventaGrupo){
 
 const {
 data:actual,
-error
+error:errorConsulta
 }=
 await clienteSupabase
 .from("cuartones")
@@ -2307,23 +2657,22 @@ await clienteSupabase
 .eq("id",venta.cuarton_id)
 .single();
 
-if(error){
+if(errorConsulta){
 
 for(const anterior of actualizados){
 
 await clienteSupabase
 .from("cuartones")
 .update({
-cantidad_cerdos:
-anterior.cantidad_original
+cantidad_cerdos:anterior.cantidad_original
 })
 .eq("id",anterior.id);
 
 }
 
 alert(
-"❌ No se pudo completar la venta.\n\n"+
-error.message
+"❌ Error verificando el cuartón:\n\n"+
+errorConsulta.message
 );
 
 return;
@@ -2332,7 +2681,7 @@ return;
 
 if(
 Number(venta.cantidad)>
-Number(actual.cantidad_cerdos||0)
+Number(actual.cantidad_cerdos || 0)
 ){
 
 for(const anterior of actualizados){
@@ -2340,15 +2689,14 @@ for(const anterior of actualizados){
 await clienteSupabase
 .from("cuartones")
 .update({
-cantidad_cerdos:
-anterior.cantidad_original
+cantidad_cerdos:anterior.cantidad_original
 })
 .eq("id",anterior.id);
 
 }
 
 alert(
-"No puedes sacar más cerdos de los que hay."
+"No puedes vender más cerdos de los que hay en un cuartón."
 );
 
 return;
@@ -2356,9 +2704,10 @@ return;
 }
 
 const nuevaCantidad=
-Number(actual.cantidad_cerdos||0)-
+Number(actual.cantidad_cerdos || 0)-
 Number(venta.cantidad);
 
+const {error}=
 await clienteSupabase
 .from("cuartones")
 .update({
@@ -2373,8 +2722,7 @@ for(const anterior of actualizados){
 await clienteSupabase
 .from("cuartones")
 .update({
-cantidad_cerdos:
-anterior.cantidad_original
+cantidad_cerdos:anterior.cantidad_original
 })
 .eq("id",anterior.id);
 
@@ -2391,8 +2739,7 @@ return;
 
 actualizados.push({
 id:venta.cuarton_id,
-cantidad_original:
-Number(actual.cantidad_cerdos)
+cantidad_original:Number(actual.cantidad_cerdos || 0)
 });
 
 }
@@ -2407,16 +2754,23 @@ ventaGrupo
 .map(v=>"N"+v.nave_id)
 .join(",");
 
-const primerElemento=
-ventaGrupo[0];
+const primerElemento=ventaGrupo[0];
 
-const {
-data:sesionData
-}=
-await clienteSupabase
-.auth.getSession();
+const {data:sesionData}=
+await clienteSupabase.auth.getSession();
 
 if(!sesionData.session){
+
+for(const anterior of actualizados){
+
+await clienteSupabase
+.from("cuartones")
+.update({
+cantidad_cerdos:anterior.cantidad_original
+})
+.eq("id",anterior.id);
+
+}
 
 window.location.href="login.html";
 
@@ -2425,35 +2779,27 @@ return;
 }
 
 const correoUsuario=
-sesionData.session.user.email||
+sesionData.session.user.email ||
 "Sin correo";
 
-const {
-error:errorHistorial
-}=
+const {error:errorHistorial}=
 await clienteSupabase
 .from("movimientos_naves")
 .insert({
 
 fecha:new Date().toISOString(),
 
-nave_id:
-primerElemento.nave_id,
+nave_id:primerElemento.nave_id,
 
-cuarton_id:
-primerElemento.cuarton_id,
+cuarton_id:primerElemento.cuarton_id,
 
-nave:
-primerElemento.nave_nombre,
+nave:primerElemento.nave_nombre,
 
-cuarton:
-primerElemento.cuarton_numero,
+cuarton:primerElemento.cuarton_numero,
 
-cuartones:
-cuartonesTexto,
+cuartones:cuartonesTexto,
 
-naves:
-navesTexto,
+naves:navesTexto,
 
 operacion:"Salida",
 
@@ -2474,8 +2820,7 @@ for(const anterior of actualizados){
 await clienteSupabase
 .from("cuartones")
 .update({
-cantidad_cerdos:
-anterior.cantidad_original
+cantidad_cerdos:anterior.cantidad_original
 })
 .eq("id",anterior.id);
 
@@ -2493,12 +2838,10 @@ return;
 alert(
 "✅ Venta por grupo registrada correctamente.\n\n"+
 "Cerdos: "+cantidadTotal+
-"\nPeso total: "+
-peso.toFixed(2)+" kg"+
-"\n\nCuartones: "+
-cuartonesTexto+
-"\nNaves: "+
-navesTexto
+"\nPeso total: "+peso.toFixed(2)+" kg"+
+"\n\n"+
+"Cuartones: "+cuartonesTexto+
+"\nNaves: "+navesTexto
 );
 
 cerrarPanel();
@@ -2506,6 +2849,11 @@ cerrarPanel();
 await cargarNaves();
 
 }
+
+
+/* ==================================================
+MUERTES CEBA
+================================================== */
 
 function mostrarMuerte(){
 
@@ -2532,13 +2880,9 @@ document
 async function procesarMuerteTotal(){
 
 const cantidad=
-Number(
-document.getElementById(
-"cantidadMuerteTotal"
-).value
-);
+Number(document.getElementById("cantidadMuerteTotal").value);
 
-if(!cantidad||cantidad<=0){
+if(!cantidad || cantidad<=0){
 
 alert("Introduce una cantidad válida.");
 
@@ -2546,10 +2890,7 @@ return;
 
 }
 
-const {
-data:actual,
-error:errorConsulta
-}=
+const {data:actual,error:errorConsulta}=
 await clienteSupabase
 .from("cuartones")
 .select("cantidad_cerdos")
@@ -2567,10 +2908,7 @@ return;
 
 }
 
-if(
-cantidad>
-Number(actual.cantidad_cerdos)
-){
+if(cantidad>Number(actual.cantidad_cerdos || 0)){
 
 alert(
 "No puedes sacar más cerdos de los que hay."
@@ -2581,7 +2919,7 @@ return;
 }
 
 const nuevaCantidad=
-Number(actual.cantidad_cerdos)-cantidad;
+Number(actual.cantidad_cerdos || 0)-cantidad;
 
 const {error}=
 await clienteSupabase
@@ -2609,9 +2947,7 @@ cantidad,
 0
 );
 
-alert(
-"✅ Muerte registrada correctamente."
-);
+alert("✅ Muerte registrada correctamente.");
 
 cerrarPanel();
 
@@ -2621,8 +2957,6 @@ await cargarNaves();
 
 function mostrarMuerteVenta(){
 
-tipoMuerteVentaCeba="bandas";
-
 ocultarTodosLosPaneles();
 
 document
@@ -2630,22 +2964,22 @@ document
 .classList
 .remove("oculto");
 
-seleccionarTipoMuerteVentaCeba(
-"bandas"
-);
-
 }
 
 async function procesarMuerteVenta(){
 
 const cantidad=
-Number(
-document.getElementById(
-"cantidadMuerteVenta"
-).value
-);
+Number(document.getElementById("cantidadMuerteVenta").value);
 
-if(!cantidad||cantidad<=0){
+const b1=
+Number(document.getElementById("pesoB1MuerteVenta").value);
+
+const b2=
+Number(document.getElementById("pesoB2MuerteVenta").value);
+
+const peso=b1+b2;
+
+if(!cantidad || cantidad<=0){
 
 alert("Introduce una cantidad válida.");
 
@@ -2653,63 +2987,15 @@ return;
 
 }
 
-let peso=0;
-let b1=0;
-let b2=0;
+if(b1<=0 || b2<=0){
 
-if(tipoMuerteVentaCeba==="bandas"){
-
-b1=
-Number(
-document.getElementById(
-"pesoB1MuerteVenta"
-).value
-);
-
-b2=
-Number(
-document.getElementById(
-"pesoB2MuerteVenta"
-).value
-);
-
-if(b1<=0||b2<=0){
-
-alert(
-"Introduce el peso de B1 y B2."
-);
+alert("Introduce el peso de B1 y B2.");
 
 return;
 
 }
 
-peso=b1+b2;
-
-}else{
-
-peso=
-Number(
-document.getElementById(
-"pesoEnteroMuerteVenta"
-).value
-);
-
-if(peso<=0){
-
-alert(
-"Introduce el peso del cochino entero."
-);
-
-return;
-
-}
-
-}
-
-const {
-data:actual,
-error:errorConsulta
-}=
+const {data:actual,error:errorConsulta}=
 await clienteSupabase
 .from("cuartones")
 .select("cantidad_cerdos")
@@ -2727,10 +3013,7 @@ return;
 
 }
 
-if(
-cantidad>
-Number(actual.cantidad_cerdos)
-){
+if(cantidad>Number(actual.cantidad_cerdos || 0)){
 
 alert(
 "No puedes sacar más cerdos de los que hay."
@@ -2741,8 +3024,7 @@ return;
 }
 
 const nuevaCantidad=
-Number(actual.cantidad_cerdos)-
-cantidad;
+Number(actual.cantidad_cerdos || 0)-cantidad;
 
 const {error}=
 await clienteSupabase
@@ -2772,8 +3054,6 @@ b1,
 b2
 );
 
-if(tipoMuerteVentaCeba==="bandas"){
-
 alert(
 "✅ Muerte de venta registrada.\n\n"+
 "Cerdos: "+cantidad+
@@ -2781,36 +3061,25 @@ alert(
 formatoPesoBandas(b1,b2)
 );
 
-}else{
-
-alert(
-"✅ Muerte de venta registrada.\n\n"+
-"Cerdos: "+cantidad+
-"\n\nEntero: "+
-peso.toFixed(2)+
-" kg"
-);
-
-}
-
 cerrarPanel();
 
 await cargarNaves();
 
 }
 
+
+/* ==================================================
+REAGRUPACIÓN CEBA
+================================================== */
+
 function mostrarReagrupeSalida(){
 
-document.getElementById(
-"origenReagrupeTexto"
-).innerText=
+document.getElementById("origenReagrupeTexto").innerText=
 naveSeleccionada.nombre+
 " - Cuartón "+
 cuartonSeleccionado.numero+
 " — "+
-Number(
-cuartonSeleccionado.cantidad_cerdos||0
-)+
+cuartonSeleccionado.cantidad+
 " cerdos";
 
 ocultarTodosLosPaneles();
@@ -2825,18 +3094,12 @@ document
 async function procesarReagrupe(){
 
 const cantidad=
-Number(
-document.getElementById(
-"cantidadReagrupeSalida"
-).value
-);
+Number(document.getElementById("cantidadReagrupeSalida").value);
 
 const destino=
-document.getElementById(
-"cuartonDestinoSalida"
-).value;
+document.getElementById("cuartonDestinoSalida").value;
 
-if(!cantidad||cantidad<=0){
+if(!cantidad || cantidad<=0){
 
 alert("Introduce una cantidad válida.");
 
@@ -2846,22 +3109,15 @@ return;
 
 if(!destino){
 
-alert(
-"Selecciona el cuartón destino."
-);
+alert("Selecciona el cuartón destino.");
 
 return;
 
 }
 
-if(
-String(destino)===
-String(cuartonSeleccionado.id)
-){
+if(String(destino)===String(cuartonSeleccionado.id)){
 
-alert(
-"El cuartón destino debe ser diferente."
-);
+alert("El cuartón destino debe ser diferente.");
 
 return;
 
@@ -2878,9 +3134,7 @@ error:errorConsulta
 }=
 await clienteSupabase
 .from("cuartones")
-.select(
-"id,cantidad_cerdos,nave_id,numero"
-)
+.select("id,cantidad_cerdos,nave_id,numero")
 .in("id",ids);
 
 if(errorConsulta){
@@ -2896,21 +3150,17 @@ return;
 
 const origenActual=
 cuartones.find(c=>
-String(c.id)===
-String(cuartonSeleccionado.id)
+String(c.id)===String(cuartonSeleccionado.id)
 );
 
 const destinoActual=
 cuartones.find(c=>
-String(c.id)===
-String(destino)
+String(c.id)===String(destino)
 );
 
 if(!origenActual){
 
-alert(
-"No se encontró el cuartón de origen."
-);
+alert("No se encontró el cuartón de origen.");
 
 return;
 
@@ -2918,20 +3168,13 @@ return;
 
 if(!destinoActual){
 
-alert(
-"No se encontró el cuartón destino."
-);
+alert("No se encontró el cuartón destino.");
 
 return;
 
 }
 
-if(
-cantidad>
-Number(
-origenActual.cantidad_cerdos||0
-)
-){
+if(cantidad>Number(origenActual.cantidad_cerdos || 0)){
 
 alert(
 "No puedes reagrupar más cerdos de los que hay en el cuartón de origen."
@@ -2942,14 +3185,10 @@ return;
 }
 
 const cantidadOrigenAnterior=
-Number(
-origenActual.cantidad_cerdos||0
-);
+Number(origenActual.cantidad_cerdos || 0);
 
 const cantidadDestinoAnterior=
-Number(
-destinoActual.cantidad_cerdos||0
-);
+Number(destinoActual.cantidad_cerdos || 0);
 
 const cantidadOrigenNueva=
 cantidadOrigenAnterior-cantidad;
@@ -2957,14 +3196,11 @@ cantidadOrigenAnterior-cantidad;
 const cantidadDestinoNueva=
 cantidadDestinoAnterior+cantidad;
 
-const {
-error:errorOrigen
-}=
+const {error:errorOrigen}=
 await clienteSupabase
 .from("cuartones")
 .update({
-cantidad_cerdos:
-cantidadOrigenNueva
+cantidad_cerdos:cantidadOrigenNueva
 })
 .eq("id",origenActual.id);
 
@@ -2979,14 +3215,11 @@ return;
 
 }
 
-const {
-error:errorDestino
-}=
+const {error:errorDestino}=
 await clienteSupabase
 .from("cuartones")
 .update({
-cantidad_cerdos:
-cantidadDestinoNueva
+cantidad_cerdos:cantidadDestinoNueva
 })
 .eq("id",destinoActual.id);
 
@@ -2995,8 +3228,7 @@ if(errorDestino){
 await clienteSupabase
 .from("cuartones")
 .update({
-cantidad_cerdos:
-cantidadOrigenAnterior
+cantidad_cerdos:cantidadOrigenAnterior
 })
 .eq("id",origenActual.id);
 
@@ -3016,8 +3248,7 @@ alert(
 "\n\nOrigen: "+
 naveSeleccionada.nombre+
 " - C"+cuartonSeleccionado.numero+
-"\nDestino: C"+
-destinoActual.numero
+"\nDestino: C"+destinoActual.numero
 );
 
 cerrarPanel();
@@ -3025,6 +3256,11 @@ cerrarPanel();
 await cargarNaves();
 
 }
+
+
+/* ==================================================
+REGISTRAR MOVIMIENTO CEBA
+================================================== */
 
 async function registrarMovimiento(
 operacion,
@@ -3035,11 +3271,8 @@ pesoB1=0,
 pesoB2=0
 ){
 
-const {
-data:sesionData
-}=
-await clienteSupabase
-.auth.getSession();
+const {data:sesionData}=
+await clienteSupabase.auth.getSession();
 
 if(!sesionData.session){
 
@@ -3050,58 +3283,41 @@ return;
 }
 
 const correoUsuario=
-sesionData.session.user.email||
+sesionData.session.user.email ||
 "Sin correo";
 
 const datosMovimiento={
 
-fecha:
-new Date().toISOString(),
+fecha:new Date().toISOString(),
 
-nave_id:
-naveSeleccionada.id,
+nave_id:naveSeleccionada.id,
 
-cuarton_id:
-cuartonSeleccionado.id,
+cuarton_id:cuartonSeleccionado.id,
 
-nave:
-naveSeleccionada.nombre,
+nave:naveSeleccionada.nombre,
 
-cuarton:
-cuartonSeleccionado.numero,
+cuarton:cuartonSeleccionado.numero,
 
-operacion:
-operacion,
+operacion:operacion,
 
-cantidad:
-cantidad,
+cantidad:cantidad,
 
-peso_kg:
-peso||0,
+peso_kg:peso || 0,
 
-usuario:
-correoUsuario,
+usuario:correoUsuario,
 
-motivo:
-motivo
+motivo:motivo
 
 };
 
-if(
-motivo==="Muerte de venta"
-){
+if(motivo==="Muerte de venta"){
 
-datosMovimiento.peso_b1=
-b1Seguro(pesoB1);
-
-datosMovimiento.peso_b2=
-b1Seguro(pesoB2);
+datosMovimiento.peso_b1=pesoB1;
+datosMovimiento.peso_b2=pesoB2;
 
 }
 
-const {
-error
-}=
+const {error}=
 await clienteSupabase
 .from("movimientos_naves")
 .insert(datosMovimiento);
@@ -3117,11 +3333,10 @@ error.message
 
 }
 
-function b1Seguro(valor){
 
-return Number(valor||0);
-
-}
+/* ==================================================
+DESTETE - CARGAR FILAS
+================================================== */
 
 async function cargarDestete(){
 
@@ -3136,9 +3351,7 @@ await clienteSupabase
 
 if(error){
 
-document.getElementById(
-"contenidoDesteteNave"
-).innerHTML=`
+document.getElementById("contenidoDesteteNave").innerHTML=`
 
 <div class="panel">
 
@@ -3154,7 +3367,7 @@ return;
 
 }
 
-filasDestete=data||[];
+filasDestete=data || [];
 
 if(filasDestete.length===0){
 
@@ -3194,7 +3407,7 @@ await clienteSupabase
 
 if(!errorInsert){
 
-filasDestete=nuevas||[];
+filasDestete=nuevas || [];
 
 }
 
@@ -3209,7 +3422,6 @@ let html=`
 </h2>
 
 <div class="estructuraDestete">
-
 `;
 
 let totalDestete=0;
@@ -3217,7 +3429,7 @@ let totalDestete=0;
 filasDestete.forEach(fila=>{
 
 const cantidad=
-Number(fila.cantidad_cerdos||0);
+Number(fila.cantidad_cerdos || 0);
 
 totalDestete+=cantidad;
 
@@ -3289,10 +3501,10 @@ ${totalDestete}
 filasDestete.forEach(fila=>{
 
 const cuartones=
-Number(fila.cuartones||0);
+Number(fila.cuartones || 0);
 
 const vacios=
-Number(fila.cuartones_vacios||0);
+Number(fila.cuartones_vacios || 0);
 
 html+=`
 
@@ -3330,12 +3542,16 @@ actualizarTotalGeneralNaves();
 
 }
 
+
+/* ==================================================
+SELECCIONAR FILA DESTETE
+================================================== */
+
 function seleccionarFilaDestete(id){
 
 filaDesteteSeleccionada=
 filasDestete.find(f=>
-String(f.id)===
-String(id)
+String(f.id)===String(id)
 );
 
 if(!filaDesteteSeleccionada){
@@ -3348,20 +3564,18 @@ return;
 
 const cantidad=
 Number(
-filaDesteteSeleccionada.cantidad_cerdos||0
+filaDesteteSeleccionada.cantidad_cerdos || 0
 );
 
 document.getElementById(
 "tituloFilaDestete"
 ).innerText=
-"🍼 "+
-filaDesteteSeleccionada.fila;
+"🍼 "+filaDesteteSeleccionada.fila;
 
 document.getElementById(
 "cantidadFilaDestete"
 ).innerText=
-"🐷 Cerdos actuales: "+
-cantidad;
+"🐷 Cerdos actuales: "+cantidad;
 
 ocultarTodosLosPaneles();
 
@@ -3371,6 +3585,11 @@ document
 .remove("oculto");
 
 }
+
+
+/* ==================================================
+AGREGAR DESTETE
+================================================== */
 
 function mostrarAgregarDestete(){
 
@@ -3393,12 +3612,10 @@ async function procesarAgregarDestete(){
 
 const cantidad=
 Number(
-document.getElementById(
-"cantidadAgregarDestete"
-).value
+document.getElementById("cantidadAgregarDestete").value
 );
 
-if(!cantidad||cantidad<=0){
+if(!cantidad || cantidad<=0){
 
 alert("Introduce una cantidad válida.");
 
@@ -3416,17 +3633,13 @@ return;
 }
 
 const nuevaCantidad=
-Number(actual.cantidad_cerdos||0)+
-cantidad;
+Number(actual.cantidad_cerdos || 0)+cantidad;
 
-const {
-error
-}=
+const {error}=
 await clienteSupabase
 .from("destete_filas")
 .update({
-cantidad_cerdos:
-nuevaCantidad
+cantidad_cerdos:nuevaCantidad
 })
 .eq("id",actual.id);
 
@@ -3462,11 +3675,16 @@ await cargarDestete();
 
 }
 
+
+/* ==================================================
+SALIDA DESTETE PARA CEBA
+================================================== */
+
 function mostrarSalidaCebaDestete(){
 
 const cantidad=
 Number(
-filaDesteteSeleccionada.cantidad_cerdos||0
+filaDesteteSeleccionada.cantidad_cerdos || 0
 );
 
 document.getElementById(
@@ -3491,12 +3709,10 @@ async function procesarSalidaCebaDestete(){
 
 const cantidad=
 Number(
-document.getElementById(
-"cantidadSalidaCebaDestete"
-).value
+document.getElementById("cantidadSalidaCebaDestete").value
 );
 
-if(!cantidad||cantidad<=0){
+if(!cantidad || cantidad<=0){
 
 alert("Introduce una cantidad válida.");
 
@@ -3515,7 +3731,7 @@ return;
 
 if(
 cantidad>
-Number(actual.cantidad_cerdos||0)
+Number(actual.cantidad_cerdos || 0)
 ){
 
 alert(
@@ -3527,17 +3743,13 @@ return;
 }
 
 const nuevaCantidad=
-Number(actual.cantidad_cerdos||0)-
-cantidad;
+Number(actual.cantidad_cerdos || 0)-cantidad;
 
-const {
-error
-}=
+const {error}=
 await clienteSupabase
 .from("destete_filas")
 .update({
-cantidad_cerdos:
-nuevaCantidad
+cantidad_cerdos:nuevaCantidad
 })
 .eq("id",actual.id);
 
@@ -3571,11 +3783,16 @@ await cargarDestete();
 
 }
 
+
+/* ==================================================
+MUERTE DESTETE
+================================================== */
+
 function mostrarMuerteDestete(){
 
 const cantidad=
 Number(
-filaDesteteSeleccionada.cantidad_cerdos||0
+filaDesteteSeleccionada.cantidad_cerdos || 0
 );
 
 document.getElementById(
@@ -3607,7 +3824,7 @@ document.getElementById(
 filaDesteteSeleccionada.fila+
 " — "+
 Number(
-filaDesteteSeleccionada.cantidad_cerdos||0
+filaDesteteSeleccionada.cantidad_cerdos || 0
 )+
 " cerdos actuales";
 
@@ -3627,7 +3844,7 @@ document.getElementById(
 ).value
 );
 
-if(!cantidad||cantidad<=0){
+if(!cantidad || cantidad<=0){
 
 alert("Introduce una cantidad válida.");
 
@@ -3645,7 +3862,7 @@ return;
 }
 
 const cantidadActual=
-Number(actual.cantidad_cerdos||0);
+Number(actual.cantidad_cerdos || 0);
 
 if(cantidad>cantidadActual){
 
@@ -3660,14 +3877,11 @@ return;
 const nuevaCantidad=
 cantidadActual-cantidad;
 
-const {
-error
-}=
+const {error}=
 await clienteSupabase
 .from("destete_filas")
 .update({
-cantidad_cerdos:
-nuevaCantidad
+cantidad_cerdos:nuevaCantidad
 })
 .eq("id",actual.id);
 
@@ -3703,8 +3917,6 @@ await cargarDestete();
 
 function mostrarMuerteVentaDestete(){
 
-tipoMuerteVentaDestete="bandas";
-
 ocultarTodosLosPaneles();
 
 document.getElementById(
@@ -3714,7 +3926,7 @@ document.getElementById(
 filaDesteteSeleccionada.fila+
 " — "+
 Number(
-filaDesteteSeleccionada.cantidad_cerdos||0
+filaDesteteSeleccionada.cantidad_cerdos || 0
 )+
 " cerdos actuales";
 
@@ -3722,10 +3934,6 @@ document
 .getElementById("panelMuerteVentaDestete")
 .classList
 .remove("oculto");
-
-seleccionarTipoMuerteVentaDestete(
-"bandas"
-);
 
 }
 
@@ -3738,7 +3946,23 @@ document.getElementById(
 ).value
 );
 
-if(!cantidad||cantidad<=0){
+const b1=
+Number(
+document.getElementById(
+"pesoB1MuerteVentaDestete"
+).value
+);
+
+const b2=
+Number(
+document.getElementById(
+"pesoB2MuerteVentaDestete"
+).value
+);
+
+const peso=b1+b2;
+
+if(!cantidad || cantidad<=0){
 
 alert("Introduce una cantidad válida.");
 
@@ -3746,59 +3970,13 @@ return;
 
 }
 
-let peso=0;
-let b1=0;
-let b2=0;
-
-if(
-tipoMuerteVentaDestete===
-"bandas"
-){
-
-b1=
-Number(
-document.getElementById(
-"pesoB1MuerteVentaDestete"
-).value
-);
-
-b2=
-Number(
-document.getElementById(
-"pesoB2MuerteVentaDestete"
-).value
-);
-
-if(b1<=0||b2<=0){
+if(b1<=0 || b2<=0){
 
 alert(
 "Introduce el peso de B1 y B2."
 );
 
 return;
-
-}
-
-peso=b1+b2;
-
-}else{
-
-peso=
-Number(
-document.getElementById(
-"pesoEnteroMuerteVentaDestete"
-).value
-);
-
-if(peso<=0){
-
-alert(
-"Introduce el peso del cochino entero."
-);
-
-return;
-
-}
 
 }
 
@@ -3812,7 +3990,7 @@ return;
 }
 
 const cantidadActual=
-Number(actual.cantidad_cerdos||0);
+Number(actual.cantidad_cerdos || 0);
 
 if(cantidad>cantidadActual){
 
@@ -3827,14 +4005,11 @@ return;
 const nuevaCantidad=
 cantidadActual-cantidad;
 
-const {
-error
-}=
+const {error}=
 await clienteSupabase
 .from("destete_filas")
 .update({
-cantidad_cerdos:
-nuevaCantidad
+cantidad_cerdos:nuevaCantidad
 })
 .eq("id",actual.id);
 
@@ -3858,11 +4033,6 @@ b1,
 b2
 );
 
-if(
-tipoMuerteVentaDestete===
-"bandas"
-){
-
 alert(
 "✅ Muerte de venta registrada.\n\n"+
 "Fila: "+actual.fila+
@@ -3871,28 +4041,20 @@ alert(
 formatoPesoBandas(b1,b2)
 );
 
-}else{
-
-alert(
-"✅ Muerte de venta registrada.\n\n"+
-"Fila: "+actual.fila+
-"\nCerdos muertos: "+cantidad+
-"\n\nEntero: "+
-peso.toFixed(2)+" kg"
-);
-
-}
-
 cerrarPanel();
 
 await cargarDestete();
 
 }
 
+
+/* ==================================================
+AGREGAR DATOS DESTETE
+================================================== */
+
 function mostrarAgregarDatosDestete(){
 
-const fila=
-filaDesteteSeleccionada;
+const fila=filaDesteteSeleccionada;
 
 document.getElementById(
 "tituloAgregarDatosDestete"
@@ -3909,12 +4071,12 @@ fila.fila+
 document.getElementById(
 "cantidadCuartonesDestete"
 ).value=
-Number(fila.cuartones||0);
+Number(fila.cuartones || 0);
 
 document.getElementById(
 "cantidadCuartonesVaciosDestete"
 ).value=
-Number(fila.cuartones_vacios||0);
+Number(fila.cuartones_vacios || 0);
 
 ocultarTodosLosPaneles();
 
@@ -3929,22 +4091,15 @@ async function procesarAgregarDatosDestete(){
 
 const cuartones=
 Number(
-document.getElementById(
-"cantidadCuartonesDestete"
-).value
+document.getElementById("cantidadCuartonesDestete").value
 );
 
 const cuartonesVacios=
 Number(
-document.getElementById(
-"cantidadCuartonesVaciosDestete"
-).value
+document.getElementById("cantidadCuartonesVaciosDestete").value
 );
 
-if(
-Number.isNaN(cuartones)||
-cuartones<0
-){
+if(Number.isNaN(cuartones) || cuartones<0){
 
 alert(
 "Introduce una cantidad válida de cuartones."
@@ -3954,10 +4109,7 @@ return;
 
 }
 
-if(
-Number.isNaN(cuartonesVacios)||
-cuartonesVacios<0
-){
+if(Number.isNaN(cuartonesVacios) || cuartonesVacios<0){
 
 alert(
 "Introduce una cantidad válida de cuartones vacíos."
@@ -3986,15 +4138,12 @@ if(!actual){
 return;
 }
 
-const {
-error
-}=
+const {error}=
 await clienteSupabase
 .from("destete_filas")
 .update({
 cuartones:cuartones,
-cuartones_vacios:
-cuartonesVacios
+cuartones_vacios:cuartonesVacios
 })
 .eq("id",actual.id);
 
@@ -4013,8 +4162,7 @@ alert(
 "✅ Datos guardados correctamente.\n\n"+
 actual.fila+
 "\nCuartones: "+cuartones+
-"\nCuartones vacíos: "+
-cuartonesVacios
+"\nCuartones vacíos: "+cuartonesVacios
 );
 
 cerrarPanel();
@@ -4023,15 +4171,17 @@ await cargarDestete();
 
 }
 
+
+/* ==================================================
+REAGRUPACIÓN DESTETE
+================================================== */
+
 function mostrarReagrupeDestete(){
 
-const origen=
-filaDesteteSeleccionada;
+const origen=filaDesteteSeleccionada;
 
 const cantidad=
-Number(
-origen.cantidad_cerdos||0
-);
+Number(origen.cantidad_cerdos || 0);
 
 document.getElementById(
 "infoReagrupeDestete"
@@ -4044,9 +4194,7 @@ origen.fila+
 cantidad;
 
 const select=
-document.getElementById(
-"filaDestinoDestete"
-);
+document.getElementById("filaDestinoDestete");
 
 select.innerHTML=`
 
@@ -4058,18 +4206,13 @@ Selecciona fila destino
 
 filasDestete.forEach(fila=>{
 
-if(
-String(fila.id)!==
-String(origen.id)
-){
+if(String(fila.id)!==String(origen.id)){
 
 select.innerHTML+=`
 
 <option value="${fila.id}">
 🐷 ${fila.fila}
-— ${Number(
-fila.cantidad_cerdos||0
-)} cerdos
+— ${Number(fila.cantidad_cerdos || 0)} cerdos
 </option>
 
 `;
@@ -4091,17 +4234,13 @@ async function procesarReagrupeDestete(){
 
 const cantidad=
 Number(
-document.getElementById(
-"cantidadReagrupeDestete"
-).value
+document.getElementById("cantidadReagrupeDestete").value
 );
 
 const destinoId=
-document.getElementById(
-"filaDestinoDestete"
-).value;
+document.getElementById("filaDestinoDestete").value;
 
-if(!cantidad||cantidad<=0){
+if(!cantidad || cantidad<=0){
 
 alert("Introduce una cantidad válida.");
 
@@ -4111,22 +4250,15 @@ return;
 
 if(!destinoId){
 
-alert(
-"Selecciona la fila destino."
-);
+alert("Selecciona la fila destino.");
 
 return;
 
 }
 
-if(
-String(destinoId)===
-String(filaDesteteSeleccionada.id)
-){
+if(String(destinoId)===String(filaDesteteSeleccionada.id)){
 
-alert(
-"La fila destino debe ser diferente."
-);
+alert("La fila destino debe ser diferente.");
 
 return;
 
@@ -4138,17 +4270,15 @@ filaDesteteSeleccionada.id
 );
 
 const destino=
-await obtenerFilaDesteteActual(
-destinoId
-);
+await obtenerFilaDesteteActual(destinoId);
 
-if(!origen||!destino){
+if(!origen || !destino){
 return;
 }
 
 if(
 cantidad>
-Number(origen.cantidad_cerdos||0)
+Number(origen.cantidad_cerdos || 0)
 ){
 
 alert(
@@ -4160,10 +4290,10 @@ return;
 }
 
 const cantidadOrigenAnterior=
-Number(origen.cantidad_cerdos||0);
+Number(origen.cantidad_cerdos || 0);
 
 const cantidadDestinoAnterior=
-Number(destino.cantidad_cerdos||0);
+Number(destino.cantidad_cerdos || 0);
 
 const nuevaCantidadOrigen=
 cantidadOrigenAnterior-cantidad;
@@ -4171,14 +4301,11 @@ cantidadOrigenAnterior-cantidad;
 const nuevaCantidadDestino=
 cantidadDestinoAnterior+cantidad;
 
-const {
-error:errorOrigen
-}=
+const {error:errorOrigen}=
 await clienteSupabase
 .from("destete_filas")
 .update({
-cantidad_cerdos:
-nuevaCantidadOrigen
+cantidad_cerdos:nuevaCantidadOrigen
 })
 .eq("id",origen.id);
 
@@ -4193,14 +4320,11 @@ return;
 
 }
 
-const {
-error:errorDestino
-}=
+const {error:errorDestino}=
 await clienteSupabase
 .from("destete_filas")
 .update({
-cantidad_cerdos:
-nuevaCantidadDestino
+cantidad_cerdos:nuevaCantidadDestino
 })
 .eq("id",destino.id);
 
@@ -4209,8 +4333,7 @@ if(errorDestino){
 await clienteSupabase
 .from("destete_filas")
 .update({
-cantidad_cerdos:
-cantidadOrigenAnterior
+cantidad_cerdos:cantidadOrigenAnterior
 })
 .eq("id",origen.id);
 
@@ -4236,6 +4359,11 @@ cerrarPanel();
 await cargarDestete();
 
 }
+
+
+/* ==================================================
+OBTENER FILA ACTUAL
+================================================== */
 
 async function obtenerFilaDesteteActual(id){
 
@@ -4264,6 +4392,11 @@ return data;
 
 }
 
+
+/* ==================================================
+REGISTRAR HISTORIAL DESTETE
+================================================== */
+
 async function registrarMovimientoDestete(
 fila,
 operacion,
@@ -4276,8 +4409,7 @@ pesoB2=0
 const {
 data:sesionData
 }=
-await clienteSupabase
-.auth.getSession();
+await clienteSupabase.auth.getSession();
 
 if(!sesionData.session){
 
@@ -4288,45 +4420,33 @@ return;
 }
 
 const correoUsuario=
-sesionData.session.user.email||
+sesionData.session.user.email ||
 "Sin correo";
 
 const datosMovimiento={
 
-fecha:
-new Date().toISOString(),
+fecha:new Date().toISOString(),
 
 fila:fila,
 
-operacion:
-operacion,
+operacion:operacion,
 
-cantidad:
-cantidad,
+cantidad:cantidad,
 
-peso_kg:
-peso||0,
+peso_kg:peso || 0,
 
-usuario:
-correoUsuario
+usuario:correoUsuario
 
 };
 
-if(
-operacion==="Muerte de venta"
-){
+if(operacion==="Muerte de venta"){
 
-datosMovimiento.peso_b1=
-Number(pesoB1||0);
-
-datosMovimiento.peso_b2=
-Number(pesoB2||0);
+datosMovimiento.peso_b1=pesoB1;
+datosMovimiento.peso_b2=pesoB2;
 
 }
 
-const {
-error
-}=
+const {error}=
 await clienteSupabase
 .from("movimientos_destete")
 .insert(datosMovimiento);
@@ -4341,6 +4461,11 @@ error.message
 }
 
 }
+
+
+/* ==================================================
+MATERNIDAD - CARGAR NAVES
+================================================== */
 
 async function cargarMaternidad(){
 
@@ -4373,8 +4498,7 @@ return;
 
 }
 
-navesMaternidad=
-naves||[];
+navesMaternidad=naves || [];
 
 const {
 data:filas,
@@ -4405,8 +4529,7 @@ return;
 
 }
 
-filasMaternidad=
-filas||[];
+filasMaternidad=filas || [];
 
 let html=`
 
@@ -4416,14 +4539,11 @@ let html=`
 
 let totalGeneralMaternidad=0;
 
-for(
-const nave of navesMaternidad
-){
+for(const nave of navesMaternidad){
 
 const filasNave=
-filasMaternidad.filter(
-f=>String(f.nave_id)===
-String(nave.id)
+filasMaternidad.filter(f=>
+String(f.nave_id)===String(nave.id)
 );
 
 let totalNave=0;
@@ -4443,10 +4563,9 @@ html+=`
 filasNave.forEach(fila=>{
 
 const cantidad=
-Number(fila.cantidad_cerdos||0);
+Number(fila.cantidad_cerdos || 0);
 
 totalNave+=cantidad;
-
 totalGeneralMaternidad+=cantidad;
 
 html+=`
@@ -4519,19 +4638,21 @@ actualizarTotalGeneralNaves();
 
 }
 
+
+/* ==================================================
+SELECCIONAR FILA MATERNIDAD
+================================================== */
+
 function seleccionarFilaMaternidad(id){
 
 filaMaternidadSeleccionada=
 filasMaternidad.find(f=>
-String(f.id)===
-String(id)
+String(f.id)===String(id)
 );
 
 if(!filaMaternidadSeleccionada){
 
-alert(
-"No se encontró la fila."
-);
+alert("No se encontró la fila.");
 
 return;
 
@@ -4539,13 +4660,12 @@ return;
 
 const cantidad=
 Number(
-filaMaternidadSeleccionada.cantidad_cerdos||0
+filaMaternidadSeleccionada.cantidad_cerdos || 0
 );
 
 const nave=
 navesMaternidad.find(n=>
-String(n.id)===
-String(
+String(n.id)===String(
 filaMaternidadSeleccionada.nave_id
 )
 );
@@ -4556,16 +4676,14 @@ nave?nave.nombre:"Nave";
 document.getElementById(
 "tituloFilaMaternidad"
 ).innerText=
-"🐷 "+
-nombreNave+
+"🐷 "+nombreNave+
 " - "+
 filaMaternidadSeleccionada.fila;
 
 document.getElementById(
 "cantidadFilaMaternidad"
 ).innerText=
-"🐷 Cerdos actuales: "+
-cantidad;
+"🐷 Cerdos actuales: "+cantidad;
 
 ocultarTodosLosPaneles();
 
@@ -4575,6 +4693,11 @@ document
 .remove("oculto");
 
 }
+
+
+/* ==================================================
+AGREGAR MATERNIDAD
+================================================== */
 
 function mostrarAgregarMaternidad(){
 
@@ -4602,16 +4725,12 @@ async function procesarAgregarMaternidad(){
 
 const cantidad=
 Number(
-document.getElementById(
-"cantidadAgregarMaternidad"
-).value
+document.getElementById("cantidadAgregarMaternidad").value
 );
 
-if(!cantidad||cantidad<=0){
+if(!cantidad || cantidad<=0){
 
-alert(
-"Introduce una cantidad válida."
-);
+alert("Introduce una cantidad válida.");
 
 return;
 
@@ -4627,16 +4746,13 @@ return;
 }
 
 const nuevaCantidad=
-Number(actual.cantidad_cerdos||0)+cantidad;
+Number(actual.cantidad_cerdos || 0)+cantidad;
 
-const {
-error
-}=
+const {error}=
 await clienteSupabase
 .from("maternidad_filas")
 .update({
-cantidad_cerdos:
-nuevaCantidad
+cantidad_cerdos:nuevaCantidad
 })
 .eq("id",actual.id);
 
@@ -4671,25 +4787,21 @@ await cargarMaternidad();
 
 }
 
+
+/* ==================================================
+CARGAR OPCIONES CEBA PARA MATERNIDAD
+================================================== */
+
 async function cargarOpcionesMaternidadCeba(){
 
 const selectOrigenNave=
-document.getElementById(
-"maternidadNaveCebaOrigen"
-);
+document.getElementById("maternidadNaveCebaOrigen");
 
 const selectDestinoNave=
-document.getElementById(
-"maternidadNaveCebaDestino"
-);
+document.getElementById("maternidadNaveCebaDestino");
 
-if(
-!selectOrigenNave||
-!selectDestinoNave
-){
-
+if(!selectOrigenNave || !selectDestinoNave){
 return;
-
 }
 
 selectOrigenNave.innerHTML=`
@@ -4729,7 +4841,6 @@ ${nave.nombre}
 });
 
 cargarCuartonesMaternidadOrigen();
-
 cargarCuartonesMaternidadDestino();
 
 }
@@ -4760,8 +4871,7 @@ return;
 
 todosLosCuartones
 .filter(c=>
-String(c.nave_id)===
-String(naveId)
+String(c.nave_id)===String(naveId)
 )
 .forEach(c=>{
 
@@ -4770,7 +4880,7 @@ select.innerHTML+=`
 <option value="${c.id}">
 C${c.numero}
 —
-${c.cantidad_cerdos} cerdos
+${Number(c.cantidad_cerdos || 0)} cerdos
 </option>
 
 `;
@@ -4805,8 +4915,7 @@ return;
 
 todosLosCuartones
 .filter(c=>
-String(c.nave_id)===
-String(naveId)
+String(c.nave_id)===String(naveId)
 )
 .forEach(c=>{
 
@@ -4815,7 +4924,7 @@ select.innerHTML+=`
 <option value="${c.id}">
 C${c.numero}
 —
-${c.cantidad_cerdos} cerdos
+${Number(c.cantidad_cerdos || 0)} cerdos
 </option>
 
 `;
@@ -4828,25 +4937,21 @@ document.addEventListener(
 "change",
 function(e){
 
-if(
-e.target.id===
-"maternidadNaveCebaOrigen"
-){
-
+if(e.target.id==="maternidadNaveCebaOrigen"){
 cargarCuartonesMaternidadOrigen();
-
 }
 
-if(
-e.target.id===
-"maternidadNaveCebaDestino"
-){
-
+if(e.target.id==="maternidadNaveCebaDestino"){
 cargarCuartonesMaternidadDestino();
-
 }
 
-});
+}
+);
+
+
+/* ==================================================
+AGREGAR DESDE CEBA
+================================================== */
 
 function mostrarAgregarDesdeCeba(){
 
@@ -4877,28 +4982,21 @@ document.getElementById(
 
 if(!cuartonId){
 
-alert(
-"Selecciona el cuartón de origen."
-);
+alert("Selecciona el cuartón de origen.");
 
 return;
 
 }
 
-if(!cantidad||cantidad<=0){
+if(!cantidad || cantidad<=0){
 
-alert(
-"Introduce una cantidad válida."
-);
+alert("Introduce una cantidad válida.");
 
 return;
 
 }
 
-const {
-data:cuarton,
-error:errorCuarton
-}=
+const {data:cuarton,error:errorCuarton}=
 await clienteSupabase
 .from("cuartones")
 .select("*")
@@ -4918,7 +5016,7 @@ return;
 
 if(
 cantidad>
-Number(cuarton.cantidad_cerdos||0)
+Number(cuarton.cantidad_cerdos || 0)
 ){
 
 alert(
@@ -4939,21 +5037,16 @@ return;
 }
 
 const nuevaCantidadCeba=
-Number(cuarton.cantidad_cerdos||0)-
-cantidad;
+Number(cuarton.cantidad_cerdos || 0)-cantidad;
 
 const nuevaCantidadMaternidad=
-Number(actual.cantidad_cerdos||0)+
-cantidad;
+Number(actual.cantidad_cerdos || 0)+cantidad;
 
-const {
-error:errorSalida
-}=
+const {error:errorSalida}=
 await clienteSupabase
 .from("cuartones")
 .update({
-cantidad_cerdos:
-nuevaCantidadCeba
+cantidad_cerdos:nuevaCantidadCeba
 })
 .eq("id",cuarton.id);
 
@@ -4968,14 +5061,11 @@ return;
 
 }
 
-const {
-error:errorEntrada
-}=
+const {error:errorEntrada}=
 await clienteSupabase
 .from("maternidad_filas")
 .update({
-cantidad_cerdos:
-nuevaCantidadMaternidad
+cantidad_cerdos:nuevaCantidadMaternidad
 })
 .eq("id",actual.id);
 
@@ -4984,8 +5074,7 @@ if(errorEntrada){
 await clienteSupabase
 .from("cuartones")
 .update({
-cantidad_cerdos:
-cuarton.cantidad_cerdos
+cantidad_cerdos:cuarton.cantidad_cerdos
 })
 .eq("id",cuarton.id);
 
@@ -5025,6 +5114,11 @@ await cargarMaternidad();
 
 }
 
+
+/* ==================================================
+SALIDA MATERNIDAD
+================================================== */
+
 function mostrarSalidaMaternidad(){
 
 ocultarTodosLosPaneles();
@@ -5040,7 +5134,7 @@ function mostrarSalidaCebaMaternidad(){
 
 const cantidad=
 Number(
-filaMaternidadSeleccionada.cantidad_cerdos||0
+filaMaternidadSeleccionada.cantidad_cerdos || 0
 );
 
 document.getElementById(
@@ -5079,19 +5173,15 @@ document.getElementById(
 
 if(!cuartonId){
 
-alert(
-"Selecciona el cuartón destino."
-);
+alert("Selecciona el cuartón destino.");
 
 return;
 
 }
 
-if(!cantidad||cantidad<=0){
+if(!cantidad || cantidad<=0){
 
-alert(
-"Introduce una cantidad válida."
-);
+alert("Introduce una cantidad válida.");
 
 return;
 
@@ -5108,7 +5198,7 @@ return;
 
 if(
 cantidad>
-Number(actual.cantidad_cerdos||0)
+Number(actual.cantidad_cerdos || 0)
 ){
 
 alert(
@@ -5141,10 +5231,10 @@ return;
 }
 
 const cantidadMaternidadAnterior=
-Number(actual.cantidad_cerdos||0);
+Number(actual.cantidad_cerdos || 0);
 
 const cantidadCuartonAnterior=
-Number(cuarton.cantidad_cerdos||0);
+Number(cuarton.cantidad_cerdos || 0);
 
 const nuevaMaternidad=
 cantidadMaternidadAnterior-cantidad;
@@ -5152,14 +5242,11 @@ cantidadMaternidadAnterior-cantidad;
 const nuevoCuarton=
 cantidadCuartonAnterior+cantidad;
 
-const {
-error:errorMaternidad
-}=
+const {error:errorMaternidad}=
 await clienteSupabase
 .from("maternidad_filas")
 .update({
-cantidad_cerdos:
-nuevaMaternidad
+cantidad_cerdos:nuevaMaternidad
 })
 .eq("id",actual.id);
 
@@ -5174,14 +5261,11 @@ return;
 
 }
 
-const {
-error:errorCeba
-}=
+const {error:errorCeba}=
 await clienteSupabase
 .from("cuartones")
 .update({
-cantidad_cerdos:
-nuevoCuarton
+cantidad_cerdos:nuevoCuarton
 })
 .eq("id",cuarton.id);
 
@@ -5190,8 +5274,7 @@ if(errorCeba){
 await clienteSupabase
 .from("maternidad_filas")
 .update({
-cantidad_cerdos:
-cantidadMaternidadAnterior
+cantidad_cerdos:cantidadMaternidadAnterior
 })
 .eq("id",actual.id);
 
@@ -5232,11 +5315,16 @@ await cargarMaternidad();
 
 }
 
+
+/* ==================================================
+MUERTE MATERNIDAD
+================================================== */
+
 function mostrarMuerteMaternidad(){
 
 const cantidad=
 Number(
-filaMaternidadSeleccionada.cantidad_cerdos||0
+filaMaternidadSeleccionada.cantidad_cerdos || 0
 );
 
 document.getElementById(
@@ -5266,11 +5354,9 @@ document.getElementById(
 ).value
 );
 
-if(!cantidad||cantidad<=0){
+if(!cantidad || cantidad<=0){
 
-alert(
-"Introduce una cantidad válida."
-);
+alert("Introduce una cantidad válida.");
 
 return;
 
@@ -5286,7 +5372,7 @@ return;
 }
 
 const cantidadActual=
-Number(actual.cantidad_cerdos||0);
+Number(actual.cantidad_cerdos || 0);
 
 if(cantidad>cantidadActual){
 
@@ -5301,14 +5387,11 @@ return;
 const nuevaCantidad=
 cantidadActual-cantidad;
 
-const {
-error
-}=
+const {error}=
 await clienteSupabase
 .from("maternidad_filas")
 .update({
-cantidad_cerdos:
-nuevaCantidad
+cantidad_cerdos:nuevaCantidad
 })
 .eq("id",actual.id);
 
@@ -5331,9 +5414,7 @@ cantidad,
 "Muerte total"
 );
 
-alert(
-"✅ Muerte registrada correctamente."
-);
+alert("✅ Muerte registrada correctamente.");
 
 cerrarPanel();
 
@@ -5341,13 +5422,16 @@ await cargarMaternidad();
 
 }
 
-function mostrarMuerteVentaMaternidad(){
 
-tipoMuerteVentaMaternidad="bandas";
+/* ==================================================
+MUERTE DE VENTA MATERNIDAD
+================================================== */
+
+function mostrarMuerteVentaMaternidad(){
 
 const cantidad=
 Number(
-filaMaternidadSeleccionada.cantidad_cerdos||0
+filaMaternidadSeleccionada.cantidad_cerdos || 0
 );
 
 document.getElementById(
@@ -5366,10 +5450,6 @@ document
 .classList
 .remove("oculto");
 
-seleccionarTipoMuerteVentaMaternidad(
-"bandas"
-);
-
 }
 
 async function procesarMuerteVentaMaternidad(){
@@ -5381,69 +5461,37 @@ document.getElementById(
 ).value
 );
 
-if(!cantidad||cantidad<=0){
-
-alert(
-"Introduce una cantidad válida."
-);
-
-return;
-
-}
-
-let peso=0;
-let b1=0;
-let b2=0;
-
-if(
-tipoMuerteVentaMaternidad===
-"bandas"
-){
-
-b1=
+const b1=
 Number(
 document.getElementById(
 "pesoB1MuerteVentaMaternidad"
 ).value
 );
 
-b2=
+const b2=
 Number(
 document.getElementById(
 "pesoB2MuerteVentaMaternidad"
 ).value
 );
 
-if(b1<=0||b2<=0){
+const peso=b1+b2;
+
+if(!cantidad || cantidad<=0){
+
+alert("Introduce una cantidad válida.");
+
+return;
+
+}
+
+if(b1<=0 || b2<=0){
 
 alert(
 "Introduce el peso de B1 y B2."
 );
 
 return;
-
-}
-
-peso=b1+b2;
-
-}else{
-
-peso=
-Number(
-document.getElementById(
-"pesoEnteroMuerteVentaMaternidad"
-).value
-);
-
-if(peso<=0){
-
-alert(
-"Introduce el peso del cochino entero."
-);
-
-return;
-
-}
 
 }
 
@@ -5458,7 +5506,7 @@ return;
 
 if(
 cantidad>
-Number(actual.cantidad_cerdos||0)
+Number(actual.cantidad_cerdos || 0)
 ){
 
 alert(
@@ -5470,17 +5518,13 @@ return;
 }
 
 const nuevaCantidad=
-Number(actual.cantidad_cerdos||0)-
-cantidad;
+Number(actual.cantidad_cerdos || 0)-cantidad;
 
-const {
-error
-}=
+const {error}=
 await clienteSupabase
 .from("maternidad_filas")
 .update({
-cantidad_cerdos:
-nuevaCantidad
+cantidad_cerdos:nuevaCantidad
 })
 .eq("id",actual.id);
 
@@ -5505,11 +5549,6 @@ b1,
 b2
 );
 
-if(
-tipoMuerteVentaMaternidad===
-"bandas"
-){
-
 alert(
 "✅ Muerte de venta registrada.\n\n"+
 "Cerdos: "+cantidad+
@@ -5517,22 +5556,361 @@ alert(
 formatoPesoBandas(b1,b2)
 );
 
-}else{
+cerrarPanel();
 
-alert(
-"✅ Muerte de venta registrada.\n\n"+
-"Cerdos: "+cantidad+
-"\n\nEntero: "+
-peso.toFixed(2)+" kg"
-);
+await cargarMaternidad();
 
 }
+
+
+/* ==================================================
+VENTA MATERNIDAD
+================================================== */
+
+function mostrarVentaMaternidad(){
+
+const cantidad=
+Number(
+filaMaternidadSeleccionada.cantidad_cerdos || 0
+);
+
+document.getElementById(
+"infoVentaMaternidad"
+).innerText=
+"💰 "+
+filaMaternidadSeleccionada.fila+
+" — "+
+cantidad+
+" cerdos actuales";
+
+ocultarTodosLosPaneles();
+
+document
+.getElementById("panelVentaMaternidad")
+.classList
+.remove("oculto");
+
+}
+
+async function procesarVentaMaternidad(){
+
+const cantidad=
+Number(
+document.getElementById(
+"cantidadVentaMaternidad"
+).value
+);
+
+const peso=
+Number(
+document.getElementById(
+"pesoVentaMaternidad"
+).value
+);
+
+if(!cantidad || cantidad<=0){
+
+alert("Introduce una cantidad válida.");
+
+return;
+
+}
+
+if(!peso || peso<=0){
+
+alert("Introduce el peso total en kg.");
+
+return;
+
+}
+
+const actual=
+await obtenerFilaMaternidadActual(
+filaMaternidadSeleccionada.id
+);
+
+if(!actual){
+return;
+}
+
+if(
+cantidad>
+Number(actual.cantidad_cerdos || 0)
+){
+
+alert(
+"No puedes sacar más cerdos de los que hay."
+);
+
+return;
+
+}
+
+const nuevaCantidad=
+Number(actual.cantidad_cerdos || 0)-cantidad;
+
+const {error}=
+await clienteSupabase
+.from("maternidad_filas")
+.update({
+cantidad_cerdos:nuevaCantidad
+})
+.eq("id",actual.id);
+
+if(error){
+
+alert(
+"Error realizando la venta:\n\n"+
+error.message
+);
+
+return;
+
+}
+
+await registrarMovimientoMaternidad(
+actual,
+"Venta",
+cantidad,
+peso,
+"Venta"
+);
+
+alert(
+"✅ Venta registrada correctamente.\n\n"+
+"Cerdos: "+cantidad+
+"\nPeso: "+peso.toFixed(2)+" kg"
+);
 
 cerrarPanel();
 
 await cargarMaternidad();
 
 }
+
+
+/* ==================================================
+REAGRUPACIÓN MATERNIDAD
+================================================== */
+
+function mostrarReagrupeMaternidad(){
+
+const origen=filaMaternidadSeleccionada;
+
+const naveOrigen=
+navesMaternidad.find(n=>
+String(n.id)===String(origen.nave_id)
+);
+
+document.getElementById(
+"infoReagrupeMaternidad"
+).innerHTML=
+"🐷 Origen: <strong>"+
+(naveOrigen ? naveOrigen.nombre : "")+
+" - "+
+origen.fila+
+"</strong>"+
+"<br><br>"+
+"Cerdos actuales: "+
+Number(origen.cantidad_cerdos || 0);
+
+const select=
+document.getElementById("filaDestinoMaternidad");
+
+select.innerHTML=`
+
+<option value="">
+Selecciona fila destino
+</option>
+
+`;
+
+filasMaternidad.forEach(fila=>{
+
+if(String(fila.id)!==String(origen.id)){
+
+const nave=
+navesMaternidad.find(n=>
+String(n.id)===String(fila.nave_id)
+);
+
+select.innerHTML+=`
+
+<option value="${fila.id}">
+🐷 ${nave ? nave.nombre : ""} - ${fila.fila}
+— ${Number(fila.cantidad_cerdos || 0)} cerdos
+</option>
+
+`;
+
+}
+
+});
+
+ocultarTodosLosPaneles();
+
+document
+.getElementById("panelReagrupeMaternidad")
+.classList
+.remove("oculto");
+
+}
+
+async function procesarReagrupeMaternidad(){
+
+const cantidad=
+Number(
+document.getElementById(
+"cantidadReagrupeMaternidad"
+).value
+);
+
+const destinoId=
+document.getElementById(
+"filaDestinoMaternidad"
+).value;
+
+if(!cantidad || cantidad<=0){
+
+alert("Introduce una cantidad válida.");
+
+return;
+
+}
+
+if(!destinoId){
+
+alert("Selecciona la fila destino.");
+
+return;
+
+}
+
+if(
+String(destinoId)===
+String(filaMaternidadSeleccionada.id)
+){
+
+alert("La fila destino debe ser diferente.");
+
+return;
+
+}
+
+const origen=
+await obtenerFilaMaternidadActual(
+filaMaternidadSeleccionada.id
+);
+
+const destino=
+await obtenerFilaMaternidadActual(destinoId);
+
+if(!origen || !destino){
+return;
+}
+
+if(
+cantidad>
+Number(origen.cantidad_cerdos || 0)
+){
+
+alert(
+"No puedes mover más cerdos de los que hay en la fila de origen."
+);
+
+return;
+
+}
+
+const cantidadOrigenAnterior=
+Number(origen.cantidad_cerdos || 0);
+
+const cantidadDestinoAnterior=
+Number(destino.cantidad_cerdos || 0);
+
+const nuevaCantidadOrigen=
+cantidadOrigenAnterior-cantidad;
+
+const nuevaCantidadDestino=
+cantidadDestinoAnterior+cantidad;
+
+const {error:errorOrigen}=
+await clienteSupabase
+.from("maternidad_filas")
+.update({
+cantidad_cerdos:nuevaCantidadOrigen
+})
+.eq("id",origen.id);
+
+if(errorOrigen){
+
+alert(
+"Error restando los cerdos del origen:\n\n"+
+errorOrigen.message
+);
+
+return;
+
+}
+
+const {error:errorDestino}=
+await clienteSupabase
+.from("maternidad_filas")
+.update({
+cantidad_cerdos:nuevaCantidadDestino
+})
+.eq("id",destino.id);
+
+if(errorDestino){
+
+await clienteSupabase
+.from("maternidad_filas")
+.update({
+cantidad_cerdos:cantidadOrigenAnterior
+})
+.eq("id",origen.id);
+
+alert(
+"❌ No se pudo completar el reagrupe.\n\n"+
+"La fila de origen fue restaurada.\n\n"+
+errorDestino.message
+);
+
+return;
+
+}
+
+const naveOrigen=
+navesMaternidad.find(n=>
+String(n.id)===String(origen.nave_id)
+);
+
+const naveDestino=
+navesMaternidad.find(n=>
+String(n.id)===String(destino.nave_id)
+);
+
+alert(
+"✅ Reagrupe realizado correctamente.\n\n"+
+"Cerdos trasladados: "+cantidad+
+"\n\nOrigen: "+
+(naveOrigen ? naveOrigen.nombre : "")+
+" - "+origen.fila+
+"\nDestino: "+
+(naveDestino ? naveDestino.nombre : "")+
+" - "+destino.fila
+);
+
+cerrarPanel();
+
+await cargarMaternidad();
+
+}
+
+
+/* ==================================================
+OBTENER FILA MATERNIDAD ACTUAL
+================================================== */
 
 async function obtenerFilaMaternidadActual(id){
 
@@ -5561,6 +5939,11 @@ return data;
 
 }
 
+
+/* ==================================================
+REGISTRAR HISTORIAL MATERNIDAD
+================================================== */
+
 async function registrarMovimientoMaternidad(
 fila,
 operacion,
@@ -5574,8 +5957,7 @@ pesoB2=0
 const {
 data:sesionData
 }=
-await clienteSupabase
-.auth.getSession();
+await clienteSupabase.auth.getSession();
 
 if(!sesionData.session){
 
@@ -5586,64 +5968,46 @@ return;
 }
 
 const correoUsuario=
-sesionData.session.user.email||
+sesionData.session.user.email ||
 "Sin correo";
 
 const nave=
 navesMaternidad.find(n=>
-String(n.id)===
-String(fila.nave_id)
+String(n.id)===String(fila.nave_id)
 );
 
 const datosMovimiento={
 
-fecha:
-new Date().toISOString(),
+fecha:new Date().toISOString(),
 
-nave_id:
-fila.nave_id,
+nave_id:fila.nave_id,
 
-fila_id:
-fila.id,
+fila_id:fila.id,
 
-nave:
-nave?nave.nombre:"",
+nave:nave ? nave.nombre : "",
 
-fila:
-fila.fila,
+fila:fila.fila,
 
-operacion:
-operacion,
+operacion:operacion,
 
-cantidad:
-cantidad,
+cantidad:cantidad,
 
-peso_kg:
-peso||0,
+peso_kg:peso || 0,
 
-usuario:
-correoUsuario,
+usuario:correoUsuario,
 
-motivo:
-motivo
+motivo:motivo
 
 };
 
-if(
-operacion==="Muerte de venta"
-){
+if(operacion==="Muerte de venta"){
 
-datosMovimiento.peso_b1=
-Number(pesoB1||0);
-
-datosMovimiento.peso_b2=
-Number(pesoB2||0);
+datosMovimiento.peso_b1=pesoB1;
+datosMovimiento.peso_b2=pesoB2;
 
 }
 
-const {
-error
-}=
+const {error}=
 await clienteSupabase
 .from("movimientos_maternidad")
 .insert(datosMovimiento);
@@ -5659,6 +6023,11 @@ error.message
 
 }
 
+
+/* ==================================================
+REGISTRAR MOVIMIENTO CEBA DESDE MATERNIDAD
+================================================== */
+
 async function registrarMovimientoCebaDesdeMaternidad(
 cuarton,
 cantidad,
@@ -5668,8 +6037,7 @@ motivo
 const {
 data:sesionData
 }=
-await clienteSupabase
-.auth.getSession();
+await clienteSupabase.auth.getSession();
 
 if(!sesionData.session){
 
@@ -5680,54 +6048,42 @@ return;
 }
 
 const correoUsuario=
-sesionData.session.user.email||
+sesionData.session.user.email ||
 "Sin correo";
 
 const nave=
 todasLasNaves.find(n=>
-String(n.id)===
-String(cuarton.nave_id)
+String(n.id)===String(cuarton.nave_id)
 );
 
-const {
-error
-}=
+const {error}=
 await clienteSupabase
 .from("movimientos_naves")
 .insert({
 
-fecha:
-new Date().toISOString(),
+fecha:new Date().toISOString(),
 
-nave_id:
-cuarton.nave_id,
+nave_id:cuarton.nave_id,
 
-cuarton_id:
-cuarton.id,
+cuarton_id:cuarton.id,
 
-nave:
-nave?nave.nombre:"",
+nave:nave ? nave.nombre : "",
 
-cuarton:
-cuarton.numero,
+cuarton:cuarton.numero,
 
-operacion:
-motivo.includes("Entrada")
+operacion:motivo.includes("Entrada")
 ?
 "Entrada"
 :
 "Salida",
 
-cantidad:
-cantidad,
+cantidad:cantidad,
 
 peso_kg:0,
 
-usuario:
-correoUsuario,
+usuario:correoUsuario,
 
-motivo:
-motivo
+motivo:motivo
 
 });
 
@@ -5742,6 +6098,11 @@ error
 
 }
 
+
+/* ==================================================
+CERRAR PANEL
+================================================== */
+
 function cerrarPanel(){
 
 ocultarTodosLosPaneles();
@@ -5755,7 +6116,6 @@ const ids=[
 "cantidadMuerteVenta",
 "pesoB1MuerteVenta",
 "pesoB2MuerteVenta",
-"pesoEnteroMuerteVenta",
 "cantidadReagrupeSalida",
 "cantidadGrupo",
 "pesoGrupo",
@@ -5767,7 +6127,6 @@ const ids=[
 "cantidadMuerteVentaDestete",
 "pesoB1MuerteVentaDestete",
 "pesoB2MuerteVentaDestete",
-"pesoEnteroMuerteVentaDestete",
 "cantidadReagrupeDestete",
 "cantidadCuartonesDestete",
 "cantidadCuartonesVaciosDestete",
@@ -5779,7 +6138,6 @@ const ids=[
 "cantidadMuerteVentaMaternidad",
 "pesoB1MuerteVentaMaternidad",
 "pesoB2MuerteVentaMaternidad",
-"pesoEnteroMuerteVentaMaternidad",
 "cantidadVentaMaternidad",
 "pesoVentaMaternidad",
 "cantidadReagrupeMaternidad"
@@ -5792,27 +6150,22 @@ const elemento=
 document.getElementById(id);
 
 if(elemento){
-
 elemento.value="";
-
 }
 
 });
 
 document.getElementById(
 "totalPesoMuerteVenta"
-).innerText=
-"T: 0.00 kg";
+).innerText="T: 0.00 kg";
 
 document.getElementById(
 "totalPesoMuerteVentaDestete"
-).innerText=
-"T: 0.00 kg";
+).innerText="T: 0.00 kg";
 
 document.getElementById(
 "totalPesoMuerteVentaMaternidad"
-).innerText=
-"T: 0.00 kg";
+).innerText="T: 0.00 kg";
 
 ventaGrupo=[];
 
@@ -5820,11 +6173,12 @@ actualizarResumenGrupo();
 
 tipoEntradaSeleccionado=null;
 
-tipoMuerteVentaCeba="bandas";
-tipoMuerteVentaDestete="bandas";
-tipoMuerteVentaMaternidad="bandas";
-
 }
+
+
+/* ==================================================
+OCULTAR TODOS LOS PANELES
+================================================== */
 
 function ocultarTodosLosPaneles(){
 
@@ -5880,6 +6234,11 @@ elemento
 
 }
 
+
+/* ==================================================
+INICIAR
+================================================== */
+
 async function iniciar(){
 
 const ok=
@@ -5890,8 +6249,6 @@ return;
 }
 
 await actualizarTotalGeneralNaves();
-
-mostrarNavesCeba();
 
 }
 
