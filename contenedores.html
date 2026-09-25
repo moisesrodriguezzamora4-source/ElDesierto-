@@ -1,0 +1,2362 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>ElDesierto - Contenedores</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:Arial,sans-serif;
+
+    background:
+    radial-gradient(circle at top,#1d1d1d,#050505 65%);
+
+    color:white;
+
+    margin:0;
+    padding:20px;
+
+    min-height:100vh;
+}
+
+h1{
+
+    text-align:center;
+
+    color:#ff3030;
+
+    font-size:32px;
+
+    margin:10px 0 25px;
+
+    text-shadow:
+    0 0 10px rgba(255,0,0,.6);
+}
+
+h2{
+    color:#ff5555;
+}
+
+
+/* ==========================================
+   BOTONES PRINCIPALES
+========================================== */
+
+.boton{
+
+    display:block;
+
+    width:90%;
+    max-width:500px;
+
+    margin:15px auto;
+
+    padding:16px;
+
+    background:
+    linear-gradient(145deg,#ff3838,#9d0000);
+
+    color:white;
+
+    border:none;
+
+    border-radius:14px;
+
+    font-size:17px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    box-shadow:
+    0 7px 0 #500000,
+    0 12px 25px rgba(255,0,0,.18);
+
+    transition:.2s;
+}
+
+.boton:active{
+
+    transform:translateY(5px);
+
+    box-shadow:
+    0 2px 0 #500000;
+}
+
+
+/* ==========================================
+   BOTONES CONTENEDORES
+========================================== */
+
+.botonesContenedores{
+
+    width:95%;
+    max-width:900px;
+
+    margin:20px auto 30px;
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(3,1fr);
+
+    gap:15px;
+}
+
+.botonContenedor{
+
+    padding:18px 12px;
+
+    border:none;
+
+    border-radius:14px;
+
+    color:white;
+
+    font-size:17px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    background:
+    linear-gradient(145deg,#333,#101010);
+
+    border:1px solid #444;
+
+    box-shadow:
+    0 7px 0 #050505,
+    0 12px 20px rgba(0,0,0,.5);
+
+    transition:.2s;
+}
+
+.botonContenedor:hover{
+
+    border-color:#ff3030;
+
+    box-shadow:
+    0 7px 0 #050505,
+    0 0 18px rgba(255,0,0,.3);
+}
+
+.botonContenedor:active{
+
+    transform:translateY(5px);
+
+    box-shadow:
+    0 2px 0 #050505;
+}
+
+.botonContenedor.activo{
+
+    background:
+    linear-gradient(145deg,#ff3838,#9d0000);
+
+    border-color:#ff5555;
+
+    box-shadow:
+    0 7px 0 #500000,
+    0 12px 25px rgba(255,0,0,.25);
+}
+
+
+/* ==========================================
+   SECCIONES
+========================================== */
+
+.seccion{
+
+    display:none;
+
+    width:100%;
+}
+
+.seccion.activa{
+
+    display:block;
+}
+
+
+/* ==========================================
+   TITULO
+========================================== */
+
+.tituloSeccion{
+
+    width:95%;
+    max-width:1100px;
+
+    margin:25px auto;
+
+    padding:20px;
+
+    border-radius:20px;
+
+    text-align:center;
+
+    background:
+    linear-gradient(145deg,#202020,#080808);
+
+    border:1px solid #3a3a3a;
+
+    box-shadow:
+    8px 8px 25px #000;
+}
+
+.tituloSeccion h2{
+
+    margin:0;
+
+    color:#ff4040;
+
+    text-shadow:
+    0 0 8px rgba(255,0,0,.4);
+}
+
+.tituloSeccion p{
+
+    color:#aaa;
+
+    margin-bottom:0;
+}
+
+
+/* ==========================================
+   INVENTARIO
+========================================== */
+
+.caja{
+
+    width:95%;
+    max-width:1200px;
+
+    margin:25px auto;
+
+    padding:20px;
+
+    border-radius:20px;
+
+    background:
+    linear-gradient(145deg,#202020,#080808);
+
+    border:1px solid #3a3a3a;
+
+    box-shadow:
+    10px 10px 25px #000,
+    -3px -3px 15px #252525;
+
+    overflow-x:auto;
+}
+
+.caja h2{
+
+    text-align:center;
+
+    margin-top:0;
+
+    color:#ff4040;
+}
+
+table{
+
+    width:100%;
+
+    min-width:850px;
+
+    border-collapse:separate;
+
+    border-spacing:0 8px;
+}
+
+th{
+
+    padding:14px 10px;
+
+    color:#ff5555;
+
+    background:
+    linear-gradient(145deg,#2a0000,#120000);
+}
+
+td{
+
+    padding:14px 10px;
+
+    text-align:center;
+
+    background:
+    linear-gradient(145deg,#202020,#111);
+
+    color:#eee;
+}
+
+td:first-child{
+
+    border-radius:
+    12px 0 0 12px;
+}
+
+td:last-child{
+
+    border-radius:
+    0 12px 12px 0;
+}
+
+tbody tr:hover td{
+
+    background:#292929;
+}
+
+.numeroInventario{
+
+    font-size:20px;
+
+    font-weight:bold;
+
+    color:#ff4040;
+}
+
+
+/* ==========================================
+   FORMULARIO
+========================================== */
+
+.formulario{
+
+    width:95%;
+    max-width:850px;
+
+    margin:25px auto;
+
+    padding:25px;
+
+    border-radius:20px;
+
+    background:
+    linear-gradient(145deg,#202020,#080808);
+
+    border:1px solid #3a3a3a;
+
+    box-shadow:
+    8px 8px 25px #000;
+}
+
+.formulario h2{
+
+    text-align:center;
+
+    margin-top:0;
+}
+
+.grupoFormulario{
+
+    margin-bottom:18px;
+}
+
+.grupoFormulario label{
+
+    display:block;
+
+    margin-bottom:8px;
+
+    color:#ff5555;
+
+    font-weight:bold;
+}
+
+select,
+input{
+
+    width:100%;
+
+    padding:14px;
+
+    border-radius:12px;
+
+    border:1px solid #444;
+
+    background:#101010;
+
+    color:white;
+
+    font-size:15px;
+
+    outline:none;
+}
+
+select:focus,
+input:focus{
+
+    border-color:#ff3030;
+
+    box-shadow:
+    0 0 10px rgba(255,0,0,.3);
+}
+
+.botonAccion{
+
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:12px;
+
+    font-weight:bold;
+
+    font-size:16px;
+
+    color:white;
+
+    cursor:pointer;
+
+    background:
+    linear-gradient(145deg,#e50000,#850000);
+
+    box-shadow:
+    0 5px 0 #480000;
+
+    margin-top:8px;
+}
+
+.botonAccion:active{
+
+    transform:translateY(4px);
+
+    box-shadow:
+    0 1px 0 #480000;
+}
+
+
+/* ==========================================
+   ENTRADA / SALIDA
+========================================== */
+
+.botonesOperacion{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:15px;
+
+    margin-bottom:20px;
+}
+
+.botonEntrada{
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:
+    linear-gradient(145deg,#333,#101010);
+
+    color:white;
+
+    border:1px solid #444;
+
+    font-weight:bold;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+    box-shadow:
+    0 5px 0 #050505;
+}
+
+.botonEntrada.activo{
+
+    background:
+    linear-gradient(145deg,#ff3838,#9d0000);
+
+    border-color:#ff5555;
+
+    box-shadow:
+    0 5px 0 #500000;
+}
+
+
+/* ==========================================
+   HISTORIAL
+========================================== */
+
+.historialCaja{
+
+    width:100%;
+
+    overflow-x:auto;
+}
+
+.historialCaja table{
+
+    min-width:1000px;
+}
+
+.mensaje{
+
+    text-align:center;
+
+    padding:30px;
+
+    font-size:17px;
+
+    font-weight:bold;
+
+    color:#ff5555;
+}
+
+.entradaTexto{
+
+    color:#39ff78;
+
+    font-weight:bold;
+}
+
+.salidaTexto{
+
+    color:#ff5555;
+
+    font-weight:bold;
+}
+
+.eliminar{
+
+    padding:10px 14px;
+
+    border:none;
+
+    border-radius:10px;
+
+    color:white;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    background:
+    linear-gradient(145deg,#ff2424,#820000);
+
+    box-shadow:
+    0 4px 0 #480000;
+}
+
+.eliminar:active{
+
+    transform:translateY(3px);
+
+    box-shadow:
+    0 1px 0 #480000;
+}
+
+.sinPermiso{
+
+    color:#777;
+}
+
+
+/* ==========================================
+   AVISO
+========================================== */
+
+.aviso{
+
+    width:95%;
+    max-width:1000px;
+
+    margin:20px auto;
+
+    padding:15px;
+
+    border-radius:15px;
+
+    background:#170000;
+
+    border:1px solid #650000;
+
+    color:#ff9999;
+
+    text-align:center;
+
+    font-size:14px;
+}
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media(max-width:750px){
+
+    .botonesContenedores{
+
+        grid-template-columns:1fr;
+    }
+
+    .botonesOperacion{
+
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:500px){
+
+    body{
+
+        padding:12px;
+    }
+
+    h1{
+
+        font-size:27px;
+    }
+
+}
+
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+</head>
+
+<body>
+
+
+<h1>📦 Contenedores</h1>
+
+
+<button
+class="boton"
+onclick="window.location.href='menu.html'">
+
+⬅️ Volver al menú
+
+</button>
+
+
+<!-- ==========================================
+     BOTONES
+========================================== -->
+
+<div class="botonesContenedores">
+
+<button
+id="botonContenedor1"
+class="botonContenedor activo"
+onclick="mostrarContenedor(1)">
+
+📦 Contenedor 1
+
+</button>
+
+
+<button
+id="botonContenedor2"
+class="botonContenedor"
+onclick="mostrarContenedor(2)">
+
+📦 Contenedor 2
+
+</button>
+
+
+<button
+id="botonHistorial"
+class="botonContenedor"
+onclick="mostrarHistorial()">
+
+📜 Historial
+
+</button>
+
+</div>
+
+
+<!-- ==========================================
+     CONTENEDOR 1
+========================================== -->
+
+<div
+id="seccionContenedor1"
+class="seccion activa">
+
+<div class="tituloSeccion">
+
+<h2>
+📦 Contenedor 1
+</h2>
+
+<p>
+Inventario físico actual del Contenedor 1.
+</p>
+
+</div>
+
+
+<div class="caja">
+
+<h2>
+📊 Inventario actual
+</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Producto</th>
+
+<th>Unidad</th>
+
+<th>Cantidad / Peso</th>
+
+</tr>
+
+</thead>
+
+<tbody id="tablaContenedor1">
+
+<tr>
+
+<td
+colspan="3"
+class="mensaje">
+
+⏳ Cargando...
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<div class="formulario">
+
+<h2>
+📥📤 Movimiento
+</h2>
+
+
+<div class="botonesOperacion">
+
+<button
+id="entrada1"
+class="botonEntrada activo"
+onclick="seleccionarOperacion(1,'entrada')">
+
+📥 Entrada
+
+</button>
+
+
+<button
+id="salida1"
+class="botonEntrada"
+onclick="seleccionarOperacion(1,'salida')">
+
+📤 Salida
+
+</button>
+
+</div>
+
+
+<div class="grupoFormulario">
+
+<label>
+Producto
+</label>
+
+<select id="producto1">
+
+<option value="">
+Seleccionar producto
+</option>
+
+</select>
+
+</div>
+
+
+<div class="grupoFormulario">
+
+<label id="labelCantidad1">
+Cantidad
+</label>
+
+<input
+type="number"
+id="cantidad1"
+min="0"
+step="0.01"
+placeholder="Introduzca la cantidad">
+
+</div>
+
+
+<button
+class="botonAccion"
+onclick="registrarMovimiento(1)">
+
+💾 Registrar entrada
+
+</button>
+
+</div>
+
+</div>
+
+
+<!-- ==========================================
+     CONTENEDOR 2
+========================================== -->
+
+<div
+id="seccionContenedor2"
+class="seccion">
+
+<div class="tituloSeccion">
+
+<h2>
+📦 Contenedor 2
+</h2>
+
+<p>
+Inventario físico actual del Contenedor 2.
+</p>
+
+</div>
+
+
+<div class="caja">
+
+<h2>
+📊 Inventario actual
+</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Producto</th>
+
+<th>Unidad</th>
+
+<th>Cantidad / Peso</th>
+
+</tr>
+
+</thead>
+
+<tbody id="tablaContenedor2">
+
+<tr>
+
+<td
+colspan="3"
+class="mensaje">
+
+⏳ Cargando...
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<div class="formulario">
+
+<h2>
+📥📤 Movimiento
+</h2>
+
+
+<div class="botonesOperacion">
+
+<button
+id="entrada2"
+class="botonEntrada activo"
+onclick="seleccionarOperacion(2,'entrada')">
+
+📥 Entrada
+
+</button>
+
+
+<button
+id="salida2"
+class="botonEntrada"
+onclick="seleccionarOperacion(2,'salida')">
+
+📤 Salida
+
+</button>
+
+</div>
+
+
+<div class="grupoFormulario">
+
+<label>
+Producto
+</label>
+
+<select id="producto2">
+
+<option value="">
+Seleccionar producto
+</option>
+
+</select>
+
+</div>
+
+
+<div class="grupoFormulario">
+
+<label id="labelCantidad2">
+Cantidad
+</label>
+
+<input
+type="number"
+id="cantidad2"
+min="0"
+step="0.01"
+placeholder="Introduzca la cantidad">
+
+</div>
+
+
+<button
+class="botonAccion"
+onclick="registrarMovimiento(2)">
+
+💾 Registrar entrada
+
+</button>
+
+</div>
+
+</div>
+
+
+<!-- ==========================================
+     HISTORIAL
+========================================== -->
+
+<div
+id="seccionHistorial"
+class="seccion">
+
+<div class="tituloSeccion">
+
+<h2>
+📜 Historial de Contenedores
+</h2>
+
+<p>
+Registro de todas las entradas y salidas de los dos contenedores.
+</p>
+
+</div>
+
+
+<div class="caja">
+
+<div class="historialCaja">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>📅 Fecha</th>
+
+<th>🕒 Hora</th>
+
+<th>📦 Contenedor</th>
+
+<th>📋 Operación</th>
+
+<th>🥩 Producto</th>
+
+<th>🔢 Cantidad / Peso</th>
+
+<th>📏 Unidad</th>
+
+<th>👤 Usuario</th>
+
+<th>⚙️ Acción</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="tablaHistorial">
+
+<tr>
+
+<td
+colspan="9"
+class="mensaje">
+
+⏳ Cargando historial...
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+
+<button
+class="boton"
+onclick="window.location.href='menu.html'">
+
+⬅️ Volver al menú
+
+</button>
+
+
+<script src="supabase.js"></script>
+
+<script>
+
+let esAdministrador=false;
+
+let operacionContenedor1="entrada";
+
+let operacionContenedor2="entrada";
+
+let productosContenedores=[
+    {
+        nombre:"Bandas de cerdo",
+        unidad:"unidad"
+    },
+    {
+        nombre:"Lomo de cerdo",
+        unidad:"unidad"
+    },
+    {
+        nombre:"Pierna de cerdo",
+        unidad:"unidad"
+    },
+    {
+        nombre:"Paleta de cerdo",
+        unidad:"unidad"
+    },
+    {
+        nombre:"Costilla de cerdo",
+        unidad:"unidad"
+    },
+    {
+        nombre:"Cabezas de cerdo",
+        unidad:"unidad"
+    },
+    {
+        nombre:"Picadillo",
+        unidad:"kg"
+    },
+    {
+        nombre:"Picadillo en cajas",
+        unidad:"caja"
+    },
+    {
+        nombre:"Mango",
+        unidad:"bolsa"
+    },
+    {
+        nombre:"Patas de cerdo",
+        unidad:"unidad"
+    },
+    {
+        nombre:"Cerdos enteros",
+        unidad:"unidad"
+    }
+];
+
+
+/* ==========================================
+   SESIÓN
+========================================== */
+
+async function verificarSesion(){
+
+    const {data,error}=
+    await clienteSupabase
+    .auth
+    .getSession();
+
+    if(error || !data.session){
+
+        window.location.href="login.html";
+
+        return false;
+
+    }
+
+    const usuarioId=
+    data.session.user.id;
+
+    const {data:perfil,error:errorPerfil}=
+    await clienteSupabase
+    .from("perfiles")
+    .select("id,rol")
+    .eq("id",usuarioId)
+    .maybeSingle();
+
+    if(errorPerfil){
+
+        alert(
+            "Error buscando perfil:\n\n"+
+            errorPerfil.message
+        );
+
+        return false;
+
+    }
+
+    if(!perfil){
+
+        alert(
+            "⚠️ Este usuario no tiene un perfil."
+        );
+
+        return false;
+
+    }
+
+    esAdministrador=
+    String(perfil.rol || "")
+    .trim()
+    .toLowerCase()
+    ===
+    "administrador";
+
+    return true;
+
+}
+
+
+/* ==========================================
+   USUARIO
+========================================== */
+
+async function obtenerUsuario(){
+
+    const {data}=
+    await clienteSupabase
+    .auth
+    .getUser();
+
+    if(!data || !data.user){
+
+        return "Usuario";
+
+    }
+
+    const usuarioId=
+    data.user.id;
+
+    const {data:perfil}=
+    await clienteSupabase
+    .from("perfiles")
+    .select("*")
+    .eq("id",usuarioId)
+    .maybeSingle();
+
+    if(perfil){
+
+        return perfil.nombre ||
+               perfil.usuario ||
+               data.user.email ||
+               "Usuario";
+
+    }
+
+    return data.user.email ||
+           "Usuario";
+
+}
+
+
+/* ==========================================
+   NAVEGACIÓN
+========================================== */
+
+function ocultarTodo(){
+
+    document
+    .getElementById("seccionContenedor1")
+    .classList.remove("activa");
+
+    document
+    .getElementById("seccionContenedor2")
+    .classList.remove("activa");
+
+    document
+    .getElementById("seccionHistorial")
+    .classList.remove("activa");
+
+    document
+    .getElementById("botonContenedor1")
+    .classList.remove("activo");
+
+    document
+    .getElementById("botonContenedor2")
+    .classList.remove("activo");
+
+    document
+    .getElementById("botonHistorial")
+    .classList.remove("activo");
+
+}
+
+
+function mostrarContenedor(numero){
+
+    ocultarTodo();
+
+    document
+    .getElementById(
+        "seccionContenedor"+numero
+    )
+    .classList.add("activa");
+
+    document
+    .getElementById(
+        "botonContenedor"+numero
+    )
+    .classList.add("activo");
+
+    cargarInventario(numero);
+
+}
+
+
+async function mostrarHistorial(){
+
+    ocultarTodo();
+
+    document
+    .getElementById("seccionHistorial")
+    .classList.add("activa");
+
+    document
+    .getElementById("botonHistorial")
+    .classList.add("activo");
+
+    await cargarHistorial();
+
+}
+
+
+/* ==========================================
+   CARGAR PRODUCTOS EN SELECT
+========================================== */
+
+function cargarProductos(){
+
+    [1,2].forEach(numero=>{
+
+        const select=
+        document.getElementById(
+            "producto"+numero
+        );
+
+        select.innerHTML=`
+
+        <option value="">
+        Seleccionar producto
+        </option>
+
+        `;
+
+        productosContenedores.forEach(
+            producto=>{
+
+                select.innerHTML+=`
+
+                <option
+                value="${producto.nombre}"
+                data-unidad="${producto.unidad}">
+
+                ${producto.nombre}
+
+                </option>
+
+                `;
+
+            }
+        );
+
+        select.onchange=function(){
+
+            actualizarUnidad(numero);
+
+        };
+
+    });
+
+}
+
+
+/* ==========================================
+   UNIDAD
+========================================== */
+
+function actualizarUnidad(numero){
+
+    const select=
+    document.getElementById(
+        "producto"+numero
+    );
+
+    const option=
+    select.options[
+        select.selectedIndex
+    ];
+
+    const label=
+    document.getElementById(
+        "labelCantidad"+numero
+    );
+
+    if(
+        !option ||
+        !option.value
+    ){
+
+        label.innerText=
+        "Cantidad";
+
+        return;
+
+    }
+
+    const unidad=
+    option.dataset.unidad;
+
+    if(unidad==="kg"){
+
+        label.innerText=
+        "Peso (kg)";
+
+    }
+
+    else if(unidad==="bolsa"){
+
+        label.innerText=
+        "Cantidad (bolsas)";
+
+    }
+
+    else if(unidad==="caja"){
+
+        label.innerText=
+        "Cantidad (cajas)";
+
+    }
+
+    else{
+
+        label.innerText=
+        "Cantidad (unidades)";
+
+    }
+
+}
+
+
+/* ==========================================
+   OPERACIÓN
+========================================== */
+
+function seleccionarOperacion(
+    numero,
+    operacion
+){
+
+    if(numero===1){
+
+        operacionContenedor1=
+        operacion;
+
+    }
+
+    else{
+
+        operacionContenedor2=
+        operacion;
+
+    }
+
+
+    const entrada=
+    document.getElementById(
+        "entrada"+numero
+    );
+
+    const salida=
+    document.getElementById(
+        "salida"+numero
+    );
+
+
+    if(operacion==="entrada"){
+
+        entrada.classList.add("activo");
+
+        salida.classList.remove("activo");
+
+    }
+
+    else{
+
+        entrada.classList.remove("activo");
+
+        salida.classList.add("activo");
+
+    }
+
+
+    const boton=
+    document.querySelector(
+        `#seccionContenedor${numero} .botonAccion`
+    );
+
+
+    boton.innerText=
+    operacion==="entrada"
+    ?
+    "💾 Registrar entrada"
+    :
+    "💾 Registrar salida";
+
+}
+
+
+/* ==========================================
+   REGISTRAR MOVIMIENTO
+========================================== */
+
+async function registrarMovimiento(numero){
+
+    const operacion=
+    numero===1
+    ?
+    operacionContenedor1
+    :
+    operacionContenedor2;
+
+
+    const select=
+    document.getElementById(
+        "producto"+numero
+    );
+
+
+    const producto=
+    select.value;
+
+
+    const option=
+    select.options[
+        select.selectedIndex
+    ];
+
+
+    if(!producto){
+
+        alert(
+            "⚠️ Selecciona un producto."
+        );
+
+        return;
+
+    }
+
+
+    const cantidad=
+    Number(
+        document.getElementById(
+            "cantidad"+numero
+        ).value
+    );
+
+
+    if(
+        !Number.isFinite(cantidad) ||
+        cantidad<=0
+    ){
+
+        alert(
+            "⚠️ Introduce una cantidad válida."
+        );
+
+        return;
+
+    }
+
+
+    const unidad=
+    option.dataset.unidad;
+
+
+    if(operacion==="salida"){
+
+        const {data,error}=
+        await clienteSupabase
+        .from("inventario_contenedores")
+        .select("*")
+        .eq(
+            "contenedor",
+            numero
+        )
+        .eq(
+            "producto",
+            producto
+        )
+        .maybeSingle();
+
+
+        if(error){
+
+            alert(
+                "❌ Error comprobando inventario:\n\n"+
+                error.message
+            );
+
+            return;
+
+        }
+
+
+        const disponible=
+        Number(
+            data?.cantidad || 0
+        );
+
+
+        if(cantidad>disponible){
+
+            alert(
+                "❌ No hay suficiente cantidad disponible.\n\n"+
+                "Disponible: "+
+                disponible+
+                " "+
+                unidad
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    const usuario=
+    await obtenerUsuario();
+
+
+    const {error:errorHistorial}=
+    await clienteSupabase
+    .from("historial_contenedores")
+    .insert({
+
+        contenedor:numero,
+
+        operacion:operacion,
+
+        producto:producto,
+
+        cantidad:cantidad,
+
+        unidad:unidad,
+
+        usuario:usuario
+
+    });
+
+
+    if(errorHistorial){
+
+        alert(
+            "❌ Error registrando el movimiento:\n\n"+
+            errorHistorial.message
+        );
+
+        return;
+
+    }
+
+
+    const {data:existente,error:errorExistente}=
+    await clienteSupabase
+    .from("inventario_contenedores")
+    .select("*")
+    .eq(
+        "contenedor",
+        numero
+    )
+    .eq(
+        "producto",
+        producto
+    )
+    .maybeSingle();
+
+
+    if(errorExistente){
+
+        alert(
+            "❌ Error buscando inventario:\n\n"+
+            errorExistente.message
+        );
+
+        return;
+
+    }
+
+
+    let nuevoTotal=
+    Number(
+        existente?.cantidad || 0
+    );
+
+
+    if(operacion==="entrada"){
+
+        nuevoTotal+=cantidad;
+
+    }
+
+    else{
+
+        nuevoTotal-=cantidad;
+
+    }
+
+
+    if(nuevoTotal<0){
+
+        nuevoTotal=0;
+
+    }
+
+
+    if(existente){
+
+        const {error}=
+        await clienteSupabase
+        .from("inventario_contenedores")
+        .update({
+
+            cantidad:nuevoTotal,
+
+            unidad:unidad
+
+        })
+        .eq(
+            "id",
+            existente.id
+        );
+
+
+        if(error){
+
+            alert(
+                "❌ El historial se registró, pero hubo un error actualizando el inventario:\n\n"+
+                error.message
+            );
+
+            return;
+
+        }
+
+    }
+
+    else{
+
+        const {error}=
+        await clienteSupabase
+        .from("inventario_contenedores")
+        .insert({
+
+            contenedor:numero,
+
+            producto:producto,
+
+            cantidad:nuevoTotal,
+
+            unidad:unidad
+
+        });
+
+
+        if(error){
+
+            alert(
+                "❌ El historial se registró, pero hubo un error creando el inventario:\n\n"+
+                error.message
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    alert(
+        operacion==="entrada"
+        ?
+        "✅ Entrada registrada correctamente."
+        :
+        "✅ Salida registrada correctamente."
+    );
+
+
+    document.getElementById(
+        "cantidad"+numero
+    ).value="";
+
+
+    document.getElementById(
+        "producto"+numero
+    ).value="";
+
+
+    actualizarUnidad(numero);
+
+    await cargarInventario(numero);
+
+}
+
+
+/* ==========================================
+   INVENTARIO
+========================================== */
+
+async function cargarInventario(numero){
+
+    const tabla=
+    document.getElementById(
+        "tablaContenedor"+numero
+    );
+
+
+    tabla.innerHTML=`
+
+    <tr>
+
+    <td
+    colspan="3"
+    class="mensaje">
+
+    ⏳ Cargando inventario...
+
+    </td>
+
+    </tr>
+
+    `;
+
+
+    const {data,error}=
+    await clienteSupabase
+    .from("inventario_contenedores")
+    .select("*")
+    .eq(
+        "contenedor",
+        numero
+    )
+    .order(
+        "producto"
+    );
+
+
+    if(error){
+
+        tabla.innerHTML=`
+
+        <tr>
+
+        <td
+        colspan="3"
+        class="mensaje">
+
+        ❌ Error cargando inventario:
+
+        <br><br>
+
+        ${error.message}
+
+        </td>
+
+        </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    const existentes={};
+
+    (data || []).forEach(item=>{
+
+        existentes[
+            item.producto
+        ]=item;
+
+    });
+
+
+    let html="";
+
+
+    productosContenedores.forEach(
+        producto=>{
+
+            const item=
+            existentes[
+                producto.nombre
+            ];
+
+
+            const cantidad=
+            Number(
+                item?.cantidad || 0
+            );
+
+
+            html+=`
+
+            <tr>
+
+            <td>
+
+            ${producto.nombre}
+
+            </td>
+
+            <td>
+
+            ${producto.unidad}
+
+            </td>
+
+            <td class="numeroInventario">
+
+            ${cantidad.toFixed(2)}
+
+            </td>
+
+            </tr>
+
+            `;
+
+        }
+    );
+
+
+    tabla.innerHTML=html;
+
+}
+
+
+/* ==========================================
+   HISTORIAL
+========================================== */
+
+async function cargarHistorial(){
+
+    const tabla=
+    document.getElementById(
+        "tablaHistorial"
+    );
+
+
+    tabla.innerHTML=`
+
+    <tr>
+
+    <td
+    colspan="9"
+    class="mensaje">
+
+    ⏳ Cargando historial...
+
+    </td>
+
+    </tr>
+
+    `;
+
+
+    const {data,error}=
+    await clienteSupabase
+    .from("historial_contenedores")
+    .select("*")
+    .order(
+        "fecha",
+        {
+            ascending:false
+        }
+    );
+
+
+    if(error){
+
+        tabla.innerHTML=`
+
+        <tr>
+
+        <td
+        colspan="9"
+        class="mensaje">
+
+        ❌ Error cargando historial:
+
+        <br><br>
+
+        ${error.message}
+
+        </td>
+
+        </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    if(
+        !data ||
+        data.length===0
+    ){
+
+        tabla.innerHTML=`
+
+        <tr>
+
+        <td
+        colspan="9"
+        class="mensaje">
+
+        📭 No hay movimientos registrados.
+
+        </td>
+
+        </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    let html="";
+
+
+    data.forEach(m=>{
+
+        const fechaCompleta=
+        new Date(m.fecha);
+
+
+        const fecha=
+        fechaCompleta.toLocaleDateString(
+            "es-ES"
+        );
+
+
+        const hora=
+        fechaCompleta.toLocaleTimeString(
+            "es-ES",
+            {
+                hour:"2-digit",
+                minute:"2-digit"
+            }
+        );
+
+
+        const esEntrada=
+        String(
+            m.operacion || ""
+        )
+        .toLowerCase()
+        ===
+        "entrada";
+
+
+        const botonEliminar=
+        esAdministrador
+        ?
+
+        `
+
+        <button
+        class="eliminar"
+        onclick="eliminarMovimiento(${m.id})">
+
+        🗑️ Eliminar
+
+        </button>
+
+        `
+
+        :
+
+        `
+
+        <span class="sinPermiso">
+
+        🔒 Sin permiso
+
+        </span>
+
+        `;
+
+
+        html+=`
+
+        <tr>
+
+        <td>
+
+        ${fecha}
+
+        </td>
+
+        <td>
+
+        ${hora}
+
+        </td>
+
+        <td>
+
+        📦 Contenedor ${m.contenedor}
+
+        </td>
+
+        <td
+        class="${esEntrada ? 'entradaTexto':'salidaTexto'}">
+
+        ${
+            esEntrada
+            ?
+            "📥 Entrada"
+            :
+            "📤 Salida"
+        }
+
+        </td>
+
+        <td>
+
+        ${m.producto}
+
+        </td>
+
+        <td>
+
+        <strong>
+
+        ${Number(m.cantidad || 0).toFixed(2)}
+
+        </strong>
+
+        </td>
+
+        <td>
+
+        ${m.unidad}
+
+        </td>
+
+        <td>
+
+        ${m.usuario || "—"}
+
+        </td>
+
+        <td>
+
+        ${botonEliminar}
+
+        </td>
+
+        </tr>
+
+        `;
+
+    });
+
+
+    tabla.innerHTML=html;
+
+}
+
+
+/* ==========================================
+   ELIMINAR HISTORIAL
+========================================== */
+
+async function eliminarMovimiento(id){
+
+    if(!esAdministrador){
+
+        alert(
+            "❌ No tienes permisos para eliminar registros."
+        );
+
+        return;
+
+    }
+
+
+    if(!confirm(
+        "⚠️ ¿Seguro que deseas eliminar este registro?\n\n"+
+        "Esta acción también corregirá el inventario del contenedor."
+    )){
+
+        return;
+
+    }
+
+
+    const {data:movimiento,error:errorMovimiento}=
+    await clienteSupabase
+    .from("historial_contenedores")
+    .select("*")
+    .eq(
+        "id",
+        id
+    )
+    .maybeSingle();
+
+
+    if(errorMovimiento || !movimiento){
+
+        alert(
+            "❌ No se encontró el movimiento."
+        );
+
+        return;
+
+    }
+
+
+    const {data:inventario,error:errorInventario}=
+    await clienteSupabase
+    .from("inventario_contenedores")
+    .select("*")
+    .eq(
+        "contenedor",
+        movimiento.contenedor
+    )
+    .eq(
+        "producto",
+        movimiento.producto
+    )
+    .maybeSingle();
+
+
+    if(errorInventario){
+
+        alert(
+            "❌ Error buscando inventario:\n\n"+
+            errorInventario.message
+        );
+
+        return;
+
+    }
+
+
+    if(inventario){
+
+        let cantidadActual=
+        Number(
+            inventario.cantidad || 0
+        );
+
+
+        const cantidadMovimiento=
+        Number(
+            movimiento.cantidad || 0
+        );
+
+
+        if(
+            String(
+                movimiento.operacion
+            )
+            .toLowerCase()
+            ===
+            "entrada"
+        ){
+
+            cantidadActual-=
+            cantidadMovimiento;
+
+        }
+
+        else{
+
+            cantidadActual+=
+            cantidadMovimiento;
+
+        }
+
+
+        if(cantidadActual<0){
+
+            cantidadActual=0;
+
+        }
+
+
+        const {error}=
+        await clienteSupabase
+        .from("inventario_contenedores")
+        .update({
+
+            cantidad:cantidadActual
+
+        })
+        .eq(
+            "id",
+            inventario.id
+        );
+
+
+        if(error){
+
+            alert(
+                "❌ Error corrigiendo inventario:\n\n"+
+                error.message
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    const {error}=
+    await clienteSupabase
+    .from("historial_contenedores")
+    .delete()
+    .eq(
+        "id",
+        id
+    );
+
+
+    if(error){
+
+        alert(
+            "❌ Error eliminando historial:\n\n"+
+            error.message
+        );
+
+        return;
+
+    }
+
+
+    alert(
+        "✅ Movimiento eliminado y inventario corregido."
+    );
+
+
+    await cargarHistorial();
+
+    cargarInventario(
+        movimiento.contenedor
+    );
+
+}
+
+
+/* ==========================================
+   INICIAR
+========================================== */
+
+async function iniciar(){
+
+    const ok=
+    await verificarSesion();
+
+
+    if(!ok){
+
+        return;
+
+    }
+
+
+    cargarProductos();
+
+    await cargarInventario(1);
+
+}
+
+
+iniciar();
+
+</script>
+
+</body>
+
+</html>
