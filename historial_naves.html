@@ -789,7 +789,6 @@ id="totalMovimientos">
 
 </div>
 
-
 </div>
 
 
@@ -880,23 +879,14 @@ onclick="limpiarFiltros()">
 <tr>
 
 <th>📅 Fecha</th>
-
 <th>🕒 Hora</th>
-
 <th>🏠 Naves</th>
-
 <th>🐷 Cuartones</th>
-
 <th>📦 Operación</th>
-
 <th>🔢 Cantidad</th>
-
 <th>⚖️ Peso</th>
-
 <th>📋 Motivo</th>
-
 <th>👤 Usuario</th>
-
 <th>⚙️ Acción</th>
 
 </tr>
@@ -1092,6 +1082,10 @@ F3
 ➕ Entrada
 </option>
 
+<option value="Entrada Destete">
+➕ Entrada Destete
+</option>
+
 <option value="Salida Ceba">
 🚚 Salida Ceba
 </option>
@@ -1146,19 +1140,12 @@ onclick="limpiarFiltrosDestete()">
 <tr>
 
 <th>📅 Fecha</th>
-
 <th>🕒 Hora</th>
-
 <th>🍼 Fila</th>
-
 <th>📦 Operación</th>
-
 <th>🔢 Cantidad</th>
-
 <th>⚖️ Peso</th>
-
 <th>👤 Usuario</th>
-
 <th>⚙️ Acción</th>
 
 </tr>
@@ -1214,7 +1201,6 @@ ventas y muertes del área de Maternidad.
 
 <div class="estadisticas">
 
-
 <div class="estadistica">
 
 <div class="icono">➕🐷</div>
@@ -1252,8 +1238,6 @@ id="totalSalidasMaternidad">
 
 </div>
 
-
-<div class="estadistica">
 
 <div class="estadistica">
 
@@ -1329,7 +1313,6 @@ id="totalMovimientosMaternidad">
 </div>
 
 </div>
-
 
 </div>
 
@@ -1431,23 +1414,14 @@ onclick="limpiarFiltrosMaternidad()">
 <tr>
 
 <th>📅 Fecha</th>
-
 <th>🕒 Hora</th>
-
 <th>🏠 Nave</th>
-
 <th>🐷 Fila</th>
-
 <th>📦 Operación</th>
-
 <th>🔢 Cantidad</th>
-
 <th>⚖️ Peso</th>
-
 <th>📋 Motivo</th>
-
 <th>👤 Usuario</th>
-
 <th>⚙️ Acción</th>
 
 </tr>
@@ -1891,7 +1865,9 @@ function mostrarHistorial(movimientos){
 
         const esMuerteVenta=
         String(
-            m.motivo || ""
+            m.motivo ||
+            m.operacion ||
+            ""
         )
         .trim()
         .toLowerCase()
@@ -1900,7 +1876,9 @@ function mostrarHistorial(movimientos){
 
 
         const peso=
-        Number(m.peso_kg || 0);
+        Number(
+            m.peso_kg || 0
+        );
 
 
         const pesoB1=
@@ -2018,7 +1996,7 @@ function mostrarHistorial(movimientos){
 
         <td>
 
-        ${m.operacion || ""}
+        ${m.operacion || m.tipo || ""}
 
         ${
             esGrupo
@@ -2092,7 +2070,12 @@ function actualizarEstadisticas(movimientos){
         Number(m.cantidad || 0);
 
         const motivo=
-        String(m.motivo || "")
+        String(
+            m.motivo ||
+            m.operacion ||
+            m.tipo ||
+            ""
+        )
         .trim()
         .toLowerCase();
 
@@ -2206,14 +2189,20 @@ function aplicarFiltros(){
     if(motivo){
 
         resultado=
-        resultado.filter(m=>
+        resultado.filter(m=>{
 
-            String(m.motivo || "")
-            .trim()
-            ===
-            motivo
+            const valor=
+            String(
+                m.motivo ||
+                m.operacion ||
+                m.tipo ||
+                ""
+            )
+            .trim();
 
-        );
+            return valor===motivo;
+
+        });
 
     }
 
@@ -2466,26 +2455,51 @@ function mostrarHistorialDestete(movimientos){
         const cantidad=
         Number(m.cantidad || 0);
 
+
+        /*
+         * DESTETE PUEDE TENER EL TIPO
+         * DE OPERACIÓN EN DIFERENTES
+         * CAMPOS SEGÚN EL REGISTRO.
+         */
+
         const operacion=
         String(
-            m.operacion || ""
-        );
+            m.operacion ||
+            m.motivo ||
+            m.tipo ||
+            ""
+        )
+        .trim();
 
-        const motivo=
-        String(
-            m.motivo || ""
-        );
 
         const operacionNormalizada=
         operacion
-        .trim()
         .toLowerCase();
+
+
+        const motivo=
+        String(
+            m.motivo ||
+            ""
+        )
+        .trim();
 
 
         const motivoNormalizado=
         motivo
-        .trim()
         .toLowerCase();
+
+
+        const esEntrada=
+        operacionNormalizada==="entrada" ||
+        operacionNormalizada==="entrada destete" ||
+        motivoNormalizado==="entrada" ||
+        motivoNormalizado==="entrada destete";
+
+
+        const esSalida=
+        operacionNormalizada==="salida ceba" ||
+        motivoNormalizado==="salida ceba";
 
 
         const esMuerteTotal=
@@ -2499,7 +2513,10 @@ function mostrarHistorialDestete(movimientos){
 
 
         const peso=
-        Number(m.peso_kg || 0);
+        Number(
+            m.peso_kg || 0
+        );
+
 
         const pesoB1=
         Number(
@@ -2508,12 +2525,14 @@ function mostrarHistorialDestete(movimientos){
             0
         );
 
+
         const pesoB2=
         Number(
             m.peso_b2 ??
             m.b2 ??
             0
         );
+
 
         const pesoTotal=
         peso>0
@@ -2591,21 +2610,17 @@ function mostrarHistorialDestete(movimientos){
 
 
         let operacionMostrar=
-        operacion;
+        operacion || "—";
 
 
-        if(
-            operacionNormalizada==="entrada"
-        ){
+        if(esEntrada){
 
             operacionMostrar=
             "➕ Entrada";
 
         }
 
-        else if(
-            operacionNormalizada==="salida ceba"
-        ){
+        else if(esSalida){
 
             operacionMostrar=
             "🚚 Salida Ceba";
@@ -2716,23 +2731,32 @@ function actualizarEstadisticasDestete(
         const cantidad=
         Number(m.cantidad || 0);
 
+
         const operacion=
         String(
-            m.operacion || ""
+            m.operacion ||
+            m.motivo ||
+            m.tipo ||
+            ""
         )
         .trim()
         .toLowerCase();
 
+
         const motivo=
         String(
-            m.motivo || ""
+            m.motivo ||
+            ""
         )
         .trim()
         .toLowerCase();
 
 
         if(
-            operacion==="entrada"
+            operacion==="entrada" ||
+            operacion==="entrada destete" ||
+            motivo==="entrada" ||
+            motivo==="entrada destete"
         ){
 
             entradas+=cantidad;
@@ -2741,7 +2765,8 @@ function actualizarEstadisticasDestete(
 
 
         if(
-            operacion==="salida ceba"
+            operacion==="salida ceba" ||
+            motivo==="salida ceba"
         ){
 
             salidas+=cantidad;
@@ -2859,11 +2884,32 @@ function aplicarFiltrosDestete(){
             String(
                 m.operacion ||
                 m.motivo ||
+                m.tipo ||
                 ""
             )
             .trim();
 
-            return op===operacion;
+            const opNormalizada=
+            op.toLowerCase();
+
+
+            if(
+                operacion==="Entrada"
+            ){
+
+                return(
+                    opNormalizada==="entrada" ||
+                    opNormalizada==="entrada destete"
+                );
+
+            }
+
+
+            return(
+                opNormalizada
+                ===
+                operacion.toLowerCase()
+            );
 
         });
 
@@ -3319,28 +3365,36 @@ function mostrarHistorialMaternidad(
 
         const operacion=
         String(
-            m.operacion || ""
+            m.operacion ||
+            m.motivo ||
+            m.tipo ||
+            ""
         );
 
 
         const motivo=
         String(
-            m.motivo || ""
+            m.motivo ||
+            ""
         );
 
 
-        const esMuerteVenta=
+        const operacionNormalizada=
         operacion
         .trim()
-        .toLowerCase()
-        ===
-        "muerte de venta"
-        ||
+        .toLowerCase();
+
+
+        const motivoNormalizado=
         motivo
         .trim()
-        .toLowerCase()
-        ===
-        "muerte de venta";
+        .toLowerCase();
+
+
+        const esMuerteVenta=
+        operacionNormalizada==="muerte de venta"
+        ||
+        motivoNormalizado==="muerte de venta";
 
 
         let pesoMostrar="—";
@@ -3411,11 +3465,11 @@ function mostrarHistorialMaternidad(
 
 
         let operacionMostrar=
-        operacion;
+        operacion || "—";
 
 
         if(
-            operacion==="Entrada"
+            operacionNormalizada==="entrada"
         ){
 
             operacionMostrar=
@@ -3425,7 +3479,7 @@ function mostrarHistorialMaternidad(
 
 
         else if(
-            operacion==="Salida Ceba"
+            operacionNormalizada==="salida ceba"
         ){
 
             operacionMostrar=
@@ -3435,7 +3489,7 @@ function mostrarHistorialMaternidad(
 
 
         else if(
-            operacion==="Venta"
+            operacionNormalizada==="venta"
         ){
 
             operacionMostrar=
@@ -3445,7 +3499,7 @@ function mostrarHistorialMaternidad(
 
 
         else if(
-            operacion==="Muerte total"
+            operacionNormalizada==="muerte total"
         ){
 
             operacionMostrar=
@@ -3455,7 +3509,7 @@ function mostrarHistorialMaternidad(
 
 
         else if(
-            operacion==="Muerte de venta"
+            operacionNormalizada==="muerte de venta"
         ){
 
             operacionMostrar=
@@ -3467,7 +3521,6 @@ function mostrarHistorialMaternidad(
         html+=`
 
         <tr>
-
 
         <td>
 
@@ -3585,7 +3638,10 @@ function actualizarEstadisticasMaternidad(
 
         const operacion=
         String(
-            m.operacion || ""
+            m.operacion ||
+            m.motivo ||
+            m.tipo ||
+            ""
         )
         .trim()
         .toLowerCase();
@@ -3593,7 +3649,8 @@ function actualizarEstadisticasMaternidad(
 
         const motivo=
         String(
-            m.motivo || ""
+            m.motivo ||
+            ""
         )
         .trim()
         .toLowerCase();
@@ -3779,11 +3836,18 @@ function aplicarFiltrosMaternidad(){
             String(
                 m.operacion ||
                 m.motivo ||
+                m.tipo ||
                 ""
             )
-            .trim();
+            .trim()
+            .toLowerCase();
 
-            return op===operacion;
+            return(
+                op===
+                operacion
+                .trim()
+                .toLowerCase()
+            );
 
         });
 
